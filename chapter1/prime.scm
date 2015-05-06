@@ -1,6 +1,9 @@
 #!/usr/bin/gosh
 ;; -*- coding: utf-8 -*-
 
+(define (squrae n)
+  (* n n))
+
 (define (smallest-divisor n) (find-divisor n 2))
 
 (define (find-divisor n test-divisor)
