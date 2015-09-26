@@ -1,0 +1,22 @@
+﻿2015/09/26 20:30:59 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\usr\work\sicp_exercise\opencl\raytrace\raytrace\raytrace.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt raytrace_main.cpp ray_kernel.cpp
+         ray_kernel.cpp
+     1>c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\ray_kernel.cpp(7): error C2143: 構文エラー: ';' が '<クラスヘッド>' の前にありません。
+     1>c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\ray_kernel.cpp(28): error C2144: 構文エラー: 'void' は ';' によって先行されなければなりません。
+     1>c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\ray_kernel.cpp(28): error C4430: 型指定子がありません - int と仮定しました。メモ: C++ は int を既定値としてサポートしていません
+     1>c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\ray_kernel.cpp(30): error C3861: 'get_global_id': 識別子が見つかりませんでした
+     1>c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\ray_kernel.cpp(31): error C3861: 'get_global_id': 識別子が見つかりませんでした
+     1>c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\ray_kernel.cpp(34): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\ray_kernel.cpp(35): warning C4244: '初期化中': 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\ray_kernel.cpp(42): error C2664: 'float hit(Sphere *,float,float,float *)': 引数 1 を 'Sphere' から 'Sphere *' へ変換できません。
+         c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\ray_kernel.cpp(42): note: この変換を実行可能なユーザー定義変換演算子がないか、または演算子を呼び出せません。
+         raytrace_main.cpp
+     1>c:\usr\work\sicp_exercise\opencl\raytrace\raytrace\raytrace_main.cpp(7): fatal error C1083: include ファイルを開けません。'CL/cl.h':No such file or directory
+         コードを生成中...
+     1>プロジェクト "C:\usr\work\sicp_exercise\opencl\raytrace\raytrace\raytrace.vcxproj" (Build ターゲット) のビルドが終了しました -- 失敗。
+
+ビルドに失敗しました。
+
+経過時間 00:00:02.02
