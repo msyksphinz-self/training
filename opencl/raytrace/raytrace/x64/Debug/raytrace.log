@@ -1,5 +1,15 @@
-﻿2015/09/26 23:55:52 にビルドを開始しました。
+﻿2015/09/27 0:06:00 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\usr\work\sicp_exercise\opencl\raytrace\raytrace\raytrace.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\include\\" /IC:\usr\work\sicp_exercise\cuda\book\common /IC:\usr\work\sicp_exercise\opencl\raytrace\x64\Debug /ZI /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt raytrace_main.cpp
+         raytrace_main.cpp
+     1>c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(127): warning C4005: 'CALLBACK': マクロが再定義されました。
+         c:\usr\work\sicp_exercise\cuda\book\common\gl\glut.h(34): note: 'CALLBACK' の以前の定義を確認してください
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\usr\work\sicp_exercise\opencl\raytrace\x64\Debug\raytrace.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v7.5\lib\x64" /LIBPATH:C:\usr\work\sicp_exercise\cuda\book\lib OpenCL.lib glut64.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\usr\work\sicp_exercise\opencl\raytrace\x64\Debug\raytrace.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\usr\work\sicp_exercise\opencl\raytrace\x64\Debug\raytrace.lib" /MACHINE:X64 x64\Debug\raytrace_main.obj
+         raytrace.vcxproj -> C:\usr\work\sicp_exercise\opencl\raytrace\x64\Debug\raytrace.exe
+     1>プロジェクト "C:\usr\work\sicp_exercise\opencl\raytrace\raytrace\raytrace.vcxproj" (Build ターゲット) のビルドが完了しました。
 
 ビルドに成功しました。
 
-経過時間 00:00:00.02
+経過時間 00:00:00.88
