@@ -1,6 +1,6 @@
 #pragma once
 
-#define IMAGE_WIDTH (1000)
+#define IMAGE_WIDTH (600)
 #define SPHERES (20)
 
 #define sphere_rand(x) ((x/rnd()) / RAND_MAX)

@@ -144,7 +144,7 @@ int main()
 	ret = clReleaseCommandQueue(command_queue);
 	ret = clReleaseContext(context);
 
-	bitmap.display_and_exit();10
+	bitmap.display_and_exit();
 
 	return 0;
 }
