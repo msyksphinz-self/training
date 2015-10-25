@@ -42,8 +42,8 @@ int main (void)
 
 
     vec_code *vec_train = new vec_code ();
-    for (int y = -4; y < 10; y++) {
-        for (int x = -4; x < 10; x++) {
+    for (int y = -4; y < 5; y++) {
+        for (int x = -4; x < 5; x++) {
             pair_code *train_item = new pair_code (static_cast<float>(y), static_cast<float>(x));
             vec_train->push_back (train_item);
         }
@@ -57,12 +57,12 @@ int main (void)
         }
     }
 
-    const int iterate_limit = 16;
+    const int iterate_limit = 1;
 
     for (int t = 0; t < iterate_limit; t++) {
 
         float dist_limit;
-        if (t < iterate_limit/8) {
+        if (t <= iterate_limit/8) {
             dist_limit = 10.0 * 10.0;
         } else if (t < iterate_limit / 2) {
             dist_limit = 5.0 * 5.0;
@@ -78,11 +78,14 @@ int main (void)
             for (int y = 0; y < 10; y++) {
                 for (int x = 0; x < 10; x++) {
                     if (y != near_y && x != near_x) {
-                        float dist = powf (codevectors[y][x]->first - codevectors[near_y][near_x]->first, 2) +
-                            powf (codevectors[y][x]->second - codevectors[near_y][near_x]->second, 2);
-                        if (dist < dist_limit) {
+                        // float dist = powf (codevectors[y][x]->first - codevectors[near_y][near_x]->first, 2) +
+                        //     powf (codevectors[y][x]->second - codevectors[near_y][near_x]->second, 2);
+                        // if (dist < dist_limit) {
+                        //     code_training[y][x]->push_back ((*it));
+                        //     std::cout << "  Push into <" << y << ", " << x << ">\n";
+                        // }
+                        if (near_y - 1 >= 0 && near_x -1 >= 0) {
                             code_training[y][x]->push_back ((*it));
-                            std::cout << "  Push into <" << y << ", " << x << ">\n";
                         }
                     }
                 }
@@ -100,6 +103,7 @@ int main (void)
                 while (it != code_training[y][x]->end ()) {
                     total_y += (*it)->first;
                     total_x += (*it)->second;
+                    std::cout << "<" << (*it)->first << ", " << (*it)->second << ">, ";
                     count++;
                     it++;
                 }
