@@ -1,0 +1,782 @@
+{
+  &quot;source&quot;: &quot;doc/api/net.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;net&quot;,
+      &quot;name&quot;: &quot;net&quot;,
+      &quot;stability&quot;: 3,
+      &quot;stabilityText&quot;: &quot;Stable&quot;,
+      &quot;desc&quot;: &quot;<!--\nThe `net` module provides you with an asynchronous network wrapper. It contains\nmethods for creating both servers and clients (called streams). You can include\nthis module with `require('net');`\n-->\n\n<p><code>net</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x975E;&#x540C;&#x671F;&#x306A;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x306E;&#x30E9;&#x30C3;&#x30D1;&#x30FC;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x308C;&#x306F;&#x30B5;&#x30FC;&#x30D0;&#x3068;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x4E21;&#x65B9; (&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;&#x547C;&#x3070;&#x308C;&#x307E;&#x3059;) &#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x65B9;&#x6CD5;&#x3092;&#x542B;&#x307F;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;<code>require(&quot;net&quot;);</code>&#x306B;&#x3088;&#x3063;&#x3066;&#x53D6;&#x308A;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;net.createServer([options], [connectionListener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createServer&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates a new TCP server. The `connectionListener` argument is\nautomatically set as a listener for the ['connection'][] event.\n\n`options` is an object with the following defaults:\n-->\n\n<p>&#x65B0;&#x3057;&#x3044; TCP &#x30B5;&#x30FC;&#x30D0;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>connectionListener</code> &#x5F15;&#x6570;&#x306F; [&apos;connection&apos;][]\n&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3068;&#x3057;&#x3066;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p><code>options</code> &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x6301;&#x3064;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;:\n\n</p>\n<pre><code>{ allowHalfOpen: false\n}</code></pre>\n<!--\nIf `allowHalfOpen` is `true`, then the socket won't automatically send a FIN\npacket when the other end of the socket sends a FIN packet. The socket becomes\nnon-readable, but still writable. You should call the `end()` method explicitly.\nSee ['end'][] event for more information.\n-->\n\n<p><code>allowHalfOpen</code> &#x304C; <code>true</code> &#x3060;&#x3068;&#x3001;&#x53CD;&#x5BFE;&#x5074;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C; FIN &#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x3066;&#x304D;&#x3066;&#x3082;&#x81EA;&#x52D5;&#x7684;&#x306B; FIN &#x3092;&#x9001;&#x4FE1;&#x3057;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x3067;&#x306F;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x304C;&#x3001;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306E;&#x307E;&#x307E;&#x3067;&#x3059;&#x3002;\n&#x660E;&#x793A;&#x7684;&#x306B; <code>end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n[&apos;end&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x60C5;&#x5831;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nHere is an example of an echo server which listens for connections\non port 8124:\n-->\n\n<p>8124 &#x756A;&#x306E;&#x30DD;&#x30FC;&#x30C8;&#x3078;&#x306E;&#x63A5;&#x7D9A;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x308B;&#x30A8;&#x30B3;&#x30FC;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x4F8B;:\n\n</p>\n<pre><code>var net = require(&apos;net&apos;);\nvar server = net.createServer(function(c) { //&apos;connection&apos; listener\n  console.log(&apos;server connected&apos;);\n  c.on(&apos;end&apos;, function() {\n    console.log(&apos;server disconnected&apos;);\n  });\n  c.write(&apos;hello\\r\\n&apos;);\n  c.pipe(c);\n});\nserver.listen(8124, function() { //&apos;listening&apos; listener\n  console.log(&apos;server bound&apos;);\n});</code></pre>\n<!--\nTest this by using `telnet`:\n-->\n\n<p><code>telnet</code> &#x3092;&#x4F7F;&#x3063;&#x3066;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;:\n\n</p>\n<pre><code>telnet localhost 8124</code></pre>\n<!--\nTo listen on the socket `/tmp/echo.sock` the third line from the last would\njust be changed to\n-->\n\n<p><code>&apos;/tmp/echo.sock&apos;</code> &#x3078;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x308B;&#x306B;&#x306F;&#x3001;&#x6700;&#x5F8C;&#x304B;&#x3089;&#x4E09;&#x884C;&#x76EE;&#x3092;&#x3053;&#x306E;&#x3088;&#x3046;&#x306B;&#x5909;&#x66F4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>server.listen(&apos;/tmp/echo.sock&apos;, function() { //&apos;listening&apos; listener</code></pre>\n<!--\nUse `nc` to connect to a UNIX domain socket server:\n-->\n\n<p><code>nc</code> &#x3092;&#x4F7F;&#x3063;&#x3066; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x63A5;&#x7D9A;&#x3057;&#x307E;&#x3059;:\n\n</p>\n<pre><code>nc -U /tmp/echo.sock</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;connectionListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;net.connect(options, [connectionListener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;connect&quot;,
+          &quot;desc&quot;: &quot;<!--\nConstructs a new socket object and opens the socket to the given location.\nWhen the socket is established, the ['connect'][] event will be emitted.\n-->\n\n<p>&#x65B0;&#x3057;&#x3044;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x69CB;&#x7BC9;&#x3057;&#x3001;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30ED;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3078;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;\n&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x78BA;&#x7ACB;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;[&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nFor TCP sockets, `options` argument should be an object which specifies:\n-->\n\n<p>TCP &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x5834;&#x5408;&#x3001;<code>options</code> &#x5F15;&#x6570;&#x306F;&#x4EE5;&#x4E0B;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n  - `port`: Port the client should connect to (Required).\n\n  - `host`: Host the client should connect to. Defaults to `'localhost'`.\n\n  - `localAddress`: Local interface to bind to for network connections.\n-->\n\n<ul>\n<li><p><code>port</code>: &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30DD;&#x30FC;&#x30C8;&#x756A;&#x53F7;&#x3067;&#x3059; (&#x5FC5;&#x9808;)&#x3002;</p>\n</li>\n<li><p><code>host</code>: &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30DB;&#x30B9;&#x30C8;&#x3067;&#x3059;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>localhost</code> &#x3067;&#x3059;&#x3002;</p>\n</li>\n<li><p><code>localAddress</code>: &#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x63A5;&#x7D9A;&#x3092;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3059;&#x308B;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3067;&#x3059;&#x3002;</p>\n</li>\n</ul>\n<!--\nFor UNIX domain sockets, `options` argument should be an object which specifies:\n-->\n\n<p>UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x5834;&#x5408;&#x3001;<code>options</code> &#x5F15;&#x6570;&#x306F;&#x4EE5;&#x4E0B;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n  - `path`: Path the client should connect to (Required).\n-->\n\n<ul>\n<li><code>path</code>: &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30D1;&#x30B9;&#x3067;&#x3059; (&#x5FC5;&#x9808;)&#x3002;</li>\n</ul>\n<!--\nCommon options are:\n-->\n\n<p>&#x5171;&#x901A;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;:\n\n</p>\n<!--\n  - `allowHalfOpen`: if `true`, the socket won't automatically send\n    a FIN packet when the other end of the socket sends a FIN packet.\n    Defaults to `false`.  See ['end'][] event for more information.\n-->\n\n<ul>\n<li><code>allowHalfOpen</code>: <code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x53CD;&#x5BFE;&#x5074;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C; FIN\n&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x3066;&#x304D;&#x3066;&#x3082;&#x81EA;&#x52D5;&#x7684;&#x306B; FIN &#x3092;&#x9001;&#x4FE1;&#x3057;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;\n[&apos;end&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x60C5;&#x5831;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\nThe `connectListener` parameter will be added as an listener for the\n['connect'][] event.\n-->\n\n<p><code>connectListener</code> &#x5F15;&#x6570;&#x306F; [&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nHere is an example of a client of echo server as described previously:\n-->\n\n<p>&#x524D;&#x8FF0;&#x306E;&#x30A8;&#x30B3;&#x30FC;&#x30B5;&#x30FC;&#x30D0;&#x306B;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x4F8B;:\n\n</p>\n<pre><code>var net = require(&apos;net&apos;);\nvar client = net.connect({port: 8124},\n    function() { //&apos;connect&apos; listener\n  console.log(&apos;client connected&apos;);\n  client.write(&apos;world!\\r\\n&apos;);\n});\nclient.on(&apos;data&apos;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&apos;end&apos;, function() {\n  console.log(&apos;client disconnected&apos;);\n});</code></pre>\n<!--\nTo connect on the socket `/tmp/echo.sock` the second line would just be\nchanged to\n-->\n\n<p><code>&apos;/tmp/echo.sock&apos;</code> &#x3078;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;2 &#x884C;&#x76EE;&#x3092;&#x3053;&#x306E;&#x3088;&#x3046;&#x306B;&#x5909;&#x66F4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var client = net.connect({path: &apos;/tmp/echo.sock&apos;});</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;connectionListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            },
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;connectionListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;net.createConnection(options, [connectionListener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createConnection&quot;,
+          &quot;desc&quot;: &quot;<!--\nConstructs a new socket object and opens the socket to the given location.\nWhen the socket is established, the ['connect'][] event will be emitted.\n-->\n\n<p>&#x65B0;&#x3057;&#x3044;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x69CB;&#x7BC9;&#x3057;&#x3001;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30ED;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3078;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;\n&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x78BA;&#x7ACB;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;[&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nFor TCP sockets, `options` argument should be an object which specifies:\n-->\n\n<p>TCP &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x5834;&#x5408;&#x3001;<code>options</code> &#x5F15;&#x6570;&#x306F;&#x4EE5;&#x4E0B;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n  - `port`: Port the client should connect to (Required).\n\n  - `host`: Host the client should connect to. Defaults to `'localhost'`.\n\n  - `localAddress`: Local interface to bind to for network connections.\n-->\n\n<ul>\n<li><p><code>port</code>: &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30DD;&#x30FC;&#x30C8;&#x756A;&#x53F7;&#x3067;&#x3059; (&#x5FC5;&#x9808;)&#x3002;</p>\n</li>\n<li><p><code>host</code>: &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30DB;&#x30B9;&#x30C8;&#x3067;&#x3059;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>localhost</code> &#x3067;&#x3059;&#x3002;</p>\n</li>\n<li><p><code>localAddress</code>: &#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x63A5;&#x7D9A;&#x3092;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3059;&#x308B;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3067;&#x3059;&#x3002;</p>\n</li>\n</ul>\n<!--\nFor UNIX domain sockets, `options` argument should be an object which specifies:\n-->\n\n<p>UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x5834;&#x5408;&#x3001;<code>options</code> &#x5F15;&#x6570;&#x306F;&#x4EE5;&#x4E0B;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n  - `path`: Path the client should connect to (Required).\n-->\n\n<ul>\n<li><code>path</code>: &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30D1;&#x30B9;&#x3067;&#x3059; (&#x5FC5;&#x9808;)&#x3002;</li>\n</ul>\n<!--\nCommon options are:\n-->\n\n<p>&#x5171;&#x901A;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;:\n\n</p>\n<!--\n  - `allowHalfOpen`: if `true`, the socket won't automatically send\n    a FIN packet when the other end of the socket sends a FIN packet.\n    Defaults to `false`.  See ['end'][] event for more information.\n-->\n\n<ul>\n<li><code>allowHalfOpen</code>: <code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x53CD;&#x5BFE;&#x5074;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C; FIN\n&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x3066;&#x304D;&#x3066;&#x3082;&#x81EA;&#x52D5;&#x7684;&#x306B; FIN &#x3092;&#x9001;&#x4FE1;&#x3057;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;\n[&apos;end&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x60C5;&#x5831;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\nThe `connectListener` parameter will be added as an listener for the\n['connect'][] event.\n-->\n\n<p><code>connectListener</code> &#x5F15;&#x6570;&#x306F; [&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nHere is an example of a client of echo server as described previously:\n-->\n\n<p>&#x524D;&#x8FF0;&#x306E;&#x30A8;&#x30B3;&#x30FC;&#x30B5;&#x30FC;&#x30D0;&#x306B;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x4F8B;:\n\n</p>\n<pre><code>var net = require(&apos;net&apos;);\nvar client = net.connect({port: 8124},\n    function() { //&apos;connect&apos; listener\n  console.log(&apos;client connected&apos;);\n  client.write(&apos;world!\\r\\n&apos;);\n});\nclient.on(&apos;data&apos;, function(data) {\n  console.log(data.toString());\n  client.end();\n});\nclient.on(&apos;end&apos;, function() {\n  console.log(&apos;client disconnected&apos;);\n});</code></pre>\n<!--\nTo connect on the socket `/tmp/echo.sock` the second line would just be\nchanged to\n-->\n\n<p><code>&apos;/tmp/echo.sock&apos;</code> &#x3078;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;2 &#x884C;&#x76EE;&#x3092;&#x3053;&#x306E;&#x3088;&#x3046;&#x306B;&#x5909;&#x66F4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var client = net.connect({path: &apos;/tmp/echo.sock&apos;});</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;connectionListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;net.connect(port, [host], [connectListener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;connect&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates a TCP connection to `port` on `host`. If `host` is omitted,\n`'localhost'` will be assumed.\nThe `connectListener` parameter will be added as an listener for the\n['connect'][] event.\n-->\n\n<p><code>host</code> &#x4E0A;&#x306E; <code>port</code> &#x306B;&#x5BFE;&#x3059;&#x308B; TCP &#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>host</code> &#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x308B;&#x3068; <code>localhost</code> &#x304C;&#x4EEE;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>connectListener</code> &#x5F15;&#x6570;&#x306F; [&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;port&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;host&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;connectListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            },
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;port&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;host&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;connectListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;net.createConnection(port, [host], [connectListener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createConnection&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates a TCP connection to `port` on `host`. If `host` is omitted,\n`'localhost'` will be assumed.\nThe `connectListener` parameter will be added as an listener for the\n['connect'][] event.\n-->\n\n<p><code>host</code> &#x4E0A;&#x306E; <code>port</code> &#x306B;&#x5BFE;&#x3059;&#x308B; TCP &#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>host</code> &#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x308B;&#x3068; <code>localhost</code> &#x304C;&#x4EEE;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>connectListener</code> &#x5F15;&#x6570;&#x306F; [&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;port&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;host&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;connectListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;net.connect(path, [connectListener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;connect&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates unix socket connection to `path`.\nThe `connectListener` parameter will be added as an listener for the\n['connect'][] event.\n-->\n\n<p><code>path</code> &#x306B;&#x5BFE;&#x3059;&#x308B; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>connectListener</code> &#x5F15;&#x6570;&#x306F; [&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;connectListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            },
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;connectListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;net.createConnection(path, [connectListener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createConnection&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates unix socket connection to `path`.\nThe `connectListener` parameter will be added as an listener for the\n['connect'][] event.\n-->\n\n<p><code>path</code> &#x306B;&#x5BFE;&#x3059;&#x308B; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>connectListener</code> &#x5F15;&#x6570;&#x306F; [&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;connectListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;net.isIP(input)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;isIP&quot;,
+          &quot;desc&quot;: &quot;<!--\nTests if input is an IP address. Returns 0 for invalid strings,\nreturns 4 for IP version 4 addresses, and returns 6 for IP version 6 addresses.\n-->\n\n<p><code>input</code> &#x304C; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x304B;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x4E0D;&#x6B63;&#x306A;&#x6587;&#x5B57;&#x5217;&#x3060;&#x3068; 0&#x3001;IP &#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3; 4 &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3060;&#x3068; 4&#xFF0C;IP &#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3; 6\n&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3060;&#x3068; 6 &#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;input&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;net.isIPv4(input)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;isIPv4&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns true if input is a version 4 IP address, otherwise returns false.\n-->\n\n<p><code>input</code> &#x304C; &#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3; 4 &#x306E; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x306A;&#x3089; true&#x3001;&#x305D;&#x3046;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070; false &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;input&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;net.isIPv6(input)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;isIPv6&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns true if input is a version 6 IP address, otherwise returns false.\n-->\n\n<p><code>input</code> &#x304C; &#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3; 6 &#x306E; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x306A;&#x3089; true&#x3001;&#x305D;&#x3046;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070; false &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;input&quot;
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;classes&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Class: net.Server&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;net.Server&quot;,
+          &quot;desc&quot;: &quot;<!--\nThis class is used to create a TCP or UNIX server.\n-->\n\n<p>&#x3053;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x306F; TCP &#x307E;&#x305F;&#x306F; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;server.listen(port, [host], [backlog], [callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;listen&quot;,
+              &quot;desc&quot;: &quot;<!--\nBegin accepting connections on the specified `port` and `host`.  If the\n`host` is omitted, the server will accept connections directed to any\nIPv4 address (`INADDR_ANY`). A port value of zero will assign a random port.\n-->\n\n<p>&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F; <code>port</code> &#x3068; <code>host</code> &#x3067;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x53D7;&#x3051;&#x5165;&#x308C;&#x3092;&#x958B;&#x59CB;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>host</code> &#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x3069;&#x3093;&#x306A; IPv4 &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3078;&#x306E;&#x63A5;&#x7D9A;&#x3082;&#x53D7;&#x3051;&#x5165;&#x308C;&#x307E;&#x3059;\n(<code>INADDR_ANY</code>)&#x3002;\n&#x30DD;&#x30FC;&#x30C8;&#x756A;&#x53F7;&#x306B; 0 &#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3001;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&#x30DD;&#x30FC;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nBacklog is the maximum length of the queue of pending connections.\nThe actual length will be determined by your OS through sysctl settings such as\n`tcp_max_syn_backlog` and `somaxconn` on linux. The default value of this\nparameter is 511 (not 512).\n-->\n\n<p>&#x30D0;&#x30C3;&#x30AF;&#x30ED;&#x30B0;&#x306F;&#x4FDD;&#x7559;&#x3055;&#x308C;&#x305F;&#x63A5;&#x7D9A;&#x306E;&#x30AD;&#x30E5;&#x30FC;&#x306E;&#x6700;&#x5927;&#x9577;&#x3067;&#x3059;&#x3002;\n&#x5B9F;&#x969B;&#x306E;&#x9577;&#x3055;&#x306F; Linux &#x3067;&#x306F; <code>tcp_max_syn_backlog</code> &#x3084; <code>somaxconn</code> &#x306A;&#x3069;&#x3001;\nsysctl &#x306E;&#x8A2D;&#x5B9A;&#x3092;&#x901A;&#x3058;&#x3066; OS &#x306B;&#x3088;&#x3063;&#x3066;&#x6C7A;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x306F; 511 (512 &#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;) &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThis function is asynchronous.  When the server has been bound,\n['listening'][] event will be emitted.  The last parameter `callback`\nwill be added as an listener for the ['listening'][] event.\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;\n&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;[&apos;listening&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570; <code>callback</code> &#x306F; [&apos;listening&apos;][] &#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nOne issue some users run into is getting `EADDRINUSE` errors. This means that\nanother server is already running on the requested port. One way of handling this\nwould be to wait a second and then try again. This can be done with\n-->\n\n<p>&#x4E00;&#x90E8;&#x306E;&#x30E6;&#x30FC;&#x30B6;&#x304C;&#x9665;&#x308B;&#x554F;&#x984C;&#x306E;&#x4E00;&#x3064;&#x306F;&#x3001;<code>EADDRINUSE</code> &#x30A8;&#x30E9;&#x30FC;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x3001;&#x4ED6;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x8981;&#x6C42;&#x3055;&#x308C;&#x305F;&#x30DD;&#x30FC;&#x30C8;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x3044;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306B;&#x5BFE;&#x7167;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x306E;&#x4E00;&#x3064;&#x306F;&#x3001;1&#x79D2;&#x5F85;&#x6A5F;&#x3057;&#x3066;&#x304B;&#x3089;&#x30EA;&#x30C8;&#x30E9;&#x30A4;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;\n\n</p>\n<pre><code>server.on(&apos;error&apos;, function (e) {\n  if (e.code == &apos;EADDRINUSE&apos;) {\n    console.log(&apos;Address in use, retrying...&apos;);\n    setTimeout(function () {\n      server.close();\n      server.listen(PORT, HOST);\n    }, 1000);\n  }\n});</code></pre>\n<!--\n(Note: All sockets in Node set `SO_REUSEADDR` already)\n-->\n\n<p>&#x6CE8;&#x610F;: Node &#x306E;&#x5168;&#x3066;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F; <code>SO_REUSEADDR</code> &#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;)\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;port&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;host&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;backlog&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.listen(path, [callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;listen&quot;,
+              &quot;desc&quot;: &quot;<!--\nStart a UNIX socket server listening for connections on the given `path`.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; <code>path</code> &#x3078;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x308B;&#x3059;&#x308B; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x958B;&#x59CB;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThis function is asynchronous.  When the server has been bound,\n['listening'][] event will be emitted.  The last parameter `callback`\nwill be added as an listener for the ['listening'][] event.\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;\n&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;[&apos;listening&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570; <code>callback</code> &#x306F; [&apos;listening&apos;][] &#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;path&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.listen(handle, [callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;listen&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;textRaw&quot;: &quot;`handle` {Object} &quot;,
+                      &quot;name&quot;: &quot;handle&quot;,
+                      &quot;type&quot;: &quot;Object&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`callback` {Function} &quot;,
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;type&quot;: &quot;Function&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                },
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;handle&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ],
+              &quot;desc&quot;: &quot;<!--\nThe `handle` object can be set to either a server or socket (anything\nwith an underlying `_handle` member), or a `{fd: <n>}` object.\n-->\n\n<p><code>handle</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x306F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x307E;&#x305F;&#x306F;&#x30BD;&#x30B1;&#x30C3;&#x30C8; (&#x4E0B;&#x5C64;&#x306E; <code>_handle</code> &#x30E1;&#x30F3;&#x30D0;&#x306A;&#x3089;\n&#x306A;&#x3093;&#x3067;&#x3082;) &#x307E;&#x305F;&#x306F;&#x3001; <code>{fd: &lt;n&gt;}</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThis will cause the server to accept connections on the specified\nhandle, but it is presumed that the file descriptor or handle has\nalready been bound to a port or domain socket.\n-->\n\n<p>&#x3053;&#x308C;&#x306B;&#x3088;&#x308A;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x3078;&#x306E;&#x63A5;&#x7D9A;&#x3092;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x304C;&#x3001;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x307E;&#x305F;&#x306F;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x306F;&#x65E2;&#x306B;&#x30DD;&#x30FC;&#x30C8;&#x307E;&#x305F;&#x306F;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;\n&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x3082;&#x306E;&#x3068;&#x898B;&#x306A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nListening on a file descriptor is not supported on Windows.\n-->\n\n<p>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3078;&#x306E;&#x30EA;&#x30B9;&#x30CB;&#x30F3;&#x30B0;&#x306F; Windows &#x3067;&#x306F;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nThis function is asynchronous.  When the server has been bound,\n['listening'](#event_listening_) event will be emitted.\nthe last parameter `callback` will be added as an listener for the\n['listening'](#event_listening_) event.\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;\n&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;[&apos;listening&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570; <code>callback</code> &#x306F; [&apos;listening&apos;][] &#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.close([callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<!--\nStops the server from accepting new connections and keeps existing\nconnections. This function is asynchronous, the server is finally\nclosed when all connections are ended and the server emits a `'close'`\nevent. Optionally, you can pass a callback to listen for the `'close'`\nevent.\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x65B0;&#x3057;&#x3044;&#x63A5;&#x7D9A;&#x3092;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x308B;&#x306E;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;&#x65E2;&#x5B58;&#x306E;&#x63A5;&#x7D9A;&#x306F;&#x7DAD;&#x6301;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x6700;&#x7D42;&#x7684;&#x306B;&#x5168;&#x3066;&#x306E;&#x63A5;&#x7D9A;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x3068;\n<code>&apos;close&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x3066;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3068;&#x3057;&#x3066;&#x3001;<code>&apos;close&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x6E21;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.address()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;address&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns the bound address, the address family name and port of the server\nas reported by the operating system.\nUseful to find which port was assigned when giving getting an OS-assigned address.\nReturns an object with three properties, e.g.\n`{ port: 12346, family: 'IPv4', address: '127.0.0.1' }`\n-->\n\n<p>&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x304B;&#x3089;&#x5831;&#x544A;&#x3055;&#x308C;&#x305F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306B;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x305F;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3068;\n&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x30D5;&#x30A1;&#x30DF;&#x30EA;&#x540D;&#x3001;&#x30DD;&#x30FC;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\nOS&#x306B;&#x3088;&#x3063;&#x3066;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x304C;&#x6E21;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x3001;&#x3069;&#x306E;&#x30DD;&#x30FC;&#x30C8;&#x306B;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x305F;&#x3082;&#x306E;&#x304B;&#x3092;&#x8ABF;&#x3079;&#x308B;&#x306E;&#x306B;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;\n&#x8FD4;&#x3055;&#x308C;&#x308B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; 3 &#x3064;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;&#x4F8B;:\n<code>{ port: 12346, family: &apos;IPv4&apos;, address: &apos;127.0.0.1&apos; }</code>\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>var server = net.createServer(function (socket) {\n  socket.end(&quot;goodbye\\n&quot;);\n});\n\n// grab a random port.\nserver.listen(function() {\n  address = server.address();\n  console.log(&quot;opened server on %j&quot;, address);\n});</code></pre>\n<!--\nDon't call `server.address()` until the `'listening'` event has been emitted.\n-->\n\n<p><code>&apos;listening&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x308B;&#x524D;&#x306B; <code>server.address()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x306F;&#x3044;&#x3051;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.unref()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;unref&quot;,
+              &quot;desc&quot;: &quot;<!--\nCalling `unref` on a server will allow the program to exit if this is the only\nactive server in the event system. If the server is already `unref`d calling\n`unref` again will have no effect.\n-->\n\n<p>&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x304A;&#x3044;&#x3066;&#x3001;&#x3053;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x3060;&#x3051;&#x304C;&#x30A2;&#x30AF;&#x30C6;&#x30A3;&#x30D6;&#x306A;&#x5834;&#x5408;&#x306B;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;\n&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;<code>unref</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x65E2;&#x306B; <code>unref</code> &#x3055;&#x308C;&#x305F;&#x30B5;&#x30FC;&#x30D0;&#x3067;&#x518D;&#x3073; <code>unref</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3082;&#x5F71;&#x97FF;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.ref()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;ref&quot;,
+              &quot;desc&quot;: &quot;<!--\nOpposite of `unref`, calling `ref` on a previously `unref`d server will *not*\nlet the program exit if it's the only server left (the default behavior). If\nthe server is `ref`d calling `ref` again will have no effect.\n-->\n\n<p><code>unref</code> &#x3068;&#x306F;&#x9006;&#x306B;&#x3001;&#x4EE5;&#x524D;&#x306B; <code>unref</code> &#x3055;&#x308C;&#x305F;&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x552F;&#x4E00;&#x6B8B;&#x3063;&#x305F;&#x30B5;&#x30FC;&#x30D0;&#x306B;&#x306A;&#x3063;&#x3066;&#x3082;&#x3001;\n&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304C;&#x7D42;&#x4E86; (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x52D5;&#x4F5C;&#x3067;&#x3059;) &#x3057;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3001;<code>ref</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x65E2;&#x306B; <code>ref</code> &#x3055;&#x308C;&#x305F;&#x30B5;&#x30FC;&#x30D0;&#x3067;&#x518D;&#x3073; <code>ref</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3082;&#x5F71;&#x97FF;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.getConnections(callback)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;getConnections&quot;,
+              &quot;desc&quot;: &quot;<!--\nAsynchronously get the number of concurrent connections on the server. Works\nwhen sockets were sent to forks.\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x4E0A;&#x306E;&#x4E26;&#x884C;&#x30B3;&#x30CD;&#x30AF;&#x30AA;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x6570;&#x3092;&#x975E;&#x540C;&#x671F;&#x306B;&#x53D6;&#x5F97;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C; fork &#x3057;&#x305F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x3089;&#x308C;&#x3066;&#x3082;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nCallback should take two arguments `err` and `count`.\n-->\n\n<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; <code>err</code> &#x3068; <code>count</code> &#x306E;&#x4E8C;&#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D6;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;callback&quot;
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;server.maxConnections&quot;,
+              &quot;name&quot;: &quot;maxConnections&quot;,
+              &quot;desc&quot;: &quot;<!--\nSet this property to reject connections when the server's connection count gets\nhigh.\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x63A5;&#x7D9A;&#x6570;&#x304C;&#x5927;&#x304D;&#x304F;&#x306A;&#x3063;&#x305F;&#x6642;&#x306B;&#x63A5;&#x7D9A;&#x3092;&#x62D2;&#x5426;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIt is not recommended to use this option once a socket has been sent to a child\nwith `child_process.fork()`.\n-->\n\n<p><code>child_process.fork()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x3089;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x5BFE;&#x3057;&#x3066;\n&#x3053;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x63A8;&#x5968;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.connections&quot;,
+              &quot;name&quot;: &quot;connections&quot;,
+              &quot;desc&quot;: &quot;<!--\nThis function is **deprecated**; please use [server.getConnections()][] instead.\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; <strong>&#x5EC3;&#x6B62;&#x4E88;&#x5B9A;</strong> &#x3067;&#x3059;;\n&#x4EE3;&#x308F;&#x308A;&#x306B; [server.getConnections()][] &#x3092;&#x4F7F;&#x3063;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nThe number of concurrent connections on the server.\n-->\n\n<p>&#x3053;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x4E0A;&#x306E;&#x4E26;&#x884C;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x6570;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThis becomes `null` when sending a socket to a child with\n`child_process.fork()`. To poll forks and get current number of active\nconnections use asynchronous `server.getConnections` instead.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C; <code>child_process.fork()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x3089;&#x308C;&#x308B;&#x3068;&#x3001;\n&#x3053;&#x308C;&#x306F; <code>null</code> &#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\nfork &#x3057;&#x305F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x30DD;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3057;&#x3066;&#x73FE;&#x5728;&#x306E;&#x30A2;&#x30AF;&#x30C6;&#x30A3;&#x30D6;&#x306A;&#x63A5;&#x7D9A;&#x3092;&#x5F97;&#x308B;&#x4EE3;&#x308F;&#x308A;&#x306B;&#x3001;\n&#x975E;&#x540C;&#x671F;&#x306E; <code>server.getConnections</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\n`net.Server` is an [EventEmitter][] with the following events:\n-->\n\n<p><code>net.Server</code> &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x6301;&#x3064; [EventEmitter][] &#x3067;&#x3059;:\n\n</p>\n&quot;
+            }
+          ],
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;listening&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;listening&quot;,
+              &quot;desc&quot;: &quot;<!--\nEmitted when the server has been bound after calling `server.listen`.\n-->\n\n<p><code>server.listen()</code> &#x304C;&#x547C;&#x3070;&#x308C;&#x305F;&#x5F8C;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;connection&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;connection&quot;,
+              &quot;params&quot;: [],
+              &quot;desc&quot;: &quot;<!--\nEmitted when a new connection is made. `socket` is an instance of\n`net.Socket`.\n-->\n\n<p>&#x65B0;&#x3057;&#x3044;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>socket</code> &#x306F; <code>net.Socket</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;close&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<!--\nEmitted when the server closes. Note that if connections exist, this\nevent is not emitted until all connections are ended.\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3082;&#x3057;&#x63A5;&#x7D9A;&#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x3068;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x5168;&#x3066;&#x306E;&#x63A5;&#x7D9A;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x307E;&#x3067;\n&#x751F;&#x6210;&#x3055;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;error&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;error&quot;,
+              &quot;params&quot;: [],
+              &quot;desc&quot;: &quot;<!--\nEmitted when an error occurs.  The `'close'` event will be called directly\nfollowing this event.  See example in discussion of `server.listen`.\n-->\n\n<p>&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x7D9A;&#x3044;&#x3066; <code>&apos;close&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76F4;&#x63A5;&#x751F;&#x6210;&#x3055;&#x308C;&#x308B;&#x5834;&#x5408;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n<code>server.listen()</code> &#x306E;&#x4F8B;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: net.Socket&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;net.Socket&quot;,
+          &quot;desc&quot;: &quot;<!--\nThis object is an abstraction of a TCP or UNIX socket.  `net.Socket`\ninstances implement a duplex Stream interface.  They can be created by the\nuser and used as a client (with `connect()`) or they can be created by Node\nand passed to the user through the `'connection'` event of a server.\n-->\n\n<p>&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; TCP &#x307E;&#x305F;&#x306F; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x62BD;&#x8C61;&#x5316;&#x3057;&#x305F;&#x3082;&#x306E;&#x3067;&#x3059;&#x3002;\n<code>net.Socket</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306F;&#x53CC;&#x65B9;&#x5411;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x308C;&#x3089;&#x306F;&#x30E6;&#x30FC;&#x30B6;&#x306B;&#x3088;&#x3063;&#x3066; (<code>connect()</code> &#x306B;&#x3088;&#x3063;&#x3066;) &#x4F5C;&#x6210;&#x3055;&#x308C;&#x3066;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x304B;&#x3001;\nNode &#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x3066;&#x30B5;&#x30FC;&#x30D0;&#x306E; <code>&apos;connection&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x901A;&#x3058;&#x3066;&#x30E6;&#x30FC;&#x30B6;&#x306B;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;new net.Socket([options])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;Socket&quot;,
+              &quot;desc&quot;: &quot;<!--\nConstruct a new socket object.\n-->\n\n<p>&#x65B0;&#x3057;&#x3044;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x69CB;&#x7BC9;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`options` is an object with the following defaults:\n-->\n\n<p><code>options</code> &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x6301;&#x3064;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n</p>\n<pre><code>{ fd: null\n  allowHalfOpen: false,\n  readable: false,\n  writable: false\n}</code></pre>\n<!--\n`fd` allows you to specify the existing file descriptor of socket.\nSet `readable` and/or `writable` to `true` to allow reads and/or writes on this\nsocket (NOTE: Works only when `fd` is passed).\nAbout `allowHalfOpen`, refer to `createServer()` and `'end'` event.\n-->\n\n<p><code>fd</code> &#x306B;&#x65E2;&#x5B58;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n<code>readable</code> &#x304A;&#x3088;&#x3073; <code>writable</code> &#x3092; <code>true</code> &#x306B;&#x3059;&#x308B;&#x3068;&#x3001;&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x305F;&#x306F;\n&#x66F8;&#x304D;&#x51FA;&#x3057;&#x53EF;&#x80FD;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x51FA;&#x6765;&#x307E;&#x3059; (&#x6CE8;&#x610F;: <code>fd</code> &#x304C;&#x6E21;&#x3055;&#x308C;&#x5834;&#x5408;&#x306E;&#x307F;&#x52B9;&#x679C;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;)&#x3002;\n<code>allowHalfOpen</code> &#x306B;&#x3064;&#x3044;&#x3066;&#x306F; <code>createServer()</code> &#x304A;&#x3088;&#x3073; <code>&apos;end&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;options&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.connect(port, [host], [connectListener])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;connect&quot;,
+              &quot;desc&quot;: &quot;<!--\nOpens the connection for a given socket. If `port` and `host` are given,\nthen the socket will be opened as a TCP socket, if `host` is omitted,\n`localhost` will be assumed. If a `path` is given, the socket will be\nopened as a unix socket to that path.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>port</code> &#x3068; <code>host</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F; TCP &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3068;&#x3057;&#x3066;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>host</code> &#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F; <code>localhost</code> &#x304C;&#x4EEE;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>path</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x305D;&#x306E;&#x30D1;&#x30B9;&#x3078;&#x306E; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3068;&#x3057;&#x3066;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNormally this method is not needed, as `net.createConnection` opens the\nsocket. Use this only if you are implementing a custom Socket.\n-->\n\n<p>&#x901A;&#x5E38;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5FC5;&#x8981;&#x306A;&#x304F;&#x3001;<code>net.createConnection</code> &#x3067;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x3092;&#x4F7F;&#x3046;&#x306E;&#x306F;&#x3001;&#x30AB;&#x30B9;&#x30BF;&#x30DE;&#x30A4;&#x30BA;&#x3055;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThis function is asynchronous. When the ['connect'][] event is emitted the\nsocket is established. If there is a problem connecting, the `'connect'` event\nwill not be emitted, the `'error'` event will be emitted with the exception.\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x78BA;&#x7ACB;&#x3055;&#x308C;&#x308B;&#x3068; [&apos;connect&apos;][]\n&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x63A5;&#x7D9A;&#x3067;&#x554F;&#x984C;&#x304C;&#x3042;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F; <code>&apos;connect&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x305A;&#x3001;\n&#x4F8B;&#x5916;&#x3068;&#x3068;&#x3082;&#x306B; <code>&apos;error&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe `connectListener` parameter will be added as an listener for the\n['connect'][] event.\n-->\n\n<p><code>connectListener</code> &#x5F15;&#x6570;&#x306F; [&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x306B;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;path&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;connectListener&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                },
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;port&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;host&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;connectListener&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.connect(path, [connectListener])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;connect&quot;,
+              &quot;desc&quot;: &quot;<!--\nOpens the connection for a given socket. If `port` and `host` are given,\nthen the socket will be opened as a TCP socket, if `host` is omitted,\n`localhost` will be assumed. If a `path` is given, the socket will be\nopened as a unix socket to that path.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>port</code> &#x3068; <code>host</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F; TCP &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3068;&#x3057;&#x3066;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>host</code> &#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F; <code>localhost</code> &#x304C;&#x4EEE;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>path</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x305D;&#x306E;&#x30D1;&#x30B9;&#x3078;&#x306E; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3068;&#x3057;&#x3066;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNormally this method is not needed, as `net.createConnection` opens the\nsocket. Use this only if you are implementing a custom Socket.\n-->\n\n<p>&#x901A;&#x5E38;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5FC5;&#x8981;&#x306A;&#x304F;&#x3001;<code>net.createConnection</code> &#x3067;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x3092;&#x4F7F;&#x3046;&#x306E;&#x306F;&#x3001;&#x30AB;&#x30B9;&#x30BF;&#x30DE;&#x30A4;&#x30BA;&#x3055;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThis function is asynchronous. When the ['connect'][] event is emitted the\nsocket is established. If there is a problem connecting, the `'connect'` event\nwill not be emitted, the `'error'` event will be emitted with the exception.\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x78BA;&#x7ACB;&#x3055;&#x308C;&#x308B;&#x3068; [&apos;connect&apos;][]\n&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x63A5;&#x7D9A;&#x3067;&#x554F;&#x984C;&#x304C;&#x3042;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F; <code>&apos;connect&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x305A;&#x3001;\n&#x4F8B;&#x5916;&#x3068;&#x3068;&#x3082;&#x306B; <code>&apos;error&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe `connectListener` parameter will be added as an listener for the\n['connect'][] event.\n-->\n\n<p><code>connectListener</code> &#x5F15;&#x6570;&#x306F; [&apos;connect&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x306B;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;path&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;connectListener&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.setEncoding([encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setEncoding&quot;,
+              &quot;desc&quot;: &quot;<!--\nSet the encoding for the socket as a Readable Stream. See\n[stream.setEncoding()][] for more information.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5165;&#x529B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;&#x3057;&#x3066;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x8A73;&#x7D30;&#x306F; [stream.setEncoding()][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.write(data, [encoding], [callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;write&quot;,
+              &quot;desc&quot;: &quot;<!--\nSends data on the socket. The second parameter specifies the encoding in the\ncase of a string--it defaults to UTF8 encoding.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x6587;&#x5B57;&#x5217;&#x306E;&#x5834;&#x5408;&#x3001;&#x7B2C; 2 &#x5F15;&#x6570;&#x306F;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x307E;&#x3059; &#xFF0D; &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; UTF-8 &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nReturns `true` if the entire data was flushed successfully to the kernel\nbuffer. Returns `false` if all or part of the data was queued in user memory.\n`'drain'` will be emitted when the buffer is again free.\n-->\n\n<p>&#x30C7;&#x30FC;&#x30BF;&#x5168;&#x4F53;&#x306E;&#x30AB;&#x30FC;&#x30CD;&#x30EB;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3078;&#x306E;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x304C;&#x6210;&#x529F;&#x3059;&#x308B;&#x3068; <code>true</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30FC;&#x30BF;&#x5168;&#x4F53;&#x307E;&#x305F;&#x306F;&#x4E00;&#x90E8;&#x304C;&#x30E6;&#x30FC;&#x30B6;&#x30E1;&#x30E2;&#x30EA;&#x5185;&#x306E;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x518D;&#x3073;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x7A7A;&#x3044;&#x305F;&#x5834;&#x5408;&#x306F; <code>&apos;drain&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe optional `callback` parameter will be executed when the data is finally\nwritten out - this may not be immediately.\n-->\n\n<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>callback</code> &#x5F15;&#x6570;&#x306F;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x6700;&#x7D42;&#x7684;&#x306B;&#x51FA;&#x529B;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x307E;&#x3059;\n&#xFF0D; &#x3053;&#x308C;&#x306F;&#x3059;&#x3050;&#x306B;&#x306F;&#x8D77;&#x304D;&#x306A;&#x3044;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.end([data], [encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;end&quot;,
+              &quot;desc&quot;: &quot;<!--\nHalf-closes the socket. i.e., it sends a FIN packet. It is possible the\nserver will still send some data.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x30CF;&#x30FC;&#x30D5;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x307E;&#x3059;&#x3002;&#x4F8B;&#x3048;&#x3070; FIN &#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x307E;&#x3060;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x9001;&#x308A;&#x7D9A;&#x3051;&#x3066;&#x304F;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIf `data` is specified, it is equivalent to calling\n`socket.write(data, encoding)` followed by `socket.end()`.\n-->\n\n<p><code>data</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;\n<code>socket.write(data, encoding)</code> &#x306B;&#x7D9A;&#x3051;&#x3066; <code>socket.end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x306E;&#x3068;&#x7B49;&#x4FA1;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.destroy()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;destroy&quot;,
+              &quot;desc&quot;: &quot;<!--\nEnsures that no more I/O activity happens on this socket. Only necessary in\ncase of errors (parse error or so).\n-->\n\n<p>&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x4E0A;&#x3067;&#x3069;&#x3093;&#x306A; I/O &#x3082;&#x8D77;&#x3053;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x4FDD;&#x8A3C;&#x3057;&#x307E;&#x3059;&#x3002;\n(&#x30D1;&#x30FC;&#x30B9;&#x30A8;&#x30E9;&#x30FC;&#x306A;&#x3069;&#x306E;) &#x30A8;&#x30E9;&#x30FC;&#x306E;&#x5834;&#x5408;&#x306B;&#x3060;&#x3051;&#x5FC5;&#x8981;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.pause()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;pause&quot;,
+              &quot;desc&quot;: &quot;<!--\nPauses the reading of data. That is, `'data'` events will not be emitted.\nUseful to throttle back an upload.\n-->\n\n<p>&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3092;&#x4E2D;&#x65AD;&#x3057;&#x307E;&#x3059;&#x3002;&#x3064;&#x307E;&#x308A;&#x3001;<code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x30A2;&#x30C3;&#x30D7;&#x30ED;&#x30FC;&#x30C9;&#x901F;&#x5EA6;&#x3092;&#x843D;&#x3068;&#x3059;&#x305F;&#x3081;&#x306B;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.resume()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;resume&quot;,
+              &quot;desc&quot;: &quot;<!--\nResumes reading after a call to `pause()`.\n-->\n\n<p><code>pause()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x5F8C;&#x3067;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3092;&#x518D;&#x958B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.setTimeout(timeout, [callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setTimeout&quot;,
+              &quot;desc&quot;: &quot;<!--\nSets the socket to timeout after `timeout` milliseconds of inactivity on\nthe socket. By default `net.Socket` do not have a timeout.\n-->\n\n<p>&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x975E;&#x30A2;&#x30AF;&#x30C6;&#x30A3;&#x30D6;&#x306B;&#x306A;&#x3063;&#x3066;&#x304B;&#x3089; <code>timeout</code> &#x30DF;&#x30EA;&#x79D2;&#x5F8C;&#x306B;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;\n&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F; <code>net.Socket</code> &#x306F;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nWhen an idle timeout is triggered the socket will receive a `'timeout'`\nevent but the connection will not be severed. The user must manually `end()`\nor `destroy()` the socket.\n-->\n\n<p>&#x30A2;&#x30A4;&#x30C9;&#x30EB;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x304C;&#x5F15;&#x304D;&#x8D77;&#x3053;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F; <code>&apos;timeout&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;\n&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x5207;&#x65AD;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x30E6;&#x30FC;&#x30B6;&#x306F;&#x624B;&#x52D5;&#x3067; <code>end()</code> &#x307E;&#x305F;&#x306F; <code>destroy()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIf `timeout` is 0, then the existing idle timeout is disabled.\n-->\n\n<p><code>timeout</code> &#x304C; 0 &#x306E;&#x5834;&#x5408;&#x3001;&#x30A2;&#x30A4;&#x30C9;&#x30EB;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x306F;&#x7121;&#x52B9;&#x306B;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe optional `callback` parameter will be added as a one time listener for the\n`'timeout'` event.\n-->\n\n<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>callback</code> &#x5F15;&#x6570;&#x306F;&#x3001;<code>timeouot</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x4E00;&#x56DE;&#x9650;&#x308A;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x8FFD;&#x52A0;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;timeout&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.setNoDelay([noDelay])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setNoDelay&quot;,
+              &quot;desc&quot;: &quot;<!--\nDisables the Nagle algorithm. By default TCP connections use the Nagle\nalgorithm, they buffer data before sending it off. Setting `true` for\n`noDelay` will immediately fire off data each time `socket.write()` is called.\n`noDelay` defaults to `true`.\n-->\n\n<p>Nagle &#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3092;&#x7121;&#x52B9;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F; TCP &#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F; Nagle &#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x524D;&#x306B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>noDelay</code> &#x306B; <code>true</code> &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306F; <code>socket.write()</code>\n&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5EA6;&#x306B;&#x5373;&#x5EA7;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>true</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;noDelay&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.setKeepAlive([enable], [initialDelay])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setKeepAlive&quot;,
+              &quot;desc&quot;: &quot;<!--\nEnable/disable keep-alive functionality, and optionally set the initial\ndelay before the first keepalive probe is sent on an idle socket.\n`enable` defaults to `false`.\n\nSet `initialDelay` (in milliseconds) to set the delay between the last\ndata packet received and the first keepalive probe. Setting 0 for\ninitialDelay will leave the value unchanged from the default\n(or previous) setting. Defaults to `0`.\n-->\n\n<p>&#x30AD;&#x30FC;&#x30D7;&#x30A2;&#x30E9;&#x30A4;&#x30D6;&#x6A5F;&#x80FD;&#x3092;&#x6709;&#x52B9;/&#x7121;&#x52B9;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x6700;&#x521D;&#x306E; keepalive probe &#x304C;&#x30A2;&#x30A4;&#x30C9;&#x30EB;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x307E;&#x3067;&#x306E;&#x521D;&#x671F;&#x9045;&#x5EF6;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>enable</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n<p><code>initialDelay</code> (&#x30DF;&#x30EA;&#x79D2;) &#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;\n&#x6700;&#x5F8C;&#x306B;&#x30C7;&#x30FC;&#x30BF;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x3066;&#x304B;&#x3089;&#x6700;&#x521D;&#x306E; keepalive probe &#x307E;&#x3067;&#x306E;&#x9045;&#x5EF6;&#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x521D;&#x671F;&#x9045;&#x5EF6;&#x306B; 0 &#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x8A2D;&#x5B9A;&#x304B;&#x3089;&#x5024;&#x3092;&#x5909;&#x66F4;&#x3055;&#x308C;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>0</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;enable&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;initialDelay&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.address()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;address&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns the bound address, the address family name and port of the\nsocket as reported by the operating system. Returns an object with\nthree properties, e.g.\n`{ port: 12346, family: 'IPv4', address: '127.0.0.1' }`\n-->\n\n<p>&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x304B;&#x3089;&#x5831;&#x544A;&#x3055;&#x308C;&#x305F;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x305F;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3068;\n&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x30D5;&#x30A1;&#x30DF;&#x30EA;&#x540D;&#x3001;&#x30DD;&#x30FC;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x8FD4;&#x3055;&#x308C;&#x308B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; 3 &#x3064;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;&#x4F8B;:\n<code>{ port: 12346, family: &apos;IPv4&apos;, address: &apos;127.0.0.1&apos; }</code>\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.unref()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;unref&quot;,
+              &quot;desc&quot;: &quot;<!--\nCalling `unref` on a socket will allow the program to exit if this is the only\nactive socket in the event system. If the socket is already `unref`d calling\n`unref` again will have no effect.\n-->\n\n<p>&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x304A;&#x3044;&#x3066;&#x3001;&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3060;&#x3051;&#x304C;&#x30A2;&#x30AF;&#x30C6;&#x30A3;&#x30D6;&#x306A;&#x5834;&#x5408;&#x306B;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;\n&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;<code>unref</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x65E2;&#x306B; <code>unref</code> &#x3055;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x518D;&#x3073; <code>unref</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3082;&#x5F71;&#x97FF;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.ref()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;ref&quot;,
+              &quot;desc&quot;: &quot;<!--\nOpposite of `unref`, calling `ref` on a previously `unref`d socket will *not*\nlet the program exit if it's the only socket left (the default behavior). If\nthe socket is `ref`d calling `ref` again will have no effect.\n-->\n\n<p><code>unref</code> &#x3068;&#x306F;&#x9006;&#x306B;&#x3001;&#x4EE5;&#x524D;&#x306B; <code>unref</code> &#x3055;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x552F;&#x4E00;&#x6B8B;&#x3063;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x306A;&#x3063;&#x3066;&#x3082;&#x3001;\n&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304C;&#x7D42;&#x4E86; (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x52D5;&#x4F5C;&#x3067;&#x3059;) &#x3057;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3001;<code>ref</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x65E2;&#x306B; <code>ref</code> &#x3055;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x518D;&#x3073; <code>ref</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3082;&#x5F71;&#x97FF;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            }
+          ],
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;socket.bufferSize&quot;,
+              &quot;name&quot;: &quot;bufferSize&quot;,
+              &quot;desc&quot;: &quot;<!--\n`net.Socket` has the property that `socket.write()` always works. This is to\nhelp users get up and running quickly. The computer cannot always keep up\nwith the amount of data that is written to a socket - the network connection\nsimply might be too slow. Node will internally queue up the data written to a\nsocket and send it out over the wire when it is possible. (Internally it is\npolling on the socket's file descriptor for being writable).\n\nThe consequence of this internal buffering is that memory may grow. This\nproperty shows the number of characters currently buffered to be written.\n(Number of characters is approximately equal to the number of bytes to be\nwritten, but the buffer may contain strings, and the strings are lazily\nencoded, so the exact number of bytes is not known.)\n\nUsers who experience large or growing `bufferSize` should attempt to\n\"throttle\" the data flows in their program with `pause()` and `resume()`.\n-->\n\n<p><code>net.Socket</code> &#x306B;&#x306F;&#x3001;<code>socket.write()</code> &#x3068;&#x5E38;&#x306B;&#x5354;&#x8ABF;&#x3059;&#x308B;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x30E6;&#x30FC;&#x30B6;&#x304C;&#x5B9F;&#x884C;&#x901F;&#x5EA6;&#x3092;&#x5411;&#x4E0A;&#x3055;&#x305B;&#x308B;&#x624B;&#x52A9;&#x3051;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x30B3;&#x30F3;&#x30D4;&#x30E5;&#x30FC;&#x30BF;&#x306F;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x91CF;&#x306B;&#x3064;&#x3044;&#x3066;&#x3044;&#x304F;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n- &#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x63A5;&#x7D9A;&#x306F;&#x3001;&#x5358;&#x7D14;&#x306B;&#x9045;&#x3059;&#x304E;&#x307E;&#x3059;&#x3002;\nNode &#x306F;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5185;&#x90E8;&#x306E;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3001;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x3063;&#x305F;&#x6642;&#x306B;&#x30EF;&#x30A4;&#x30E4;&#x4E0A;&#x306B;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059; (&#x5185;&#x90E8;&#x3067;&#x306F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x304C;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x308B;&#x306E;&#x3092;&#x30DD;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3057;&#x307E;&#x3059;)&#x3002;\n\n</p>\n<p>&#x5185;&#x90E8;&#x7684;&#x306A;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x306E;&#x7D50;&#x679C;&#x3001;&#x30E1;&#x30E2;&#x30EA;&#x6D88;&#x8CBB;&#x304C;&#x5897;&#x5927;&#x3059;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F;&#x3001;&#x73FE;&#x5728;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x305F;&#x3081;&#x306B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x6587;&#x5B57;&#x6570;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n(&#x6587;&#x5B57;&#x6570;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3068;&#x307B;&#x307C;&#x540C;&#x3058;&#x3067;&#x3059;&#x304C;&#x3001;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x6587;&#x5B57;&#x5217;&#x3092;&#x542B;&#x3093;&#x3067;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;&#x6587;&#x5B57;&#x5217;&#x306F;&#x9045;&#x5EF6;&#x7684;&#x306B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;&#x3001;&#x6B63;&#x78BA;&#x306A;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x306F;&#x5206;&#x304B;&#x3063;&#x3066;&#x3044;&#x307E;&#x305B;&#x3093;)\n\n</p>\n<p>&#x5927;&#x304D;&#x306A;&#x3001;&#x3042;&#x308B;&#x3044;&#x306F;&#x5897;&#x5927;&#x3059;&#x308B; <code>bufferSize</code> &#x3092;&#x4F53;&#x9A13;&#x3057;&#x305F;&#x30E6;&#x30FC;&#x30B6;&#x306F;&#x3001;&#x305D;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067; <code>pause()</code> &#x304A;&#x3088;&#x3073; <code>resume()</code> &#x3092;&#x4F7F;&#x3063;&#x3066;&#x30C7;&#x30FC;&#x30BF;&#x30D5;&#x30ED;&#x30FC;&#x3092;&#x300C;&#x6291;&#x3048;&#x3088;&#x3046;&#x300D;&#x3068;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.remoteAddress&quot;,
+              &quot;name&quot;: &quot;remoteAddress&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe string representation of the remote IP address. For example,\n`'74.125.127.100'` or `'2001:4860:a005::68'`.\n-->\n\n<p>&#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x306E; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;\n&#x4F8B;&#x3048;&#x3070;&#x3001;<code>&apos;74.125.127.100&apos;</code> &#x3042;&#x308B;&#x3044;&#x306F; <code>&apos;2001:4860:a005::68&apos;</code>&#x3002;\n\n</p>\n<!--\nThis member is only present in server-side connections.\n-->\n\n<p>&#x3053;&#x306E;&#x30E1;&#x30F3;&#x30D0;&#x306F;&#x30B5;&#x30FC;&#x30D0;&#x30B5;&#x30A4;&#x30C9;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x306E;&#x307F;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.remotePort&quot;,
+              &quot;name&quot;: &quot;remotePort&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe numeric representation of the remote port. For example,\n`80` or `21`.\n-->\n\n<p>&#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x30DD;&#x30FC;&#x30C8;&#x306E;&#x6570;&#x5024;&#x8868;&#x73FE;&#x3067;&#x3059;&#x3002;\n&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;<code>80</code> &#x3084; <code>21</code>&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.localAddress&quot;,
+              &quot;name&quot;: &quot;localAddress&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe string representation of the local IP address the remote client is\nconnecting on. For example, if you are listening on `'0.0.0.0'` and the\nclient connects on `'192.168.1.1'`, the value would be `'192.168.1.1'`.\n-->\n\n<p>&#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x63A5;&#x7D9A;&#x3057;&#x3066;&#x3044;&#x308B;&#x30ED;&#x30FC;&#x30AB;&#x30EB; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;\n&#x305F;&#x3068;&#x3048;&#x3070;&#x3001; <code>&apos;0.0.0.0&apos;</code> &#x3092;&#x30EA;&#x30C3;&#x30B9;&#x30F3;&#x3057;&#x3066;&#x3044;&#x3066;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C; <code>&apos;192.168.1.1&apos;</code>\n&#x306B;&#x63A5;&#x7D9A;&#x3057;&#x305F;&#x5834;&#x5408;&#x3001;&#x3053;&#x306E;&#x5024;&#x306F; <code>&apos;192.168.1.1&apos;</code> &#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.localPort&quot;,
+              &quot;name&quot;: &quot;localPort&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe numeric representation of the local port. For example,\n`80` or `21`.\n-->\n\n<p>&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x30DD;&#x30FC;&#x30C8;&#x306E;&#x6570;&#x5024;&#x8868;&#x73FE;&#x3067;&#x3059;&#x3002;\n&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;<code>80</code> &#x3084; <code>21</code>&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.bytesRead&quot;,
+              &quot;name&quot;: &quot;bytesRead&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe amount of received bytes.\n-->\n\n<p>&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x30D0;&#x30A4;&#x30C8;&#x306E;&#x5408;&#x8A08;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;socket.bytesWritten&quot;,
+              &quot;name&quot;: &quot;bytesWritten&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe amount of bytes sent.\n-->\n\n<p>&#x9001;&#x4FE1;&#x3057;&#x305F;&#x30D0;&#x30A4;&#x30C8;&#x306E;&#x5408;&#x8A08;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n`net.Socket` instances are [EventEmitter][] with the following events:\n-->\n\n<p><code>net.Socket</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x6301;&#x3064; [EventEmitter][] &#x3067;&#x3059;:\n\n</p>\n&quot;
+            }
+          ],
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;connect&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;connect&quot;,
+              &quot;desc&quot;: &quot;<!--\nEmitted when a socket connection is successfully established.\nSee `connect()`.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x78BA;&#x7ACB;&#x304C;&#x6210;&#x529F;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>connect()</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;data&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;data&quot;,
+              &quot;params&quot;: [],
+              &quot;desc&quot;: &quot;<!--\nEmitted when data is received.  The argument `data` will be a `Buffer` or\n`String`.  Encoding of data is set by `socket.setEncoding()`.\n(See the [Readable Stream][] section for more information.)\n\nNote that the __data will be lost__ if there is no listener when a `Socket`\nemits a `'data'` event.\n-->\n\n<p>&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>data</code> &#x5F15;&#x6570;&#x306F; <code>Buffer</code> &#x307E;&#x305F;&#x306F; <code>String</code> &#x3067;&#x3059;&#x3002;\n&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>socket.setEncoding()</code> &#x3067;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n(&#x3088;&#x308A;&#x8A73;&#x3057;&#x3044;&#x60C5;&#x5831;&#x306F; [Readable Stream][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;)&#x3002;\n\n</p>\n<p><code>Socket</code> &#x304C; <code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x305F;&#x6642;&#x306B;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;\n<strong>&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x5931;&#x308F;&#x308C;&#x308B;</strong>&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;end&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;end&quot;,
+              &quot;desc&quot;: &quot;<!--\nEmitted when the other end of the socket sends a FIN packet.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x76F8;&#x624B;&#x5074;&#x304C; FIN &#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8; (<code>allowHalfOpen == false</code>) &#x3067;&#x306F;&#x3001;\n&#x4FDD;&#x7559;&#x3055;&#x308C;&#x3066;&#x3044;&#x305F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x30AD;&#x30E5;&#x30FC;&#x304C;&#x51FA;&#x529B;&#x3055;&#x308C;&#x308B;&#x3068;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8B58;&#x5225;&#x5B50;&#x3092;&#x7834;&#x68C4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3057;&#x304B;&#x3057;&#x3001;<code>allowHalfOpen == true</code> &#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x3068;&#x3001;\n&#x30E6;&#x30FC;&#x30B6;&#x304C;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x66F8;&#x304D;&#x8FBC;&#x3081;&#x308B;&#x3088;&#x3046;&#x306B;&#x3057;&#x3066;&#x304A;&#x304F;&#x305F;&#x3081;&#x306B;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B; <code>end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x3044;&#x306E;&#x3067;&#x3001;\n&#x30E6;&#x30FC;&#x30B6;&#x304C; <code>end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;By default (`allowHalfOpen&quot;: &quot;= false`) the socket will destroy its file\ndescriptor  once it has written out its pending write queue.  However, by\nsetting `allowHalfOpen == true` the socket will not automatically `end()`\nits side allowing the user to write arbitrary amounts of data, with the\ncaveat that the user is required to `end()` their side now.&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;timeout&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;timeout&quot;,
+              &quot;desc&quot;: &quot;<!--\nEmitted if the socket times out from inactivity. This is only to notify that\nthe socket has been idle. The user must manually close the connection.\n\nSee also: `socket.setTimeout()`\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x3066;&#x975E;&#x30A2;&#x30AF;&#x30C6;&#x30A3;&#x30D6;&#x306B;&#x306A;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x30A2;&#x30A4;&#x30C9;&#x30EB;&#x306B;&#x306A;&#x3063;&#x305F;&#x3053;&#x3068;&#x3092;&#x901A;&#x77E5;&#x3059;&#x308B;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;\n&#x5229;&#x7528;&#x8005;&#x306F;&#x624B;&#x52D5;&#x3067;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p><code>socket.setTimeout()</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;drain&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;drain&quot;,
+              &quot;desc&quot;: &quot;<!--\nEmitted when the write buffer becomes empty. Can be used to throttle uploads.\n\nSee also: the return values of `socket.write()`\n-->\n\n<p>&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x7A7A;&#x306B;&#x306A;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x30A2;&#x30C3;&#x30D7;&#x30ED;&#x30FC;&#x30C9;&#x901F;&#x5EA6;&#x3092;&#x843D;&#x3068;&#x3059;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p><code>socket.write()</code> &#x306E;&#x623B;&#x308A;&#x5024;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;error&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;error&quot;,
+              &quot;params&quot;: [],
+              &quot;desc&quot;: &quot;<!--\nEmitted when an error occurs.  The `'close'` event will be called directly\nfollowing this event.\n-->\n\n<p>&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;<code>&apos;close&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x5F8C;&#x306B;&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;close&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<!--\n* `had_error` {Boolean} true if the socket had a transmission error\n-->\n\n<ul>\n<li><code>had_error</code> {Boolean} &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x8EE2;&#x9001;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F; true &#x3067;&#x3059;&#x3002;</li>\n</ul>\n<!--\nEmitted once the socket is fully closed. The argument `had_error` is a boolean\nwhich says if the socket was closed due to a transmission error.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5B8C;&#x5168;&#x306B;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x5F15;&#x6570; <code>had_error</code> &#x306F; boolean &#x3067;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x8EE2;&#x9001;&#x30A8;&#x30E9;&#x30FC;&#x3067;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x305F;&#x306E;&#x304B;&#x3069;&#x3046;&#x304B;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            }
+          ]
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;net&quot;
+    }
+  ]
+}

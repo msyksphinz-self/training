@@ -1,0 +1,1424 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Buffer Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/buffer.html">
+</head>
+<body class="alt apidoc" id="api-section-buffer">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="buffer.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#buffer_buffer">Buffer</a><ul>
+<li><a href="#buffer_class_buffer">Class: Buffer</a><ul>
+<li><a href="#buffer_new_buffer_size">new Buffer(size)</a></li>
+<li><a href="#buffer_new_buffer_array">new Buffer(array)</a></li>
+<li><a href="#buffer_new_buffer_str_encoding">new Buffer(str, [encoding])</a></li>
+<li><a href="#buffer_class_method_buffer_isencoding_encoding">Class Method: Buffer.isEncoding(encoding)</a></li>
+<li><a href="#buffer_buf_write_string_offset_length_encoding">buf.write(string, [offset], [length], [encoding])</a></li>
+<li><a href="#buffer_buf_tostring_encoding_start_end">buf.toString([encoding], [start], [end])</a></li>
+<li><a href="#buffer_buf_tojson">buf.toJSON()</a></li>
+<li><a href="#buffer_buf_index">buf[index]</a></li>
+<li><a href="#buffer_class_method_buffer_isbuffer_obj">Class Method: Buffer.isBuffer(obj)</a></li>
+<li><a href="#buffer_class_method_buffer_bytelength_string_encoding">Class Method: Buffer.byteLength(string, [encoding])</a></li>
+<li><a href="#buffer_class_method_buffer_concat_list_totallength">Class Method: Buffer.concat(list, [totalLength])</a></li>
+<li><a href="#buffer_buf_length">buf.length</a></li>
+<li><a href="#buffer_buf_copy_targetbuffer_targetstart_sourcestart_sourceend">buf.copy(targetBuffer, [targetStart], [sourceStart], [sourceEnd])</a></li>
+<li><a href="#buffer_buf_slice_start_end">buf.slice([start], [end])</a></li>
+<li><a href="#buffer_buf_readuint8_offset_noassert">buf.readUInt8(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readuint16le_offset_noassert">buf.readUInt16LE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readuint16be_offset_noassert">buf.readUInt16BE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readuint32le_offset_noassert">buf.readUInt32LE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readuint32be_offset_noassert">buf.readUInt32BE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readint8_offset_noassert">buf.readInt8(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readint16le_offset_noassert">buf.readInt16LE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readint16be_offset_noassert">buf.readInt16BE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readint32le_offset_noassert">buf.readInt32LE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readint32be_offset_noassert">buf.readInt32BE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readfloatle_offset_noassert">buf.readFloatLE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readfloatbe_offset_noassert">buf.readFloatBE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readdoublele_offset_noassert">buf.readDoubleLE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_readdoublebe_offset_noassert">buf.readDoubleBE(offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeuint8_value_offset_noassert">buf.writeUInt8(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeuint16le_value_offset_noassert">buf.writeUInt16LE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeuint16be_value_offset_noassert">buf.writeUInt16BE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeuint32le_value_offset_noassert">buf.writeUInt32LE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeuint32be_value_offset_noassert">buf.writeUInt32BE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeint8_value_offset_noassert">buf.writeInt8(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeint16le_value_offset_noassert">buf.writeInt16LE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeint16be_value_offset_noassert">buf.writeInt16BE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeint32le_value_offset_noassert">buf.writeInt32LE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writeint32be_value_offset_noassert">buf.writeInt32BE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writefloatle_value_offset_noassert">buf.writeFloatLE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writefloatbe_value_offset_noassert">buf.writeFloatBE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writedoublele_value_offset_noassert">buf.writeDoubleLE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_writedoublebe_value_offset_noassert">buf.writeDoubleBE(value, offset, [noAssert])</a></li>
+<li><a href="#buffer_buf_fill_value_offset_end">buf.fill(value, [offset], [end])</a></li>
+</ul>
+</li>
+<li><a href="#buffer_buffer_inspect_max_bytes">buffer.INSPECT_MAX_BYTES</a></li>
+<li><a href="#buffer_class_slowbuffer">Class: SlowBuffer</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Buffer<span><a class="mark" href="#buffer_buffer" id="buffer_buffer">#</a></span></h1>
+<pre class="api_stability_3">Stability: 3 - Stable</pre><!--
+Pure JavaScript is Unicode friendly but not nice to binary data.  When
+dealing with TCP streams or the file system, it's necessary to handle octet
+streams. Node has several strategies for manipulating, creating, and
+consuming octet streams.
+-->
+
+<p>&#x7D14;&#x7C8B;&#x306A; JavaScript &#x306F; Unicode &#x3068;&#x76F8;&#x6027;&#x304C;&#x3044;&#x3044;&#x3082;&#x306E;&#x306E;&#x3001;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x6271;&#x3044;&#x306F;&#x3046;&#x307E;&#x304F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+TCP &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3084;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3092;&#x6271;&#x3046;&#x5834;&#x5408;&#x306F;&#x3001;&#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x51E6;&#x7406;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+Node &#x306B;&#x306F;&#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x64CD;&#x4F5C;&#x3001;&#x4F5C;&#x6210;&#x3001;&#x6D88;&#x8CBB;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x6226;&#x7565;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Raw data is stored in instances of the `Buffer` class. A `Buffer` is similar
+to an array of integers but corresponds to a raw memory allocation outside
+the V8 heap. A `Buffer` cannot be resized.
+-->
+
+<p>&#x751F;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x306F; <code>Buffer</code> &#x30AF;&#x30E9;&#x30B9;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306B;&#x4FDD;&#x5B58;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>Buffer</code> &#x306F;&#x6574;&#x6570;&#x306E;&#x914D;&#x5217;&#x3068;&#x4F3C;&#x3066;&#x3044;&#x307E;&#x3059;&#x304C;&#x3001;
+V8 &#x30D2;&#x30FC;&#x30D7;&#x306E;&#x5916;&#x90E8;&#x306B;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x305F;&#x751F;&#x306E;&#x30E1;&#x30E2;&#x30EA;&#x306B;&#x5BFE;&#x5FDC;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>Buffer</code> &#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x5909;&#x66F4;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+The `Buffer` class is a global, making it very rare that one would need
+to ever `require('buffer')`.
+-->
+
+<p><code>Buffer</code> &#x30AF;&#x30E9;&#x30B9;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x306A;&#x306E;&#x3067;&#x3001;<code>require(&apos;buffer&apos;)</code> &#x304C;&#x5FC5;&#x8981;&#x306B;&#x306A;&#x308B;&#x3053;&#x3068;&#x306F;
+&#x307B;&#x3068;&#x3093;&#x3069;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Converting between Buffers and JavaScript string objects requires an explicit
+encoding method.  Here are the different string encodings.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092; JavaScript &#x6587;&#x5B57;&#x5217;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3068;&#x306E;&#x9593;&#x3067;&#x5909;&#x63DB;&#x3059;&#x308B;&#x306B;&#x306F;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x65B9;&#x5F0F;&#x3092;&#x660E;&#x793A;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x65B9;&#x5F0F;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+* `'ascii'` - for 7 bit ASCII data only.  This encoding method is very fast, and
+  will strip the high bit if set.
+
+  Note that when converting from string to buffer, this encoding converts a null
+  character (`'\0'` or `'\u0000'`) into `0x20` (character code of a space). If
+  you want to convert a null character into `0x00`, you should use `'utf8'`.
+
+* `'utf8'` - Multibyte encoded Unicode characters. Many web pages and other
+  document formats use UTF-8.
+
+* `'utf16le'` - 2 or 4 bytes, little endian encoded Unicode characters.
+  Surrogate pairs (U+10000 to U+10FFFF) are supported.
+
+* `'ucs2'` - Alias of `'utf16le'`.
+
+* `'base64'` - Base64 string encoding.
+
+* `'binary'` - A way of encoding raw binary data into strings by using only
+  the first 8 bits of each character. This encoding method is deprecated and
+  should be avoided in favor of `Buffer` objects where possible. This encoding
+  will be removed in future versions of Node.
+
+* `'hex'` - Encode each byte as two hexadecimal characters.
+-->
+
+<ul>
+<li><p><code>&apos;ascii&apos;</code> - 7bit &#x306E; ASCII &#x30C7;&#x30FC;&#x30BF;&#x5C02;&#x7528;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x65B9;&#x5F0F;&#x306F;&#x3068;&#x3066;&#x3082;&#x9AD8;&#x901F;&#x3067;&#x3001;
+&#x3082;&#x3057;&#x4E0A;&#x4F4D;&#x30D3;&#x30C3;&#x30C8;&#x304C;&#x30BB;&#x30C3;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x308C;&#x3070;&#x53D6;&#x308A;&#x9664;&#x304B;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x6587;&#x5B57;&#x5217;&#x304B;&#x3089;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3078;&#x306E;&#x5909;&#x63DB;&#x6642;&#x3001;&#x3053;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; null &#x6587;&#x5B57;
+(<code>&apos;\0&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;\u0000&apos;</code>) &#x3092; <code>0x20</code> (&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x306E;&#x6587;&#x5B57;&#x30B3;&#x30FC;&#x30C9;)
+&#x306B;&#x5909;&#x63DB;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+null &#x6587;&#x5B57;&#x3092; 0x00 &#x306B;&#x5909;&#x63DB;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F; <code>&apos;utf8&apos;</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</p>
+</li>
+<li><p><code>&apos;utf8&apos;</code> - &#x53EF;&#x5909;&#x9577;&#x306E;&#x30D0;&#x30A4;&#x30C8;&#x5358;&#x4F4D;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;Unicode&#x6587;&#x5B57;&#x3002;
+&#x591A;&#x304F;&#x306E;Web&#x30DA;&#x30FC;&#x30B8;&#x3084;&#x305D;&#x306E;&#x4ED6;&#x306E;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;&#x306F; UTF-8 &#x3092;&#x4F7F;&#x3063;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;</p>
+</li>
+<li><p><code>&apos;utf16le&apos;</code> - 2 &#x307E;&#x305F;&#x306F; 4 &#x30D0;&#x30A4;&#x30C8;&#x306E;&#x30EA;&#x30C8;&#x30EB;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;
+Unicode &#x6587;&#x5B57;&#x3002;
+&#x30B5;&#x30ED;&#x30B2;&#x30FC;&#x30C8;&#x30DA;&#x30A2; (U+10000&#xFF5E;U+10FFFF) &#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</p>
+</li>
+<li><p><code>&apos;ucs2&apos;</code> - <code>&apos;utf16le&apos;</code> &#x306E;&#x5225;&#x540D;&#x3067;&#x3059;&#x3002;</p>
+</li>
+<li><p><code>&apos;base64&apos;</code> - Base64 &#x6587;&#x5B57;&#x5217;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;.</p>
+</li>
+<li><p><code>&apos;binary&apos;</code> - &#x751F;&#x306E;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5404;&#x6587;&#x5B57;&#x306E;&#x6700;&#x521D;&#x306E; 8bit &#x3068;&#x3057;&#x3066;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x65B9;&#x5F0F;&#x3002;
+&#x3053;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x65B9;&#x5F0F;&#x306F;&#x3082;&#x306F;&#x3084;&#x4FA1;&#x5024;&#x304C;&#x306A;&#x304F;&#x3001;<code>Buffer</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x306F;&#x53EF;&#x80FD;&#x306A;&#x9650;&#x308A;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F;&#x3001;Node &#x306E;&#x5C06;&#x6765;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x524A;&#x9664;&#x3055;&#x308C;&#x308B;&#x4E88;&#x5B9A;&#x3067;&#x3059;&#x3002;</p>
+</li>
+<li><p><code>&apos;hex&apos;</code> - &#x5404;&#x30D0;&#x30A4;&#x30C8;&#x3092; 2 &#x6841;&#x306E;16&#x9032;&#x6570;&#x6587;&#x5B57;&#x5217;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3057;&#x307E;&#x3059;&#x3002;</p>
+</li>
+</ul>
+<!--
+A `Buffer` object can also be used with typed arrays.  The buffer object is
+cloned to an `ArrayBuffer` that is used as the backing store for the typed
+array.  The memory of the buffer and the `ArrayBuffer` is not shared.
+-->
+
+<p><code>Buffer</code> &#x306F; Typed Array &#x3068;&#x3057;&#x3066;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3001;Typed Array &#x306E;&#x30D0;&#x30C3;&#x30AD;&#x30F3;&#x30B0;&#x30B9;&#x30C8;&#x30A2;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x308F;&#x308C;&#x308B;
+<code>ArrayBuffer</code> &#x304B;&#x3089;&#x8907;&#x88FD;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3068; <code>Typed Array</code> &#x306F;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x5171;&#x6709;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+NOTE: Node.js v0.8 simply retained a reference to the buffer in `array.buffer`
+instead of cloning it.
+-->
+
+<p>Node.js &#x306E; v0.8 &#x3067;&#x306F;&#x3001;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x8907;&#x88FD;&#x3059;&#x308B;&#x306E;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5358;&#x7D14;&#x306B; <code>array.buffer</code>
+&#x306B;&#x53C2;&#x7167;&#x3092;&#x7DAD;&#x6301;&#x3057;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x3002;
+
+</p>
+<!--
+While more efficient, it introduces subtle incompatibilities with the typed
+arrays specification.  `ArrayBuffer#slice()` makes a copy of the slice while
+`Buffer#slice()` creates a view.
+-->
+
+<p>&#x305D;&#x308C;&#x306F;&#x52B9;&#x7387;&#x7684;&#x3067;&#x306F;&#x3042;&#x3063;&#x305F;&#x3082;&#x306E;&#x306E;&#x3001;Typed Array &#x3068;&#x306E;&#x5FAE;&#x5999;&#x306A;&#x975E;&#x4E92;&#x63DB;&#x6027;&#x3092;&#x3082;&#x305F;&#x3089;&#x3057;&#x307E;&#x3057;&#x305F;&#x3002;
+<code>ArrayBuffer#slice()</code> &#x306F;&#x30B9;&#x30E9;&#x30A4;&#x30B9;&#x306E;&#x30B3;&#x30D4;&#x30FC;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x4E00;&#x65B9;&#x3001;
+<code>Buffer#slice()</code> &#x306F;&#x30D3;&#x30E5;&#x30FC;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Class: Buffer<span><a class="mark" href="#buffer_class_buffer" id="buffer_class_buffer">#</a></span></h2>
+<!--
+The Buffer class is a global type for dealing with binary data directly.
+It can be constructed in a variety of ways.
+-->
+
+<p>Buffer &#x30AF;&#x30E9;&#x30B9;&#x306F;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x76F4;&#x63A5;&#x6271;&#x3046;&#x305F;&#x3081;&#x306E;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x306A;&#x578B;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x69D8;&#x3005;&#x306A;&#x65B9;&#x6CD5;&#x3067;&#x69CB;&#x7BC9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>new Buffer(size)<span><a class="mark" href="#buffer_new_buffer_size" id="buffer_new_buffer_size">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>size</code> Number</li>
+</ul></div>
+<!--
+Allocates a new buffer of `size` octets.
+-->
+
+<p><code>size</code> &#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x306E;&#x65B0;&#x3057;&#x3044;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x5272;&#x308A;&#x5F53;&#x3066;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>new Buffer(array)<span><a class="mark" href="#buffer_new_buffer_array" id="buffer_new_buffer_array">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>array</code> Array</li>
+</ul></div>
+<!--
+Allocates a new buffer using an `array` of octets.
+-->
+
+<p>&#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x306E; <code>array</code> &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x65B0;&#x3057;&#x3044;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x5272;&#x308A;&#x5F53;&#x3066;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>new Buffer(str, [encoding])<span><a class="mark" href="#buffer_new_buffer_str_encoding" id="buffer_new_buffer_str_encoding">#</a></span></h3>
+<!--
+* `str` String - string to encode.
+* `encoding` String - encoding to use, Optional.
+-->
+
+<ul>
+<li><code>str</code> String - &#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x308B;&#x6587;&#x5B57;&#x5217;</li>
+<li><code>encoding</code> String - &#x4F7F;&#x7528;&#x3059;&#x308B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3001;Optional&#x3001;Default: &apos;utf8&apos;</li>
+</ul>
+<!--
+Allocates a new buffer containing the given `str`.
+`encoding` defaults to `'utf8'`.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; <code>str</code> &#x3092;&#x5185;&#x5BB9;&#x3068;&#x3059;&#x308B;&#x65B0;&#x3057;&#x3044;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x5272;&#x308A;&#x5F53;&#x3066;&#x307E;&#x3059;&#x3002;
+<code>encoding</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;utf8&apos;</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>Class Method: Buffer.isEncoding(encoding)<span><a class="mark" href="#buffer_class_method_buffer_isencoding_encoding" id="buffer_class_method_buffer_isencoding_encoding">#</a></span></h3>
+<!--
+* `encoding` {String} The encoding string to test
+-->
+
+<ul>
+<li><code>encoding</code> {String} &#x691C;&#x8A3C;&#x3059;&#x308B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x540D;</li>
+</ul>
+<!--
+Returns true if the `encoding` is a valid encoding argument, or false
+otherwise.
+-->
+
+<p><code>encoding</code> &#x304C;&#x6B63;&#x3057;&#x3051;&#x308C;&#x3070; <code>true</code>&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306F; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>buf.write(string, [offset], [length], [encoding])<span><a class="mark" href="#buffer_buf_write_string_offset_length_encoding" id="buffer_buf_write_string_offset_length_encoding">#</a></span></h3>
+<!--
+* `string` String - data to be written to buffer
+* `offset` Number, Optional, Default: 0
+* `length` Number, Optional, Default: `buffer.length - offset`
+* `encoding` String, Optional, Default: 'utf8'
+-->
+
+<ul>
+<li><code>string</code> String - &#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;</li>
+<li><code>offset</code> Number, Optional, Default: 0</li>
+<li><code>length</code> Number, Optional</li>
+<li><code>encoding</code> String, Optional, Default: &apos;utf8&apos;</li>
+</ul>
+<!--
+Writes `string` to the buffer at `offset` using the given encoding.
+`offset` defaults to `0`, `encoding` defaults to `'utf8'`. `length` is
+the number of bytes to write. Returns number of octets written. If `buffer` did
+not contain enough space to fit the entire string, it will write a partial
+amount of the string. `length` defaults to `buffer.length - offset`.
+The method will not write partial characters.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3001;<code>string</code> &#x3092;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E; <code>offset</code> &#x304B;&#x3089;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>offset</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>0</code>&#x3001;<code>encoding</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;utf8&apos;</code> &#x3067;&#x3059;&#x3002;
+<code>length</code> &#x306F;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3067;&#x3059;&#x3002;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x6570;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057; <code>buffer</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x5168;&#x4F53;&#x3092;&#x633F;&#x5165;&#x3059;&#x308B;&#x306E;&#x306B;&#x5341;&#x5206;&#x306A;&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x3092;&#x542B;&#x3093;&#x3067;&#x3044;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x6587;&#x5B57;&#x5217;&#x306E;&#x4E00;&#x90E8;&#x3060;&#x3051;&#x3092;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>length</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>buffer.length - offset</code> &#x3067;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x6587;&#x5B57;&#x306E;&#x4E00;&#x90E8;&#x3060;&#x3051;&#x3092;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Example: write a utf8 string into a buffer, then print it
+-->
+
+<p>&#x4F8B;: utf8 &#x306E;&#x6587;&#x5B57;&#x5217;&#x3092;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x3001;&#x305D;&#x308C;&#x3092;&#x30D7;&#x30EA;&#x30F3;&#x30C8;&#x3057;&#x307E;&#x3059;
+
+</p>
+<pre><code>buf = new Buffer(256);
+len = buf.write(&apos;\u00bd + \u00bc = \u00be&apos;, 0);
+console.log(len + &quot; bytes: &quot; + buf.toString(&apos;utf8&apos;, 0, len));</code></pre>
+<!--
+The number of characters written (which may be different than the number of
+bytes written) is set in `Buffer._charsWritten` and will be overwritten the
+next time `buf.write()` is called.
+-->
+
+<p>&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x6587;&#x5B57;&#x6570; (&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3068;&#x306F;&#x7570;&#x306A;&#x308B;&#x5834;&#x5408;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;) &#x306F;&#x3001;
+&#x6B21;&#x306B; <code>buf.write()</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x4E0A;&#x66F8;&#x304D;&#x3055;&#x308C;&#x308B;&#x307E;&#x3067;
+<code>Buffer._charsWritten</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>buf.toString([encoding], [start], [end])<span><a class="mark" href="#buffer_buf_tostring_encoding_start_end" id="buffer_buf_tostring_encoding_start_end">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>encoding</code> String, Optional, Default: &apos;utf8&apos;</li>
+<li><code>start</code> Number, Optional, Default: 0</li>
+<li><code>end</code> Number, Optional, Default: <code>buffer.length</code></li>
+</ul></div>
+<!--
+Decodes and returns a string from buffer data encoded with `encoding`
+(defaults to `'utf8'`) beginning at `start` (defaults to `0`) and ending at
+`end` (defaults to `buffer.length`).
+-->
+
+<p><code>encoding</code> (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;utf8&apos;</code>) &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30C7;&#x30FC;&#x30BF;&#x306E;
+<code>start</code> (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>0</code>) &#x304B;&#x3089; <code>end</code> (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>buffer.length</code>)
+&#x307E;&#x3067;&#x3092;&#x30C7;&#x30B3;&#x30FC;&#x30C9;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+See `buffer.write()` example, above.
+-->
+
+<p>&#x4E0A;&#x306E; <code>buffer.write()</code> &#x306E;&#x4F8B;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+
+</p>
+<h3>buf.toJSON()<span><a class="mark" href="#buffer_buf_tojson" id="buffer_buf_tojson">#</a></span></h3>
+<!--
+Returns a JSON-representation of the Buffer instance, which is identical to the
+output for JSON Arrays. `JSON.stringify` implicitly calls this function when
+stringifying a Buffer instance.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306E; JSON &#x8868;&#x73FE;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x914D;&#x5217;&#x306E; JSON &#x51FA;&#x529B;&#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+<code>JSON.stringify()</code> &#x306F; Buffer &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;&#x6587;&#x5B57;&#x5217;&#x5316;&#x3059;&#x308B;&#x969B;&#x306B;&#x3001;
+&#x3053;&#x306E;&#x95A2;&#x6570;&#x3092;&#x6697;&#x9ED9;&#x7684;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(&apos;test&apos;);
+var json = JSON.stringify(buf);
+
+console.log(json);
+// &apos;[116,101,115,116]&apos;
+
+var copy = new Buffer(JSON.parse(json));
+
+console.log(copy);
+// &lt;Buffer 74 65 73 74&gt;</code></pre>
+<h3>buf[index]<span><a class="mark" href="#buffer_buf_index" id="buffer_buf_index">#</a></span></h3>
+<!--type=property-->
+
+<!--name=[index]-->
+
+<!--
+Get and set the octet at `index`. The values refer to individual bytes,
+so the legal range is between `0x00` and `0xFF` hex or `0` and `255`.
+-->
+
+<p><code>index</code> &#x306E;&#x4F4D;&#x7F6E;&#x306E;&#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x3092;&#x53D6;&#x5F97;&#x304A;&#x3088;&#x3073;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x5024;&#x306F;&#x500B;&#x3005;&#x306E;&#x30D0;&#x30A4;&#x30C8;&#x3092;&#x53C2;&#x7167;&#x3059;&#x308B;&#x306E;&#x3067;&#x3001;&#x59A5;&#x5F53;&#x306A;&#x7BC4;&#x56F2;&#x306F; 16 &#x9032;&#x306E; <code>0x00</code> &#x304B;&#x3089; <code>0xFF</code>
+&#x307E;&#x305F;&#x306F; <code>0</code> &#x304B;&#x3089;<code>255</code>&#x307E;&#x3067;&#x306E;&#x9593;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example: copy an ASCII string into a buffer, one byte at a time:
+-->
+
+<p>&#x4F8B;: ASCII &#x6587;&#x5B57;&#x5217;&#x3092; 1 &#x30D0;&#x30A4;&#x30C8;&#x305A;&#x3064;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x30B3;&#x30D4;&#x30FC;&#x3057;&#x307E;&#x3059;
+
+</p>
+<pre><code>str = &quot;node.js&quot;;
+buf = new Buffer(str.length);
+
+for (var i = 0; i &lt; str.length ; i++) {
+  buf[i] = str.charCodeAt(i);
+}
+
+console.log(buf);
+
+// node.js</code></pre>
+<h3>Class Method: Buffer.isBuffer(obj)<span><a class="mark" href="#buffer_class_method_buffer_isbuffer_obj" id="buffer_class_method_buffer_isbuffer_obj">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>obj</code> Object</li>
+<li>Return: Boolean</li>
+</ul></div>
+<!--
+Tests if `obj` is a `Buffer`.
+-->
+
+<p><code>obj</code> &#x304C; <code>Buffer</code> &#x304B;&#x3069;&#x3046;&#x304B;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Class Method: Buffer.byteLength(string, [encoding])<span><a class="mark" href="#buffer_class_method_buffer_bytelength_string_encoding" id="buffer_class_method_buffer_bytelength_string_encoding">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>string</code> String</li>
+<li><code>encoding</code> String, Optional, Default: &apos;utf8&apos;</li>
+<li>Return: Number</li>
+</ul></div>
+<!--
+Gives the actual byte length of a string. `encoding` defaults to `'utf8'`.
+This is not the same as `String.prototype.length` since that returns the
+number of *characters* in a string.
+-->
+
+<p>&#x6587;&#x5B57;&#x5217;&#x306E;&#x5B9F;&#x969B;&#x306E;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;<code>encoding</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;utf8&apos;</code> &#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x6587;&#x5B57;&#x5217;&#x306E;<em>&#x6587;&#x5B57;</em>&#x6570;&#x3092;&#x8FD4;&#x3059; <code>String.prototype.length</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>str = &apos;\u00bd + \u00bc = \u00be&apos;;
+
+console.log(str + &quot;: &quot; + str.length + &quot; characters, &quot; +
+  Buffer.byteLength(str, &apos;utf8&apos;) + &quot; bytes&quot;);
+
+// &#xBD; + &#xBC; = &#xBE;: 9 characters, 12 bytes</code></pre>
+<h3>Class Method: Buffer.concat(list, [totalLength])<span><a class="mark" href="#buffer_class_method_buffer_concat_list_totallength" id="buffer_class_method_buffer_concat_list_totallength">#</a></span></h3>
+<!--
+* `list` {Array} List of Buffer objects to concat
+* `totalLength` {Number} Total length of the buffers when concatenated
+-->
+
+<ul>
+<li><code>list</code> {Array} &#x7D50;&#x5408;&#x3059;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x30EA;&#x30B9;&#x30C8;</li>
+<li><code>totalLength</code> {Number} &#x7D50;&#x5408;&#x3055;&#x308C;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x5168;&#x4F53;&#x306E;&#x9577;&#x3055;</li>
+</ul>
+<!--
+Returns a buffer which is the result of concatenating all the buffers in
+the list together.
+-->
+
+<p>&#x30EA;&#x30B9;&#x30C8;&#x306B;&#x542B;&#x307E;&#x308C;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x5168;&#x4F53;&#x3092;&#x7D50;&#x5408;&#x3057;&#x305F;&#x7D50;&#x679C;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If the list has no items, or if the totalLength is 0, then it returns a
+zero-length buffer.
+-->
+
+<p>&#x30EA;&#x30B9;&#x30C8;&#x304C;&#x7A7A;&#x306E;&#x5834;&#x5408;&#x3001;&#x307E;&#x305F;&#x306F; <code>totalLength</code> &#x304C; 0 &#x306E;&#x5834;&#x5408;&#x306F;&#x9577;&#x3055;&#x304C;
+0 &#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If the list has exactly one item, then the first item of the list is
+returned.
+-->
+
+<p>&#x30EA;&#x30B9;&#x30C8;&#x304C;&#x4E00;&#x3064;&#x3060;&#x3051;&#x306E;&#x8981;&#x7D20;&#x3092;&#x6301;&#x3064;&#x5834;&#x5408;&#x3001;&#x30EA;&#x30B9;&#x30C8;&#x306E;&#x5148;&#x982D;&#x8981;&#x7D20;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If the list has more than one item, then a new Buffer is created.
+-->
+
+<p>&#x30EA;&#x30B9;&#x30C8;&#x304C;&#x8907;&#x6570;&#x306E;&#x8981;&#x7D20;&#x3092;&#x6301;&#x3064;&#x5834;&#x5408;&#x3001;&#x65B0;&#x3057;&#x3044;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If totalLength is not provided, it is read from the buffers in the list.
+However, this adds an additional loop to the function, so it is faster
+to provide the length explicitly.
+-->
+
+<p><code>totalLength</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x30EA;&#x30B9;&#x30C8;&#x4E2D;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304B;&#x3089;&#x6C42;&#x3081;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x3001;&#x3053;&#x308C;&#x306F;&#x4F59;&#x8A08;&#x306A;&#x30EB;&#x30FC;&#x30D7;&#x304C;&#x5FC5;&#x8981;&#x306B;&#x306A;&#x308B;&#x305F;&#x3081;&#x3001;&#x660E;&#x793A;&#x7684;&#x306B;&#x9577;&#x3055;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x65B9;&#x304C;
+&#x9AD8;&#x901F;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>buf.length<span><a class="mark" href="#buffer_buf_length" id="buffer_buf_length">#</a></span></h3>
+<div class="signature"><ul>
+<li>Number</li>
+</ul></div>
+<!--
+The size of the buffer in bytes.  Note that this is not necessarily the size
+of the contents. `length` refers to the amount of memory allocated for the
+buffer object.  It does not change when the contents of the buffer are changed.
+-->
+
+<p>&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x306B;&#x3088;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x5B9F;&#x969B;&#x306E;&#x5185;&#x5BB9;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+<code>length</code> &#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x305F;&#x30E1;&#x30E2;&#x30EA;&#x5168;&#x4F53;&#x3092;&#x53C2;&#x7167;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>buf = new Buffer(1234);
+
+console.log(buf.length);
+buf.write(&quot;some string&quot;, 0, &quot;ascii&quot;);
+console.log(buf.length);
+
+// 1234
+// 1234</code></pre>
+<h3>buf.copy(targetBuffer, [targetStart], [sourceStart], [sourceEnd])<span><a class="mark" href="#buffer_buf_copy_targetbuffer_targetstart_sourcestart_sourceend" id="buffer_buf_copy_targetbuffer_targetstart_sourcestart_sourceend">#</a></span></h3>
+<!--
+* `targetBuffer` Buffer object - Buffer to copy into
+* `targetStart` Number, Optional, Default: 0
+* `sourceStart` Number, Optional, Default: 0
+* `sourceEnd` Number, Optional, Default: `buffer.length`
+-->
+
+<ul>
+<li><code>targetBuffer</code> Buffer object - &#x30B3;&#x30D4;&#x30FC;&#x5148;&#x306E; Buffer</li>
+<li><code>targetStart</code> Number, Optional, Default: 0</li>
+<li><code>sourceStart</code> Number, Optional, Default: 0</li>
+<li><code>sourceEnd</code> Number, Optional, Default: <code>buffer.length</code></li>
+</ul>
+<!--
+Does copy between buffers. The source and target regions can be overlapped.
+`targetStart` and `sourceStart` default to `0`.
+`sourceEnd` defaults to `buffer.length`.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x9593;&#x3067;&#x30B3;&#x30D4;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30BD;&#x30FC;&#x30B9;&#x3068;&#x30BF;&#x30FC;&#x30B2;&#x30C3;&#x30C8;&#x306E;&#x9818;&#x57DF;&#x306F;&#x91CD;&#x306A;&#x3063;&#x3066;&#x3044;&#x3066;&#x3082;&#x69CB;&#x3044;&#x307E;&#x305B;&#x3093;&#x3002;
+<code>targetStart</code> &#x3068; <code>sourceStart</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>0</code> &#x3067;&#x3059;&#x3002;
+<code>sourceEnd</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>buffer.length</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+All values passed that are `undefined`/`NaN` or are out of bounds are set equal
+to their respective defaults.
+-->
+
+<p><code>undefined</code>/<code>NaN</code> &#x307E;&#x305F;&#x306F;&#x305D;&#x306E;&#x4ED6;&#x306E;&#x4E0D;&#x6B63;&#x306A;&#x5024;&#x304C;&#x6E21;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;
+&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example: build two Buffers, then copy `buf1` from byte 16 through byte 19
+into `buf2`, starting at the 8th byte in `buf2`.
+-->
+
+<p>&#x4F8B;: &#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;2&#x500B;&#x4F5C;&#x6210;&#x3057;&#x3001;<code>buf1</code> &#x306E; 16 &#x30D0;&#x30A4;&#x30C8;&#x76EE;&#x304B;&#x3089; 19 &#x30D0;&#x30A4;&#x30C8;&#x76EE;&#x3092;&#x3001;
+<code>buf2</code> &#x306E; 8 &#x30D0;&#x30A4;&#x30C8;&#x76EE;&#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x4F4D;&#x7F6E;&#x3078;&#x30B3;&#x30D4;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>buf1 = new Buffer(26);
+buf2 = new Buffer(26);
+
+for (var i = 0 ; i &lt; 26 ; i++) {
+  buf1[i] = i + 97; // 97 is ASCII a
+  buf2[i] = 33; // ASCII !
+}
+
+buf1.copy(buf2, 8, 16, 20);
+console.log(buf2.toString(&apos;ascii&apos;, 0, 25));
+
+// !!!!!!!!qrst!!!!!!!!!!!!!</code></pre>
+<h3>buf.slice([start], [end])<span><a class="mark" href="#buffer_buf_slice_start_end" id="buffer_buf_slice_start_end">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>start</code> Number, Optional, Default: 0</li>
+<li><code>end</code> Number, Optional, Default: <code>buffer.length</code></li>
+</ul></div>
+<!--
+Returns a new buffer which references the same memory as the old, but offset
+and cropped by the `start` (defaults to `0`) and `end` (defaults to
+`buffer.length`) indexes.  Negative indexes start from the end of the buffer.
+-->
+
+<p>&#x5143;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3068;&#x540C;&#x3058;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x53C2;&#x7167;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;<code>start</code> (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>0</code>) &#x3068;
+<code>end</code> (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>buffer.length</code>) &#x3067;&#x793A;&#x3055;&#x308C;&#x308B;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;&#x3068;&#x9577;&#x3055;&#x3092;&#x6301;&#x3064;
+&#x65B0;&#x3057;&#x3044;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x8CA0;&#x306E;&#x30A4;&#x30F3;&#x30C7;&#x30C3;&#x30AF;&#x30B9;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x672B;&#x5C3E;&#x304B;&#x3089;&#x958B;&#x59CB;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+**Modifying the new buffer slice will modify memory in the original buffer!**
+-->
+
+<p><strong>&#x65B0;&#x3057;&#x3044;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30B9;&#x30E9;&#x30A4;&#x30B9;&#x306E;&#x5909;&#x66F4;&#x306F;&#x3001;&#x30AA;&#x30EA;&#x30B8;&#x30CA;&#x30EB;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x5909;&#x66F4;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#xFF01;</strong>
+
+</p>
+<!--
+Example: build a Buffer with the ASCII alphabet, take a slice, then modify one
+byte from the original Buffer.
+-->
+
+<p>&#x4F8B;: ASCII &#x306E;&#x30A2;&#x30EB;&#x30D5;&#x30A1;&#x30D9;&#x30C3;&#x30C8;&#x3067;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x69CB;&#x7BC9;&#x3057;&#x3066;&#x30B9;&#x30E9;&#x30A4;&#x30B9;&#x3057;&#x3001;&#x5143;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3067; 1 &#x30D0;&#x30A4;&#x30C8;&#x3092;&#x5909;&#x66F4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var buf1 = new Buffer(26);
+
+for (var i = 0 ; i &lt; 26 ; i++) {
+  buf1[i] = i + 97; // 97 is ASCII a
+}
+
+var buf2 = buf1.slice(0, 3);
+console.log(buf2.toString(&apos;ascii&apos;, 0, buf2.length));
+buf1[0] = 33;
+console.log(buf2.toString(&apos;ascii&apos;, 0, buf2.length));
+
+// abc
+// !bc</code></pre>
+<h3>buf.readUInt8(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readuint8_offset_noassert" id="buffer_buf_readuint8_offset_noassert">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+<li>Return: Number</li>
+</ul></div>
+<!--
+Reads an unsigned 8 bit integer from the buffer at the specified offset.
+
+Set `noAssert` to true to skip validation of `offset`. This means that `offset`
+may be beyond the end of the buffer. Defaults to `false`.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x3092;&#x7B26;&#x53F7;&#x7121;&#x3057; 8bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>offset</code> &#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(4);
+
+buf[0] = 0x3;
+buf[1] = 0x4;
+buf[2] = 0x23;
+buf[3] = 0x42;
+
+for (ii = 0; ii &lt; buf.length; ii++) {
+  console.log(buf.readUInt8(ii));
+}
+
+// 0x3
+// 0x4
+// 0x23
+// 0x42</code></pre>
+<h3>buf.readUInt16LE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readuint16le_offset_noassert" id="buffer_buf_readuint16le_offset_noassert">#</a></span></h3>
+<h3>buf.readUInt16BE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readuint16be_offset_noassert" id="buffer_buf_readuint16be_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+<li>Return: Number</li>
+</ul>
+<!--
+Reads an unsigned 16 bit integer from the buffer at the specified offset with
+specified endian format.
+
+Set `noAssert` to true to skip validation of `offset`. This means that `offset`
+may be beyond the end of the buffer. Defaults to `false`.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x3092;&#x7B26;&#x53F7;&#x7121;&#x3057; 16bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>offset</code> &#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(4);
+
+buf[0] = 0x3;
+buf[1] = 0x4;
+buf[2] = 0x23;
+buf[3] = 0x42;
+
+console.log(buf.readUInt16BE(0));
+console.log(buf.readUInt16LE(0));
+console.log(buf.readUInt16BE(1));
+console.log(buf.readUInt16LE(1));
+console.log(buf.readUInt16BE(2));
+console.log(buf.readUInt16LE(2));
+
+// 0x0304
+// 0x0403
+// 0x0423
+// 0x2304
+// 0x2342
+// 0x4223</code></pre>
+<h3>buf.readUInt32LE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readuint32le_offset_noassert" id="buffer_buf_readuint32le_offset_noassert">#</a></span></h3>
+<h3>buf.readUInt32BE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readuint32be_offset_noassert" id="buffer_buf_readuint32be_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+<li>Return: Number</li>
+</ul>
+<!--
+Reads an unsigned 32 bit integer from the buffer at the specified offset with
+specified endian format.
+
+Set `noAssert` to true to skip validation of `offset`. This means that `offset`
+may be beyond the end of the buffer. Defaults to `false`.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x3092;&#x7B26;&#x53F7;&#x7121;&#x3057; 32bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>offset</code> &#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(4);
+
+buf[0] = 0x3;
+buf[1] = 0x4;
+buf[2] = 0x23;
+buf[3] = 0x42;
+
+console.log(buf.readUInt32BE(0));
+console.log(buf.readUInt32LE(0));
+
+// 0x03042342
+// 0x42230403</code></pre>
+<h3>buf.readInt8(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readint8_offset_noassert" id="buffer_buf_readint8_offset_noassert">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+<li>Return: Number</li>
+</ul></div>
+<!--
+Reads a signed 8 bit integer from the buffer at the specified offset.
+
+Set `noAssert` to true to skip validation of `offset`. This means that `offset`
+may be beyond the end of the buffer. Defaults to `false`.
+
+Works as `buffer.readUInt8`, except buffer contents are treated as two's
+complement signed values.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x3092;&#x7B26;&#x53F7;&#x4ED8;&#x304D; 8bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>offset</code> &#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x5185;&#x5BB9;&#x3092; 2 &#x306E;&#x88DC;&#x6570;&#x306B;&#x3088;&#x308B;&#x7B26;&#x53F7;&#x4ED8;&#x304D;&#x5024;&#x3068;&#x3057;&#x3066;&#x6271;&#x3046;&#x3053;&#x3068;&#x4EE5;&#x5916;&#x306F;
+<code>buffer.readUInt8</code> &#x3068;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>buf.readInt16LE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readint16le_offset_noassert" id="buffer_buf_readint16le_offset_noassert">#</a></span></h3>
+<h3>buf.readInt16BE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readint16be_offset_noassert" id="buffer_buf_readint16be_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+<li>Return: Number</li>
+</ul>
+<!--
+Reads a signed 16 bit integer from the buffer at the specified offset with
+specified endian format.
+
+Set `noAssert` to true to skip validation of `offset`. This means that `offset`
+may be beyond the end of the buffer. Defaults to `false`.
+
+Works as `buffer.readUInt16*`, except buffer contents are treated as two's
+complement signed values.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x3092;&#x7B26;&#x53F7;&#x4ED8;&#x304D; 16bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>offset</code> &#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x5185;&#x5BB9;&#x3092; 2 &#x306E;&#x88DC;&#x6570;&#x306B;&#x3088;&#x308B;&#x7B26;&#x53F7;&#x4ED8;&#x304D;&#x5024;&#x3068;&#x3057;&#x3066;&#x6271;&#x3046;&#x3053;&#x3068;&#x4EE5;&#x5916;&#x306F;
+<code>buffer.readUInt16</code> &#x3068;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h3>buf.readInt32LE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readint32le_offset_noassert" id="buffer_buf_readint32le_offset_noassert">#</a></span></h3>
+<h3>buf.readInt32BE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readint32be_offset_noassert" id="buffer_buf_readint32be_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+<li>Return: Number</li>
+</ul>
+<!--
+Reads a signed 32 bit integer from the buffer at the specified offset with
+specified endian format.
+
+Set `noAssert` to true to skip validation of `offset`. This means that `offset`
+may be beyond the end of the buffer. Defaults to `false`.
+
+Works as `buffer.readUInt32*`, except buffer contents are treated as two's
+complement signed values.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x3092;&#x7B26;&#x53F7;&#x4ED8;&#x304D; 32bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>offset</code> &#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x5185;&#x5BB9;&#x3092; 2 &#x306E;&#x88DC;&#x6570;&#x306B;&#x3088;&#x308B;&#x7B26;&#x53F7;&#x4ED8;&#x304D;&#x5024;&#x3068;&#x3057;&#x3066;&#x6271;&#x3046;&#x3053;&#x3068;&#x4EE5;&#x5916;&#x306F;
+<code>buffer.readUInt32</code> &#x3068;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h3>buf.readFloatLE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readfloatle_offset_noassert" id="buffer_buf_readfloatle_offset_noassert">#</a></span></h3>
+<h3>buf.readFloatBE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readfloatbe_offset_noassert" id="buffer_buf_readfloatbe_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+<li>Return: Number</li>
+</ul>
+<!--
+Reads a 32 bit float from the buffer at the specified offset with specified
+endian format.
+
+Set `noAssert` to true to skip validation of `offset`. This means that `offset`
+may be beyond the end of the buffer. Defaults to `false`.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x3092; 32bit &#x6D6E;&#x52D5;&#x5C0F;&#x6570;&#x70B9;&#x6570;&#x3068;&#x3057;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>offset</code> &#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(4);
+
+buf[0] = 0x00;
+buf[1] = 0x00;
+buf[2] = 0x80;
+buf[3] = 0x3f;
+
+console.log(buf.readFloatLE(0));
+
+// 0x01</code></pre>
+<h3>buf.readDoubleLE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readdoublele_offset_noassert" id="buffer_buf_readdoublele_offset_noassert">#</a></span></h3>
+<h3>buf.readDoubleBE(offset, [noAssert])<span><a class="mark" href="#buffer_buf_readdoublebe_offset_noassert" id="buffer_buf_readdoublebe_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+<li>Return: Number</li>
+</ul>
+<!--
+Reads a 64 bit double from the buffer at the specified offset with specified
+endian format.
+
+Set `noAssert` to true to skip validation of `offset`. This means that `offset`
+may be beyond the end of the buffer. Defaults to `false`.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x3092; 64bit &#x500D;&#x7CBE;&#x5EA6;&#x6D6E;&#x52D5;&#x5C0F;&#x6570;&#x70B9;&#x6570;&#x3068;&#x3057;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>offset</code> &#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(8);
+
+buf[0] = 0x55;
+buf[1] = 0x55;
+buf[2] = 0x55;
+buf[3] = 0x55;
+buf[4] = 0x55;
+buf[5] = 0x55;
+buf[6] = 0xd5;
+buf[7] = 0x3f;
+
+console.log(buf.readDoubleLE(0));
+
+// 0.3333333333333333</code></pre>
+<h3>buf.writeUInt8(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeuint8_value_offset_noassert" id="buffer_buf_writeuint8_value_offset_noassert">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>value</code> Number</li>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+</ul></div>
+<!--
+Writes `value` to the buffer at the specified offset. Note, `value` must be a
+valid unsigned 8 bit integer.
+
+Set `noAssert` to true to skip validation of `value` and `offset`. This means
+that `value` may be too large for the specific function and `offset` may be
+beyond the end of the buffer leading to the values being silently dropped. This
+should not be used unless you are certain of correctness. Defaults to `false`.
+-->
+
+<p><code>value</code> &#x3092;&#x7B26;&#x53F7;&#x7121;&#x3057; 8bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x306B;&#x3001;
+&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3;&#x3067;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>value</code> &#x306F;&#x59A5;&#x5F53;&#x306A; 8bit &#x7B26;&#x53F7;&#x7121;&#x3057;&#x6574;&#x6570;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089;&#xFF0C;<code>value</code> &#x3068; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;<code>value</code> &#x304C;&#x3053;&#x306E;&#x95A2;&#x6570;&#x3067;&#x6271;&#x3048;&#x308B;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x5834;&#x5408;&#x3084;&#x3001;<code>offset</code> 
+&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x306F;&#x3001;&#x9759;&#x304B;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6B63;&#x78BA;&#x6027;&#x306B;&#x78BA;&#x4FE1;&#x304C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(4);
+buf.writeUInt8(0x3, 0);
+buf.writeUInt8(0x4, 1);
+buf.writeUInt8(0x23, 2);
+buf.writeUInt8(0x42, 3);
+
+console.log(buf);
+
+// &lt;Buffer 03 04 23 42&gt;</code></pre>
+<h3>buf.writeUInt16LE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeuint16le_value_offset_noassert" id="buffer_buf_writeuint16le_value_offset_noassert">#</a></span></h3>
+<h3>buf.writeUInt16BE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeuint16be_value_offset_noassert" id="buffer_buf_writeuint16be_value_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>value</code> Number</li>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+</ul>
+<!--
+Writes `value` to the buffer at the specified offset with specified endian
+format. Note, `value` must be a valid unsigned 16 bit integer.
+
+Set `noAssert` to true to skip validation of `value` and `offset`. This means
+that `value` may be too large for the specific function and `offset` may be
+beyond the end of the buffer leading to the values being silently dropped. This
+should not be used unless you are certain of correctness. Defaults to `false`.
+-->
+
+<p><code>value</code> &#x3092;&#x7B26;&#x53F7;&#x7121;&#x3057; 16bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x306B;&#x3001;
+&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3;&#x3067;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>value</code> &#x306F;&#x59A5;&#x5F53;&#x306A; 16bit &#x7B26;&#x53F7;&#x7121;&#x3057;&#x6574;&#x6570;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089;&#xFF0C;<code>value</code> &#x3068; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;<code>value</code> &#x304C;&#x3053;&#x306E;&#x95A2;&#x6570;&#x3067;&#x6271;&#x3048;&#x308B;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x5834;&#x5408;&#x3084;&#x3001;<code>offset</code> 
+&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x306F;&#x3001;&#x9759;&#x304B;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6B63;&#x78BA;&#x6027;&#x306B;&#x78BA;&#x4FE1;&#x304C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(4);
+buf.writeUInt16BE(0xdead, 0);
+buf.writeUInt16BE(0xbeef, 2);
+
+console.log(buf);
+
+buf.writeUInt16LE(0xdead, 0);
+buf.writeUInt16LE(0xbeef, 2);
+
+console.log(buf);
+
+// &lt;Buffer de ad be ef&gt;
+// &lt;Buffer ad de ef be&gt;</code></pre>
+<h3>buf.writeUInt32LE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeuint32le_value_offset_noassert" id="buffer_buf_writeuint32le_value_offset_noassert">#</a></span></h3>
+<h3>buf.writeUInt32BE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeuint32be_value_offset_noassert" id="buffer_buf_writeuint32be_value_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>value</code> Number</li>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+</ul>
+<!--
+Writes `value` to the buffer at the specified offset with specified endian
+format. Note, `value` must be a valid unsigned 32 bit integer.
+
+Set `noAssert` to true to skip validation of `value` and `offset`. This means
+that `value` may be too large for the specific function and `offset` may be
+beyond the end of the buffer leading to the values being silently dropped. This
+should not be used unless you are certain of correctness. Defaults to `false`.
+-->
+
+<p><code>value</code> &#x3092;&#x7B26;&#x53F7;&#x7121;&#x3057; 32bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x306B;&#x3001;
+&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3;&#x3067;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>value</code> &#x306F;&#x59A5;&#x5F53;&#x306A; 32bit &#x7B26;&#x53F7;&#x7121;&#x3057;&#x6574;&#x6570;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089;&#xFF0C;<code>value</code> &#x3068; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;<code>value</code> &#x304C;&#x3053;&#x306E;&#x95A2;&#x6570;&#x3067;&#x6271;&#x3048;&#x308B;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x5834;&#x5408;&#x3084;&#x3001;<code>offset</code> 
+&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x306F;&#x3001;&#x9759;&#x304B;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6B63;&#x78BA;&#x6027;&#x306B;&#x78BA;&#x4FE1;&#x304C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(4);
+buf.writeUInt32BE(0xfeedface, 0);
+
+console.log(buf);
+
+buf.writeUInt32LE(0xfeedface, 0);
+
+console.log(buf);
+
+// &lt;Buffer fe ed fa ce&gt;
+// &lt;Buffer ce fa ed fe&gt;</code></pre>
+<h3>buf.writeInt8(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeint8_value_offset_noassert" id="buffer_buf_writeint8_value_offset_noassert">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>value</code> Number</li>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+</ul></div>
+<!--
+Writes `value` to the buffer at the specified offset. Note, `value` must be a
+valid signed 8 bit integer.
+
+Set `noAssert` to true to skip validation of `value` and `offset`. This means
+that `value` may be too large for the specific function and `offset` may be
+beyond the end of the buffer leading to the values being silently dropped. This
+should not be used unless you are certain of correctness. Defaults to `false`.
+
+Works as `buffer.writeUInt8`, except value is written out as a two's complement
+signed integer into `buffer`.
+-->
+
+<p><code>value</code> &#x3092;&#x7B26;&#x53F7;&#x4ED8;&#x304D; 8bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x306B;&#x3001;
+&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3;&#x3067;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>value</code> &#x306F;&#x59A5;&#x5F53;&#x306A; 8bit &#x7B26;&#x53F7;&#x4ED8;&#x304D;&#x6574;&#x6570;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089;&#xFF0C;<code>value</code> &#x3068; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;<code>value</code> &#x304C;&#x3053;&#x306E;&#x95A2;&#x6570;&#x3067;&#x6271;&#x3048;&#x308B;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x5834;&#x5408;&#x3084;&#x3001;<code>offset</code> 
+&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x306F;&#x3001;&#x9759;&#x304B;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6B63;&#x78BA;&#x6027;&#x306B;&#x78BA;&#x4FE1;&#x304C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>value</code> &#x3092; 2 &#x306E;&#x88DC;&#x6570;&#x306B;&#x3088;&#x308B;&#x7B26;&#x53F7;&#x4ED8;&#x304D;&#x5024;&#x3068;&#x3057;&#x3066;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x4EE5;&#x5916;&#x306F; 
+<code>buffer.writeUInt8</code> &#x3068;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>buf.writeInt16LE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeint16le_value_offset_noassert" id="buffer_buf_writeint16le_value_offset_noassert">#</a></span></h3>
+<h3>buf.writeInt16BE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeint16be_value_offset_noassert" id="buffer_buf_writeint16be_value_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>value</code> Number</li>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+</ul>
+<!--
+Writes `value` to the buffer at the specified offset with specified endian
+format. Note, `value` must be a valid signed 16 bit integer.
+
+Set `noAssert` to true to skip validation of `value` and `offset`. This means
+that `value` may be too large for the specific function and `offset` may be
+beyond the end of the buffer leading to the values being silently dropped. This
+should not be used unless you are certain of correctness. Defaults to `false`.
+
+Works as `buffer.writeUInt16*`, except value is written out as a two's
+complement signed integer into `buffer`.
+-->
+
+<p><code>value</code> &#x3092;&#x7B26;&#x53F7;&#x4ED8;&#x304D; 16bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x306B;&#x3001;
+&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3;&#x3067;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>value</code> &#x306F;&#x59A5;&#x5F53;&#x306A; 16bit &#x7B26;&#x53F7;&#x4ED8;&#x304D;&#x6574;&#x6570;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089;&#xFF0C;<code>value</code> &#x3068; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;<code>value</code> &#x304C;&#x3053;&#x306E;&#x95A2;&#x6570;&#x3067;&#x6271;&#x3048;&#x308B;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x5834;&#x5408;&#x3084;&#x3001;<code>offset</code> 
+&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x306F;&#x3001;&#x9759;&#x304B;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6B63;&#x78BA;&#x6027;&#x306B;&#x78BA;&#x4FE1;&#x304C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>value</code> &#x3092; 2 &#x306E;&#x88DC;&#x6570;&#x306B;&#x3088;&#x308B;&#x7B26;&#x53F7;&#x4ED8;&#x304D;&#x5024;&#x3068;&#x3057;&#x3066;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x4EE5;&#x5916;&#x306F; 
+<code>buffer.writeUInt16</code> &#x3068;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>buf.writeInt32LE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeint32le_value_offset_noassert" id="buffer_buf_writeint32le_value_offset_noassert">#</a></span></h3>
+<h3>buf.writeInt32BE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writeint32be_value_offset_noassert" id="buffer_buf_writeint32be_value_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>value</code> Number</li>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+</ul>
+<!--
+Writes `value` to the buffer at the specified offset with specified endian
+format. Note, `value` must be a valid signed 32 bit integer.
+
+Set `noAssert` to true to skip validation of `value` and `offset`. This means
+that `value` may be too large for the specific function and `offset` may be
+beyond the end of the buffer leading to the values being silently dropped. This
+should not be used unless you are certain of correctness. Defaults to `false`.
+
+Works as `buffer.writeUInt32*`, except value is written out as a two's
+complement signed integer into `buffer`.
+-->
+
+<p><code>value</code> &#x3092;&#x7B26;&#x53F7;&#x4ED8;&#x304D; 32bit &#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x306B;&#x3001;
+&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3;&#x3067;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>value</code> &#x306F;&#x59A5;&#x5F53;&#x306A; 32bit &#x7B26;&#x53F7;&#x4ED8;&#x304D;&#x6574;&#x6570;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089;&#xFF0C;<code>value</code> &#x3068; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;<code>value</code> &#x304C;&#x3053;&#x306E;&#x95A2;&#x6570;&#x3067;&#x6271;&#x3048;&#x308B;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x5834;&#x5408;&#x3084;&#x3001;<code>offset</code> 
+&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x306F;&#x3001;&#x9759;&#x304B;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6B63;&#x78BA;&#x6027;&#x306B;&#x78BA;&#x4FE1;&#x304C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>value</code> &#x3092; 2 &#x306E;&#x88DC;&#x6570;&#x306B;&#x3088;&#x308B;&#x7B26;&#x53F7;&#x4ED8;&#x304D;&#x5024;&#x3068;&#x3057;&#x3066;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x4EE5;&#x5916;&#x306F; 
+<code>buffer.writeUInt32</code> &#x3068;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>buf.writeFloatLE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writefloatle_value_offset_noassert" id="buffer_buf_writefloatle_value_offset_noassert">#</a></span></h3>
+<h3>buf.writeFloatBE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writefloatbe_value_offset_noassert" id="buffer_buf_writefloatbe_value_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>value</code> Number</li>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+</ul>
+<!--
+Writes `value` to the buffer at the specified offset with specified endian
+format. Note, behavior is unspecified if `value` is not a 32 bit float.
+
+Set `noAssert` to true to skip validation of `value` and `offset`. This means
+that `value` may be too large for the specific function and `offset` may be
+beyond the end of the buffer leading to the values being silently dropped. This
+should not be used unless you are certain of correctness. Defaults to `false`.
+-->
+
+<p><code>value</code> &#x3092; 32bit &#x6D6E;&#x52D5;&#x5C0F;&#x6570;&#x70B9;&#x6570;&#x3068;&#x3057;&#x3066;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x306B;&#x3001;
+&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3;&#x3067;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>value</code> &#x304C; 32bit &#x6D6E;&#x52D5;&#x5C0F;&#x6570;&#x70B9;&#x6570;&#x3067;&#x306A;&#x3044;&#x5834;&#x5408;&#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x306F;&#x672A;&#x5B9A;&#x7FA9;&#x3067;&#x3042;&#x308B;&#x3053;&#x3068;&#x306B;
+&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089;&#xFF0C;<code>value</code> &#x3068; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;<code>value</code> &#x304C;&#x3053;&#x306E;&#x95A2;&#x6570;&#x3067;&#x6271;&#x3048;&#x308B;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x5834;&#x5408;&#x3084;&#x3001;<code>offset</code> 
+&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x306F;&#x3001;&#x9759;&#x304B;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6B63;&#x78BA;&#x6027;&#x306B;&#x78BA;&#x4FE1;&#x304C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(4);
+buf.writeFloatBE(0xcafebabe, 0);
+
+console.log(buf);
+
+buf.writeFloatLE(0xcafebabe, 0);
+
+console.log(buf);
+
+// &lt;Buffer 4f 4a fe bb&gt;
+// &lt;Buffer bb fe 4a 4f&gt;</code></pre>
+<h3>buf.writeDoubleLE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writedoublele_value_offset_noassert" id="buffer_buf_writedoublele_value_offset_noassert">#</a></span></h3>
+<h3>buf.writeDoubleBE(value, offset, [noAssert])<span><a class="mark" href="#buffer_buf_writedoublebe_value_offset_noassert" id="buffer_buf_writedoublebe_value_offset_noassert">#</a></span></h3>
+<ul>
+<li><code>value</code> Number</li>
+<li><code>offset</code> Number</li>
+<li><code>noAssert</code> Boolean, Optional, Default: false</li>
+</ul>
+<!--
+Writes `value` to the buffer at the specified offset with specified endian
+format. Note, `value` must be a valid 64 bit double.
+
+Set `noAssert` to true to skip validation of `value` and `offset`. This means
+that `value` may be too large for the specific function and `offset` may be
+beyond the end of the buffer leading to the values being silently dropped. This
+should not be used unless you are certain of correctness. Defaults to `false`.
+-->
+
+<p><code>value</code> &#x3092; 64bit &#x500D;&#x7CBE;&#x5EA6;&#x6D6E;&#x52D5;&#x5C0F;&#x6570;&#x70B9;&#x6570;&#x3068;&#x3057;&#x3066;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x4F4D;&#x7F6E;&#x306B;&#x3001;
+&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3;&#x3067;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+<code>value</code> &#x306F;&#x59A5;&#x5F53;&#x306A; 64bit &#x500D;&#x7CBE;&#x5EA6;&#x6D6E;&#x52D5;&#x5C0F;&#x6570;&#x70B9;&#x6570;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; <code>noAssert</code> &#x304C; <code>true</code> &#x306A;&#x3089;&#xFF0C;<code>value</code> &#x3068; <code>offset</code> &#x306E;&#x691C;&#x8A3C;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;<code>value</code> &#x304C;&#x3053;&#x306E;&#x95A2;&#x6570;&#x3067;&#x6271;&#x3048;&#x308B;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x5834;&#x5408;&#x3084;&#x3001;<code>offset</code> 
+&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x306F;&#x3001;&#x9759;&#x304B;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6B63;&#x78BA;&#x6027;&#x306B;&#x78BA;&#x4FE1;&#x304C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var buf = new Buffer(8);
+buf.writeDoubleBE(0xdeadbeefcafebabe, 0);
+
+console.log(buf);
+
+buf.writeDoubleLE(0xdeadbeefcafebabe, 0);
+
+console.log(buf);
+
+// &lt;Buffer 43 eb d5 b7 dd f9 5f d7&gt;
+// &lt;Buffer d7 5f f9 dd b7 d5 eb 43&gt;</code></pre>
+<h3>buf.fill(value, [offset], [end])<span><a class="mark" href="#buffer_buf_fill_value_offset_end" id="buffer_buf_fill_value_offset_end">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>value</code></li>
+<li><code>offset</code> Number, Optional</li>
+<li><code>end</code> Number, Optional</li>
+</ul></div>
+<!--
+Fills the buffer with the specified value. If the `offset` (defaults to `0`)
+and `end` (defaults to `buffer.length`) are not given it will fill the entire
+buffer.
+-->
+
+<p>&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x5024;&#x3067;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x57CB;&#x3081;&#x307E;&#x3059;&#x3002;
+<code>offset</code> (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>0</code>) &#x3068; <code>end</code> (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>buffer.length</code>)
+F&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x5168;&#x4F53;&#x3092;&#x57CB;&#x3081;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var b = new Buffer(50);
+b.fill(&quot;h&quot;);</code></pre>
+<h2>buffer.INSPECT_MAX_BYTES<span><a class="mark" href="#buffer_buffer_inspect_max_bytes" id="buffer_buffer_inspect_max_bytes">#</a></span></h2>
+<div class="signature"><ul>
+<li>Number, Default: 50</li>
+</ul></div>
+<!--
+How many bytes will be returned when `buffer.inspect()` is called. This can
+be overridden by user modules.
+
+Note that this is a property on the buffer module returned by
+`require('buffer')`, not on the Buffer global, or a buffer instance.
+-->
+
+<p><code>buffer.inspect()</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;&#x8FD4;&#x3059;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30E6;&#x30FC;&#x30B6;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x3088;&#x3063;&#x3066;&#x4E0A;&#x66F8;&#x304D;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3053;&#x308C;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x306E; Buffer &#x3084;&#x305D;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001; <code>requrie(&apos;buffer&apos;)</code>
+&#x306B;&#x3088;&#x3063;&#x3066;&#x8FD4;&#x3055;&#x308C;&#x308B; buffer &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3067;&#x3042;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>Class: SlowBuffer<span><a class="mark" href="#buffer_class_slowbuffer" id="buffer_class_slowbuffer">#</a></span></h2>
+<!--
+This class is primarily for internal use.  JavaScript programs should
+use Buffer instead of using SlowBuffer.
+
+In order to avoid the overhead of allocating many C++ Buffer objects for
+small blocks of memory in the lifetime of a server, Node allocates memory
+in 8Kb (8192 byte) chunks.  If a buffer is smaller than this size, then it
+will be backed by a parent SlowBuffer object.  If it is larger than this,
+then Node will allocate a SlowBuffer slab for it directly.
+-->
+
+<p>&#x3053;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x306F;&#x4E3B;&#x306B;&#x5185;&#x90E8;&#x5229;&#x7528;&#x306E;&#x305F;&#x3081;&#x306E;&#x3082;&#x306E;&#x3067;&#x3059;&#x3002;JavaScsript &#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F; SlowBuffer
+&#x3088;&#x308A;&#x3082; Buffer &#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x52D5;&#x4F5C;&#x4E2D;&#x306B;&#x3001;&#x5C0F;&#x3055;&#x306A;&#x30E1;&#x30E2;&#x30EA;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x306E;&#x305F;&#x3081;&#x306B;&#x591A;&#x304F;&#x306E; C++ &#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x304C;
+&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x308B;&#x30AA;&#x30FC;&#x30D0;&#x30FC;&#x30D8;&#x30C3;&#x30C9;&#x3092;&#x907F;&#x3051;&#x308B;&#x305F;&#x3081;&#x3001;Node &#x306F;&#x30E1;&#x30E2;&#x30EA;&#x3092; 8Kb (8192 &#x30D0;&#x30A4;&#x30C8;) &#x306E;
+&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x5185;&#x306B;&#x5272;&#x308A;&#x5F53;&#x3066;&#x307E;&#x3059;&#x3002;&#x3082;&#x3057;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x3053;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3088;&#x308A;&#x5C0F;&#x3055;&#x3051;&#x308C;&#x3070;&#x3001;&#x305D;&#x308C;&#x306F;
+&#x89AA;&#x306E; SlowBuffer &#x306B;&#x652F;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;&#x305D;&#x308C;&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x3001;Node &#x306F; SlowBuffer &#x3092;
+&#x76F4;&#x63A5;&#x5272;&#x308A;&#x5F53;&#x3066;&#x307E;&#x3059;&#x3002;
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

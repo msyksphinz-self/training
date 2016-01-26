@@ -1,0 +1,50 @@
+{
+  &quot;source&quot;: &quot;doc/api/string_decoder.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;StringDecoder&quot;,
+      &quot;name&quot;: &quot;stringdecoder&quot;,
+      &quot;stability&quot;: 3,
+      &quot;stabilityText&quot;: &quot;Stable&quot;,
+      &quot;desc&quot;: &quot;<!--\nTo use this module, do `require('string_decoder')`. StringDecoder decodes a\nbuffer to a string. It is a simple interface to `buffer.toString()` but provides\nadditional support for utf8.\n-->\n\n<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x306B;&#x306F; <code>require(&apos;string_decoder&apos;)</code> &#x3092;&#x3057;&#x307E;&#x3059;&#x3002;\nStringDecoder &#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304B;&#x3089;&#x6587;&#x5B57;&#x5217;&#x306B;&#x30C7;&#x30B3;&#x30FC;&#x30C9;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x5358;&#x7D14;&#x306A;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D5;&#x30A7;&#x30FC;&#x30B9; <code>buffer.toString()</code> &#x3067;&#x3059;&#x304C;&#x3001;\nUTF-8 &#x3092;&#x7279;&#x5225;&#x306B;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var StringDecoder = require(&apos;string_decoder&apos;).StringDecoder;\nvar decoder = new StringDecoder(&apos;utf8&apos;);\n\nvar cent = new Buffer([0xC2, 0xA2]);\nconsole.log(decoder.write(cent));\n\nvar euro = new Buffer([0xE2, 0x82, 0xAC]);\nconsole.log(decoder.write(euro));</code></pre>\n&quot;,
+      &quot;classes&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Class: StringDecoder&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;StringDecoder&quot;,
+          &quot;desc&quot;: &quot;<!--\nAccepts a single argument, `encoding` which defaults to `utf8`.\n-->\n\n<p>&#x6587;&#x5B57;&#x5217;&#x306E;&#x5F15;&#x6570; <code>encoding</code> &#x3092;&#x53D7;&#x3051;&#x53D6;&#x308A;&#x307E;&#x3059;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;utf8&apos;</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;decoder.write(buffer)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;write&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns a decoded string.\n-->\n\n<p>&#x30C7;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;buffer&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;decoder.end()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;end&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns any trailing bytes that were left in the buffer.\n-->\n\n<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x6B8B;&#x3063;&#x305F;&#x7D42;&#x7AEF;&#x306E;&#x30D0;&#x30A4;&#x30C8;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;StringDecoder&quot;
+    }
+  ]
+}

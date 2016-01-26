@@ -1,0 +1,1632 @@
+{
+  &quot;source&quot;: &quot;doc/api/fs.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;File System&quot;,
+      &quot;name&quot;: &quot;fs&quot;,
+      &quot;stability&quot;: 3,
+      &quot;stabilityText&quot;: &quot;Stable&quot;,
+      &quot;desc&quot;: &quot;<!--\nFile I/O is provided by simple wrappers around standard POSIX functions.  To\nuse this module do `require('fs')`. All the methods have asynchronous and\nsynchronous forms.\n-->\n\n<p>File I/O &#x306F; POSIX &#x6A19;&#x6E96;&#x306E;&#x95A2;&#x6570;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x5358;&#x7D14;&#x306A;&#x30E9;&#x30C3;&#x30D1;&#x30FC;&#x3068;&#x3057;&#x3066;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x306B;&#x306F; <code>require(&apos;fs&apos;)</code> &#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x5168;&#x3066;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x975E;&#x540C;&#x671F;&#x3068;&#x540C;&#x671F;&#x306E;&#x5F62;&#x5F0F;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe asynchronous form always take a completion callback as its last argument.\nThe arguments passed to the completion callback depend on the method, but the\nfirst argument is always reserved for an exception. If the operation was\ncompleted successfully, then the first argument will be `null` or `undefined`.\n\nWhen using the synchronous form any exceptions are immediately thrown.\nYou can use try/catch to handle exceptions or allow them to bubble up.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E;&#x5F62;&#x5F0F;&#x306F;&#x5E38;&#x306B;&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x6E21;&#x3055;&#x308C;&#x308B;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;\n&#x6700;&#x521D;&#x306E;&#x5F15;&#x6570;&#x306F;&#x5E38;&#x306B;&#x4F8B;&#x5916;&#x306E;&#x305F;&#x3081;&#x306B;&#x4E88;&#x7D04;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;\n&#x64CD;&#x4F5C;&#x304C;&#x6210;&#x529F;&#x3067;&#x5B8C;&#x4E86;&#x3059;&#x308B;&#x3068;&#x6700;&#x521D;&#x306E;&#x5F15;&#x6570;&#x306F; <code>null</code> &#x307E;&#x305F;&#x306F; <code>undefined</code> &#x3068;&#x306A;&#x308A;&#x307E;&#x3059;\n\n</p>\n<p>&#x540C;&#x671F;&#x306E;&#x5F62;&#x5F0F;&#x3067;&#x306F;&#x3001;&#x5168;&#x3066;&#x306E;&#x4F8B;&#x5916;&#x306F;&#x3059;&#x3050;&#x306B;&#x30B9;&#x30ED;&#x30FC;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x4F8B;&#x5916;&#x306F; try/catch &#x3067;&#x6355;&#x307E;&#x3048;&#x308B;&#x3053;&#x3068;&#x3082;&#x3001;&#x305D;&#x306E;&#x307E;&#x307E;&#x901A;&#x904E;&#x3055;&#x305B;&#x308B;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nHere is an example of the asynchronous version:\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x306E;&#x4F8B;&#x3067;&#x3059;:\n\n</p>\n<pre><code>var fs = require(&apos;fs&apos;);\n\nfs.unlink(&apos;/tmp/hello&apos;, function (err) {\n  if (err) throw err;\n  console.log(&apos;successfully deleted /tmp/hello&apos;);\n});</code></pre>\n<!--\nHere is the synchronous version:\n-->\n\n<p>&#x540C;&#x671F;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x3059;:\n\n</p>\n<pre><code>var fs = require(&apos;fs&apos;);\n\nfs.unlinkSync(&apos;/tmp/hello&apos;)\nconsole.log(&apos;successfully deleted /tmp/hello&apos;);</code></pre>\n<!--\nWith the asynchronous methods there is no guaranteed ordering. So the\nfollowing is prone to error:\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3067;&#x306F;&#x9806;&#x5E8F;&#x306E;&#x4FDD;&#x8A3C;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x4EE5;&#x4E0B;&#x306E;&#x3088;&#x3046;&#x306A;&#x50BE;&#x5411;&#x306E;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>fs.rename(&apos;/tmp/hello&apos;, &apos;/tmp/world&apos;, function (err) {\n  if (err) throw err;\n  console.log(&apos;renamed complete&apos;);\n});\nfs.stat(&apos;/tmp/world&apos;, function (err, stats) {\n  if (err) throw err;\n  console.log(&apos;stats: &apos; + JSON.stringify(stats));\n});</code></pre>\n<!--\nIt could be that `fs.stat` is executed before `fs.rename`.\nThe correct way to do this is to chain the callbacks.\n-->\n\n<p><code>fs.stat</code> &#x306F; <code>fs.rename</code> &#x3088;&#x308A;&#x5148;&#x306B;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308A;r&#x307E;&#x3059;&#x3002;\n&#x6B63;&#x3057;&#x3044;&#x65B9;&#x6CD5;&#x306F;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x30C1;&#x30A7;&#x30FC;&#x30F3;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;\n\n</p>\n<pre><code>fs.rename(&apos;/tmp/hello&apos;, &apos;/tmp/world&apos;, function (err) {\n  if (err) throw err;\n  fs.stat(&apos;/tmp/world&apos;, function (err, stats) {\n    if (err) throw err;\n    console.log(&apos;stats: &apos; + JSON.stringify(stats));\n  });\n});</code></pre>\n<!--\nIn busy processes, the programmer is _strongly encouraged_ to use the\nasynchronous versions of these calls. The synchronous versions will block\nthe entire process until they complete--halting all connections.\n\nRelative path to filename can be used, remember however that this path will be\nrelative to `process.cwd()`.\n-->\n\n<p>&#x5FD9;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067;&#x306F;&#x3001;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30DE;&#x306F;&#x3053;&#x308C;&#x3089;&#x306E;&#x975E;&#x540C;&#x671F;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;<em>&#x5F37;&#x304F;&#x63A8;&#x5968;</em>&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x540C;&#x671F;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x306F;&#x305D;&#x308C;&#x304C;&#x5B8C;&#x4E86;&#x3059;&#x308B;&#x307E;&#x3067;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x5168;&#x4F53;&#x3092;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059; &#xFF0D; &#x5168;&#x3066;&#x306E;&#x63A5;&#x7D9A;&#x3092;&#x505C;&#x6B62;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x306B;&#x306F;&#x76F8;&#x5BFE;&#x30D1;&#x30B9;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x51FA;&#x6765;&#x307E;&#x3059;&#x3002;&#x3057;&#x304B;&#x3057;&#x3001;&#x3053;&#x306E;&#x30D1;&#x30B9;&#x306F;\n<code>process.cwd()</code> &#x304B;&#x3089;&#x306E;&#x76F8;&#x5BFE;&#x30D1;&#x30B9;&#x3067;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x601D;&#x3044;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nMost fs functions let you omit the callback argument. If you do, a default\ncallback is used that ignores errors, but prints a deprecation\nwarning.\n-->\n\n<p>fs &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x95A2;&#x6570;&#x306F;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x5F15;&#x6570;&#x3092;&#x7701;&#x7565;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x3046;&#x3059;&#x308B;&#x3068;&#x3001;&#x30A8;&#x30E9;&#x30FC;&#x3092;&#x7121;&#x8996;&#x3059;&#x308B;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x3001;\n&#x5EC3;&#x6B62;&#x4E88;&#x5B9A;&#x306E;&#x8B66;&#x544A;&#x304C;&#x51FA;&#x529B;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n**IMPORTANT**: Omitting the callback is deprecated.  v0.12 will throw the\nerrors as exceptions.\n-->\n\n<p><strong>&#x91CD;&#x8981;</strong>: &#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306E;&#x7701;&#x7565;&#x306F;&#x5EC3;&#x6B62;&#x4E88;&#x5B9A;&#x3067;&#x3059;&#x3002;v0.12 &#x306F;&#x4F8B;&#x5916;&#x3092;&#x30B9;&#x30ED;&#x30FC;&#x3059;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;\n\n\n</p>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;fs.rename(oldPath, newPath, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;rename&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous rename(2). No arguments other than a possible exception are given\nto the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; rename(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;oldPath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;newPath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.renameSync(oldPath, newPath)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;renameSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous rename(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; rename(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;oldPath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;newPath&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.ftruncate(fd, len, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;ftruncate&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous ftruncate(2). No arguments other than a possible exception are\ngiven to the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; ftruncate(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;len&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.ftruncateSync(fd, len)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;ftruncateSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous ftruncate(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; ftruncate(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;len&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.truncate(path, len, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;truncate&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous truncate(2). No arguments other than a possible exception are\ngiven to the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; truncate(2)&#x3002;\n&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;len&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.truncateSync(path, len)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;truncateSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous truncate(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; truncate(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;len&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.chown(path, uid, gid, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;chown&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous chown(2). No arguments other than a possible exception are given\nto the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; chown(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;uid&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;gid&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.chownSync(path, uid, gid)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;chownSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous chown(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; chown(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;uid&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;gid&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.fchown(fd, uid, gid, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;fchown&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous fchown(2). No arguments other than a possible exception are given\nto the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; fchown(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;uid&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;gid&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.fchownSync(fd, uid, gid)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;fchownSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous fchown(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; fchown(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;uid&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;gid&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.lchown(path, uid, gid, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;lchown&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous lchown(2). No arguments other than a possible exception are given\nto the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; lchown(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;uid&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;gid&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.lchownSync(path, uid, gid)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;lchownSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous lchown(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; lchown(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;uid&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;gid&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.chmod(path, mode, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;chmod&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous chmod(2). No arguments other than a possible exception are given\nto the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; chmod(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.chmodSync(path, mode)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;chmodSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous chmod(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; chmod(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.fchmod(fd, mode, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;fchmod&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous fchmod(2). No arguments other than a possible exception\nare given to the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; fchmod(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.fchmodSync(fd, mode)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;fchmodSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous fchmod(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; fchmod(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.lchmod(path, mode, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;lchmod&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous lchmod(2). No arguments other than a possible exception\nare given to the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; lchmod(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nOnly available on Mac OS X.\n-->\n\n<p>Mac OS X &#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.lchmodSync(path, mode)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;lchmodSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous lchmod(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; lchmod(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.stat(path, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;stat&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous stat(2). The callback gets two arguments `(err, stats)` where\n`stats` is a [fs.Stats](#fs_class_fs_stats) object.  See the [fs.Stats](#fs_class_fs_stats)\nsection below for more information.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; stat(2)&#x3002;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; 2 &#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>(err, stats)</code>&#x3067;&#x3001;\n<code>stats</code> &#x306F; <a href="\&quot;#fs_class_fs_stats\&quot;">fs.Stats</a> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n&#x8A73;&#x7D30;&#x306F; <a href="\&quot;#fs_class_fs_stats\&quot;">fs.Stats</a> &#x306E;&#x7BC0;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nSee the [fs.Stats](#fs.Stats) section below for more information.\n-->\n\n<p>&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x306F;&#x5F8C;&#x8FF0;&#x306E; <a href="\&quot;#fs.Stats\&quot;">fs.Stats</a> &#x306E;&#x7BC0;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.lstat(path, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;lstat&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous lstat(2). The callback gets two arguments `(err, stats)` where\n`stats` is a `fs.Stats` object. `lstat()` is identical to `stat()`, except that if\n`path` is a symbolic link, then the link itself is stat-ed, not the file that it\nrefers to.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; lstat(2)&#x3002;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; 2 &#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>(err, stats)</code>&#x3067;&#x3001;\n<code>stats</code> &#x306F; <code>fs.Stats</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n<code>lstat()</code> &#x306F;&#x30D1;&#x30B9;&#x304C;&#x30B7;&#x30F3;&#x30DC;&#x30EA;&#x30C3;&#x30AF;&#x30EA;&#x30F3;&#x30AF;&#x3060;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x3001;\n&#x53C2;&#x7167;&#x5148;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x305D;&#x306E;&#x30EA;&#x30F3;&#x30AF;&#x81EA;&#x8EAB;&#x304C;&#x8ABF;&#x3079;&#x3089;&#x308C;&#x308B;&#x70B9;&#x3092;&#x9664;&#x3044;&#x3066; <code>stat()</code> &#x3068;&#x540C;&#x3058;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.fstat(fd, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;fstat&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous fstat(2). The callback gets two arguments `(err, stats)` where\n`stats` is a `fs.Stats` object. `fstat()` is identical to `stat()`, except that\nthe file to be stat-ed is specified by the file descriptor `fd`.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; fstat(2)&#x3002;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; 2 &#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>(err, stats)</code> &#x3067;&#x3001;\n<code>stats</code> &#x306F; <code>fs.Stats</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n&#x72B6;&#x614B;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50; <code>fd</code> &#x3067;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x9664;&#x3044;&#x3066;&#x3001;\n<code>fstat()</code> &#x306F; <code>stat()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.statSync(path)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;statSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous stat(2). Returns an instance of `fs.Stats`.\n-->\n\n<p>&#x540C;&#x671F;&#x306E; stat(2)&#x3002;<code>fs.Stats</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.lstatSync(path)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;lstatSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous lstat(2). Returns an instance of `fs.Stats`.\n-->\n\n<p>&#x540C;&#x671F;&#x306E; lstat(2)&#x3002;<code>fs.Stats</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.fstatSync(fd)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;fstatSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous fstat(2). Returns an instance of `fs.Stats`.\n-->\n\n<p>&#x540C;&#x671F;&#x306E; fstat(2)&#x3002;<code>fs.Stats</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.link(srcpath, dstpath, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;link&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous link(2). No arguments other than a possible exception are given to\nthe completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; link(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;srcpath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;dstpath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.linkSync(srcpath, dstpath)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;linkSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous link(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; link(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;srcpath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;dstpath&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.symlink(srcpath, dstpath, [type], callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;symlink&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous symlink(2). No arguments other than a possible exception are given\nto the completion callback.\nThe `type` argument can be set to `'dir'`, `'file'`, or `'junction'` (default\nis `'file'`) and is only available on Windows (ignored on other platforms).\nNote that Windows junction points require the destination path to be absolute.  When using\n`'junction'`, the `destination` argument will automatically be normalized to absolute path.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; symlink(2)&#x3002;\n&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n<code>type</code> &#x5F15;&#x6570;&#x306F; <code>&apos;dir&apos;</code>&#x3001;<code>&apos;file&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;junction</code>&apos; (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;file&apos;</code>)\n&#x306B;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x3001;Windows &#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;\n(&#x4ED6;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;)&#x3002;\nWindows &#x306E;&#x30B8;&#x30E3;&#x30F3;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306F;&#x5BFE;&#x8C61;&#x306B;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3092;&#x8981;&#x6C42;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;\n&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n<code>&apos;junction&apos;</code> &#x3092;&#x4F7F;&#x3046;&#x3068;&#x3001;<code>destination</code> &#x5F15;&#x6570;&#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x306B;&#x6B63;&#x898F;&#x5316;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;srcpath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;dstpath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;type&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.symlinkSync(srcpath, dstpath, [type])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;symlinkSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous symlink(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; symlink(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;srcpath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;dstpath&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;type&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.readlink(path, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;readlink&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous readlink(2). The callback gets two arguments `(err,\nlinkString)`.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; readlink(2)&#x3002;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; 2 &#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>(err, linkString)</code>&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.readlinkSync(path)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;readlinkSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous readlink(2). Returns the symbolic link's string value.\n-->\n\n<p>&#x540C;&#x671F;&#x306E; readlink(2)&#x3002;&#x30B7;&#x30F3;&#x30DC;&#x30EA;&#x30C3;&#x30AF;&#x30EA;&#x30F3;&#x30AF;&#x306E;&#x6301;&#x3064;&#x6587;&#x5B57;&#x5217;&#x5024;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.realpath(path, [cache], callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;realpath&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous realpath(2). The `callback` gets two arguments `(err,\nresolvedPath)`. May use `process.cwd` to resolve relative paths. `cache` is an\nobject literal of mapped paths that can be used to force a specific path\nresolution or avoid additional `fs.stat` calls for known real paths.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; realpath(2)&#x3002;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; 2 &#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>(err, resolvedPath)</code>&#x3067;&#x3059;&#x3002;\n&#x76F8;&#x5BFE;&#x30D1;&#x30B9;&#x3092;&#x89E3;&#x6C7A;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B; <code>process.cwd</code> &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n<code>cache</code> &#x306F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3001;&#x30D1;&#x30B9;&#x304C;&#x30AD;&#x30FC;&#x3068;&#x3057;&#x3066;&#x542B;&#x307E;&#x308C;&#x3066;&#x3044;&#x308C;&#x3070;&#x305D;&#x306E;&#x5024;&#x304C;\n&#x5F37;&#x5236;&#x7684;&#x306B;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x305F;&#x30D1;&#x30B9;&#x3068;&#x3057;&#x3066;&#x6271;&#x308F;&#x308C;&#x3001;<code>fs.stat</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x30D1;&#x30B9;&#x304C;&#x5B9F;&#x5728;&#x3059;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x306E;\n&#x78BA;&#x8A8D;&#x304C;&#x7701;&#x304B;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>var cache = {&apos;/etc&apos;:&apos;/private/etc&apos;};\nfs.realpath(&apos;/etc/passwd&apos;, cache, function (err, resolvedPath) {\n  if (err) throw err;\n  console.log(resolvedPath);\n});</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;cache&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.realpathSync(path, [cache])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;realpathSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous realpath(2). Returns the resolved path.\n-->\n\n<p>&#x540C;&#x671F;&#x306E; realpath(2)&#x3002;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x305F;&#x30D1;&#x30B9;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;cache&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.unlink(path, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;unlink&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous unlink(2). No arguments other than a possible exception are given\nto the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; unlink(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.unlinkSync(path)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;unlinkSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous unlink(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; unlink(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.rmdir(path, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;rmdir&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous rmdir(2). No arguments other than a possible exception are given\nto the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; rmdir(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.rmdirSync(path)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;rmdirSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous rmdir(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; rmdir(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.mkdir(path, [mode], callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;mkdir&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous mkdir(2). No arguments other than a possible exception are given\nto the completion callback. `mode` defaults to `0777`.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; mkdir(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n<code>mode</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>0777</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.mkdirSync(path, [mode])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;mkdirSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous mkdir(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; mkdir(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.readdir(path, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;readdir&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous readdir(3).  Reads the contents of a directory.\nThe callback gets two arguments `(err, files)` where `files` is an array of\nthe names of the files in the directory excluding `'.'` and `'..'`.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; readdir(3)&#x3002;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306E;&#x5185;&#x5BB9;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;\n&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; 2 &#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>(err, files)</code>&#x3067;&#x3001;\n<code>files</code> &#x306F; <code>&apos;.&apos;</code> &#x3068; <code>&apos;..&apos;</code> &#x3092;&#x9664;&#x304F;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x5185;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x306E;&#x914D;&#x5217;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.readdirSync(path)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;readdirSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous readdir(3). Returns an array of filenames excluding `'.'` and\n`'..'`.\n-->\n\n<p>&#x540C;&#x671F;&#x306E; readdir(3)&#x3002;<code>&apos;.&apos;</code> &#x3068; <code>&apos;..&apos;</code> &#x3092;&#x9664;&#x304F;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x5185;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x306E;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.close(fd, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;close&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous close(2).  No arguments other than a possible exception are given\nto the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; close(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.closeSync(fd)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;closeSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous close(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; close(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.open(path, flags, [mode], callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;open&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous file open. See open(2). `flags` can be:\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3002;open(2) &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x30D5;&#x30E9;&#x30B0;&#x306F;&#x4EE5;&#x4E0B;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;:\n\n</p>\n<!--\n* `'r'` - Open file for reading.\nAn exception occurs if the file does not exist.\n-->\n\n<ul>\n<li><code>&apos;r&apos;</code> - &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5C02;&#x7528;&#x3067;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x4F8B;&#x5916;&#x304C;&#x767A;&#x751F;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\n* `'r+'` - Open file for reading and writing.\nAn exception occurs if the file does not exist.\n-->\n\n<ul>\n<li><code>&apos;r+&apos;</code> - &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x8AAD;&#x307F;&#x66F8;&#x304D;&#x4E21;&#x7528;&#x3067;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x4F8B;&#x5916;&#x304C;&#x767A;&#x751F;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\n* `'rs'` - Open file for reading in synchronous mode. Instructs the operating\n  system to bypass the local file system cache.\n\n  This is primarily useful for opening files on NFS mounts as it allows you to\n  skip the potentially stale local cache. It has a very real impact on I/O\n  performance so don't use this flag unless you need it.\n\n  Note that this doesn't turn `fs.open()` into a synchronous blocking call.\n  If that's what you want then you should be using `fs.openSync()`\n-->\n\n<ul>\n<li><p><code>&apos;rs&apos;</code> - &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x540C;&#x671F;&#x30E2;&#x30FC;&#x30C9;&#x3067;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x305F;&#x3081;&#x306B;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3092;\n&#x30D0;&#x30A4;&#x30D1;&#x30B9;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x6307;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;</p>\n<p>&#x3053;&#x308C;&#x306F;&#x4E3B;&#x306B; NFS &#x306B;&#x30DE;&#x30A6;&#x30F3;&#x30C8;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x3066;&#x3001;&#x6F5C;&#x5728;&#x7684;&#x306B;&#x53E4;&#x3044;\n&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x30B9;&#x30AD;&#x30C3;&#x30D7;&#x3059;&#x308B;&#x306E;&#x306B;&#x5F79;&#x7ACB;&#x3061;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;I/O &#x30D1;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30F3;&#x30B9;&#x306B;&#x3068;&#x3066;&#x3082;&#x6DF1;&#x523B;&#x306A;&#x5F71;&#x97FF;&#x3092;&#x4E0E;&#x3048;&#x308B;&#x305F;&#x3081;&#x3001;&#x5FC5;&#x8981;&#x3067;&#x306A;&#x3044;&#x9650;&#x308A;&#x306F;\n&#x3053;&#x306E;&#x30D5;&#x30E9;&#x30B0;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</p>\n<p>&#x3053;&#x308C;&#x306F; <code>fs.open()</code> &#x3092;&#x540C;&#x671F;&#x7684;&#x306A;&#x30D6;&#x30ED;&#x30C3;&#x30AD;&#x30F3;&#x30B0;&#x547C;&#x3073;&#x51FA;&#x3057;&#x306B;&#x3059;&#x308B;&#x308F;&#x3051;&#x3067;&#x306F;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;\n&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x305D;&#x308C;&#x304C;&#x5FC5;&#x8981;&#x306A;&#x5834;&#x5408;&#x306F; <code>fs.openSync()</code> &#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;</p>\n</li>\n</ul>\n<!--\n* `'rs+'` - Open file for reading and writing, telling the OS to open it\n  synchronously. See notes for `'rs'` about using this with caution.\n-->\n\n<ul>\n<li><code>&apos;rs+&apos;</code> - &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x8AAD;&#x307F;&#x66F8;&#x304D;&#x4E21;&#x65B9;&#x3067;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x3001;OS &#x306B;&#x540C;&#x671F;&#x7684;&#x306B;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;\n&#x4F1D;&#x3048;&#x307E;&#x3059;&#x3002;&#x3053;&#x308C;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x969B;&#x306E;&#x8B66;&#x544A;&#x306F; <code>&apos;rs&apos;</code> &#x306E;&#x6CE8;&#x610F;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</li>\n</ul>\n<!--\n* `'w'` - Open file for writing.\nThe file is created (if it does not exist) or truncated (if it exists).\n-->\n\n<ul>\n<li><code>&apos;w&apos;</code> - &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5C02;&#x7528;&#x3067;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306F;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x308B;&#x304B; (&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;)&#x3001;&#x307E;&#x305F;&#x306F;&#x9577;&#x3055; 0 &#x306B;&#x5207;&#x308A;&#x8A70;&#x3081;&#x3089;&#x308C;&#x307E;&#x3059;\n(&#x5B58;&#x5728;&#x3059;&#x308B;&#x5834;&#x5408;)&#x3002;</li>\n</ul>\n<!--\n* `'wx'` - Like `'w'` but fails if `path` exists.\n-->\n\n<ul>\n<li><code>&apos;wx&apos;</code> - <code>&apos;w&apos;</code> &#x3068;&#x4F3C;&#x3066;&#x3044;&#x307E;&#x3059;&#x304C;&#x3001;<code>path</code> &#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x3068;&#x5931;&#x6557;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\n* `'w+'` - Open file for reading and writing.\nThe file is created (if it does not exist) or truncated (if it exists).\n-->\n\n<ul>\n<li><code>&apos;w+&apos;</code> - &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x8AAD;&#x307F;&#x66F8;&#x304D;&#x4E21;&#x7528;&#x3067;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306F;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x308B;&#x304B; (&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;)&#x3001;&#x307E;&#x305F;&#x306F;&#x9577;&#x3055; 0 &#x306B;&#x5207;&#x308A;&#x8A70;&#x3081;&#x3089;&#x308C;&#x307E;&#x3059;\n(&#x5B58;&#x5728;&#x3059;&#x308B;&#x5834;&#x5408;)&#x3002;</li>\n</ul>\n<!--\n* `'wx+'` - Like `'w+'` but fails if `path` exists.\n-->\n\n<ul>\n<li><code>&apos;wx+&apos;</code> - <code>&apos;w+&apos;</code> &#x3068;&#x4F3C;&#x3066;&#x3044;&#x307E;&#x3059;&#x304C;&#x3001;<code>path</code> &#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x3068;&#x5931;&#x6557;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\n* `'a'` - Open file for appending.\nThe file is created if it does not exist.\n-->\n\n<ul>\n<li><code>&apos;a&apos;</code> - &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x8FFD;&#x8A18;&#x7528;&#x3067;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\n* `'ax'` - Like `'a'` but fails if `path` exists.\n-->\n\n<ul>\n<li><code>&apos;ax&apos;</code> - <code>&apos;a&apos;</code> &#x3068;&#x4F3C;&#x3066;&#x3044;&#x307E;&#x3059;&#x304C;&#x3001;<code>path</code> &#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x3068;&#x5931;&#x6557;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\n* `'a+'` - Open file for reading and appending.\nThe file is created if it does not exist.\n-->\n\n<ul>\n<li><code>&apos;a+&apos;</code> - &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x304A;&#x3088;&#x3073;&#x8FFD;&#x8A18;&#x7528;&#x3067;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\n* `'ax+'` - Like `'a+'` but fails if `path` exists.\n-->\n\n<ul>\n<li><code>&apos;ax+&apos;</code> - <code>&apos;a+&apos;</code> &#x3068;&#x4F3C;&#x3066;&#x3044;&#x307E;&#x3059;&#x304C;&#x3001;<code>path</code> &#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x3068;&#x5931;&#x6557;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\n`mode` sets the file mode (permission and sticky bits), but only if the file was\ncreated. It defaults to `0666`, readable and writeable.\n-->\n\n<p><code>mode</code> &#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30E2;&#x30FC;&#x30C9; (&#x8A31;&#x53EF;&#x3068;&#x30B9;&#x30C6;&#x30A3;&#x30C3;&#x30AD;&#x30FC;&#x30D3;&#x30C3;&#x30C8;) &#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;\n&#x305D;&#x308C;&#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x308B;&#x5834;&#x5408;&#x306B;&#x9650;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; 0666 &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThe callback gets two arguments `(err, fd)`.\n-->\n\n<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; 2 &#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>(err, fd)</code>&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThe exclusive flag `'x'` (`O_EXCL` flag in open(2)) ensures that `path` is newly\ncreated. On POSIX systems, `path` is considered to exist even if it is a symlink\nto a non-existent file. The exclusive flag may or may not work with network file\nsystems.\n-->\n\n<p>&#x6392;&#x4ED6;&#x30D5;&#x30E9;&#x30B0; <code>&apos;x&apos;</code> (open(2) &#x306E; <code>O_EXCL</code> &#x30D5;&#x30E9;&#x30B0;) &#x306F;&#x3001;\n<code>path</code> &#x304C;&#x65B0;&#x3057;&#x3044;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3068;&#x3057;&#x3066;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x4FDD;&#x8A3C;&#x3057;&#x307E;&#x3059;&#x3002;\nPOSIX &#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3067;&#x306F;&#x3001;<code>path</code> &#x304C;&#x305F;&#x3068;&#x3048;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3078;&#x306E;&#x30B7;&#x30F3;&#x30DC;&#x30EA;&#x30C3;&#x30AF;&#x3060;&#x3068;&#x3057;&#x3066;&#x3082;\n&#x5B58;&#x5728;&#x3059;&#x308B;&#x3068;&#x898B;&#x306A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x6392;&#x4ED6;&#x30E2;&#x30FC;&#x30C9;&#x306F;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3067;&#x306F;&#x52D5;&#x304F;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3057;&#x3001;\n&#x52D5;&#x304B;&#x306A;&#x3044;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nOn Linux, positional writes don't work when the file is opened in append mode.\nThe kernel ignores the position argument and always appends the data to\nthe end of the file.\n-->\n\n<p>Linux &#x3067;&#x306F;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x8FFD;&#x8A18;&#x30E2;&#x30FC;&#x30C9;&#x3067;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x305F;&#x5834;&#x5408;&#x3001;\n&#x30DD;&#x30B8;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306F;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x30AB;&#x30FC;&#x30CD;&#x30EB;&#x306F;&#x30DD;&#x30B8;&#x30B7;&#x30E7;&#x30F3;&#x5F15;&#x6570;&#x3092;&#x7121;&#x8996;&#x3057;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5E38;&#x306B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x6700;&#x5F8C;&#x306B;&#x8FFD;&#x8A18;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;flags&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.openSync(path, flags, [mode])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;openSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous version of `fs.open()`.\n-->\n\n<p>&#x540C;&#x671F;&#x7248;&#x306E; open(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;flags&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mode&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.utimes(path, atime, mtime, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;utimes&quot;,
+          &quot;desc&quot;: &quot;<!--\nChange file timestamps.\nChange file timestamps of the file referenced by the supplied path.\n-->\n\n<p>&#x6E21;&#x3055;&#x308C;&#x305F;&#x30D1;&#x30B9;&#x304C;&#x53C2;&#x7167;&#x3059;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30B9;&#x30BF;&#x30F3;&#x30D7;&#x3092;&#x5909;&#x66F4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;atime&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mtime&quot;
+                }
+              ]
+            },
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;atime&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mtime&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.utimesSync(path, atime, mtime)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;utimesSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nChange file timestamps.\nChange file timestamps of the file referenced by the supplied path.\n-->\n\n<p>&#x6E21;&#x3055;&#x308C;&#x305F;&#x30D1;&#x30B9;&#x304C;&#x53C2;&#x7167;&#x3059;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30B9;&#x30BF;&#x30F3;&#x30D7;&#x3092;&#x5909;&#x66F4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;atime&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mtime&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.futimes(fd, atime, mtime, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;futimes&quot;,
+          &quot;desc&quot;: &quot;<!--\nChange the file timestamps of a file referenced by the supplied file\ndescriptor.\n-->\n\n<p>&#x6E21;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x304C;&#x53C2;&#x7167;&#x3059;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30B9;&#x30BF;&#x30F3;&#x30D7;&#x3092;&#x5909;&#x66F4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;atime&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mtime&quot;
+                }
+              ]
+            },
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;atime&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mtime&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.futimesSync(fd, atime, mtime)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;futimesSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nChange the file timestamps of a file referenced by the supplied file\ndescriptor.\n-->\n\n<p>&#x6E21;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x304C;&#x53C2;&#x7167;&#x3059;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30B9;&#x30BF;&#x30F3;&#x30D7;&#x3092;&#x5909;&#x66F4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;atime&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;mtime&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.fsync(fd, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;fsync&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous fsync(2). No arguments other than a possible exception are given\nto the completion callback.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306E; fsync(2)&#x3002;&#x5B8C;&#x4E86;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x306F;&#x767A;&#x751F;&#x3057;&#x5F97;&#x308B;&#x4F8B;&#x5916;&#x4EE5;&#x5916;&#x306B;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.fsyncSync(fd)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;fsyncSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous fsync(2).\n-->\n\n<p>&#x540C;&#x671F;&#x306E; fsync(2)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.write(fd, buffer, offset, length, position, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;write&quot;,
+          &quot;desc&quot;: &quot;<!--\nWrite `buffer` to the file specified by `fd`.\n-->\n\n<p><code>fd</code> &#x3067;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B; <code>buffer</code> &#x3092;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`offset` and `length` determine the part of the buffer to be written.\n-->\n\n<p><code>offset</code> &#x3068; <code>length</code> &#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x90E8;&#x5206;&#x3092;&#x6C7A;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`position` refers to the offset from the beginning of the file where this data\nshould be written. If `position` is `null`, the data will be written at the\ncurrent position.\nSee pwrite(2).\n-->\n\n<p><code>position</code> &#x306F;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x4F4D;&#x7F6E;&#x3092;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x5148;&#x982D;&#x304B;&#x3089;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;&#x3067;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>position</code> &#x304C; <code>null</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x73FE;&#x5728;&#x306E;&#x4F4D;&#x7F6E;&#x304B;&#x3089;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x307E;&#x3059;&#x3002;\npwrite(2) &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nThe callback will be given two arguments `(err, written)` where `written`\nspecifies how many _bytes_ were written.\nThe callback will be given three arguments `(err, written, buffer)` where `written`\nspecifies how many _bytes_ were written from `buffer`.\n-->\n\n<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; 3 &#x3064;&#x306E;&#x5F15;&#x6570;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B; <code>(err, written, buffer)</code> &#x3067;&#x3001;\n<code>written</code> &#x306F; <code>buffer</code> &#x304B;&#x3089;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;<em>&#x30D0;&#x30A4;&#x30C8;&#x6570;</em>&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote that it is unsafe to use `fs.write` multiple times on the same file\nwithout waiting for the callback. For this scenario,\n`fs.createWriteStream` is strongly recommended.\n-->\n\n<p>&#x540C;&#x3058;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3055;&#x308C;&#x308B;&#x306E;&#x3092;&#x5F85;&#x3064;&#x3053;&#x3068;&#x306A;&#x304F; <code>fs.write()</code> &#x3092;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x306F;&#x3001;&#x5B89;&#x5168;&#x3067;&#x306F;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x3053;&#x306E;&#x30B7;&#x30CA;&#x30EA;&#x30AA;&#x3067;&#x306F;&#x3001; <code>fs.createWriteStream()</code> &#x3092;&#x5F37;&#x304F;&#x63A8;&#x5968;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>On Linux, positional writes don&apos;t work when the file is opened in append mode.\nThe kernel ignores the position argument and always appends the data to\nthe end of the file.\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;buffer&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;offset&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;length&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;position&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.writeSync(fd, buffer, offset, length, position)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;writeSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous version of `fs.write()`. Returns the number of bytes written.\n-->\n\n<p>&#x540C;&#x671F;&#x7248;&#x306E; <code>fs.write()</code>&#x3002;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;buffer&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;offset&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;length&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;position&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.read(fd, buffer, offset, length, position, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;read&quot;,
+          &quot;desc&quot;: &quot;<!--\nRead data from the file specified by `fd`.\n-->\n\n<p><code>fd</code> &#x3067;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304B;&#x3089;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`buffer` is the buffer that the data will be written to.\n-->\n\n<p><code>buffer</code> &#x306F;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n`offset` is the offset in the buffer to start writing at.\n-->\n\n<p><code>offset</code> &#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x3092;&#x958B;&#x59CB;&#x3059;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x5185;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n`length` is an integer specifying the number of bytes to read.\n-->\n\n<p><code>length</code> &#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x6574;&#x6570;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n`position` is an integer specifying where to begin reading from in the file.\nIf `position` is `null`, data will be read from the current file position.\n-->\n\n<p><code>position</code> &#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3092;&#x958B;&#x59CB;&#x3059;&#x308B;&#x4F4D;&#x7F6E;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x6574;&#x6570;&#x3067;&#x3059;&#x3002;\n<code>position</code> &#x304C; <code>null</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x73FE;&#x5728;&#x306E;&#x4F4D;&#x7F6E;&#x304B;&#x3089;&#x8AAD;&#x307F;&#x8FBC;&#x307E;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe callback is given the three arguments, `(err, bytesRead, buffer)`.\n-->\n\n<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;3&#x3064;&#x306E;&#x5F15;&#x6570;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B; <code>(err, bytesRead, buffer)</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;buffer&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;offset&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;length&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;position&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.readSync(fd, buffer, offset, length, position)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;readSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous version of `fs.read`. Returns the number of `bytesRead`.\n-->\n\n<p>&#x540C;&#x671F;&#x7248;&#x306E; <code>fs.read</code>&#x3002;<code>bytesRead</code> &#x306E;&#x6570;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;buffer&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;offset&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;length&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;position&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.readFile(filename, [options], callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;readFile&quot;,
+          &quot;* `filename` {String}\n* `options` {Object}\n  * `encoding` {String | Null} default&quot;: &quot;`null`\n  * `flag` {String} default = `&apos;r&apos;`\n* `callback` {Function}&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;textRaw&quot;: &quot;`filename` {String} &quot;,
+                  &quot;name&quot;: &quot;filename&quot;,
+                  &quot;type&quot;: &quot;String&quot;
+                },
+                {
+                  &quot;textRaw&quot;: &quot;`options` {Object} &quot;,
+                  &quot;options&quot;: [
+                    {
+                      &quot;textRaw&quot;: &quot;`encoding` {String | Null} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `null` &quot;,
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;type&quot;: &quot;String | Null&quot;,
+                      &quot;desc&quot;: &quot;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `null`&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`flag` {String} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;r&apos;` &quot;,
+                      &quot;name&quot;: &quot;flag&quot;,
+                      &quot;type&quot;: &quot;String&quot;,
+                      &quot;desc&quot;: &quot;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;r&apos;`&quot;
+                    }
+                  ],
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;type&quot;: &quot;Object&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;textRaw&quot;: &quot;`callback` {Function} &quot;,
+                  &quot;name&quot;: &quot;callback&quot;,
+                  &quot;type&quot;: &quot;Function&quot;
+                }
+              ]
+            },
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;filename&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ],
+          &quot;desc&quot;: &quot;<!--\nAsynchronously reads the entire contents of a file. Example:\n-->\n\n<p>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x5168;&#x4F53;&#x306E;&#x5185;&#x5BB9;&#x3092;&#x975E;&#x540C;&#x671F;&#x306B;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;&#x4F8B;:\n\n</p>\n<pre><code>fs.readFile(&apos;/etc/passwd&apos;, function (err, data) {\n  if (err) throw err;\n  console.log(data);\n});</code></pre>\n<!--\nThe callback is passed two arguments `(err, data)`, where `data` is the\ncontents of the file.\n-->\n\n<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; 2 &#x3064;&#x306E;&#x5F15;&#x6570;&#x304C;&#x6E21;&#x3055;&#x308C;&#x308B; <code>(err, data)</code> &#x3067;&#x3001;<code>data</code> &#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x5185;&#x5BB9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nIf no encoding is specified, then the raw buffer is returned.\n-->\n\n<p>&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x751F;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.readFileSync(filename, [options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;readFileSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous version of `fs.readFile`. Returns the contents of the `filename`.\n-->\n\n<p>&#x540C;&#x671F;&#x7248;&#x306E; <code>fs.readFile</code>&#x3002;<code>filename</code> &#x306E;&#x5185;&#x5BB9;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIf the `encoding` option is specified then this function returns a\nstring. Otherwise it returns a buffer.\n-->\n\n<p><code>encoding</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x6587;&#x5B57;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x3046;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;filename&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.writeFile(filename, data, [options], callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;writeFile&quot;,
+          &quot;* `filename` {String}\n* `data` {String | Buffer}\n* `options` {Object}\n  * `encoding` {String | Null} default&quot;: &quot;`&apos;utf8&apos;`\n  * `mode` {Number} default = `438` (aka `0666` in Octal)\n  * `flag` {String} default = `&apos;w&apos;`\n* `callback` {Function}&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;textRaw&quot;: &quot;`filename` {String} &quot;,
+                  &quot;name&quot;: &quot;filename&quot;,
+                  &quot;type&quot;: &quot;String&quot;
+                },
+                {
+                  &quot;textRaw&quot;: &quot;`data` {String | Buffer} &quot;,
+                  &quot;name&quot;: &quot;data&quot;,
+                  &quot;type&quot;: &quot;String | Buffer&quot;
+                },
+                {
+                  &quot;textRaw&quot;: &quot;`options` {Object} &quot;,
+                  &quot;options&quot;: [
+                    {
+                      &quot;textRaw&quot;: &quot;`encoding` {String | Null} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;utf8&apos;` &quot;,
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;type&quot;: &quot;String | Null&quot;,
+                      &quot;desc&quot;: &quot;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;utf8&apos;`&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`mode` {Number} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `438` (8&#x9032;&#x6570;&#x306E; `0666`) &quot;,
+                      &quot;name&quot;: &quot;mode&quot;,
+                      &quot;type&quot;: &quot;Number&quot;,
+                      &quot;desc&quot;: &quot;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `438` (8&#x9032;&#x6570;&#x306E; `0666`)&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`flag` {String} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;w&apos;` &quot;,
+                      &quot;name&quot;: &quot;flag&quot;,
+                      &quot;type&quot;: &quot;String&quot;,
+                      &quot;desc&quot;: &quot;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;w&apos;`&quot;
+                    }
+                  ],
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;type&quot;: &quot;Object&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;textRaw&quot;: &quot;`callback` {Function} &quot;,
+                  &quot;name&quot;: &quot;callback&quot;,
+                  &quot;type&quot;: &quot;Function&quot;
+                }
+              ]
+            },
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;filename&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;data&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ],
+          &quot;desc&quot;: &quot;<!--\nAsynchronously writes data to a file, replacing the file if it already exists.\n`data` can be a string or a buffer.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306B;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x65E2;&#x306B;&#x5B58;&#x5728;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F;&#x7F6E;&#x304D;&#x63DB;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>data</code> &#x306F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThe `encoding` option is ignored if `data` is a buffer. It defaults\nto `'utf8'`.\n-->\n\n<p><code>data</code> &#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x5834;&#x5408;&#x3001;<code>encoding</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;utf8&apos;</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>fs.writeFile(&apos;message.txt&apos;, &apos;Hello Node&apos;, function (err) {\n  if (err) throw err;\n  console.log(&apos;It\\&apos;s saved!&apos;);\n});</code></pre>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.writeFileSync(filename, data, [options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;writeFileSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe synchronous version of `fs.writeFile`.\n-->\n\n<p>&#x540C;&#x671F;&#x7248;&#x306E; <code>fs.writeFile</code>&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;filename&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;data&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.appendFile(filename, data, [options], callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;appendFile&quot;,
+          &quot;* `filename` {String}\n* `data` {String | Buffer}\n* `options` {Object}\n  * `encoding` {String | Null} default&quot;: &quot;`&apos;utf8&apos;`\n  * `mode` {Number} default = `438` (aka `0666` in Octal)\n  * `flag` {String} default = `&apos;a&apos;`\n* `callback` {Function}&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;textRaw&quot;: &quot;`filename` {String} &quot;,
+                  &quot;name&quot;: &quot;filename&quot;,
+                  &quot;type&quot;: &quot;String&quot;
+                },
+                {
+                  &quot;textRaw&quot;: &quot;`data` {String | Buffer} &quot;,
+                  &quot;name&quot;: &quot;data&quot;,
+                  &quot;type&quot;: &quot;String | Buffer&quot;
+                },
+                {
+                  &quot;textRaw&quot;: &quot;`options` {Object} &quot;,
+                  &quot;options&quot;: [
+                    {
+                      &quot;textRaw&quot;: &quot;`encoding` {String | Null} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;utf8&apos;` &quot;,
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;type&quot;: &quot;String | Null&quot;,
+                      &quot;desc&quot;: &quot;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;utf8&apos;`&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`mode` {Number} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `438` (8&#x9032;&#x6570;&#x306E; `0666`) &quot;,
+                      &quot;name&quot;: &quot;mode&quot;,
+                      &quot;type&quot;: &quot;Number&quot;,
+                      &quot;desc&quot;: &quot;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `438` (8&#x9032;&#x6570;&#x306E; `0666`)&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`flag` {String} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;a&apos;` &quot;,
+                      &quot;name&quot;: &quot;flag&quot;,
+                      &quot;type&quot;: &quot;String&quot;,
+                      &quot;desc&quot;: &quot;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; `&apos;a&apos;`&quot;
+                    }
+                  ],
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;type&quot;: &quot;Object&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;textRaw&quot;: &quot;`callback` {Function} &quot;,
+                  &quot;name&quot;: &quot;callback&quot;,
+                  &quot;type&quot;: &quot;Function&quot;
+                }
+              ]
+            },
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;filename&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;data&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ],
+          &quot;desc&quot;: &quot;<!--\nAsynchronously append data to a file, creating the file if it not yet exists.\n`data` can be a string or a buffer.\n-->\n\n<p>&#x975E;&#x540C;&#x671F;&#x306B;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x8FFD;&#x52A0;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>data</code> &#x306F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>fs.appendFile(&apos;message.txt&apos;, &apos;data to append&apos;, function (err) {\n  if (err) throw err;\n  console.log(&apos;The &quot;data to append&quot; was appended to file!&apos;);\n});</code></pre>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.appendFileSync(filename, data, [options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;appendFileSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe synchronous version of `fs.appendFile`.\n-->\n\n<p>&#x540C;&#x671F;&#x7248;&#x306E; <code>fs.appendFile</code>&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;filename&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;data&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.watchFile(filename, [options], listener)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;watchFile&quot;,
+          &quot;stability&quot;: 2,
+          &quot;stabilityText&quot;: &quot;Unstable.  Use fs.watch instead, if possible.&quot;,
+          &quot;desc&quot;: &quot;<!--\nWatch for changes on `filename`. The callback `listener` will be called each\ntime the file is accessed.\n-->\n\n<p><code>filename</code> &#x306E;&#x5909;&#x66F4;&#x3092;&#x76E3;&#x8996;&#x3057;&#x307E;&#x3059;&#x3002;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306E; <code>listener</code> &#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3055;&#x308C;&#x308B;&#x5EA6;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe second argument is optional. The `options` if provided should be an object\ncontaining two members a boolean, `persistent`, and `interval`. `persistent`\nindicates whether the process should continue to run as long as files are\nbeing watched. `interval` indicates how often the target should be polled,\nin milliseconds. The default is `{ persistent: true, interval: 5007 }`.\n-->\n\n<p>&#x7B2C; 2 &#x5F15;&#x6570;&#x306F;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x3059;&#xFF0E;\n<code>options</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B;&#x5834;&#x5408;&#x3001;&#x305D;&#x308C;&#x306F; boolean &#x306E; <code>persistent</code> &#x3068; <code>interval</code>\n&#x306E;&#x4E8C;&#x3064;&#x306E;&#x30E1;&#x30F3;&#x30D0;&#x3092;&#x542B;&#x3080;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n<code>persistent</code> &#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x9593;&#x3001;\n&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x5B9F;&#x884C;&#x3057;&#x7D9A;&#x3051;&#x308B;&#x3053;&#x3068;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>interval</code> &#x306F;&#x5BFE;&#x8C61;&#x3092;&#x30DD;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3059;&#x308B;&#x9593;&#x9694;&#x3092;&#x30DF;&#x30EA;&#x79D2;&#x3067;&#x793A;&#x3057;&#x307E;&#x3059;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>{ persistent: true, interval: 5007 }</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThe `listener` gets two arguments the current stat object and the previous\nstat object:\n-->\n\n<p><code>listener</code> &#x306F;&#x73FE;&#x5728;&#x306E;&#x72B6;&#x614B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3068;&#x524D;&#x306E;&#x72B6;&#x614B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E; 2 &#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308A;&#x307E;&#x3059;:\n\n</p>\n<pre><code>fs.watchFile(&apos;message.text&apos;, function (curr, prev) {\n  console.log(&apos;the current mtime is: &apos; + curr.mtime);\n  console.log(&apos;the previous mtime was: &apos; + prev.mtime);\n});</code></pre>\n<!--\nThese stat objects are instances of `fs.Stat`.\n\nIf you want to be notified when the file was modified, not just accessed\nyou need to compare `curr.mtime` and `prev.mtime`.\n-->\n\n<p>&#x3053;&#x308C;&#x3089;&#x306E;&#x72B6;&#x614B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; <code>fs.Stat</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<p>&#x3082;&#x3057;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3055;&#x308C;&#x305F;&#x3060;&#x3051;&#x3067;&#x306A;&#x304F;&#x3001;&#x5909;&#x66F4;&#x3055;&#x308C;&#x305F;&#x6642;&#x306E;&#x901A;&#x77E5;&#x304C;&#x5FC5;&#x8981;&#x3067;&#x3042;&#x308C;&#x3070;&#x3001;<code>curr.mtime</code> &#x3068; <code>prev.mtime</code> &#x3092;&#x6BD4;&#x8F03;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;filename&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;listener&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.unwatchFile(filename, [listener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;unwatchFile&quot;,
+          &quot;stability&quot;: 2,
+          &quot;stabilityText&quot;: &quot;Unstable.  Use fs.watch instead, if possible.&quot;,
+          &quot;desc&quot;: &quot;<!--\nStop watching for changes on `filename`. If `listener` is specified, only that\nparticular listener is removed. Otherwise, *all* listeners are removed and you\nhave effectively stopped watching `filename`.\n\nCalling `fs.unwatchFile()` with a filename that is not being watched is a\nno-op, not an error.\n-->\n\n<p><code>filename</code> &#x306E;&#x5909;&#x66F4;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x76E3;&#x8996;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>listener</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x8A72;&#x5F53;&#x306E; <code>listener</code> &#x3060;&#x3051;&#x304C;&#x53D6;&#x308A;&#x9664;&#x304B;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x3046;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;<em>&#x5168;&#x3066;&#x306E;</em> &#x30EA;&#x30B9;&#x30CA;&#x304C;&#x53D6;&#x308A;&#x9664;&#x304B;&#x308C;&#x3001;\n<code>filenam</code> &#x306E;&#x76E3;&#x8996;&#x306F;&#x4E8B;&#x5B9F;&#x4E0A;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x76E3;&#x8996;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x305F; <code>fs.unwatchFile()</code> &#x306E;&#x547C;&#x3073;&#x51FA;&#x3057;&#x306F;\n&#x30A8;&#x30E9;&#x30FC;&#x306B;&#x306A;&#x308B;&#x306E;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x4F55;&#x3082;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;filename&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;listener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.watch(filename, [options], [listener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;watch&quot;,
+          &quot;stability&quot;: 2,
+          &quot;stabilityText&quot;: &quot;Unstable.&quot;,
+          &quot;desc&quot;: &quot;<!--\nWatch for changes on `filename`, where `filename` is either a file or a\ndirectory.  The returned object is a [fs.FSWatcher](#fs_class_fs_fswatcher).\n\nThe second argument is optional. The `options` if provided should be an object\ncontaining a boolean member `persistent`, which indicates whether the process\nshould continue to run as long as files are being watched. The default is\n`{ persistent: true }`.\n\nThe listener callback gets two arguments `(event, filename)`.  `event` is either\n'rename' or 'change', and `filename` is the name of the file which triggered\nthe event.\n-->\n\n<p><code>filename</code> &#x306E;&#x5909;&#x66F4;&#x3092;&#x76E3;&#x8996;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>filename</code> &#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x307E;&#x305F;&#x306F;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306E;&#x3069;&#x3061;&#x3089;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x623B;&#x308A;&#x5024;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; <a href="\&quot;#fs.FSWatcher\&quot;">fs.FSWatcher</a> &#x3067;&#x3059;&#x3002;\n\n</p>\n<p>&#x7B2C; 2 &#x5F15;&#x6570;&#x306F;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x3059;&#x3002;\n&#x3082;&#x3057;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x306A;&#x3089;&#x3001;<code>options</code> &#x306F; boolean &#x306E; <code>persistent</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;\n&#x6301;&#x3064;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3042;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;\n<code>persistent</code> &#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x9593;&#x3001;\n&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x5B9F;&#x884C;&#x3057;&#x7D9A;&#x3051;&#x308B;&#x3053;&#x3068;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>{ persistent: true }</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n<p>&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x4E8C;&#x3064;&#x306E;&#x5F15;&#x6570; <code>(event, filename)</code> &#x3092;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>event</code> &#x306F; <code>&apos;rename&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;change&apos;</code>&#x3001;&#x305D;&#x3057;&#x3066; <code>filename</code> &#x306F;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;\n&#x5F15;&#x304D;&#x8D77;&#x3053;&#x3057;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x540D;&#x524D;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;miscs&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Caveats&quot;,
+              &quot;name&quot;: &quot;Caveats&quot;,
+              &quot;type&quot;: &quot;misc&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe `fs.watch` API is not 100% consistent across platforms, and is\nunavailable in some situations.\n-->\n\n<p><code>fs.watch</code> API &#x306F;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x9593;&#x3067; 100% &#x5B8C;&#x5168;&#x3067;&#x306F;&#x3042;&#x308A;m&#x305B;&#x3093;&#x3057;&#x3001;\n&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30B7;&#x30C1;&#x30E5;&#x30A8;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x5229;&#x7528;&#x4E0D;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;miscs&quot;: [
+                {
+                  &quot;textRaw&quot;: &quot;Availability&quot;,
+                  &quot;name&quot;: &quot;Availability&quot;,
+                  &quot;type&quot;: &quot;misc&quot;,
+                  &quot;desc&quot;: &quot;<!--\nThis feature depends on the underlying operating system providing a way\nto be notified of filesystem changes.\n-->\n\n<p>&#x3053;&#x306E;&#x6A5F;&#x80FD;&#x306F;&#x4E0B;&#x5C64;&#x306E;&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x304C;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x5909;&#x66F4;&#x306E;\n&#x901A;&#x77E5;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n* On Linux systems, this uses `inotify`.\n* On BSD systems (including OS X), this uses `kqueue`.\n* On SunOS systems (including Solaris and SmartOS), this uses `event ports`.\n* On Windows systems, this feature depends on `ReadDirectoryChangesW`.\n-->\n\n<ul>\n<li>Linux &#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3067;&#x306F; <code>inotify</code> &#x304C;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>\n<li>BSD &#x30B7;&#x30B9;&#x30C6;&#x30E0; (OS X &#x3092;&#x542B;&#x307F;&#x307E;&#x3059;) &#x3067;&#x306F; <code>kqueue</code> &#x304C;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>\n<li>SunOS &#x30B7;&#x30B9;&#x30C6;&#x30E0; (Solaris &#x304A;&#x3088;&#x3073; SmartOS &#x3092;&#x542B;&#x307F;&#x307E;&#x3059;) &#x3067;&#x306F; <code>event ports</code>\n&#x304C;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>\n<li>Windows &#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3067;&#x306F;&#x3001;&#x3053;&#x306E;&#x6A5F;&#x80FD;&#x306F; <code>ReadDirectoryChangesW</code> &#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\nIf the underlying functionality is not available for some reason, then\n`fs.watch` will not be able to function.  For example, watching files or\ndirectories on network file systems (NFS, SMB, etc.) often doesn't work\nreliably or at all.\n-->\n\n<p>&#x4F55;&#x3089;&#x304B;&#x306E;&#x7406;&#x7531;&#x3067;&#x4E0B;&#x5C64;&#x306E;&#x6A5F;&#x80FD;&#x304C;&#x4F7F;&#x3048;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;<code>fs.watch()</code> &#x306F;&#x4F7F;&#x3048;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0; (NFS&#x3001;SMB&#x3001;&#x305D;&#x306E;&#x4ED6;) &#x306F;&#x3057;&#x3070;&#x3057;&#x3070;\n&#x4FE1;&#x983C;&#x3067;&#x304D;&#x306A;&#x3044;&#x304B;&#x5168;&#x304F;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nYou can still use `fs.watchFile`, which uses stat polling, but it is slower and\nless reliable.\n-->\n\n<p>stat &#x3092;&#x30DD;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3059;&#x308B; <code>fs.watchFile()</code> &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x3059;&#x304C;&#x3001;\n&#x305D;&#x308C;&#x306F;&#x9045;&#x304F;&#x3066;&#x4FE1;&#x983C;&#x6027;&#x306F;&#x3088;&#x308A;&#x4F4E;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+                },
+                {
+                  &quot;textRaw&quot;: &quot;Filename Argument&quot;,
+                  &quot;name&quot;: &quot;Filename Argument&quot;,
+                  &quot;type&quot;: &quot;misc&quot;,
+                  &quot;desc&quot;: &quot;<!--\nProviding `filename` argument in the callback is not supported\non every platform (currently it's only supported on Linux and Windows).  Even\non supported platforms `filename` is not always guaranteed to be provided.\nTherefore, don't assume that `filename` argument is always provided in the\ncallback, and have some fallback logic if it is null.\n-->\n\n<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306B;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x308B; <code>filename</code> &#x5F15;&#x6570;&#x306F;&#x3001;\n&#x5168;&#x3066;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x308B;&#x308F;&#x3051;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;\n(&#x73FE;&#x6642;&#x70B9;&#x3067;&#x306F; Linux &#x3068; Windows &#x3067;&#x306E;&#x307F;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;)&#x3002;\n&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x308B;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x3042;&#x3063;&#x3066;&#x3082;&#x3001;<code>filename</code> &#x304C;&#x5E38;&#x306B;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x304C;\n&#x4FDD;&#x8A3C;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x308F;&#x3051;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x305D;&#x306E;&#x305F;&#x3081;&#x3001;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; <code>filename</code> &#x5F15;&#x6570;&#x304C;&#x5E38;&#x306B;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x308B;&#x3068;&#x4EEE;&#x5B9A;&#x305B;&#x305A;&#x3001;\n&#x305D;&#x308C;&#x304C; <code>null</code> &#x3060;&#x3063;&#x305F;&#x3068;&#x304D;&#x306E;&#x4EE3;&#x66FF;&#x624B;&#x6BB5;&#x3092;&#x6301;&#x3064;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;\n\n</p>\n<pre><code>fs.watch(&apos;somedir&apos;, function (event, filename) {\n  console.log(&apos;event is: &apos; + event);\n  if (filename) {\n    console.log(&apos;filename provided: &apos; + filename);\n  } else {\n    console.log(&apos;filename not provided&apos;);\n  }\n});</code></pre>\n&quot;
+                }
+              ]
+            }
+          ],
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;filename&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;listener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.exists(path, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;exists&quot;,
+          &quot;desc&quot;: &quot;<!--\nTest whether or not the given path exists by checking with the file system.\nThen call the `callback` argument with either true or false.  Example:\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30D1;&#x30B9;&#x304C;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x4E0A;&#x306B;&#x5B58;&#x5728;&#x3059;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x691C;&#x67FB;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x3057;&#x3066;&#x5F15;&#x6570;&#x306E; <code>callback</code> &#x3092;&#x771F;&#x304B;&#x507D;&#x304B;&#x691C;&#x67FB;&#x306E;&#x7D50;&#x679C;&#x3068;&#x3068;&#x3082;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x4F8B;:\n\n</p>\n<pre><code>fs.exists(&apos;/etc/passwd&apos;, function (exists) {\n  util.debug(exists ? &quot;it&apos;s there&quot; : &quot;no passwd!&quot;);\n});</code></pre>\n<!--\n`fs.exists()` is an anachronism and exists only for historical reasons.\nThere should almost never be a reason to use it in your own code.\n-->\n\n<p><code>fs.exists()</code> &#x306F;&#x6642;&#x4EE3;&#x932F;&#x8AA4;&#x3067;&#x3001;&#x5B58;&#x5728;&#x3059;&#x308B;&#x7406;&#x7531;&#x306F;&#x6B74;&#x53F2;&#x7684;&#x7D4C;&#x7DEF;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;\n&#x3042;&#x306A;&#x305F;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x3053;&#x308C;&#x3092;&#x4F7F;&#x3046;&#x3079;&#x304D;&#x7406;&#x7531;&#x304C;&#x3042;&#x3063;&#x3066;&#x306F;&#x3044;&#x3051;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nIn particular, checking if a file exists before opening it is an anti-pattern\nthat leaves you vulnerable to race conditions: another process may remove the\nfile between the calls to `fs.exists()` and `fs.open()`.  Just open the file\nand handle the error when it's not there.\n-->\n\n<p>&#x3068;&#x308A;&#x308F;&#x3051;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3059;&#x308B;&#x524D;&#x306B;&#x5B58;&#x5728;&#x3092;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3059;&#x308B;&#x306E;&#x306F;&#x3001;\n&#x3042;&#x306A;&#x305F;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x7AF6;&#x5408;&#x6761;&#x4EF6;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x8106;&#x5F31;&#x306B;&#x3059;&#x308B;&#x30A2;&#x30F3;&#x30C1;&#x30D1;&#x30BF;&#x30FC;&#x30F3;&#x3067;&#x3059;:\n<code>fs.exists()</code> &#x3068; <code>fs.open()</code> &#x306E;&#x9593;&#x306B;&#x5225;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;\n&#x524A;&#x9664;&#x3059;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x5358;&#x7D14;&#x306B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x3066;&#x3001;&#x305D;&#x308C;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x6642;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#x3092;&#x51E6;&#x7406;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.existsSync(path)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;existsSync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous version of `fs.exists`.\n-->\n\n<p>&#x540C;&#x671F;&#x7248;&#x306E; <code>fs.exists</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.createReadStream(path, [options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createReadStream&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new ReadStream object (See `Readable Stream`).\n-->\n\n<p>&#x65B0;&#x3057;&#x3044; ReadStream &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059; (<code>Readable Stream</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;)&#x3002;\n\n</p>\n<!--\n`options` is an object with the following defaults:\n-->\n\n<p><code>options</code> &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x6301;&#x3064;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;:\n\n</p>\n<pre><code>{ flags: &apos;r&apos;,\n  encoding: null,\n  fd: null,\n  mode: 0666,\n  autoClose: true\n}</code></pre>\n<!--\n`options` can include `start` and `end` values to read a range of bytes from\nthe file instead of the entire file.  Both `start` and `end` are inclusive and\nstart at 0. The `encoding` can be `'utf8'`, `'ascii'`, or `'base64'`.\n-->\n\n<p>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x5168;&#x4F53;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x4EE3;&#x308F;&#x308A;&#x306B;&#x4E00;&#x90E8;&#x306E;&#x7BC4;&#x56F2;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x305F;&#x3081;&#x3001;\n<code>options</code> &#x306B; <code>start</code> &#x304A;&#x3088;&#x3073; <code>end</code> &#x3092;&#x542B;&#x3081;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n<code>start</code> &#x3068; <code>end</code> &#x306F;&#x3069;&#x3061;&#x3089;&#x3082;&#x5305;&#x542B;&#x7684;&#x3067;0&#x304B;&#x3089;&#x59CB;&#x307E;&#x308A;&#x307E;&#x3059;&#x3002;\n<code>encoding</code> &#x306F; <code>&apos;utf8&apos;</code>&#x3001;<code>&apos;ascii&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nIf `autoClose` is false, then the file descriptor won't be closed, even if\nthere's an error.  It is your responsiblity to close it and make sure\nthere's no file descriptor leak.  If `autoClose` is set to true (default\nbehavior), on `error` or `end` the file descriptor will be closed\nautomatically.\n-->\n\n<p><code>autoClose</code> &#x304C; <code>false</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3057;&#x306A;&#x3044;&#x9650;&#x308A;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x306F;\n&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x304C;\n&#x30EA;&#x30FC;&#x30AF;&#x3057;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x306E;&#x306F;&#x3042;&#x306A;&#x305F;&#x306E;&#x8CAC;&#x52D9;&#x3067;&#x3059;&#x3002;\n<code>autoClose</code> &#x304C; <code>true</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068; (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x3067;&#x3059;)&#x3001;\n<code>error</code> &#x307E;&#x305F;&#x306F; <code>end</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nAn example to read the last 10 bytes of a file which is 100 bytes long:\n-->\n\n<p>100 &#x30D0;&#x30A4;&#x30C8;&#x306E;&#x9577;&#x3055;&#x3092;&#x6301;&#x3064;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x6700;&#x5F8C;&#x306E; 10 &#x30D0;&#x30A4;&#x30C8;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x4F8B;:\n\n</p>\n<pre><code>fs.createReadStream(&apos;sample.txt&apos;, {start: 90, end: 99});</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;fs.createWriteStream(path, [options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createWriteStream&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new WriteStream object (See `Writable Stream`).\n-->\n\n<p>&#x65B0;&#x3057;&#x3044; WriteStream &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059; (<code>Writable Stream</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;)&#x3002;\n\n</p>\n<!--\n`options` is an object with the following defaults:\n-->\n\n<p><code>options</code> &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x6301;&#x3064;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;:\n\n</p>\n<pre><code>{ flags: &apos;w&apos;,\n  encoding: null,\n  mode: 0666 }</code></pre>\n<!--\n`options` may also include a `start` option to allow writing data at\nsome position past the beginning of the file.  Modifying a file rather\nthan replacing it may require a `flags` mode of `r+` rather than the\ndefault mode `w`.\n-->\n\n<p><code>options</code> &#x306B;&#x306F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x3069;&#x306E;&#x4F4D;&#x7F6E;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x304B;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;\n<code>start</code> &#x3092;&#x542B;&#x3081;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x7F6E;&#x63DB;&#x3059;&#x308B;&#x306E;&#x3067;&#x306F;&#x306A;&#x304F;&#x5909;&#x66F4;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001; <code>flags</code> &#x306B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;\n<code>w</code> &#x3067;&#x306F;&#x306A;&#x304F; <code>r+</code> &#x304C;&#x5FC5;&#x8981;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;path&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;classes&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Class: fs.Stats&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;fs.Stats&quot;,
+          &quot;desc&quot;: &quot;<!--\nObjects returned from `fs.stat()`, `fs.lstat()` and `fs.fstat()` and their\nsynchronous counterparts are of this type.\n-->\n\n<p><code>fs.stat()</code>&#x3001;<code>fs.lstat()</code>&#x3001;<code>fs.fstat()</code>&#x3001;&#x305D;&#x3057;&#x3066;&#x305D;&#x308C;&#x3089;&#x306E;&#x540C;&#x671F;&#x7248; &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x308B;\n&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3053;&#x306E;&#x578B;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n - `stats.isFile()`\n - `stats.isDirectory()`\n - `stats.isBlockDevice()`\n - `stats.isCharacterDevice()`\n - `stats.isSymbolicLink()` (only valid with  `fs.lstat()`)\n - `stats.isFIFO()`\n - `stats.isSocket()`\n-->\n\n<ul>\n<li><code>stats.isFile()</code></li>\n<li><code>stats.isDirectory()</code></li>\n<li><code>stats.isBlockDevice()</code></li>\n<li><code>stats.isCharacterDevice()</code></li>\n<li><code>stats.isSymbolicLink()</code> (<code>fs.lstat()</code> &#x3067;&#x306E;&#x307F;&#x6709;&#x52B9;)</li>\n<li><code>stats.isFIFO()</code></li>\n<li><code>stats.isSocket()</code></li>\n</ul>\n<!--\nFor a regular file `util.inspect(stats)` would return a string very\nsimilar to this:\n-->\n\n<p><code>util.inspect(stats)</code> &#x306F;&#x901A;&#x5E38;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306A;&#x6587;&#x5B57;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>{ dev: 2114,\n  ino: 48064969,\n  mode: 33188,\n  nlink: 1,\n  uid: 85,\n  gid: 100,\n  rdev: 0,\n  size: 527,\n  blksize: 4096,\n  blocks: 8,\n  atime: Mon, 10 Oct 2011 23:24:11 GMT,\n  mtime: Mon, 10 Oct 2011 23:24:11 GMT,\n  ctime: Mon, 10 Oct 2011 23:24:11 GMT }</code></pre>\n<!--\nPlease note that `atime`, `mtime` and `ctime` are instances\nof [Date][MDN-Date] object and to compare the values of\nthese objects you should use appropriate methods. For most\ngeneral uses [getTime()][MDN-Date-getTime] will return\nthe number of milliseconds elapsed since _1 January 1970\n00:00:00 UTC_ and this integer should be sufficient for\nany comparison, however there additional methods which can\nbe used for displaying fuzzy information. More details can\nbe found in the [MDN JavaScript Reference][MDN-Date] page.\n-->\n\n<p><code>atime</code>&#x3001;<code>mtime</code>&#x3001;&#x305D;&#x3057;&#x3066; <code>ctime</code> &#x306F; [Date][MDN-Date] &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3042;&#x308A;&#x3001;\n&#x305D;&#x306E;&#x5024;&#x3092;&#x6BD4;&#x8F03;&#x3059;&#x308B;&#x306B;&#x306F;&#x9069;&#x5207;&#x306A;&#x65B9;&#x6CD5;&#x304C;&#x3042;&#x308B;&#x3068;&#x3044;&#x3046;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x3082;&#x3063;&#x3068;&#x3082;&#x4E00;&#x822C;&#x7684;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x308B; [getTime()][MDN-Date-getTime] &#x306F; <em>1970 &#x5E74; 1 &#x6708;\n1 &#x65E5;</em>&#x304B;&#x3089;&#x306E;&#x7D4C;&#x904E;&#x6642;&#x9593;&#x3092;&#x30DF;&#x30EA;&#x79D2;&#x5358;&#x4F4D;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x308C;&#x306F;&#x6BD4;&#x8F03;&#x306B;&#x306F;&#x5341;&#x5206;&#x3067;&#x3059;&#x304C;&#x3001;&#x66D6;&#x6627;&#x306A;&#x60C5;&#x5831;&#x3092;&#x8868;&#x793A;&#x3059;&#x308B;&#x306B;&#x306F;&#x5225;&#x306E;&#x65B9;&#x6CD5;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x3088;&#x308A;&#x8A73;&#x3057;&#x3044;&#x60C5;&#x5831;&#x306F; [MDN JavaScript Reference][MDN-Date] &#x3067;&#x63A2;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: fs.ReadStream&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;fs.ReadStream&quot;,
+          &quot;desc&quot;: &quot;<!--\n`ReadStream` is a [Readable Stream](stream.html#stream_class_stream_readable).\n-->\n\n<p><code>ReadStream</code> &#x306F; <a href="\&quot;stream.html#stream_class_stream_readable\&quot;">Readable Stream</a>\n&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;open&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;open&quot;,
+              &quot;desc&quot;: &quot;<!--\n* `fd` {Integer} file descriptor used by the ReadStream.\n\nEmitted when the ReadStream's file is opened.\n-->\n\n<ul>\n<li><code>fd</code> {Integer} ReadStream &#x3067;&#x4F7F;&#x308F;&#x308C;&#x308B; &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3002;</li>\n</ul>\n<p>ReadStream &#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: fs.WriteStream&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;fs.WriteStream&quot;,
+          &quot;desc&quot;: &quot;<!--\n`WriteStream` is a [Writable Stream](stream.html#stream_class_stream_writable).\n-->\n\n<p><code>WriteStream</code> &#x306F; <a href="\&quot;stream.html#stream_class_stream_writable\&quot;">Writable Stream</a>\n&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;open&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;open&quot;,
+              &quot;desc&quot;: &quot;<!--\n* `fd` {Integer} file descriptor used by the WriteStream.\n\nEmitted when the WriteStream's file is opened.\n-->\n\n<ul>\n<li><code>fd</code> {Integer} WriteStream &#x3067;&#x4F7F;&#x308F;&#x308C;&#x308B; &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3002;</li>\n</ul>\n<p>WriteStream &#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            }
+          ],
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;file.bytesWritten&quot;,
+              &quot;name&quot;: &quot;bytesWritten&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe number of bytes written so far. Does not include data that is still queued\nfor writing.\n-->\n\n<p>&#x3053;&#x308C;&#x307E;&#x3067;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3002;\n&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x304C;&#x30AD;&#x30E5;&#x30FC;&#x30A4;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x305F;&#x307E;&#x307E;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x542B;&#x307E;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: fs.FSWatcher&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;fs.FSWatcher&quot;,
+          &quot;desc&quot;: &quot;<!--\nObjects returned from `fs.watch()` are of this type.\n-->\n\n<p><code>fs.watch()</code> &#x304C;&#x8FD4;&#x3059;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3053;&#x306E;&#x578B;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;watcher.close()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<!--\nStop watching for changes on the given `fs.FSWatcher`.\n-->\n\n<p><code>fs.FSWatcher</code> &#x306B;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x76E3;&#x8996;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            }
+          ],
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;change&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;change&quot;,
+              &quot;desc&quot;: &quot;<!--\n* `event` {String} The type of fs change\n* `filename` {String} The filename that changed (if relevant/available)\n-->\n\n<ul>\n<li><code>event</code> {String} &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x5909;&#x66F4;&#x306E;&#x7A2E;&#x985E;&#x3067;&#x3059;&#x3002;</li>\n<li><code>filename</code> {String} &#x5909;&#x66F4;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3067;&#x3059; (&#x3082;&#x3057;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3042;&#x308C;&#x3070;)&#x3002;</li>\n</ul>\n<!--\nEmitted when something changes in a watched directory or file.\nSee more details in [fs.watch](#fs_fs_watch_filename_options_listener).\n-->\n\n<p>&#x76E3;&#x8996;&#x3057;&#x3066;&#x3044;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x307E;&#x305F;&#x306F;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306B;&#x5909;&#x66F4;&#x304C;&#x3042;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x8A73;&#x3057;&#x304F;&#x306F; <a href="\&quot;#fs_fs_watch_filename_options_listener\&quot;">fs.watch</a>\n&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;error&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;error&quot;,
+              &quot;params&quot;: [],
+              &quot;desc&quot;: &quot;<!--\nEmitted when an error occurs.\n-->\n\n<p>&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n</p>\n&quot;
+            }
+          ]
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;fs&quot;
+    }
+  ]
+}

@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>util Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/util.html">
+</head>
+<body class="alt apidoc" id="api-section-util">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="util.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#util_util">util</a><ul>
+<li><a href="#util_util_format_format">util.format(format, [...])</a></li>
+<li><a href="#util_util_debug_string">util.debug(string)</a></li>
+<li><a href="#util_util_error">util.error([...])</a></li>
+<li><a href="#util_util_puts">util.puts([...])</a></li>
+<li><a href="#util_util_print">util.print([...])</a></li>
+<li><a href="#util_util_log_string">util.log(string)</a></li>
+<li><a href="#util_util_inspect_object_options">util.inspect(object, [options])</a><ul>
+<li><a href="#util_customizing_util_inspect_colors">Customizing <code>util.inspect</code> colors</a></li>
+</ul>
+</li>
+<li><a href="#util_util_isarray_object">util.isArray(object)</a></li>
+<li><a href="#util_util_isregexp_object">util.isRegExp(object)</a></li>
+<li><a href="#util_util_isdate_object">util.isDate(object)</a></li>
+<li><a href="#util_util_iserror_object">util.isError(object)</a></li>
+<li><a href="#util_util_pump_readablestream_writablestream_callback">util.pump(readableStream, writableStream, [callback])</a></li>
+<li><a href="#util_util_inherits_constructor_superconstructor">util.inherits(constructor, superConstructor)</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>util<span><a class="mark" href="#util_util" id="util_util">#</a></span></h1>
+<pre class="api_stability_4">Stability: 4 - API Frozen</pre><!--
+These functions are in the module `'util'`. Use `require('util')` to access
+them.
+-->
+
+<p>&#x3053;&#x308C;&#x3089;&#x306E;&#x95A2;&#x6570;&#x306F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB; <code>&apos;util&apos;</code> &#x5185;&#x306B;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+<code>require(&apos;util&apos;)</code> &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3067;&#x3053;&#x308C;&#x3089;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>util.format(format, [...])<span><a class="mark" href="#util_util_format_format" id="util_util_format_format">#</a></span></h2>
+<!--
+Returns a formatted string using the first argument as a `printf`-like format.
+-->
+
+<p>&#x6700;&#x521D;&#x306E;&#x5F15;&#x6570;&#x3092; <code>printf</code> &#x306E;&#x3088;&#x3046;&#x306A;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3001;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x5316;&#x3055;&#x308C;&#x305F;
+&#x6587;&#x5B57;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The first argument is a string that contains zero or more *placeholders*.
+Each placeholder is replaced with the converted value from its corresponding
+argument. Supported placeholders are:
+-->
+
+<p>&#x7B2C;&#x4E00;&#x5F15;&#x6570;&#x306F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3001;0 &#x500B;&#x4EE5;&#x4E0A;&#x306E; <em>&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;</em> &#x3092;&#x542B;&#x307F;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x306F;&#x5BFE;&#x5FDC;&#x3059;&#x308B;&#x5F15;&#x6570;&#x3092;&#x5909;&#x63DB;&#x3057;&#x305F;&#x5024;&#x3067;&#x7F6E;&#x63DB;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3059;&#x308B;&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x306F;:
+
+</p>
+<!--
+* `%s` - String.
+* `%d` - Number (both integer and float).
+* `%j` - JSON.
+* `%` - single percent sign (`'%'`). This does not consume an argument.
+-->
+
+<ul>
+<li><code>%s</code> - &#x6587;&#x5B57;&#x5217;&#x3002;</li>
+<li><code>%d</code> - &#x6570;&#x5024; (&#x6574;&#x6570;&#x3068;&#x6D6E;&#x52D5;&#x5C0F;&#x6570;&#x70B9;&#x6570;&#x306E;&#x4E21;&#x65B9;)&#x3002;</li>
+<li><code>%j</code> - JSON&#x3002;</li>
+<li><code>%</code> - &#x4E00;&#x3064;&#x306E;&#x30D1;&#x30FC;&#x30BB;&#x30F3;&#x30C8;&#x8A18;&#x53F7; (<code>&apos;%&apos;</code>)&#x3002;&#x3053;&#x308C;&#x306F;&#x5F15;&#x6570;&#x3092;&#x6D88;&#x8CBB;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;</li>
+</ul>
+<!--
+If the placeholder does not have a corresponding argument, the placeholder is
+not replaced.
+-->
+
+<p>&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x306B;&#x5BFE;&#x5FDC;&#x3059;&#x308B;&#x5F15;&#x6570;&#x304C;&#x7121;&#x3044;&#x5834;&#x5408;&#x3001;&#x305D;&#x306E;&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x306F;&#x7F6E;&#x63DB;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<pre><code>util.format(&apos;%s:%s&apos;, &apos;foo&apos;); // &apos;foo:%s&apos;</code></pre>
+<!--
+If there are more arguments than placeholders, the extra arguments are
+converted to strings with `util.inspect()` and these strings are concatenated,
+delimited by a space.
+-->
+
+<p>&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x5F15;&#x6570;&#x304C;&#x3042;&#x308B;&#x5834;&#x5408;&#x3001;&#x4F59;&#x3063;&#x305F;&#x5F15;&#x6570;&#x306F; <code>util.inspect()</code> &#x306B;&#x3088;&#x3063;&#x3066;
+&#x6587;&#x5B57;&#x5217;&#x5316;&#x3055;&#x308C;&#x3001;&#x305D;&#x308C;&#x3089;&#x306F;&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x533A;&#x5207;&#x308A;&#x3067;&#x9023;&#x7D50;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>util.format(&apos;%s:%s&apos;, &apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;); // &apos;foo:bar baz&apos;</code></pre>
+<!--
+If the first argument is not a format string then `util.format()` returns
+a string that is the concatenation of all its arguments separated by spaces.
+Each argument is converted to a string with `util.inspect()`.
+-->
+
+<p>&#x7B2C;&#x4E00;&#x5F15;&#x6570;&#x304C;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x6587;&#x5B57;&#x5217;&#x3067;&#x306F;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;<code>util.format()</code> &#x306F;&#x5168;&#x3066;&#x306E;&#x5F15;&#x6570;&#x3092;
+&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x533A;&#x5207;&#x308A;&#x3067;&#x9023;&#x7D50;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x3053;&#x306E;&#x5F15;&#x6570;&#x306F; <code>util.inspect()</code> &#x3067;&#x6587;&#x5B57;&#x5217;&#x306B;&#x5909;&#x63DB;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>util.format(1, 2, 3); // &apos;1 2 3&apos;</code></pre>
+<h2>util.debug(string)<span><a class="mark" href="#util_util_debug_string" id="util_util_debug_string">#</a></span></h2>
+<!--
+A synchronous output function. Will block the process and
+output `string` immediately to `stderr`.
+-->
+
+<p>&#x540C;&#x671F;&#x7684;&#x306A;&#x51FA;&#x529B;&#x95A2;&#x6570;&#x3067;&#x3059;&#x3002;
+&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x3066;&#x5373;&#x5EA7;&#x306B; <code>string</code> &#x3092; <code>stderr</code> &#x306B;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>require(&apos;util&apos;).debug(&apos;message on stderr&apos;);</code></pre>
+<h2>util.error([...])<span><a class="mark" href="#util_util_error" id="util_util_error">#</a></span></h2>
+<!--
+Same as `util.debug()` except this will output all arguments immediately to
+`stderr`.
+-->
+
+<p>&#x5168;&#x3066;&#x306E;&#x5F15;&#x6570;&#x3092;&#x3059;&#x3050;&#x306B; <code>stderr</code> &#x306B;&#x51FA;&#x529B;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x9664;&#x3044;&#x3066; <code>util.debug()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>util.puts([...])<span><a class="mark" href="#util_util_puts" id="util_util_puts">#</a></span></h2>
+<!--
+A synchronous output function. Will block the process and output all arguments
+to `stdout` with newlines after each argument.
+-->
+
+<p>&#x540C;&#x671F;&#x7684;&#x306A;&#x51FA;&#x529B;&#x95A2;&#x6570;&#x3067;&#x3059;&#x3002;
+&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x3066;&#x5373;&#x5EA7;&#x306B; <code>stdout</code> &#x306B;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x5404;&#x5F15;&#x6570;&#x306F;&#x6539;&#x884C;&#x304C;&#x4ED8;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>util.print([...])<span><a class="mark" href="#util_util_print" id="util_util_print">#</a></span></h2>
+<!--
+A synchronous output function. Will block the process, cast each argument to a
+string then output to `stdout`. Does not place newlines after each argument.
+-->
+
+<p>&#x540C;&#x671F;&#x7684;&#x306A;&#x51FA;&#x529B;&#x95A2;&#x6570;&#x3067;&#x3059;&#x3002;
+&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x3066;&#x3001;&#x5F15;&#x6570;&#x3092;&#x6587;&#x5B57;&#x5217;&#x306B;&#x5909;&#x63DB;&#x3057;&#x3066; <code>stdout</code> &#x306B;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x5404;&#x5F15;&#x6570;&#x306B;&#x6539;&#x884C;&#x306F;&#x4ED8;&#x52A0;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h2>util.log(string)<span><a class="mark" href="#util_util_log_string" id="util_util_log_string">#</a></span></h2>
+<!--
+Output with timestamp on `stdout`.
+-->
+
+<p>&#x30BF;&#x30A4;&#x30E0;&#x30B9;&#x30BF;&#x30F3;&#x30D7;&#x3068;&#x3068;&#x3082;&#x306B; <code>stdout</code> &#x3078;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>require(&apos;util&apos;).log(&apos;Timestamped message.&apos;);</code></pre>
+<h2>util.inspect(object, [options])<span><a class="mark" href="#util_util_inspect_object_options" id="util_util_inspect_object_options">#</a></span></h2>
+<!--
+Return a string representation of `object`, which is useful for debugging.
+-->
+
+<p>&#x30C7;&#x30D0;&#x30C3;&#x30B0;&#x3067;&#x6709;&#x7528;&#x306A;&#x3001;<code>object</code> &#x306E;&#x6587;&#x5B57;&#x5217;&#x8868;&#x73FE;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+An optional *options* object may be passed that alters certain aspects of the
+formatted string:
+-->
+
+<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <em>options</em> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3001;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x5316;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x306E;
+&#x7279;&#x5B9A;&#x306E;&#x5074;&#x9762;&#x3092;&#x5909;&#x66F4;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x6E21;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+ - `showHidden` - if `true` then the object's non-enumerable properties will be
+   shown too. Defaults to `false`.
+-->
+
+<ul>
+<li><code>showHidden</code> - <code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E; Enumerable &#x3067;&#x306A;&#x3044;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3082;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;</li>
+</ul>
+<!--
+ - `depth` - tells `inspect` how many times to recurse while formatting the
+   object. This is useful for inspecting large complicated objects. Defaults to
+   `2`. To make it recurse indefinitely pass `null`.
+-->
+
+<ul>
+<li><code>depth</code> - &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F55;&#x56DE;&#x518D;&#x5E30;&#x3059;&#x308B;&#x304B;&#x3092;
+<code>inspect</code> &#x306B;&#x4F1D;&#x3048;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x5DE8;&#x5927;&#x3067;&#x8907;&#x96D1;&#x306A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8ABF;&#x67FB;&#x3059;&#x308B;&#x5834;&#x5408;&#x306B;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>2</code> &#x3067;&#x3059;&#x3002;
+&#x7121;&#x9650;&#x306B;&#x518D;&#x5E30;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;<code>null</code> &#x3092;&#x6E21;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+ - `colors` - if `true`, then the output will be styled with ANSI color codes.
+   Defaults to `false`. Colors are customizable, see below.
+-->
+
+<ul>
+<li><code>colors</code> - <code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x51FA;&#x529B;&#x306F; ANSI &#x30AB;&#x30E9;&#x30FC;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x8272;&#x3065;&#x3051;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+&#x5F8C;&#x8FF0;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;&#x8272;&#x306F;&#x30AB;&#x30B9;&#x30BF;&#x30DE;&#x30A4;&#x30BA;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;</li>
+</ul>
+<!--
+ - `customInspect` - if `false`, then custom `inspect()` functions defined on the
+   objects being inspected won't be called. Defaults to `true`.
+-->
+
+<ul>
+<li><code>customInspect</code> - <code>false</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x72EC;&#x81EA;&#x306E; <code>inspect()</code> &#x95A2;&#x6570;&#x306F;
+&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;</li>
+</ul>
+<!--
+Example of inspecting all properties of the `util` object:
+-->
+
+<p><code>util</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x5168;&#x3066;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x8ABF;&#x67FB;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>var util = require(&apos;util&apos;);
+
+console.log(util.inspect(util, { showHidden: true, depth: null }));</code></pre>
+<h3>Customizing <code>util.inspect</code> colors<span><a class="mark" href="#util_customizing_util_inspect_colors" id="util_customizing_util_inspect_colors">#</a></span></h3>
+<!--
+Color output (if enabled) of `util.inspect` is customizable globally
+via `util.inspect.styles` and `util.inspect.colors` objects.
+-->
+
+<p><code>util.inspect</code> &#x304C;&#x51FA;&#x529B;&#x3059;&#x308B;&#x8272;&#x306F;&#x3001;(&#x6709;&#x52B9;&#x3067;&#x3042;&#x308C;&#x3070;) <code>util.inspect.styles</code> &#x304A;&#x3088;&#x3073;
+<code>util.inspect.colors</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x901A;&#x3058;&#x3066;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x306B;&#x30AB;&#x30B9;&#x30BF;&#x30DE;&#x30A4;&#x30BA;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;
+&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+`util.inspect.styles` is a map assigning each style a color
+from `util.inspect.colors`.
+Highlighted styles and their default values are:
+-->
+
+<p><code>util.inspect.styles</code> &#x306F;&#x5404;&#x30B9;&#x30BF;&#x30A4;&#x30EB;&#x3068; <code>util.inspect.colors</code> &#x306B;
+&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x8272;&#x3092;&#x5272;&#x308A;&#x5F53;&#x3066;&#x305F;&#x30DE;&#x30C3;&#x30D4;&#x30F3;&#x30B0;&#x3067;&#x3059;&#x3002;
+&#x5F37;&#x8ABF;&#x3055;&#x308C;&#x308B;&#x30B9;&#x30BF;&#x30A4;&#x30EB;&#x3068;&#x305D;&#x308C;&#x3089;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x306F;:
+
+</p>
+<!--
+ * `number` (yellow)
+ * `boolean` (yellow)
+ * `string` (green)
+ * `date` (magenta)
+ * `regexp` (red)
+ * `null` (bold)
+ * `undefined` (grey)
+ * `special` - only function at this time (cyan)
+ * `name` (intentionally no styling)
+-->
+
+<ul>
+<li><code>number</code> (&#x9EC4;)</li>
+<li><code>boolean</code> (&#x9EC4;)</li>
+<li><code>string</code> (&#x7DD1;)</li>
+<li><code>date</code> (&#x7D2B;)</li>
+<li><code>regexp</code> (&#x8D64;)</li>
+<li><code>null</code> (&#x592A;&#x5B57;)</li>
+<li><code>undefined</code> (&#x7070;)</li>
+<li><code>special</code> - only function at this time (&#x6C34;&#x8272;)</li>
+<li><code>name</code> (&#x610F;&#x56F3;&#x7684;&#x306B;&#x30B9;&#x30BF;&#x30A4;&#x30EB;&#x7121;&#x3057;)</li>
+</ul>
+<!--
+Predefined color codes are: `white`, `grey`, `black`, `blue`, `cyan`, 
+`green`, `magenta`, `red` and `yellow`.
+There are also `bold`, `italic`, `underline` and `inverse` codes.
+-->
+
+<p>&#x4E8B;&#x524D;&#x306B;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x8272;&#x306F;: <code>white</code>&#x3001;<code>grey</code>&#x3001;<code>black</code>&#x3001;<code>blue</code>&#x3001;<code>cyan</code>&#x3001;
+<code>green</code>&#x3001;<code>magenta</code>&#x3001;<code>red</code>&#x3001;&#x304A;&#x3088;&#x3073; <code>yellow</code> &#x3067;&#x3059;&#x3002;
+<code>bold</code>&#x3001;<code>italic</code>&#x3001;<code>underline</code>&#x3001;&#x304A;&#x3088;&#x3073; <code>inverse</code> &#x30B3;&#x30FC;&#x30C9;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Objects also may define their own `inspect(depth)` function which `util.inspect()`
+will invoke and use the result of when inspecting the object:
+-->
+
+<p>&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; <code>util.inspect()</code> &#x304B;&#x3089;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x81EA;&#x524D;&#x306E; <code>inspect(depth)</code>
+&#x95A2;&#x6570;&#x3092;&#x6301;&#x3064;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x3001;&#x305D;&#x306E;&#x7D50;&#x679C;&#x306F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8ABF;&#x67FB;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var util = require(&apos;util&apos;);
+
+var obj = { name: &apos;nate&apos; };
+obj.inspect = function(depth) {
+  return &apos;{&apos; + this.name + &apos;}&apos;;
+};
+
+util.inspect(obj);
+  // &quot;{nate}&quot;</code></pre>
+<h2>util.isArray(object)<span><a class="mark" href="#util_util_isarray_object" id="util_util_isarray_object">#</a></span></h2>
+<!--
+Returns `true` if the given "object" is an `Array`. `false` otherwise.
+-->
+
+<p><code>object</code> &#x304C;&#x914D;&#x5217;&#x306A;&#x3089; <code>true</code> &#x3092;&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306F; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var util = require(&apos;util&apos;);
+
+util.isArray([])
+  // true
+util.isArray(new Array)
+  // true
+util.isArray({})
+  // false</code></pre>
+<h2>util.isRegExp(object)<span><a class="mark" href="#util_util_isregexp_object" id="util_util_isregexp_object">#</a></span></h2>
+<!--
+Returns `true` if the given "object" is a `RegExp`. `false` otherwise.
+-->
+
+<p><code>object</code> &#x304C; <code>RegExp</code> &#x306A;&#x3089; <code>true</code> &#x3092;&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306A;&#x3089; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var util = require(&apos;util&apos;);
+
+util.isRegExp(/some regexp/)
+  // true
+util.isRegExp(new RegExp(&apos;another regexp&apos;))
+  // true
+util.isRegExp({})
+  // false</code></pre>
+<h2>util.isDate(object)<span><a class="mark" href="#util_util_isdate_object" id="util_util_isdate_object">#</a></span></h2>
+<!--
+Returns `true` if the given "object" is a `Date`. `false` otherwise.
+-->
+
+<p><code>object</code> &#x304C; <code>Date</code> &#x306A;&#x3089; <code>true</code> &#x3092;&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306A;&#x3089; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var util = require(&apos;util&apos;);
+
+util.isDate(new Date())
+  // true
+util.isDate(Date())
+  // false (without &apos;new&apos; returns a String)
+util.isDate({})
+  // false</code></pre>
+<h2>util.isError(object)<span><a class="mark" href="#util_util_iserror_object" id="util_util_iserror_object">#</a></span></h2>
+<!--
+Returns `true` if the given "object" is an `Error`. `false` otherwise.
+-->
+
+<p><code>object</code> &#x304C; <code>Error</code> &#x306A;&#x3089; <code>true</code> &#x3092;&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306A;&#x3089; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var util = require(&apos;util&apos;);
+
+util.isError(new Error())
+  // true
+util.isError(new TypeError())
+  // true
+util.isError({ name: &apos;Error&apos;, message: &apos;an error occurred&apos; })
+  // false</code></pre>
+<h2>util.pump(readableStream, writableStream, [callback])<span><a class="mark" href="#util_util_pump_readablestream_writablestream_callback" id="util_util_pump_readablestream_writablestream_callback">#</a></span></h2>
+<!--
+    Stability: 0 - Deprecated: Use readableStream.pipe(writableStream)
+-->
+
+<pre class="api_stability_0">Stability: 0 - Deprecated: <code>readableStream.pipe(writableStream)</code> &#x3092;&#x4F7F;&#x3063;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</pre><!--
+Read the data from `readableStream` and send it to the `writableStream`.
+When `writableStream.write(data)` returns `false` `readableStream` will be
+paused until the `drain` event occurs on the `writableStream`. `callback` gets
+an error as its only argument and is called when `writableStream` is closed or
+when an error occurs.
+-->
+
+<p><code>readableStream</code> &#x304B;&#x3089;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x8AAD;&#x307F;&#x3001;&#x305D;&#x308C; &#x3092;<code>writableStream</code> &#x306B;&#x9001;&#x308A;&#x307E;&#x3059;&#x3002;
+<code>writableStream.write(data)</code> &#x304C; <code>false</code> &#x3092;&#x8FD4;&#x3059;&#x5834;&#x5408;&#x3001;
+<code>writableStream</code> &#x304C; <code>drain</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x307E;&#x3067;&#x3001;
+<code>readableStream</code> &#x306F;&#x4E2D;&#x65AD;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>writableStream</code> &#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x308B;&#x304B;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3068;&#x3001;<code>callback</code> &#x306F; error &#x3092;&#x552F;&#x4E00;&#x306E;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>util.inherits(constructor, superConstructor)<span><a class="mark" href="#util_util_inherits_constructor_superconstructor" id="util_util_inherits_constructor_superconstructor">#</a></span></h2>
+<!--
+Inherit the prototype methods from one
+[constructor](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor)
+into another.  The prototype of `constructor` will be set to a new
+object created from `superConstructor`.
+-->
+
+<p>&#x3042;&#x308B;
+<a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor">&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;</a>
+&#x304B;&#x3089;&#x30D7;&#x30ED;&#x30C8;&#x30BF;&#x30A4;&#x30D7;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x7D99;&#x627F;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>constructor</code> &#x306E;&#x30D7;&#x30ED;&#x30C8;&#x30BF;&#x30A4;&#x30D7;&#x306F; <code>superConstructor</code> &#x304B;&#x3089;&#x4F5C;&#x3089;&#x308C;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+As an additional convenience, `superConstructor` will be accessible
+through the `constructor.super_` property.
+-->
+
+<p>&#x3055;&#x3089;&#x306A;&#x308B;&#x5229;&#x4FBF;&#x6027;&#x306E;&#x305F;&#x3081;&#x306B;&#x3001;<code>superConstructor</code> &#x306F; <code>constructor.super_</code>
+&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x901A;&#x3058;&#x3066;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var util = require(&quot;util&quot;);
+var events = require(&quot;events&quot;);
+
+function MyStream() {
+    events.EventEmitter.call(this);
+}
+
+util.inherits(MyStream, events.EventEmitter);
+
+MyStream.prototype.write = function(data) {
+    this.emit(&quot;data&quot;, data);
+}
+
+var stream = new MyStream();
+
+console.log(stream instanceof events.EventEmitter); // true
+console.log(MyStream.super_ === events.EventEmitter); // true
+
+stream.on(&quot;data&quot;, function(data) {
+    console.log(&apos;Received data: &quot;&apos; + data + &apos;&quot;&apos;);
+})
+stream.write(&quot;It works!&quot;); // Received data: &quot;It works!&quot;</code></pre>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

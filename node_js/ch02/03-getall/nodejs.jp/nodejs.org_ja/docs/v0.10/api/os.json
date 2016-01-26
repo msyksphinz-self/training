@@ -1,0 +1,166 @@
+{
+  &quot;source&quot;: &quot;doc/api/os.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;os&quot;,
+      &quot;name&quot;: &quot;os&quot;,
+      &quot;stability&quot;: 4,
+      &quot;stabilityText&quot;: &quot;API Frozen&quot;,
+      &quot;desc&quot;: &quot;<!--\nProvides a few basic operating-system related utility functions.\n-->\n&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x95A2;&#x9023;&#x3059;&#x308B;&#x57FA;&#x672C;&#x7684;&#x306A;&#x30E6;&#x30FC;&#x30C6;&#x30A3;&#x30EA;&#x30C6;&#x30A3;&#x95A2;&#x6570;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n<!--\nUse `require('os')` to access this module.\n-->\n\n<p><code>require(&apos;os&apos;)</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;os.tmpdir()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;tmpdir&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the operating system's default directory for temp files.\n-->\n\n<p>&#x4E00;&#x6642;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x305F;&#x3081;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.endianness()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;endianness&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the endianness of the CPU. Possible values are `\"BE\"` or `\"LE\"`.\n-->\n\n<p>CPU &#x306E;&#x30A8;&#x30F3;&#x30C7;&#x30A3;&#x30A2;&#x30F3; (&#x30D0;&#x30A4;&#x30C8;&#x30AA;&#x30FC;&#x30C0;&#x30FC;) &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3042;&#x308A;&#x5F97;&#x308B;&#x5024;&#x306F; <code>&quot;BE&quot;</code> &#x307E;&#x305F;&#x306F; <code>&quot;LE&quot;</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.hostname()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;hostname&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the hostname of the operating system.\n-->\n\n<p>&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.type()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;type&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the operating system name.\n-->\n\n<p>&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x540D;&#x524D;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.platform()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;platform&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the operating system platform.\n-->\n\n<p>&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x306E;&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.arch()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;arch&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the operating system CPU architecture.\n-->\n\n<p>&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E; CPU &#x30A2;&#x30FC;&#x30AD;&#x30C6;&#x30AF;&#x30C1;&#x30E3;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.release()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;release&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the operating system release.\n-->\n\n<p>&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x30EA;&#x30EA;&#x30FC;&#x30B9;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.uptime()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;uptime&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the system uptime in seconds.\n-->\n\n<p>&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x304C;&#x8D77;&#x52D5;&#x3057;&#x3066;&#x304B;&#x3089;&#x306E;&#x79D2;&#x6570;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.loadavg()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;loadavg&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns an array containing the 1, 5, and 15 minute load averages.\n-->\n\n<p>1 &#x5206;&#x3001;5 &#x5206;&#x3001;15 &#x5206;&#x9593;&#x306E;&#x30ED;&#x30FC;&#x30C9;&#x30A2;&#x30D9;&#x30EC;&#x30FC;&#x30B8;&#x3092;&#x542B;&#x3093;&#x3060;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe load average is a measure of system activity, calculated by the operating\nsystem and expressed as a fractional number.  As a rule of thumb, the load\naverage should ideally be less than the number of logical CPUs in the system.\n-->\n\n<p>&#x30ED;&#x30FC;&#x30C9;&#x30A2;&#x30D9;&#x30EC;&#x30FC;&#x30B8;&#x306F;&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x3088;&#x3063;&#x3066;&#x6E2C;&#x5B9A;&#x3055;&#x308C;&#x3066;&#x5C0F;&#x6570;&#x3067;&#x8868;&#x3055;&#x308C;&#x308B;\n&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x6D3B;&#x52D5;&#x306E;&#x6E2C;&#x5B9A;&#x5024;&#x3067;&#x3059;&#x3002;&#x7D4C;&#x9A13;&#x5247;&#x3068;&#x3057;&#x3066;&#x3001;&#x30ED;&#x30FC;&#x30C9;&#x30A2;&#x30D9;&#x30EC;&#x30FC;&#x30B8;&#x306F;&#x7406;&#x60F3;&#x7684;&#x306B;&#x306F;\n&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x8AD6;&#x7406; CPU &#x6570;&#x3088;&#x308A;&#x3082;&#x5C0F;&#x3055;&#x304F;&#x3042;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThe load average is a very UNIX-y concept; there is no real equivalent on\nWindows platforms.  That is why this function always returns `[0, 0, 0]` on\nWindows.\n-->\n\n<p>&#x30ED;&#x30FC;&#x30C9;&#x30A2;&#x30D9;&#x30EC;&#x30FC;&#x30B8;&#x306F;&#x3068;&#x3066;&#x3082; Unix &#x7684;&#x306A;&#x6982;&#x5FF5;&#x3067;&#x3059;; &#x305D;&#x308C;&#x3068;&#x5B8C;&#x5168;&#x306B;&#x5BFE;&#x5FDC;&#x3059;&#x308B;&#x3082;&#x306E;&#x306F;\nWindows &#x306B;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;&#x305D;&#x306E;&#x305F;&#x3081;&#x3001;Windows &#x3067;&#x306F;&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x5E38;&#x306B; <code>[0, 0, 0]</code>\n&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.totalmem()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;totalmem&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the total amount of system memory in bytes.\n-->\n\n<p>&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x5168;&#x4F53;&#x304C;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3044;&#x308B;&#x30E1;&#x30E2;&#x30EA;&#x306E;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.freemem()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;freemem&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns the amount of free system memory in bytes.\n-->\n\n<p>&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x5168;&#x4F53;&#x3067;&#x7A7A;&#x3044;&#x3066;&#x3044;&#x308B;&#x30E1;&#x30E2;&#x30EA;&#x306E;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.cpus()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;cpus&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns an array of objects containing information about each CPU/core\ninstalled: model, speed (in MHz), and times (an object containing the number of\nmilliseconds the CPU/core spent in: user, nice, sys, idle, and irq).\n-->\n\n<p>&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B; CPU/ &#x30B3;&#x30A2;&#x3054;&#x3068;&#x306E;&#x60C5;&#x5831;&#x3092;&#x542B;&#x3093;&#x3060;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x60C5;&#x5831;&#x306F;&#x30E2;&#x30C7;&#x30EB;&#x3001;&#x30B9;&#x30D4;&#x30FC;&#x30C9; (MHz)&#x3001;&#x305D;&#x3057;&#x3066;&#x6642;&#x9593; (CPU/&#x30B3;&#x30A2; &#x304C;&#x4F7F;&#x7528;&#x3057;&#x305F; user, nice, sys, idle, irq &#x306E;&#x30DF;&#x30EA;&#x79D2;&#x3092;&#x542B;&#x3093;&#x3060;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;) &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nExample inspection of os.cpus:\n-->\n\n<p>os.cpus &#x306E;&#x4F8B;:\n\n</p>\n<pre><code>[ { model: &apos;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&apos;,\n    speed: 2926,\n    times:\n     { user: 252020,\n       nice: 0,\n       sys: 30340,\n       idle: 1070356870,\n       irq: 0 } },\n  { model: &apos;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&apos;,\n    speed: 2926,\n    times:\n     { user: 306960,\n       nice: 0,\n       sys: 26980,\n       idle: 1071569080,\n       irq: 0 } },\n  { model: &apos;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&apos;,\n    speed: 2926,\n    times:\n     { user: 248450,\n       nice: 0,\n       sys: 21750,\n       idle: 1070919370,\n       irq: 0 } },\n  { model: &apos;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&apos;,\n    speed: 2926,\n    times:\n     { user: 256880,\n       nice: 0,\n       sys: 19430,\n       idle: 1070905480,\n       irq: 20 } },\n  { model: &apos;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&apos;,\n    speed: 2926,\n    times:\n     { user: 511580,\n       nice: 20,\n       sys: 40900,\n       idle: 1070842510,\n       irq: 0 } },\n  { model: &apos;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&apos;,\n    speed: 2926,\n    times:\n     { user: 291660,\n       nice: 0,\n       sys: 34360,\n       idle: 1070888000,\n       irq: 10 } },\n  { model: &apos;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&apos;,\n    speed: 2926,\n    times:\n     { user: 308260,\n       nice: 0,\n       sys: 55410,\n       idle: 1071129970,\n       irq: 880 } },\n  { model: &apos;Intel(R) Core(TM) i7 CPU         860  @ 2.80GHz&apos;,\n    speed: 2926,\n    times:\n     { user: 266450,\n       nice: 1480,\n       sys: 34920,\n       idle: 1072572010,\n       irq: 30 } } ]</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;os.networkInterfaces()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;networkInterfaces&quot;,
+          &quot;desc&quot;: &quot;<!--\nGet a list of network interfaces:\n-->\n\n<p>&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306E;&#x4E00;&#x89A7;&#x3092;&#x53D6;&#x5F97;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>{ lo0: \n   [ { address: &apos;::1&apos;, family: &apos;IPv6&apos;, internal: true },\n     { address: &apos;fe80::1&apos;, family: &apos;IPv6&apos;, internal: true },\n     { address: &apos;127.0.0.1&apos;, family: &apos;IPv4&apos;, internal: true } ],\n  en1: \n   [ { address: &apos;fe80::cabc:c8ff:feef:f996&apos;, family: &apos;IPv6&apos;,\n       internal: false },\n     { address: &apos;10.0.1.123&apos;, family: &apos;IPv4&apos;, internal: false } ],\n  vmnet1: [ { address: &apos;10.99.99.254&apos;, family: &apos;IPv4&apos;, internal: false } ],\n  vmnet8: [ { address: &apos;10.88.88.1&apos;, family: &apos;IPv4&apos;, internal: false } ],\n  ppp0: [ { address: &apos;10.2.0.231&apos;, family: &apos;IPv4&apos;, internal: false } ] }</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        }
+      ],
+      &quot;properties&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;os.EOL&quot;,
+          &quot;name&quot;: &quot;EOL&quot;,
+          &quot;desc&quot;: &quot;<!--\nA constant defining the appropriate End-of-line marker for the operating system.\n-->\n\n<p>&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x9069;&#x3057;&#x305F;&#x884C;&#x533A;&#x5207;&#x308A;&#x6587;&#x5B57;&#x3092;&#x5B9A;&#x7FA9;&#x3057;&#x305F;&#x5B9A;&#x6570;&#x3067;&#x3059;&#x3002;\n</p>\n&quot;
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;os&quot;
+    }
+  ]
+}

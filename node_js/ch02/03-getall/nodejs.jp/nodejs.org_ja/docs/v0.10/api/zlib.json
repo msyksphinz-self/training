@@ -1,0 +1,362 @@
+{
+  &quot;source&quot;: &quot;doc/api/zlib.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;Zlib&quot;,
+      &quot;name&quot;: &quot;zlib&quot;,
+      &quot;stability&quot;: 3,
+      &quot;stabilityText&quot;: &quot;Stable&quot;,
+      &quot;desc&quot;: &quot;<!--\nYou can access this module with:\n-->\n\n<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var zlib = require(&apos;zlib&apos;);</code></pre>\n<!--\nThis provides bindings to Gzip/Gunzip, Deflate/Inflate, and\nDeflateRaw/InflateRaw classes.  Each class takes the same options, and\nis a readable/writable Stream.\n-->\n\n<p>&#x3053;&#x308C;&#x306F; Gzip/Gunzip&#x3001;Deflate/Inflate&#x3001;&#x305D;&#x3057;&#x3066; DeflateRaw/InflateRaw\n&#x3078;&#x30D0;&#x30A4;&#x30F3;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3069;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3082;&#x540C;&#x3058;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x6301;&#x3064;&#x3001;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x304C;&#x53EF;&#x80FD;&#x306A;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x3059;&#x3002;\n\n</p>\n<h2>Examples</h2>\n<!--\nCompressing or decompressing a file can be done by piping an\nfs.ReadStream into a zlib stream, then into an fs.WriteStream.\n-->\n\n<p>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x5727;&#x7E2E;&#x304A;&#x3088;&#x3073;&#x89E3;&#x51CD;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;fs.ReadStream &#x304B;&#x3089; zlib &#x3078;&#x3001;\n&#x305D;&#x3057;&#x3066; fs.WriteStream &#x3078;&#x30D1;&#x30A4;&#x30D7;&#x3092;&#x3064;&#x306A;&#x3050;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;\n\n</p>\n<pre><code>var gzip = zlib.createGzip();\nvar fs = require(&apos;fs&apos;);\nvar inp = fs.createReadStream(&apos;input.txt&apos;);\nvar out = fs.createWriteStream(&apos;input.txt.gz&apos;);\n\ninp.pipe(gzip).pipe(out);</code></pre>\n<!--\nCompressing or decompressing data in one step can be done by using\nthe convenience methods.\n-->\n\n<p>&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x5727;&#x7E2E;&#x307E;&#x305F;&#x306F;&#x89E3;&#x51CD;&#x306F; <a href="\&quot;#convenience_Methods\&quot;">&#x7C21;&#x6613;&#x30E1;&#x30BD;&#x30C3;&#x30C9;</a>\n&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306B;&#x3088;&#x308A;&#x3001;&#x30EF;&#x30F3;&#x30B9;&#x30C6;&#x30C3;&#x30D7;&#x3067;&#x884C;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var input = &apos;.................................&apos;;\nzlib.deflate(input, function(err, buffer) {\n  if (!err) {\n    console.log(buffer.toString(&apos;base64&apos;));\n  }\n});\n\nvar buffer = new Buffer(&apos;eJzT0yMAAGTvBe8=&apos;, &apos;base64&apos;);\nzlib.unzip(buffer, function(err, buffer) {\n  if (!err) {\n    console.log(buffer.toString());\n  }\n});</code></pre>\n<!--\nTo use this module in an HTTP client or server, use the\n[accept-encoding](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3)\non requests, and the\n[content-encoding](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11)\nheader on responses.\n\n**Note: these examples are drastically simplified to show\nthe basic concept.**  Zlib encoding can be expensive, and the results\nought to be cached.  See [Memory Usage Tuning](#zlib_memory_usage_tuning)\nbelow for more information on the speed/memory/compression\ntradeoffs involved in zlib usage.\n-->\n\n<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092; HTTP &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3068;&#x30B5;&#x30FC;&#x30D0;&#x3067;&#x4F7F;&#x3046;&#x306B;&#x306F;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;\n<a href="\&quot;http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3\&quot;">accept-encoding</a>\n&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306B;\n<a href="\&quot;http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11\&quot;">content-encoding</a>\n&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p><strong>&#x6CE8;&#x610F;:\n&#x3053;&#x308C;&#x3089;&#x306E;&#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x306F;&#x57FA;&#x672C;&#x30B3;&#x30F3;&#x30BB;&#x30D7;&#x30C8;&#x3092;&#x898B;&#x305B;&#x308B;&#x305F;&#x3081;&#x306B;&#x3068;&#x3066;&#x3082;&#x5358;&#x7D14;&#x5316;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;</strong>\nZlib &#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F;&#x9AD8;&#x4FA1;&#x306A;&#x306E;&#x3067;&#x3001;&#x7D50;&#x679C;&#x306F;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;\nzlib&#x306E;&#x4F7F;&#x3044;&#x65B9;&#x306B;&#x95A2;&#x3059;&#x308B;&#x901F;&#x5EA6;&#xFF0F;&#x30E1;&#x30E2;&#x30EA;&#xFF0F;&#x5727;&#x7E2E;&#x7387;&#x306E;&#x30C8;&#x30EC;&#x30FC;&#x30C9;&#x30AA;&#x30D5;&#x306B;&#x3064;&#x3044;&#x3066;&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x306F;&#x3001;\n&#x5F8C;&#x8FF0;&#x306E; <a href="\&quot;#zlib_memory_usage_tuning\&quot;">Memory Usage Tuning</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<pre><code>// client request example\nvar zlib = require(&apos;zlib&apos;);\nvar http = require(&apos;http&apos;);\nvar fs = require(&apos;fs&apos;);\nvar request = http.get({ host: &apos;izs.me&apos;,\n                         path: &apos;/&apos;,\n                         port: 80,\n                         headers: { &apos;accept-encoding&apos;: &apos;gzip,deflate&apos; } });\nrequest.on(&apos;response&apos;, function(response) {\n  var output = fs.createWriteStream(&apos;izs.me_index.html&apos;);\n\n  switch (response.headers[&apos;content-encoding&apos;]) {\n    // or, just use zlib.createUnzip() to handle both cases\n    case &apos;gzip&apos;:\n      response.pipe(zlib.createGunzip()).pipe(output);\n      break;\n    case &apos;deflate&apos;:\n      response.pipe(zlib.createInflate()).pipe(output);\n      break;\n    default:\n      response.pipe(output);\n      break;\n  }\n});\n\n// server example\n// Running a gzip operation on every request is quite expensive.\n// It would be much more efficient to cache the compressed buffer.\nvar zlib = require(&apos;zlib&apos;);\nvar http = require(&apos;http&apos;);\nvar fs = require(&apos;fs&apos;);\nhttp.createServer(function(request, response) {\n  var raw = fs.createReadStream(&apos;index.html&apos;);\n  var acceptEncoding = request.headers[&apos;accept-encoding&apos;];\n  if (!acceptEncoding) {\n    acceptEncoding = &apos;&apos;;\n  }\n\n  // Note: this is not a conformant accept-encoding parser.\n  // See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3\n  if (acceptEncoding.match(/\\bdeflate\\b/)) {\n    response.writeHead(200, { &apos;content-encoding&apos;: &apos;deflate&apos; });\n    raw.pipe(zlib.createDeflate()).pipe(response);\n  } else if (acceptEncoding.match(/\\bgzip\\b/)) {\n    response.writeHead(200, { &apos;content-encoding&apos;: &apos;gzip&apos; });\n    raw.pipe(zlib.createGzip()).pipe(response);\n  } else {\n    response.writeHead(200, {});\n    raw.pipe(response);\n  }\n}).listen(1337);</code></pre>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;zlib.createGzip([options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createGzip&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new [Gzip](#zlib_class_zlib_gzip) object with an\n[options](#zlib_options).\n-->\n\n<p><a href="\&quot;#zlib_options\&quot;">options</a> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x3089;&#x308C;&#x305F;&#x65B0;&#x3057;&#x3044;\n<a href="\&quot;#zlib_class_zlib_gzip\&quot;">Gzip</a> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.createGunzip([options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createGunzip&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new [Gunzip](#zlib_class_zlib_gunzip) object with an\n[options](#zlib_options).\n-->\n\n<p><a href="\&quot;#zlib_options\&quot;">options</a> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x3089;&#x308C;&#x305F;&#x65B0;&#x3057;&#x3044;\n<a href="\&quot;#zlib_class_zlib_gunzip\&quot;">Gunzip</a> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.createDeflate([options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createDeflate&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new [Deflate](#zlib_class_zlib_deflate) object with an\n[options](#zlib_options).\n-->\n\n<p><a href="\&quot;#zlib_options\&quot;">options</a> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x3089;&#x308C;&#x305F;&#x65B0;&#x3057;&#x3044;\n<a href="\&quot;#zlib_class_zlib_deflate\&quot;">Deflate</a> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.createInflate([options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createInflate&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new [Inflate](#zlib_class_zlib_inflate) object with an\n[options](#zlib_options).\n-->\n\n<p><a href="\&quot;#zlib_options\&quot;">options</a> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x3089;&#x308C;&#x305F;&#x65B0;&#x3057;&#x3044;\n<a href="\&quot;#zlib_class_zlib_inflate\&quot;">Inflate</a> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.createDeflateRaw([options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createDeflateRaw&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new [DeflateRaw](#zlib_class_zlib_deflateraw) object with an\n[options](#zlib_options).\n\n-->\n\n<p><a href="\&quot;#zlib_options\&quot;">options</a> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x3089;&#x308C;&#x305F;&#x65B0;&#x3057;&#x3044;\n<a href="\&quot;#zlib_class_zlib_deflateraw\&quot;">DeflateRaw</a> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.createInflateRaw([options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createInflateRaw&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new [InflateRaw](#zlib_class_zlib_inflateraw) object with an\n[options](#zlib_options).\n\n-->\n\n<p><a href="\&quot;#zlib_options\&quot;">options</a> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x3089;&#x308C;&#x305F;&#x65B0;&#x3057;&#x3044;\n<a href="\&quot;#zlib_class_zlib_inflateraw\&quot;">InflateRaw</a> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.createUnzip([options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createUnzip&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new [Unzip](#zlib_class_zlib_unzip) object with an\n[options](#zlib_options).\n-->\n\n<p><a href="\&quot;#zlib_options\&quot;">options</a> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x3089;&#x308C;&#x305F;&#x65B0;&#x3057;&#x3044;\n<a href="\&quot;#zlib_class_zlib_unzip\&quot;">Unzip</a> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.deflate(buf, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;deflate&quot;,
+          &quot;desc&quot;: &quot;<!--\nCompress a string with Deflate.\n-->\n\n<p>Deflate &#x3067;&#x6587;&#x5B57;&#x5217;&#x3092;&#x5727;&#x7E2E;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;buf&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.deflateRaw(buf, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;deflateRaw&quot;,
+          &quot;desc&quot;: &quot;<!--\nCompress a string with DeflateRaw.\n-->\n\n<p>DeflateRaw &#x3067;&#x6587;&#x5B57;&#x5217;&#x3092;&#x5727;&#x7E2E;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;buf&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.gzip(buf, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;gzip&quot;,
+          &quot;desc&quot;: &quot;<!--\nCompress a string with Gzip.\n-->\n\n<p>Gzip &#x3067;&#x6587;&#x5B57;&#x5217;&#x3092;&#x5727;&#x7E2E;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;buf&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.gunzip(buf, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;gunzip&quot;,
+          &quot;desc&quot;: &quot;<!--\nDecompress a raw Buffer with Gunzip.\n-->\n\n<p>Gunzip &#x3067;&#x751F;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x89E3;&#x51CD;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;buf&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.inflate(buf, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;inflate&quot;,
+          &quot;desc&quot;: &quot;<!--\nDecompress a raw Buffer with Inflate.\n-->\n\n<p>Infrate &#x3067;&#x751F;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x89E3;&#x51CD;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;buf&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.inflateRaw(buf, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;inflateRaw&quot;,
+          &quot;desc&quot;: &quot;<!--\nDecompress a raw Buffer with InflateRaw.\n-->\n\n<p>InflateRaw &#x3067;&#x751F;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x89E3;&#x51CD;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;buf&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;zlib.unzip(buf, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;unzip&quot;,
+          &quot;desc&quot;: &quot;<!--\nDecompress a raw Buffer with Unzip.\n-->\n\n<p>Unzip &#x3067;&#x751F;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x89E3;&#x51CD;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;buf&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;classes&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Class: zlib.Zlib&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;zlib.Zlib&quot;,
+          &quot;desc&quot;: &quot;<!--\nNot exported by the `zlib` module. It is documented here because it is the base\nclass of the compressor/decompressor classes.\n-->\n\n<p><code>zlib</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x3088;&#x3063;&#x3066;&#x516C;&#x958B;&#x3055;&#x308C;&#x3066;&#x306F;&#x3044;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3053;&#x3053;&#x3067;&#x6587;&#x66F8;&#x5316;&#x3059;&#x308B;&#x306E;&#x306F;&#x5727;&#x7E2E;&#xFF0F;&#x89E3;&#x51CD;&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x30D9;&#x30FC;&#x30B9;&#x30AF;&#x30E9;&#x30B9;&#x3060;&#x304B;&#x3089;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;zlib.flush(callback)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;flush&quot;,
+              &quot;desc&quot;: &quot;<!--\nFlush pending data. Don't call this frivolously, premature flushes negatively\nimpact the effectiveness of the compression algorithm.\n-->\n\n<p>&#x4FDD;&#x7559;&#x4E2D;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x3092;&#x6C17;&#x8EFD;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3001;&#x6027;&#x6025;&#x306A;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x306F;&#x5727;&#x7E2E;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306B;\n&#x30CD;&#x30AC;&#x30C6;&#x30A3;&#x30D6;&#x306A;&#x5F71;&#x97FF;&#x3092;&#x4E0E;&#x3048;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;callback&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;zlib.reset()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;reset&quot;,
+              &quot;desc&quot;: &quot;<!--\nReset the compressor/decompressor to factory defaults. Only applicable to\nthe inflate and deflate algorithms.\n-->\n\n<p>&#x5727;&#x7E2E;&#xFF0F;&#x89E3;&#x51CD;&#x3092;&#x30D5;&#x30A1;&#x30AF;&#x30C8;&#x30EA;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306B;&#x30EA;&#x30BB;&#x30C3;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;\ninfrate &#x304A;&#x3088;&#x3073; defrate &#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306B;&#x306E;&#x307F;&#x52B9;&#x679C;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: zlib.Gzip&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;zlib.Gzip&quot;,
+          &quot;desc&quot;: &quot;<!--\nCompress data using gzip.\n-->\n\n<p>gzip &#x3092;&#x4F7F;&#x3063;&#x3066;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5727;&#x7E2E;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: zlib.Gunzip&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;zlib.Gunzip&quot;,
+          &quot;desc&quot;: &quot;<!--\nDecompress a gzip stream.\n-->\n\n<p>gzip &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x89E3;&#x51CD;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: zlib.Deflate&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;zlib.Deflate&quot;,
+          &quot;desc&quot;: &quot;<!--\nCompress data using deflate.\n-->\n\n<p>deflate &#x3092;&#x4F7F;&#x3063;&#x3066;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5727;&#x7E2E;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: zlib.Inflate&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;zlib.Inflate&quot;,
+          &quot;desc&quot;: &quot;<!--\nDecompress a deflate stream.\n-->\n\n<p>deflate &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x89E3;&#x51CD;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: zlib.DeflateRaw&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;zlib.DeflateRaw&quot;,
+          &quot;desc&quot;: &quot;<!--\nCompress data using deflate, and do not append a zlib header.\n-->\n\n<p>deflate &#x3092;&#x4F7F;&#x3063;&#x3066;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5727;&#x7E2E;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;zlib &#x30D8;&#x30C3;&#x30C0;&#x3092;&#x4ED8;&#x52A0;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: zlib.InflateRaw&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;zlib.InflateRaw&quot;,
+          &quot;desc&quot;: &quot;<!--\nDecompress a raw deflate stream.\n-->\n\n<p>&#x751F;&#x306E; deflate &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x89E3;&#x51CD;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: zlib.Unzip&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;zlib.Unzip&quot;,
+          &quot;desc&quot;: &quot;<!--\nDecompress either a Gzip- or Deflate-compressed stream by auto-detecting\nthe header.\n-->\n\n<p>Gzip &#x307E;&#x305F;&#x306F; Deflate &#x3067;&#x5727;&#x7E2E;&#x3055;&#x308C;&#x305F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x30D8;&#x30C3;&#x30C0;&#x3067;&#x81EA;&#x52D5;&#x5224;&#x5225;&#x3057;&#x3066;&#x89E3;&#x51CD;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        }
+      ],
+      &quot;miscs&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Convenience Methods&quot;,
+          &quot;name&quot;: &quot;Convenience Methods&quot;,
+          &quot;type&quot;: &quot;misc&quot;,
+          &quot;desc&quot;: &quot;<!--\nAll of these take a string or buffer as the first argument, and call the\nsupplied callback with `callback(error, result)`.  The\ncompression/decompression engine is created using the default settings\nin all convenience methods.  To supply different options, use the\nzlib classes directly.\n-->\n\n<p>&#x3053;&#x308C;&#x3089;&#x306F;&#x5168;&#x3066;&#x7B2C; 1 &#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308A;&#x3001;\n&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF; <code>callback(error, result)</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x5168;&#x3066;&#x306E;&#x7C21;&#x6613;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3067;&#x3001;&#x5727;&#x7E2E;&#x30FB;&#x89E3;&#x51CD;&#x30A8;&#x30F3;&#x30B8;&#x30F3;&#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x3067;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x7570;&#x306A;&#x3063;&#x305F;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x4E0E;&#x3048;&#x308B;&#x306B;&#x306F;&#x3001;zlib &#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Options&quot;,
+          &quot;name&quot;: &quot;Options&quot;,
+          &quot;type&quot;: &quot;misc&quot;,
+          &quot;desc&quot;: &quot;<!--\nEach class takes an options object.  All options are optional.  (The\nconvenience methods use the default settings for all options.)\n-->\n\n<p>&#x3069;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3082;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x5168;&#x3066;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x4EFB;&#x610F;&#x3067;&#x3059;\n(&#x7C21;&#x6613;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5168;&#x3066;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;)&#x3002;\n\n</p>\n<!--\nNote that some options are only relevant when compressing, and are\nignored by the decompression classes.\n-->\n\n<p>&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x5727;&#x7E2E;&#x306B;&#x3060;&#x3051;&#x95A2;&#x9023;&#x3057;&#x3001;\n&#x89E3;&#x51CD;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\n* flush (default: `zlib.Z_NO_FLUSH`)\n* chunkSize (default: 16*1024)\n* windowBits\n* level (compression only)\n* memLevel (compression only)\n* strategy (compression only)\n* dictionary (deflate/inflate only, empty dictionary by default)\n-->\n\n<ul>\n<li>flush (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;: <code>zlib.Z_NO_FLUSH</code>)</li>\n<li>chunkSize (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;: 16*1024)</li>\n<li>windowBits</li>\n<li>level (&#x5727;&#x7E2E;&#x306E;&#x307F;)</li>\n<li>memLevel (&#x5727;&#x7E2E;&#x306E;&#x307F;)</li>\n<li>strategy (&#x5727;&#x7E2E;&#x306E;&#x307F;)</li>\n<li>dictionary (deflate/inflate &#x306E;&#x307F;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F;&#x7A7A;&#x306E;&#x8F9E;&#x66F8;&#x3067;&#x3059;)</li>\n</ul>\n<!--\nSee the description of `deflateInit2` and `inflateInit2` at\n<http://zlib.net/manual.html#Advanced> for more information on these.\n-->\n\n<p>&#x3053;&#x308C;&#x3089;&#x306E;&#x8A73;&#x7D30;&#x306F; <a href="\&quot;http://zlib.net/manual.html#Advanced\&quot;">http://zlib.net/manual.html#Advanced</a> &#x306E;\n<code>deflateInit2</code> &#x304A;&#x3088;&#x3073; <code>inflateInit2</code> &#x306E;&#x8AAC;&#x660E;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Memory Usage Tuning&quot;,
+          &quot;name&quot;: &quot;Memory Usage Tuning&quot;,
+          &quot;type&quot;: &quot;misc&quot;,
+          &quot;desc&quot;: &quot;<!--\nFrom `zlib/zconf.h`, modified to node's usage:\n\nThe memory requirements for deflate are (in bytes):\n-->\n\n<p>node &#x306F; <code>zlib/zconf.h</code> &#x3092;&#x5909;&#x66F4;&#x3057;&#x3066;&#x4F7F;&#x3063;&#x3066;&#x3044;&#x307E;&#x3059;:\n\n</p>\n<pre><code>(1 &lt;&lt; (windowBits+2)) +  (1 &lt;&lt; (memLevel+9))</code></pre>\n<p>&#x3059;&#x306A;&#x308F;&#x3061;: windowBits = 15 &#x306E;&#x5834;&#x5408; 128K + \nmemLevel = 8 &#x306E;&#x5834;&#x5408; 128K (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;) &#x306B;&#x52A0;&#x3048;&#x3066;&#x6570;&#x30AD;&#x30ED;&#x30D0;&#x30A4;&#x30C8;&#x304C;\n&#x5C0F;&#x3055;&#x306A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x8981;&#x6C42;&#x3055;&#x308C;&#x308B;&#x30E1;&#x30E2;&#x30EA;&#x3092; 256K &#x304B;&#x3089; 128K &#x3078;&#x7E2E;&#x5C0F;&#x3057;&#x305F;&#x3051;&#x308C;&#x3070;&#x3001;\n&#x6B21;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;:\n\n</p>\n<pre><code>{ windowBits: 14, memLevel: 7 }</code></pre>\n<!--\nOf course this will generally degrade compression (there's no free lunch).\n\nThe memory requirements for inflate are (in bytes)\n-->\n\n<p>&#x3082;&#x3061;&#x308D;&#x3093;&#x3001;&#x3053;&#x308C;&#x306F;&#x5727;&#x7E2E;&#x7387;&#x3092;&#x60AA;&#x5316;&#x3057;&#x307E;&#x3059; (&#x305F;&#x3060;&#x98EF;&#x306F;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;)&#x3002;\n\n\n</p>\n<pre><code>1 &lt;&lt; windowBits</code></pre>\n<p>&#x3053;&#x306E;&#x5834;&#x5408;&#x3001;windowBits=15 (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;) &#x306E;&#x5834;&#x5408; 32K &#x306B;&#x52A0;&#x3048;&#x3066;&#x6570;&#x30AD;&#x30ED;&#x30D0;&#x30A4;&#x30C8;&#x304C;\n&#x5C0F;&#x3055;&#x306A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x3053;&#x308C;&#x306F;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024; 16K &#x306E; <code>chunkSize</code> &#x3067;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30B5;&#x30A4;&#x30BA;&#x306E;&#x5185;&#x90E8;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>zlib &#x306E;&#x5727;&#x7E2E;&#x901F;&#x5EA6;&#x306F; <code>level</code> &#x306E;&#x8A2D;&#x5B9A;&#x3067;&#x5287;&#x7684;&#x306B;&#x5909;&#x5316;&#x3057;&#x307E;&#x3059;\n&#x9AD8;&#x30EC;&#x30D9;&#x30EB;&#x306B;&#x3059;&#x308B;&#x3068;&#x3088;&#x308A;&#x5727;&#x7E2E;&#x3067;&#x304D;&#x307E;&#x3059;&#x304C;&#x3001;&#x5B8C;&#x4E86;&#x307E;&#x3067;&#x306E;&#x6642;&#x9593;&#x304C;&#x9577;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x4F4E;&#x30EC;&#x30D9;&#x30EB;&#x306B;&#x3059;&#x308B;&#x3068;&#x3042;&#x307E;&#x308A;&#x5727;&#x7E2E;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x304C;&#x3001;&#x9AD8;&#x901F;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x4E00;&#x822C;&#x7684;&#x306B;&#x3001;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x3088;&#x308A;&#x591A;&#x304F;&#x4F7F;&#x3046;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x3059;&#x308B;&#x3068; node &#x304C; zlib &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x56DE;&#x6570;&#x304C;\n&#x5C11;&#x306A;&#x304F;&#x306A;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x3001;\n&#x4E00;&#x56DE;&#x306E; <code>write</code> &#x64CD;&#x4F5C;&#x3067;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x51E6;&#x7406;&#x3067;&#x304D;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x3042;&#x30B9;&#x30D4;&#x30FC;&#x30C9;&#x306B;&#x5F71;&#x97FF;&#x3059;&#x308B;&#x3082;&#x3046;&#x4E00;&#x3064;&#x306E;&#x30D5;&#x30A1;&#x30AF;&#x30BF;&#x3067;&#x3001;&#x30E1;&#x30E2;&#x30EA;&#x4F7F;&#x7528;&#x91CF;&#x3092;&#x72A0;&#x7272;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;that is: 128K for windowBits&quot;: &quot;15  +  128K for memLevel = 8\n(default values) plus a few kilobytes for small objects.\n\nFor example, if you want to reduce\nthe default memory requirements from 256K to 128K, set the options to:&quot;,
+          &quot;that is, 32K for windowBits&quot;: &quot;15 (default value) plus a few kilobytes\nfor small objects.\n\nThis is in addition to a single internal output slab buffer of size\n`chunkSize`, which defaults to 16K.\n\nThe speed of zlib compression is affected most dramatically by the\n`level` setting.  A higher level will result in better compression, but\nwill take longer to complete.  A lower level will result in less\ncompression, but will be much faster.\n\nIn general, greater memory usage options will mean that node has to make\nfewer calls to zlib, since it&apos;ll be able to process more data in a\nsingle `write` operation.  So, this is another factor that affects the\nspeed, at the cost of memory usage.&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Constants&quot;,
+          &quot;name&quot;: &quot;Constants&quot;,
+          &quot;type&quot;: &quot;misc&quot;,
+          &quot;desc&quot;: &quot;<!--\nAll of the constants defined in zlib.h are also defined on\n`require('zlib')`.\nIn the normal course of operations, you will not need to ever set any of\nthese.  They are documented here so that their presence is not\nsurprising.  This section is taken almost directly from the [zlib\ndocumentation](http://zlib.net/manual.html#Constants).  See\n<http://zlib.net/manual.html#Constants> for more details.\n-->\n\n<p>zlib.h &#x306B;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x5B9A;&#x6570;&#x306F; <code>require(&apos;zlib&apos;)</code> &#x3067;&#x3082;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x901A;&#x5E38;&#x306E;&#x4F7F;&#x3044;&#x65B9;&#x3067;&#x306F;&#x3053;&#x308C;&#x3089;&#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x305D;&#x308C;&#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x9A5A;&#x304B;&#x308C;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3001;&#x3053;&#x308C;&#x3089;&#x306F;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;&#x5316;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30BB;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x307B;&#x3068;&#x3093;&#x3069;&#x306F;\n<a href="\&quot;http://zlib.net/manual.html#Constants\&quot;">zlib documentation</a>\n&#x304B;&#x3089;&#x76F4;&#x63A5;&#x5F97;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n&#x3088;&#x308A;&#x8A73;&#x7D30;&#x306F; <a href="\&quot;http://zlib.net/manual.html#Constants\&quot;">http://zlib.net/manual.html#Constants</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nAllowed flush values.\n-->\n\n<p>&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x5024;&#x3002;\n\n</p>\n<ul>\n<li><code>zlib.Z_NO_FLUSH</code></li>\n<li><code>zlib.Z_PARTIAL_FLUSH</code></li>\n<li><code>zlib.Z_SYNC_FLUSH</code></li>\n<li><code>zlib.Z_FULL_FLUSH</code></li>\n<li><code>zlib.Z_FINISH</code></li>\n<li><code>zlib.Z_BLOCK</code></li>\n<li><code>zlib.Z_TREES</code></li>\n</ul>\n<!--\nReturn codes for the compression/decompression functions. Negative\nvalues are errors, positive values are used for special but normal\nevents.\n-->\n\n<p>&#x5727;&#x7E2E;&#xFF0F;&#x89E3;&#x51CD;&#x95A2;&#x6570;&#x306E;&#x30EA;&#x30BF;&#x30FC;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3002;\n&#x8CA0;&#x6570;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#x3001;&#x6B63;&#x6570;&#x306F;&#x6B63;&#x5E38;&#x306A;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x7279;&#x5225;&#x306A;&#x5834;&#x5408;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<ul>\n<li><code>zlib.Z_OK</code></li>\n<li><code>zlib.Z_STREAM_END</code></li>\n<li><code>zlib.Z_NEED_DICT</code></li>\n<li><code>zlib.Z_ERRNO</code></li>\n<li><code>zlib.Z_STREAM_ERROR</code></li>\n<li><code>zlib.Z_DATA_ERROR</code></li>\n<li><code>zlib.Z_MEM_ERROR</code></li>\n<li><code>zlib.Z_BUF_ERROR</code></li>\n<li><code>zlib.Z_VERSION_ERROR</code></li>\n</ul>\n<!--\nCompression levels.\n-->\n\n<p>&#x5727;&#x7E2E;&#x30EC;&#x30D9;&#x30EB;&#x3002;\n\n</p>\n<ul>\n<li><code>zlib.Z_NO_COMPRESSION</code></li>\n<li><code>zlib.Z_BEST_SPEED</code></li>\n<li><code>zlib.Z_BEST_COMPRESSION</code></li>\n<li><code>zlib.Z_DEFAULT_COMPRESSION</code></li>\n</ul>\n<!--\nCompression strategy.\n-->\n\n<p>&#x5727;&#x7E2E;&#x30B9;&#x30C8;&#x30E9;&#x30C6;&#x30B8;&#x3002;\n\n</p>\n<ul>\n<li><code>zlib.Z_FILTERED</code></li>\n<li><code>zlib.Z_HUFFMAN_ONLY</code></li>\n<li><code>zlib.Z_RLE</code></li>\n<li><code>zlib.Z_FIXED</code></li>\n<li><code>zlib.Z_DEFAULT_STRATEGY</code></li>\n</ul>\n<!--\nPossible values of the data_type field.\n-->\n\n<p>data_type &#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x5024;&#x3002;\n\n</p>\n<ul>\n<li><code>zlib.Z_BINARY</code></li>\n<li><code>zlib.Z_TEXT</code></li>\n<li><code>zlib.Z_ASCII</code></li>\n<li><code>zlib.Z_UNKNOWN</code></li>\n</ul>\n<!--\nThe deflate compression method (the only one supported in this version).\n-->\n\n<p>deflate &#x306E;&#x5727;&#x7E2E;&#x65B9;&#x6CD5; (&#x3053;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x306F;&#x4E00;&#x3064;&#x3060;&#x3051;&#x304C;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;)&#x3002;\n\n</p>\n<ul>\n<li><code>zlib.Z_DEFLATED</code></li>\n</ul>\n<!--\nFor initializing zalloc, zfree, opaque.\n-->\n\n<p>zalloc&#x3001;zfree&#x3001;opaque &#x306E;&#x521D;&#x671F;&#x5316;&#x7528;&#x3002;\n\n</p>\n<ul>\n<li><code>zlib.Z_NULL</code></li>\n</ul>\n&quot;
+        }
+      ],
+      &quot;that is: 128K for windowBits&quot;: &quot;15  +  128K for memLevel = 8\n(default values) plus a few kilobytes for small objects.\n\nFor example, if you want to reduce\nthe default memory requirements from 256K to 128K, set the options to:&quot;,
+      &quot;that is, 32K for windowBits&quot;: &quot;15 (default value) plus a few kilobytes\nfor small objects.\n\nThis is in addition to a single internal output slab buffer of size\n`chunkSize`, which defaults to 16K.\n\nThe speed of zlib compression is affected most dramatically by the\n`level` setting.  A higher level will result in better compression, but\nwill take longer to complete.  A lower level will result in less\ncompression, but will be much faster.\n\nIn general, greater memory usage options will mean that node has to make\nfewer calls to zlib, since it&apos;ll be able to process more data in a\nsingle `write` operation.  So, this is another factor that affects the\nspeed, at the cost of memory usage.&quot;,
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;Zlib&quot;
+    }
+  ]
+}

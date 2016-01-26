@@ -1,0 +1,1326 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>process Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/process.html">
+</head>
+<body class="alt apidoc" id="api-section-process">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="process.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#process_process">process</a><ul>
+<li><a href="#process_event_exit">Event: &apos;exit&apos;</a></li>
+<li><a href="#process_event_uncaughtexception">Event: &apos;uncaughtException&apos;</a></li>
+<li><a href="#process_signal_events">Signal Events</a></li>
+<li><a href="#process_process_stdout">process.stdout</a></li>
+<li><a href="#process_process_stderr">process.stderr</a></li>
+<li><a href="#process_process_stdin">process.stdin</a></li>
+<li><a href="#process_process_argv">process.argv</a></li>
+<li><a href="#process_process_execpath">process.execPath</a></li>
+<li><a href="#process_process_execargv">process.execArgv</a></li>
+<li><a href="#process_process_abort">process.abort()</a></li>
+<li><a href="#process_process_chdir_directory">process.chdir(directory)</a></li>
+<li><a href="#process_process_cwd">process.cwd()</a></li>
+<li><a href="#process_process_env">process.env</a></li>
+<li><a href="#process_process_exit_code">process.exit([code])</a></li>
+<li><a href="#process_process_getgid">process.getgid()</a></li>
+<li><a href="#process_process_setgid_id">process.setgid(id)</a></li>
+<li><a href="#process_process_getuid">process.getuid()</a></li>
+<li><a href="#process_process_setuid_id">process.setuid(id)</a></li>
+<li><a href="#process_process_getgroups">process.getgroups()</a></li>
+<li><a href="#process_process_setgroups_groups">process.setgroups(groups)</a></li>
+<li><a href="#process_process_initgroups_user_extra_group">process.initgroups(user, extra_group)</a></li>
+<li><a href="#process_process_version">process.version</a></li>
+<li><a href="#process_process_versions">process.versions</a></li>
+<li><a href="#process_process_config">process.config</a></li>
+<li><a href="#process_process_kill_pid_signal">process.kill(pid, [signal])</a></li>
+<li><a href="#process_process_pid">process.pid</a></li>
+<li><a href="#process_process_title">process.title</a></li>
+<li><a href="#process_process_arch">process.arch</a></li>
+<li><a href="#process_process_platform">process.platform</a></li>
+<li><a href="#process_process_memoryusage">process.memoryUsage()</a></li>
+<li><a href="#process_process_nexttick_callback">process.nextTick(callback)</a></li>
+<li><a href="#process_process_maxtickdepth">process.maxTickDepth</a></li>
+<li><a href="#process_process_umask_mask">process.umask([mask])</a></li>
+<li><a href="#process_process_uptime">process.uptime()</a></li>
+<li><a href="#process_process_hrtime">process.hrtime()</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>process<span><a class="mark" href="#process_process" id="process_process">#</a></span></h1>
+<!-- type=global -->
+
+<!--
+The `process` object is a global object and can be accessed from anywhere.
+It is an instance of [EventEmitter][].
+-->
+
+<p><code>process</code> &#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3001;&#x3069;&#x3053;&#x304B;&#x3089;&#x3067;&#x3082;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F; <a href="events.html#events_class_events_eventemitter">EventEmitter</a> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h2>Event: &apos;exit&apos;<span><a class="mark" href="#process_event_exit" id="process_event_exit">#</a></span></h2>
+<!--
+Emitted when the process is about to exit. There is no way to prevent the
+exiting of the event loop at this point, and once all `exit` listeners have
+finished running the process will exit. Therefore you **must** only perform
+**synchronous** operations in this handler. This is a good hook to perform
+checks on the module's state (like for unit tests). The callback takes one
+argument, the code the process is exiting with.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x3088;&#x3046;&#x3068;&#x3057;&#x3066;&#x3044;&#x308B;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x4F4D;&#x7F6E;&#x304B;&#x3089;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x3092;&#x629C;&#x3051;&#x308B;&#x3053;&#x3068;&#x3092;&#x9632;&#x3050;&#x65B9;&#x6CD5;&#x306F;&#x306A;&#x304F;&#x3001;&#x5168;&#x3066;&#x306E; <code>&apos;exit&apos;</code>
+&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x306E;&#x5B9F;&#x884C;&#x304C;&#x5B8C;&#x4E86;&#x3059;&#x308B;&#x3068;&#x3001;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x5F93;&#x3063;&#x3066;&#x3001;&#x3053;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x3067;&#x3067;&#x304D;&#x308B;&#x3053;&#x3068;&#x306F; <strong>&#x540C;&#x671F;</strong> &#x64CD;&#x4F5C; <strong>&#x3060;&#x3051;</strong> &#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; (&#x30E6;&#x30CB;&#x30C3;&#x30C8;&#x30C6;&#x30B9;&#x30C8;&#x306E;&#x3088;&#x3046;&#x306B;) &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x72B6;&#x614B;&#x3092;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3059;&#x308B;&#x306E;&#x306B;&#x9069;&#x3057;&#x305F;
+&#x30D5;&#x30C3;&#x30AF;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x7D42;&#x4E86;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x552F;&#x4E00;&#x306E;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example of listening for `exit`:
+-->
+
+<p><code>exit</code> &#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>process.on(&apos;exit&apos;, function(code) {
+  // do *NOT* do this
+  setTimeout(function() {
+    console.log(&apos;This will not run&apos;);
+  }, 0);
+  console.log(&apos;About to exit with code:&apos;, code);
+});</code></pre>
+<h2>Event: &apos;uncaughtException&apos;<span><a class="mark" href="#process_event_uncaughtexception" id="process_event_uncaughtexception">#</a></span></h2>
+<!--
+Emitted when an exception bubbles all the way back to the event loop. If a
+listener is added for this exception, the default action (which is to print
+a stack trace and exit) will not occur.
+-->
+
+<p>&#x767A;&#x751F;&#x3057;&#x305F;&#x4F8B;&#x5916;&#x304C;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x307E;&#x3067;&#x305F;&#x3069;&#x308A;&#x7740;&#x3044;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x3053;&#x306E;&#x4F8B;&#x5916;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x304C;&#x52A0;&#x3048;&#x3089;&#x308C;&#x3066;&#x3044;&#x308C;&#x3070;&#x3001;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x52D5;&#x4F5C; (&#x305D;&#x308C;&#x306F;&#x30B9;&#x30BF;&#x30C3;&#x30AF;&#x30C8;&#x30EC;&#x30FC;&#x30B9;&#x3092;&#x30D7;&#x30EA;&#x30F3;&#x30C8;&#x3057;&#x3066;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;) &#x306F;&#x8D77;&#x3053;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Example of listening for `uncaughtException`:
+-->
+
+<p><code>uncaughtException</code> &#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>process.on(&apos;uncaughtException&apos;, function(err) {
+  console.log(&apos;Caught exception: &apos; + err);
+});
+
+setTimeout(function() {
+  console.log(&apos;This will still run.&apos;);
+}, 500);
+
+// Intentionally cause an exception, but don&apos;t catch it.
+nonexistentFunc();
+console.log(&apos;This will not run.&apos;);</code></pre>
+<!--
+Note that `uncaughtException` is a very crude mechanism for exception
+handling and may be removed in the future.
+-->
+
+<p><code>uncaughtException</code> &#x306F;&#x4F8B;&#x5916;&#x3092;&#x6271;&#x3046;&#x3068;&#x3066;&#x3082;&#x8352;&#x524A;&#x308A;&#x306A;&#x30E1;&#x30AB;&#x30CB;&#x30BA;&#x30E0;&#x3067;&#x3042;&#x308A;&#x3001;
+&#x5C06;&#x6765;&#x524A;&#x9664;&#x3055;&#x308C;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Don't use it, use [domains](domain.html) instead. If you do use it, restart
+your application after every unhandled exception!
+-->
+
+<p>&#x3053;&#x308C;&#x3092;&#x4F7F;&#x3046;&#x4EE3;&#x308F;&#x308A;&#x306B;&#x3001;<a href="domain.html">&#x30C9;&#x30E1;&#x30A4;&#x30F3;</a> &#x3092;&#x4F7F;&#x3063;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x305D;&#x308C;&#x3092;&#x4F7F;&#x3048;&#x3070;&#x3001;&#x6355;&#x307E;&#x3048;&#x3089;&#x308C;&#x306A;&#x3044;&#x4F8B;&#x5916;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F;&#x5F8C;&#x3067;&#x3082;&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3092;
+&#x518D;&#x958B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#xFF01;
+
+</p>
+<!--
+Do *not* use it as the node.js equivalent of `On Error Resume Next`. An
+unhandled exception means your application - and by extension node.js itself -
+is in an undefined state. Blindly resuming means *anything* could happen.
+-->
+
+<p>&#x3053;&#x308C;&#x3092; Node.js &#x306B;&#x304A;&#x3051;&#x308B; <code>On Error Resume Next</code> &#x3068;&#x3057;&#x3066; <em>&#x4F7F;&#x308F;&#x306A;&#x3044;&#x3067;</em> &#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x6355;&#x307E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x4F8B;&#x5916;&#x306F;&#x3001;&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;
+- &#x304A;&#x3088;&#x3073; Node.js &#x81EA;&#x8EAB;&#x306E;&#x62E1;&#x5F35; - &#x304C;&#x672A;&#x5B9A;&#x7FA9;&#x306E;&#x72B6;&#x614B;&#x3068;&#x306A;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3084;&#x307F;&#x304F;&#x3082;&#x306A;&#x518D;&#x958B;&#x306F; <em>&#x3069;&#x3093;&#x306A;&#x3053;&#x3068;&#x3067;&#x3082;</em> &#x8D77;&#x3053;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Think of resuming as pulling the power cord when you are upgrading your system.
+Nine out of ten times nothing happens - but the 10th time, your system is bust.
+-->
+
+<p>&#x96FB;&#x6E90;&#x3092;&#x5F15;&#x304D;&#x629C;&#x304D;&#x306A;&#x304C;&#x3089;&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;
+&#x60F3;&#x50CF;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+10 &#x56DE;&#x4E2D; 9 &#x56DE;&#x306F;&#x4F55;&#x3082;&#x8D77;&#x3053;&#x308A;&#x307E;&#x305B;&#x3093;
+- &#x3057;&#x304B;&#x3057; 10 &#x56DE;&#x76EE;&#x306B;&#x306F;&#x305D;&#x306E;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306F;&#x4F7F;&#x3048;&#x306A;&#x304F;&#x306A;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+You have been warned.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x8B66;&#x544A;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>Signal Events<span><a class="mark" href="#process_signal_events" id="process_signal_events">#</a></span></h2>
+<!--type=event-->
+<!--name=SIGINT, SIGHUP, etc.-->
+
+<!--
+Emitted when the processes receives a signal. See sigaction(2) for a list of
+standard POSIX signal names such as SIGINT, SIGHUP, etc.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+SIGINT&#x3001;SIGHUP&#x3001;&#x305D;&#x306E;&#x4ED6;&#x306E; POSIX &#x6A19;&#x6E96;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x540D;&#x306E;&#x4E00;&#x89A7;&#x306B;&#x3064;&#x3044;&#x3066; &#x306F; sigaction(2) &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Example of listening for `SIGINT`:
+-->
+
+<p><code>SIGINT</code>&#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>// Start reading from stdin so we don&apos;t exit.
+process.stdin.resume();
+
+process.on(&apos;SIGINT&apos;, function() {
+  console.log(&apos;Got SIGINT.  Press Control-D to exit.&apos;);
+});</code></pre>
+<!--
+An easy way to send the `SIGINT` signal is with `Control-C` in most terminal
+programs.
+-->
+
+<p>&#x591A;&#x304F;&#x306E;&#x7AEF;&#x672B;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067;&#x7C21;&#x5358;&#x306B; <code>SIGINT</code> &#x3092;&#x9001;&#x308B;&#x65B9;&#x6CD5;&#x306F; <code>Control-C</code> &#x3092;&#x62BC;&#x3059;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Note:
+-->
+
+<p>&#x6CE8;&#x610F;:
+
+</p>
+<!--
+- `SIGUSR1` is reserved by node.js to start the debugger.  It's possible to
+  install a listener but that won't stop the debugger from starting.
+- `SIGTERM` and `SIGINT` have default handlers on non-Windows platforms that resets
+  the terminal mode before exiting with code `128 + signal number`. If one of
+  these signals has a listener installed, its default behaviour will be removed
+  (node will no longer exit).
+- `SIGPIPE` is ignored by default, it can have a listener installed.
+- `SIGHUP` is generated on Windows when the console window is closed, and on other
+  platforms under various similar conditions, see signal(7). It can have a
+  listener installed, however node will be unconditionally terminated by Windows
+  about 10 seconds later. On non-Windows platforms, the default behaviour of
+  `SIGHUP` is to terminate node, but once a listener has been installed its
+  default behaviour will be removed.
+- `SIGTERM` is not supported on Windows, it can be listened on.
+- `SIGINT` from the terminal is supported on all platforms, and can usually be
+  generated with `CTRL+C` (though this may be configurable). It is not generated
+  when terminal raw mode is enabled.
+- `SIGBREAK` is delivered on Windows when `CTRL+BREAK` is pressed, on non-Windows
+  platforms it can be listened on, but there is no way to send or generate it.
+- `SIGWINCH` is delivered when the console has been resized. On Windows, this will
+  only happen on write to the console when the cursor is being moved, or when a
+  readable tty is used in raw mode.
+- `SIGKILL` cannot have a listener installed, it will unconditionally terminate
+  node on all platforms.
+- `SIGSTOP` cannot have a listener installed.
+-->
+
+<ul>
+<li><code>SIGUSR1</code> &#x306F; Node.js &#x304C;&#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x3092;&#x8D77;&#x52D5;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4E88;&#x7D04;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x767B;&#x9332;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x51FA;&#x6765;&#x307E;&#x3059;&#x304C;&#x3001;&#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x306E;&#x8D77;&#x52D5;&#x3092;&#x6B62;&#x3081;&#x308B;&#x3053;&#x3068;&#x306F;&#x51FA;&#x6765;&#x307E;&#x305B;&#x3093;&#x3002;</li>
+<li><code>SIGTERM</code> &#x304A;&#x3088;&#x3073; <code>SIGINT</code> &#x306F;&#x3001;Windows &#x4EE5;&#x5916;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x306F;
+<code>128</code> + &#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x756A;&#x53F7;&#x3067;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x524D;&#x306B;&#x30BF;&#x30FC;&#x30DF;&#x30CA;&#x30EB;&#x306E;&#x30E2;&#x30FC;&#x30C9;&#x3092;&#x30EA;&#x30BB;&#x30C3;&#x30C8;&#x3059;&#x308B;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x3089;&#x306E;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306E;&#x3069;&#x3061;&#x3089;&#x304B;&#x306B;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x767B;&#x9332;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x306F;
+&#x524A;&#x9664;&#x3055;&#x308C;&#x307E;&#x3059; (node &#x306F;&#x7D42;&#x4E86;&#x3057;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;)&#x3002;</li>
+<li><code>SIGPIPE</code> &#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x3001;&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x767B;&#x9332;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x51FA;&#x6765;&#x307E;&#x3059;&#x3002;</li>
+<li><code>SIGHUP</code> &#x306F; Windows &#x3067;&#x306F;&#x30B3;&#x30F3;&#x30BD;&#x30FC;&#x30EB;&#x30A6;&#x30A3;&#x30F3;&#x30C9;&#x30A6;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x3068;&#x767A;&#x751F;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4ED6;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x3082;&#x540C;&#x69D8;&#x306E;&#x6761;&#x4EF6;&#x3067;&#x767A;&#x751F;&#x3057;&#x307E;&#x3059;&#x3002;&#x8A73;&#x7D30;&#x306F; signal(7)
+&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x767B;&#x9332;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x51FA;&#x6765;&#x307E;&#x3059;&#x304C;&#x3001;Windows &#x3067;&#x306F;&#x7D04; 10 &#x79D2;&#x5F8C;&#x306B; node &#x306F;&#x7121;&#x6761;&#x4EF6;&#x306B;
+Windows &#x306B;&#x3088;&#x3063;&#x3066;&#x7D42;&#x4E86;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+Windows &#x4EE5;&#x5916;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x306F;&#x3001;<code>SIGHUP</code> &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x306F;
+node&#x3092;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x304C;&#x3001;&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x767B;&#x9332;&#x3059;&#x308B;&#x3068;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x306F;
+&#x524A;&#x9664;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>SIGTERM</code> &#x306F; Windows &#x3067;&#x306F;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x3001;&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x767B;&#x9332;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;</li>
+<li>&#x7AEF;&#x672B;&#x304B;&#x3089;&#x306E; <code>SIGINT</code> &#x306F;&#x5168;&#x3066;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3001;&#x901A;&#x5E38; <code>CTRL+C</code>
+(&#x304A;&#x305D;&#x3089;&#x304F;&#x8A2D;&#x5B9A;&#x53EF;&#x80FD;&#x3067;&#x3057;&#x3087;&#x3046;) &#x306B;&#x3088;&#x3063;&#x3066;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30BF;&#x30FC;&#x30DF;&#x30CA;&#x30EB;&#x304C; raw &#x30E2;&#x30FC;&#x30C9;&#x306E;&#x5834;&#x5408;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;</li>
+<li><code>SIGBREAK</code> &#x306F; Windows &#x306B;&#x304A;&#x3044;&#x3066; <code>CTRL+BREAK</code> &#x304C;&#x63A8;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x9001;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+Windows &#x4EE5;&#x5916;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x3082;&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x767B;&#x9332;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x51FA;&#x6765;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x305D;&#x308C;&#x3092;&#x751F;&#x6210;&#x3057;&#x305F;&#x308A;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;</li>
+<li><code>SIGWINCH</code> &#x306F;&#x30B3;&#x30F3;&#x30BD;&#x30FC;&#x30EB;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x304C;&#x5909;&#x66F4;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;&#x9001;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+Windows &#x3067;&#x306F;&#x3001;&#x30AB;&#x30FC;&#x30BD;&#x30EB;&#x304C;&#x79FB;&#x52D5;&#x3059;&#x308B;&#x304B;&#x3001;tty &#x304C; raw &#x30E2;&#x30FC;&#x30C9;&#x306E;&#x5834;&#x5408;&#x306B;&#x3001;
+&#x30B3;&#x30F3;&#x30BD;&#x30FC;&#x30EB;&#x3078;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x3068;&#x767A;&#x751F;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>SIGKILL</code> &#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x7D44;&#x307F;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x306F;&#x51FA;&#x6765;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x5168;&#x3066;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067; node &#x3092;&#x7121;&#x6761;&#x4EF6;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>SIGSTOP</code> &#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x7D44;&#x307F;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x306F;&#x51FA;&#x6765;&#x307E;&#x305B;&#x3093;&#x3002;</li>
+</ul>
+<!--
+Note that Windows does not support sending Signals, but node offers some
+emulation with `process.kill()`, and `child_process.kill()`:
+- Sending signal `0` can be used to search for the existence of a process
+- Sending `SIGINT`, `SIGTERM`, and `SIGKILL` cause the unconditional exit of the
+  target process.
+-->
+
+<p>Windows &#x306F;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306E;&#x9001;&#x4FE1;&#x3092;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3057;&#x3066;&#x3044;&#x307E;&#x305B;&#x3093;&#x304C;&#x3001;node&#x306F;<code>process.kill()</code> &#x3084;
+<code>child_process.kill()</code> &#x3092;&#x30A8;&#x30DF;&#x30E5;&#x30EC;&#x30FC;&#x30C8;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<ul>
+<li>&#x30B7;&#x30B0;&#x30CA;&#x30EB; <code>0</code> &#x306F;&#x65E2;&#x5B58;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x691C;&#x7D22;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x3082;&#x306E;&#x3067;&#x3059;&#x3002;</li>
+<li><code>SIGINT</code>&#x3001;<code>SIGTERM</code>&#x3001;&#x305D;&#x3057;&#x3066; <code>SIGKILL</code> &#x306F;&#x3001;&#x30BF;&#x30FC;&#x30B2;&#x30C3;&#x30C8;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x7121;&#x6761;&#x4EF6;&#x306B;
+&#x7D42;&#x4E86;&#x3059;&#x308B;&#x539F;&#x56E0;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<h2>process.stdout<span><a class="mark" href="#process_process_stdout" id="process_process_stdout">#</a></span></h2>
+<!--
+A `Writable Stream` to `stdout`.
+-->
+
+<p><code>stdout</code> &#x306B;&#x5BFE;&#x3059;&#x308B; <code>Writable Stream</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example: the definition of `console.log`
+-->
+
+<p>&#x4F8B;: <code>console.log</code> &#x306E;&#x5B9A;&#x7FA9;
+
+</p>
+<pre><code>console.log = function(d) {
+  process.stdout.write(d + &apos;\n&apos;);
+};</code></pre>
+<!--
+`process.stderr` and `process.stdout` are unlike other streams in Node in
+that writes to them are usually blocking.
+-->
+
+<p><code>process.stderr</code> &#x3068; <code>process.stdout</code> &#x306F; Node &#x306E;&#x4ED6;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;&#x7570;&#x306A;&#x308A;&#x3001;
+&#x305D;&#x308C;&#x3089;&#x3078;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306F;&#x901A;&#x5E38;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+- They are blocking in the case that they refer to regular files or TTY file
+  descriptors.
+- In the case they refer to pipes:
+  - They are blocking in Linux/Unix.
+  - They are non-blocking like other streams in Windows.
+-->
+
+<ul>
+<li>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x304C;&#x901A;&#x5E38;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3084; TTY &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x3044;&#x308B;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;
+&#x305D;&#x308C;&#x3089;&#x306F;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li>&#x30D1;&#x30A4;&#x30D7;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x3044;&#x308B;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;:<ul>
+<li>Linux/Unix &#x3067;&#x306F;&#x305D;&#x308C;&#x3089;&#x306F;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li>Windows &#x3067;&#x306F;&#x4ED6;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;&#x540C;&#x69D8;&#x306B;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<!--
+To check if Node is being run in a TTY context, read the `isTTY` property
+on `process.stderr`, `process.stdout`, or `process.stdin`:
+-->
+
+<p>Node &#x304C; TTY &#x306E;&#x30B3;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x3067;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x304B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;
+<code>process.stderr</code>, <code>process.stdout</code>, &#x307E;&#x305F;&#x306F; <code>process.stdin</code> &#x306E;
+<code>isTTY</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x53C2;&#x7167;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>$ node -p &quot;Boolean(process.stdin.isTTY)&quot;
+true
+$ echo &quot;foo&quot; | node -p &quot;Boolean(process.stdin.isTTY)&quot;
+false
+
+$ node -p &quot;Boolean(process.stdout.isTTY)&quot;
+true
+$ node -p &quot;Boolean(process.stdout.isTTY)&quot; | cat
+false</code></pre>
+<!--
+See [the tty docs](tty.html#tty_tty) for more information.
+-->
+
+<p>&#x3088;&#x308A;&#x8A73;&#x7D30;&#x306F; <a href="tty.html#tty_tty">the tty docs</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>process.stderr<span><a class="mark" href="#process_process_stderr" id="process_process_stderr">#</a></span></h2>
+<!--
+A writable stream to stderr.
+
+`process.stderr` and `process.stdout` are unlike other streams in Node in
+that writes to them are usually blocking.
+-->
+
+<p><code>stderr</code> &#x306B;&#x5BFE;&#x3059;&#x308B; <code>Writable Stream</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>process.stderr</code> &#x3068; <code>process.stdout</code> &#x306F; Node &#x306E;&#x4ED6;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;&#x7570;&#x306A;&#x308A;&#x3001;
+&#x305D;&#x308C;&#x3089;&#x3078;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306F;&#x901A;&#x5E38;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+- They are blocking in the case that they refer to regular files or TTY file
+  descriptors.
+- In the case they refer to pipes:
+  - They are blocking in Linux/Unix.
+  - They are non-blocking like other streams in Windows.
+-->
+
+<ul>
+<li>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x304C;&#x901A;&#x5E38;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3084; TTY &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x3044;&#x308B;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;
+&#x305D;&#x308C;&#x3089;&#x306F;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li>&#x30D1;&#x30A4;&#x30D7;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x3044;&#x308B;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;:<ul>
+<li>Linux/Unix &#x3067;&#x306F;&#x305D;&#x308C;&#x3089;&#x306F;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li>Windows &#x3067;&#x306F;&#x4ED6;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;&#x540C;&#x69D8;&#x306B;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<h2>process.stdin<span><a class="mark" href="#process_process_stdin" id="process_process_stdin">#</a></span></h2>
+<!--
+A `Readable Stream` for stdin. 
+-->
+
+<p>&#x6A19;&#x6E96;&#x5165;&#x529B;&#x306B;&#x5BFE;&#x3059;&#x308B; <code>Readable Stream</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example of opening standard input and listening for both events:
+-->
+
+<p>&#x6A19;&#x6E96;&#x5165;&#x529B;&#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x3066;&#x4E8C;&#x3064;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>process.stdin.setEncoding(&apos;utf8&apos;);
+
+process.stdin.on(&apos;readable&apos;, function(chunk) {
+  var chunk = process.stdin.read();
+  if (chunk !== null) {
+    process.stdout.write(&apos;data: &apos; + chunk);
+  }
+});
+
+process.stdin.on(&apos;end&apos;, function() {
+  process.stdout.write(&apos;end&apos;);
+});</code></pre>
+<!--
+As a Stream, `process.stdin` can also be used in "old" mode that is compatible
+with scripts written for node prior v0.10.
+For more information see
+[Stream compatibility](stream.html#stream_compatibility_with_older_node_versions).
+-->
+
+<p>&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x3042;&#x308B;&#x305F;&#x3081;&#x3001;<code>process.stdin</code> &#x306F; v0.10 &#x4EE5;&#x524D;&#x306E; node &#x5411;&#x3051;&#x306B;&#x66F8;&#x304B;&#x308C;&#x305F;
+&#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x3068;&#x4E92;&#x63DB;&#x6027;&#x306E;&#x3042;&#x308B; &quot;old&quot; &#x30E2;&#x30FC;&#x30C9;&#x3067;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x51FA;&#x6765;&#x307E;&#x3059;&#x3002;&#x3088;&#x308A;&#x8A73;&#x7D30;&#x306A;&#x60C5;&#x5831;&#x306F;
+<a href="stream.html#stream_compatibility_with_older_node_versions">Stream compatibility</a>
+&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+In "old" Streams mode the stdin stream is paused by default, so one
+must call `process.stdin.resume()` to read from it. Note also that calling
+`process.stdin.resume()` itself would switch stream to "old" mode.
+-->
+
+<p>&quot;old&quot; &#x30E2;&#x30FC;&#x30C9;&#x3067;&#x306F;&#x6A19;&#x6E96;&#x5165;&#x529B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x4E2D;&#x65AD;&#x72B6;&#x614B;&#x306E;&#x305F;&#x3081;&#x3001;
+&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x306B;&#x306F; <code>process.stdin.resume()</code> &#x306E;&#x547C;&#x3073;&#x51FA;&#x3057;&#x304C;&#x5FC5;&#x9808;&#x3067;&#x3059;&#x3002;
+<code>process.stdin.resume()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x306B;&#x3088;&#x308A;&#x3001;&#x305D;&#x308C;&#x81EA;&#x4F53;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;
+&quot;old&quot; &#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+If you are starting a new project you should prefer a more recent "new" Streams
+mode over "old" one.
+-->
+
+<p>&#x3082;&#x3057;&#x65B0;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x59CB;&#x3081;&#x308B;&#x306A;&#x3089;&#x3001;&quot;old&quot; &#x3088;&#x308A;&#x3082;
+&quot;new&quot; &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x597D;&#x3080;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>process.argv<span><a class="mark" href="#process_process_argv" id="process_process_argv">#</a></span></h2>
+<!--
+An array containing the command line arguments.  The first element will be
+'node', the second element will be the name of the JavaScript file.  The
+next elements will be any additional command line arguments.
+-->
+
+<p>&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x5F15;&#x6570;&#x3092;&#x542B;&#x3080;&#x914D;&#x5217;&#x3067;&#x3059;&#x3002;
+&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x306F; &apos;node&apos;&#x3001;2 &#x756A;&#x76EE;&#x306E;&#x8981;&#x7D20;&#x306F; JavaScript &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x540D;&#x524D;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x5F8C;&#x306E;&#x8981;&#x7D20;&#x306F;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x306E;&#x8FFD;&#x52A0;&#x306E;&#x5F15;&#x6570;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>// print process.argv
+process.argv.forEach(function(val, index, array) {
+  console.log(index + &apos;: &apos; + val);
+});</code></pre>
+<!--
+This will generate:
+-->
+
+<p>&#x3053;&#x306E;&#x3088;&#x3046;&#x306B;&#x51FA;&#x529B;&#x3055;&#x308C;&#x307E;&#x3059;:
+
+</p>
+<pre><code>$ node process-2.js one two=three four
+0: node
+1: /Users/mjr/work/node/process-2.js
+2: one
+3: two=three
+4: four</code></pre>
+<h2>process.execPath<span><a class="mark" href="#process_process_execpath" id="process_process_execpath">#</a></span></h2>
+<!--
+This is the absolute pathname of the executable that started the process.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x3088;&#x3063;&#x3066;&#x958B;&#x59CB;&#x3055;&#x308C;&#x305F;&#x5B9F;&#x884C;&#x53EF;&#x80FD;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>/usr/local/bin/node</code></pre>
+<h2>process.execArgv<span><a class="mark" href="#process_process_execargv" id="process_process_execargv">#</a></span></h2>
+<!--
+This is the set of node-specific command line options from the
+executable that started the process.  These options do not show up in
+`process.argv`, and do not include the node executable, the name of
+the script, or any options following the script name. These options
+are useful in order to spawn child processes with the same execution
+environment as the parent.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x8D77;&#x52D5;&#x6642;&#x306B;&#x5B9F;&#x884C;&#x53EF;&#x80FD;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; node &#x56FA;&#x6709;&#x306E;
+&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x30FB;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x7FA4;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x3089;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306F; <code>process.argv</code> &#x306B;&#x306F;&#x73FE;&#x308C;&#x305A;&#x3001;node &#x306E;&#x5B9F;&#x884C;&#x53EF;&#x80FD;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3084;
+&#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x540D;&#x3001;&#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x540D;&#x306B;&#x7D9A;&#x304F;&#x3069;&#x3093;&#x306A;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3082;&#x542B;&#x307E;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x308C;&#x3089;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x540C;&#x3058;&#x5B9F;&#x884C;&#x74B0;&#x5883;&#x3092;&#x6301;&#x3064;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x8D77;&#x52D5;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;
+&#x5F79;&#x306B;&#x7ACB;&#x3061;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>$ node --harmony script.js --version</code></pre>
+<!--
+results in process.execArgv:
+-->
+
+<p><code>process.execArgv</code> &#x306E;&#x7D50;&#x679C;:
+
+</p>
+<pre><code>[&apos;--harmony&apos;]</code></pre>
+<!--
+and process.argv:
+-->
+
+<p>&#x305D;&#x3057;&#x3066; <code>process.argv</code> &#x306E;&#x7D50;&#x679C;:
+
+</p>
+<pre><code>[&apos;/usr/local/bin/node&apos;, &apos;script.js&apos;, &apos;--version&apos;]</code></pre>
+<h2>process.abort()<span><a class="mark" href="#process_process_abort" id="process_process_abort">#</a></span></h2>
+<!--
+This causes node to emit an abort. This will cause node to exit and
+generate a core file.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; node &#x3092;&#x30A2;&#x30DC;&#x30FC;&#x30C8;&#x3055;&#x305B;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; node &#x304C;&#x7D42;&#x4E86;&#x3057;&#x3066;&#x30B3;&#x30A2;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x539F;&#x56E0;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>process.chdir(directory)<span><a class="mark" href="#process_process_chdir_directory" id="process_process_chdir_directory">#</a></span></h2>
+<!--
+Changes the current working directory of the process or throws an exception if that fails.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30AB;&#x30EC;&#x30F3;&#x30C8;&#x30EF;&#x30FC;&#x30AD;&#x30F3;&#x30B0;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x3092;&#x5909;&#x66F4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x5931;&#x6557;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x4F8B;&#x5916;&#x3092;&#x30B9;&#x30ED;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>console.log(&apos;Starting directory: &apos; + process.cwd());
+try {
+  process.chdir(&apos;/tmp&apos;);
+  console.log(&apos;New directory: &apos; + process.cwd());
+}
+catch (err) {
+  console.log(&apos;chdir: &apos; + err);
+}</code></pre>
+<h2>process.cwd()<span><a class="mark" href="#process_process_cwd" id="process_process_cwd">#</a></span></h2>
+<!--
+Returns the current working directory of the process.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30AB;&#x30EC;&#x30F3;&#x30C8;&#x30EF;&#x30FC;&#x30AD;&#x30F3;&#x30B0;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>console.log(&apos;Current directory: &apos; + process.cwd());</code></pre>
+<h2>process.env<span><a class="mark" href="#process_process_env" id="process_process_env">#</a></span></h2>
+<!--
+An object containing the user environment. See environ(7).
+-->
+
+<p>&#x30E6;&#x30FC;&#x30B6;&#x306E;&#x74B0;&#x5883;&#x3092;&#x542B;&#x3080;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;environ(7) &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+
+</p>
+<h2>process.exit([code])<span><a class="mark" href="#process_process_exit_code" id="process_process_exit_code">#</a></span></h2>
+<!--
+Ends the process with the specified `code`.  If omitted, exit uses the
+'success' code `0`.
+-->
+
+<p>&#x6307;&#x5B9A;&#x306E; <code>code</code> &#x3067;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x7701;&#x7565;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x300C;&#x6210;&#x529F;&#x300D;&#x3092;&#x793A;&#x3059;&#x30B3;&#x30FC;&#x30C9; <code>0</code> &#x3092;&#x4F7F;&#x3063;&#x3066;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+To exit with a 'failure' code:
+-->
+
+<p>&#x300C;&#x5931;&#x6557;&#x300D;&#x3092;&#x793A;&#x3059;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>process.exit(1);</code></pre>
+<!--
+The shell that executed node should see the exit code as 1.
+-->
+
+<p>node &#x3092;&#x5B9F;&#x884C;&#x3057;&#x305F;&#x30B7;&#x30A7;&#x30EB;&#x3067;&#x7D42;&#x4E86;&#x30B3;&#x30FC;&#x30C9;&#x304C; 1 &#x3067;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x898B;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+
+
+</p>
+<h2>process.getgid()<span><a class="mark" href="#process_process_getgid" id="process_process_getgid">#</a></span></h2>
+<!--
+Note: this function is only available on POSIX platforms (i.e. not Windows)
+-->
+
+<p>&#x6CE8;&#x610F;: &#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; POSIX &#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0; (&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;&#x975E; Windows)
+&#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Gets the group identity of the process. (See getgid(2).)
+This is the numerical group id, not the group name.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x8B58;&#x5225;&#x5B50;&#x3092;&#x53D6;&#x5F97;&#x3057;&#x307E;&#x3059; (getgid(2) &#x53C2;&#x7167;)&#x3002;
+&#x3053;&#x308C;&#x306F;&#x6570;&#x5024;&#x306B;&#x3088;&#x308B;&#x30B0;&#x30EB;&#x30FC;&#x30D7; ID &#x3067;&#x3001;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x540D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<pre><code>if (process.getgid) {
+  console.log(&apos;Current gid: &apos; + process.getgid());
+}</code></pre>
+<h2>process.setgid(id)<span><a class="mark" href="#process_process_setgid_id" id="process_process_setgid_id">#</a></span></h2>
+<!--
+Note: this function is only available on POSIX platforms (i.e. not Windows)
+-->
+
+<p>&#x6CE8;&#x610F;: &#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; POSIX &#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0; (&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;&#x975E; Windows)
+&#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Sets the group identity of the process. (See setgid(2).)  This accepts either
+a numerical ID or a groupname string. If a groupname is specified, this method
+blocks while resolving it to a numerical ID.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x8B58;&#x5225;&#x5B50;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059; (setgid(2) &#x53C2;&#x7167;)&#x3002;
+&#x3053;&#x308C;&#x306F;&#x6570;&#x5024;&#x306B;&#x3088;&#x308B; ID &#x3082;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x540D;&#x306E;&#x6587;&#x5B57;&#x5217;&#x306E;&#x3069;&#x3061;&#x3089;&#x3082;&#x53D7;&#x3051;&#x5165;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x540D;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x6570;&#x5024;&#x306B;&#x3088;&#x308B; ID &#x304C;&#x89E3;&#x6C7A;&#x3067;&#x304D;&#x308B;&#x307E;&#x3067;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>if (process.getgid &amp;&amp; process.setgid) {
+  console.log(&apos;Current gid: &apos; + process.getgid());
+  try {
+    process.setgid(501);
+    console.log(&apos;New gid: &apos; + process.getgid());
+  }
+  catch (err) {
+    console.log(&apos;Failed to set gid: &apos; + err);
+  }
+}</code></pre>
+<h2>process.getuid()<span><a class="mark" href="#process_process_getuid" id="process_process_getuid">#</a></span></h2>
+<!--
+Note: this function is only available on POSIX platforms (i.e. not Windows)
+-->
+
+<p>&#x6CE8;&#x610F;: &#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; POSIX &#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0; (&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;&#x975E; Windows)
+&#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Gets the user identity of the process. (See getuid(2).)
+This is the numerical userid, not the username.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30E6;&#x30FC;&#x30B6;&#x8B58;&#x5225;&#x5B50;&#x3092;&#x53D6;&#x5F97;&#x3057;&#x307E;&#x3059; (getuid(2) &#x53C2;&#x7167;)&#x3002;
+&#x3053;&#x308C;&#x306F;&#x6570;&#x5024;&#x306B;&#x3088;&#x308B;&#x30E6;&#x30FC;&#x30B6; ID &#x3067;&#x3001;&#x30E6;&#x30FC;&#x30B6;&#x540D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<pre><code>if (process.getuid) {
+  console.log(&apos;Current uid: &apos; + process.getuid());
+}</code></pre>
+<h2>process.setuid(id)<span><a class="mark" href="#process_process_setuid_id" id="process_process_setuid_id">#</a></span></h2>
+<!--
+Note: this function is only available on POSIX platforms (i.e. not Windows)
+-->
+
+<p>&#x6CE8;&#x610F;: &#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; POSIX &#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0; (&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;&#x975E; Windows)
+&#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Sets the user identity of the process. (See setuid(2).)  This accepts either
+a numerical ID or a username string.  If a username is specified, this method
+blocks while resolving it to a numerical ID.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30E6;&#x30FC;&#x30B6;&#x8B58;&#x5225;&#x5B50;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059; (setuid(2) &#x53C2;&#x7167;)&#x3002;
+&#x3053;&#x308C;&#x306F;&#x6570;&#x5024;&#x306B;&#x3088;&#x308B; ID &#x3082;&#x30E6;&#x30FC;&#x30B6;&#x540D;&#x306E;&#x6587;&#x5B57;&#x5217;&#x306E;&#x3069;&#x3061;&#x3089;&#x3082;&#x53D7;&#x3051;&#x5165;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x30E6;&#x30FC;&#x30B6;&#x540D;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x6570;&#x5024;&#x306B;&#x3088;&#x308B; ID &#x304C;&#x89E3;&#x6C7A;&#x3067;&#x304D;&#x308B;&#x307E;&#x3067;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>if (process.getuid &amp;&amp; process.setuid) {
+  console.log(&apos;Current uid: &apos; + process.getuid());
+  try {
+    process.setuid(501);
+    console.log(&apos;New uid: &apos; + process.getuid());
+  }
+  catch (err) {
+    console.log(&apos;Failed to set uid: &apos; + err);
+  }
+}</code></pre>
+<h2>process.getgroups()<span><a class="mark" href="#process_process_getgroups" id="process_process_getgroups">#</a></span></h2>
+<!--
+Note: this function is only available on POSIX platforms (i.e. not Windows)
+-->
+
+<p>&#x6CE8;&#x610F;: &#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; POSIC &#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0; (&#x3064;&#x307E;&#x308A; Windows &#x4EE5;&#x5916;)
+&#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Returns an array with the supplementary group IDs. POSIX leaves it unspecified
+if the effective group ID is included but node.js ensures it always is.
+-->
+
+<p>&#x88DC;&#x52A9;&#x30B0;&#x30EB;&#x30FC;&#x30D7; ID &#x306E;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+POSIX &#x306F;&#x5B9F;&#x52B9;&#x30B0;&#x30EB;&#x30FC;&#x30D7; ID &#x304C;&#x542B;&#x307E;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x660E;&#x793A;&#x3057;&#x3066;&#x3044;&#x307E;&#x305B;&#x3093;&#x304C;&#x3001;
+Node.js &#x3067;&#x306F;&#x5E38;&#x306B;&#x305D;&#x308C;&#x304C;&#x542B;&#x307E;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x4FDD;&#x8A3C;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>process.setgroups(groups)<span><a class="mark" href="#process_process_setgroups_groups" id="process_process_setgroups_groups">#</a></span></h2>
+<!--
+Note: this function is only available on POSIX platforms (i.e. not Windows)
+-->
+
+<p>&#x6CE8;&#x610F;: &#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; POSIC &#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0; (&#x3064;&#x307E;&#x308A; Windows &#x4EE5;&#x5916;)
+&#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Sets the supplementary group IDs. This is a privileged operation, meaning you
+need to be root or have the CAP_SETGID capability.
+-->
+
+<p>&#x88DC;&#x52A9;&#x30B0;&#x30EB;&#x30FC;&#x30D7; ID &#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x7279;&#x6A29;&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x3042;&#x308A;&#x3001;&#x30EB;&#x30FC;&#x30C8;&#x3067;&#x3042;&#x308B;&#x304B;&#x3001;&#x307E;&#x305F;&#x306F; CAP_SETGID &#x30B1;&#x30FC;&#x30D1;&#x30D3;&#x30EA;&#x30C6;&#x30A3;&#x3092;&#x6301;&#x3064;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The list can contain group IDs, group names or both.
+-->
+
+<p>&#x30EA;&#x30B9;&#x30C8;&#x306F;&#x30B0;&#x30EB;&#x30FC;&#x30D7; ID&#x3001;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x540D;&#x3001;&#x307E;&#x305F;&#x306F;&#x4E21;&#x65B9;&#x3092;&#x542B;&#x3080;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>process.initgroups(user, extra_group)<span><a class="mark" href="#process_process_initgroups_user_extra_group" id="process_process_initgroups_user_extra_group">#</a></span></h2>
+<!--
+Note: this function is only available on POSIX platforms (i.e. not Windows)
+-->
+
+<p>&#x6CE8;&#x610F;: &#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; POSIC &#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0; (&#x3064;&#x307E;&#x308A; Windows &#x4EE5;&#x5916;)
+&#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Reads /etc/group and initializes the group access list, using all groups of
+which the user is a member. This is a privileged operation, meaning you need
+to be root or have the CAP_SETGID capability.
+-->
+
+<p><code>/etc/group</code> &#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3093;&#x3067;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x30EA;&#x30B9;&#x30C8;&#x3092;&#x521D;&#x671F;&#x5316;&#x3057;&#x3001;
+user &#x304C;&#x30E1;&#x30F3;&#x30D0;&#x30FC;&#x3067;&#x3042;&#x308B;&#x5168;&#x3066;&#x306E;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x7279;&#x6A29;&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x3042;&#x308A;&#x3001;&#x30EB;&#x30FC;&#x30C8;&#x3067;&#x3042;&#x308B;&#x304B;&#x3001;&#x307E;&#x305F;&#x306F; CAP_SETGID &#x30B1;&#x30FC;&#x30D1;&#x30D3;&#x30EA;&#x30C6;&#x30A3;&#x3092;&#x6301;&#x3064;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+`user` is a user name or user ID. `extra_group` is a group name or group ID.
+-->
+
+<p><code>user</code> &#x306F;&#x30E6;&#x30FC;&#x30B6;&#x540D;&#x307E;&#x305F;&#x306F;&#x30E6;&#x30FC;&#x30B6; ID&#x3001;
+<code>extra_group</code> &#x306F;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x540D;&#x307E;&#x305F;&#x306F;&#x30B0;&#x30EB;&#x30FC;&#x30D7; ID &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Some care needs to be taken when dropping privileges. Example:
+-->
+
+<p>&#x7279;&#x6A29;&#x3092;&#x843D;&#x3068;&#x3059;&#x969B;&#x306F;&#x3001;&#x3044;&#x304F;&#x3064;&#x304B;&#x6CE8;&#x610F;&#x3059;&#x3079;&#x304D;&#x4E8B;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;&#x4F8B;:
+
+</p>
+<pre><code>console.log(process.getgroups());         // [ 0 ]
+process.initgroups(&apos;bnoordhuis&apos;, 1000);   // switch user
+console.log(process.getgroups());         // [ 27, 30, 46, 1000, 0 ]
+process.setgid(1000);                     // drop root gid
+console.log(process.getgroups());         // [ 27, 30, 46, 1000 ]</code></pre>
+<h2>process.version<span><a class="mark" href="#process_process_version" id="process_process_version">#</a></span></h2>
+<!--
+A compiled-in property that exposes `NODE_VERSION`.
+-->
+
+<p><code>NODE_VERSION</code> &#x3092;&#x63D0;&#x793A;&#x3059;&#x308B;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x6E08;&#x307F;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code>console.log(&apos;Version: &apos; + process.version);</code></pre>
+<h2>process.versions<span><a class="mark" href="#process_process_versions" id="process_process_versions">#</a></span></h2>
+<!--
+A property exposing version strings of node and its dependencies.
+-->
+
+<p>node &#x3068;&#x4F9D;&#x5B58;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x6587;&#x5B57;&#x5217;&#x3092;&#x63D0;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>console.log(process.versions);</code></pre>
+<!--
+Will print something like:
+-->
+
+<p>&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x3088;&#x3046;&#x306B;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>{ http_parser: &apos;1.0&apos;,
+  node: &apos;0.10.4&apos;,
+  v8: &apos;3.14.5.8&apos;,
+  ares: &apos;1.9.0-DEV&apos;,
+  uv: &apos;0.10.3&apos;,
+  zlib: &apos;1.2.3&apos;,
+  modules: &apos;11&apos;,
+  openssl: &apos;1.0.1e&apos; }</code></pre>
+<h2>process.config<span><a class="mark" href="#process_process_config" id="process_process_config">#</a></span></h2>
+<!--
+An Object containing the JavaScript representation of the configure options
+that were used to compile the current node executable. This is the same as
+the "config.gypi" file that was produced when running the `./configure` script.
+
+An example of the possible output looks like:
+-->
+
+<p>&#x73FE;&#x5728;&#x306E;node&#x5B9F;&#x884C;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3057;&#x305F;&#x969B;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x305F; configure &#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;
+JavaScript &#x3067;&#x8868;&#x73FE;&#x3057;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4FDD;&#x6301;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>./configure</code> &#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x3092;&#x5B9F;&#x884C;&#x3057;&#x305F;&#x969B;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x305F; &quot;cofnig.gypi&quot;
+&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x5B9F;&#x969B;&#x306E;&#x51FA;&#x529B;&#x306E;&#x4F8B;&#x3067;&#x3059;:
+
+</p>
+<pre><code>{ target_defaults:
+   { cflags: [],
+     default_configuration: &apos;Release&apos;,
+     defines: [],
+     include_dirs: [],
+     libraries: [] },
+  variables:
+   { host_arch: &apos;x64&apos;,
+     node_install_npm: &apos;true&apos;,
+     node_prefix: &apos;&apos;,
+     node_shared_cares: &apos;false&apos;,
+     node_shared_http_parser: &apos;false&apos;,
+     node_shared_libuv: &apos;false&apos;,
+     node_shared_v8: &apos;false&apos;,
+     node_shared_zlib: &apos;false&apos;,
+     node_use_dtrace: &apos;false&apos;,
+     node_use_openssl: &apos;true&apos;,
+     node_shared_openssl: &apos;false&apos;,
+     strict_aliasing: &apos;true&apos;,
+     target_arch: &apos;x64&apos;,
+     v8_use_snapshot: &apos;true&apos; } }</code></pre>
+<h2>process.kill(pid, [signal])<span><a class="mark" href="#process_process_kill_pid_signal" id="process_process_kill_pid_signal">#</a></span></h2>
+<!--
+Send a signal to a process. `pid` is the process id and `signal` is the
+string describing the signal to send.  Signal names are strings like
+'SIGINT' or 'SIGHUP'.  If omitted, the signal will be 'SIGTERM'.
+See [Signal Events](#process_signal_events) and kill(2) for more information.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x9001;&#x308A;&#x307E;&#x3059;&#x3002;
+<code>pid</code> &#x306F;&#x30D7;&#x30ED;&#x30BB;&#x30B9; ID &#x3067; <code>signal</code> &#x306F;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x6587;&#x5B57;&#x5217;&#x3067;&#x8A18;&#x8FF0;&#x3057;&#x305F;&#x3082;&#x306E;&#x3067;&#x3059;&#x3002;
+&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306E;&#x540D;&#x524D;&#x306F; &apos;SIGINT&apos; &#x3084; &apos;SIGHUP&apos; &#x306E;&#x3088;&#x3046;&#x306A;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;
+&#x7701;&#x7565;&#x3059;&#x308B;&#x3068;&#x3001;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306F; &apos;SIGTERM&apos; &#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x8A73;&#x7D30;&#x306F; <a href="#process_signal_events">Signal Events</a> &#x307E;&#x305F;&#x306F; kill(2)
+&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Will throw an error if target does not exist, and as a special case, a signal of
+`0` can be used to test for the existence of a process.
+-->
+
+<p>&#x5BFE;&#x8C61;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x30B9;&#x30ED;&#x30FC;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x7279;&#x5225;&#x306A;&#x30B1;&#x30FC;&#x30B9;&#x3068;&#x3057;&#x3066;&#x3001;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x30C6;&#x30B9;&#x30C8;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;
+<code>0</code> &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x51FA;&#x6765;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that just because the name of this function is `process.kill`, it is
+really just a signal sender, like the `kill` system call.  The signal sent
+may do something other than kill the target process.
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306E;&#x540D;&#x524D;&#x304C; <code>process.kill</code> &#x3067;&#x3042;&#x308B;&#x3068;&#x304A;&#x308A;&#x3001;&#x3053;&#x308C;&#x306F; <code>kill</code>
+&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x30B3;&#x30FC;&#x30EB;&#x306E;&#x3088;&#x3046;&#x306B;&#x5358;&#x306B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x5BFE;&#x8C61;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x6BBA;&#x3059;&#x305F;&#x3081;&#x3060;&#x3051;&#x3067;&#x306A;&#x304F;&#x3001;&#x4ED6;&#x306E;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3082;&#x9001;&#x4FE1;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example of sending a signal to yourself:
+-->
+
+<p>&#x81EA;&#x8EAB;&#x306B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>process.on(&apos;SIGHUP&apos;, function() {
+  console.log(&apos;Got SIGHUP signal.&apos;);
+});
+
+setTimeout(function() {
+  console.log(&apos;Exiting.&apos;);
+  process.exit(0);
+}, 100);
+
+process.kill(process.pid, &apos;SIGHUP&apos;);</code></pre>
+<!--
+Note: When SIGUSR1 is received by Node.js it starts the debugger, see
+[Signal Events](#process_signal_events).
+-->
+
+<p>&#x6CE8;&#x610F;: SIGUSR1&#x306F;node.js&#x306B;&#x3088;&#x3063;&#x3066;&#x53D7;&#x4FE1;&#x3055;&#x308C;&#x3001;&#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x3092;&#x8D77;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x8A73;&#x7D30;&#x306F; <a href="#process_signal_events">Signal Events</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>process.pid<span><a class="mark" href="#process_process_pid" id="process_process_pid">#</a></span></h2>
+<!--
+The PID of the process.
+-->
+
+<p>&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; PID &#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code>console.log(&apos;This process is pid &apos; + process.pid);</code></pre>
+<h2>process.title<span><a class="mark" href="#process_process_title" id="process_process_title">#</a></span></h2>
+<!--
+Getter/setter to set what is displayed in 'ps'.
+-->
+
+<p>&apos;ps&apos; &#x3067;&#x3069;&#x306E;&#x3088;&#x3046;&#x8868;&#x793A;&#x3055;&#x308C;&#x308B;&#x304B;&#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E; getter/setter &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+When used as a setter, the maximum length is platform-specific and probably
+short.
+-->
+
+<p>setter &#x304C;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x5834;&#x5408;&#x3001;&#x305D;&#x306E;&#x6700;&#x5927;&#x9577;&#x306F;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x4F9D;&#x5B58;&#x3067;&#x3001;&#x304A;&#x305D;&#x3089;&#x304F;&#x77ED;&#x3044;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+On Linux and OS X, it's limited to the size of the binary name plus the
+length of the command line arguments because it overwrites the argv memory.
+-->
+
+<p>Linux &#x3068; OS X &#x3067;&#x306F;&#x3001;&#x305D;&#x308C;&#x306F; argv &#x306E;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x4E0A;&#x66F8;&#x304D;&#x3059;&#x308B;&#x305F;&#x3081;&#x3001;
+&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x540D;&#x306B;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x5F15;&#x6570;&#x3092;&#x52A0;&#x3048;&#x305F;&#x3082;&#x306E;&#x306B;&#x5236;&#x9650;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+v0.8 allowed for longer process title strings by also overwriting the environ
+memory but that was potentially insecure/confusing in some (rather obscure)
+cases.
+-->
+
+<p>v0.8 &#x306F;&#x3088;&#x308A;&#x9577;&#x3044;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x30BF;&#x30A4;&#x30C8;&#x30EB;&#x6587;&#x5B57;&#x5217;&#x3067;&#x74B0;&#x5883;&#x3092;&#x4E0A;&#x66F8;&#x304D;&#x3057;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x304C;&#x3001;
+&#x305D;&#x308C;&#x306F;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E; (&#x306F;&#x3063;&#x304D;&#x308A;&#x3057;&#x306A;&#x3044;) &#x30B1;&#x30FC;&#x30B9;&#x306B;&#x304A;&#x3044;&#x3066;&#x3001;
+&#x6F5C;&#x5728;&#x7684;&#x306B;&#x5371;&#x967A;&#x3067;&#x6DF7;&#x4E71;&#x3057;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x3002;
+
+
+</p>
+<h2>process.arch<span><a class="mark" href="#process_process_arch" id="process_process_arch">#</a></span></h2>
+<!--
+What processor architecture you're running on: `'arm'`, `'ia32'`, or `'x64'`.
+-->
+
+<p>&#x5B9F;&#x884C;&#x3057;&#x3066;&#x3044;&#x308B;&#x30D7;&#x30ED;&#x30BB;&#x30C3;&#x30B5;&#x306E;&#x30A2;&#x30FC;&#x30AD;&#x30C6;&#x30AF;&#x30C1;&#x30E3;: <code>&apos;arm&apos;</code>&#x3001;<code>&apos;ia32&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F;
+<code>&apos;x64&apos;</code>&#x3002;
+
+</p>
+<pre><code>console.log(&apos;This processor architecture is &apos; + process.arch);</code></pre>
+<h2>process.platform<span><a class="mark" href="#process_process_platform" id="process_process_platform">#</a></span></h2>
+<!--
+What platform you're running on:
+`'darwin'`, `'freebsd'`, `'linux'`, `'sunos'` or `'win32'`
+-->
+
+<p>&#x3069;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x52D5;&#x3044;&#x3066;&#x3044;&#x308B;&#x304B;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;:
+<code>&apos;darwin&apos;</code>&#x3001;<code>&apos;freebsd&apos;</code>&#x3001;<code>&apos;linux&apos;</code>&#x3001;<code>&apos;sunos&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;win32&apos;</code>
+
+</p>
+<pre><code>console.log(&apos;This platform is &apos; + process.platform);</code></pre>
+<h2>process.memoryUsage()<span><a class="mark" href="#process_process_memoryusage" id="process_process_memoryusage">#</a></span></h2>
+<!--
+Returns an object describing the memory usage of the Node process
+measured in bytes.
+-->
+
+<p>Node &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30E1;&#x30E2;&#x30EA;&#x4F7F;&#x7528;&#x72B6;&#x6CC1;&#x3092;&#x30D0;&#x30A4;&#x30C8;&#x5358;&#x4F4D;&#x3067;&#x8A18;&#x8FF0;&#x3057;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var util = require(&apos;util&apos;);
+
+console.log(util.inspect(process.memoryUsage()));</code></pre>
+<!--
+This will generate:
+-->
+
+<p>&#x3053;&#x306E;&#x3088;&#x3046;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;:
+
+</p>
+<pre><code>{ rss: 4935680,
+  heapTotal: 1826816,
+  heapUsed: 650472 }</code></pre>
+<!--
+`heapTotal` and `heapUsed` refer to V8's memory usage.
+-->
+
+<p><code>heapTotal</code> &#x3068; <code>heapUsed</code> &#x306F; V8 &#x306E;&#x30E1;&#x30E2;&#x30EA;&#x4F7F;&#x7528;&#x72B6;&#x6CC1;&#x3092;&#x53C2;&#x7167;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>process.nextTick(callback)<span><a class="mark" href="#process_process_nexttick_callback" id="process_process_nexttick_callback">#</a></span></h2>
+<!--
+On the next loop around the event loop call this callback.
+This is *not* a simple alias to `setTimeout(fn, 0)`, it's much more
+efficient.  It typically runs before any other I/O events fire, but there
+are some exceptions.  See `process.maxTickDepth` below.
+-->
+
+<p>&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x306E;&#x6B21;&#x4EE5;&#x964D;&#x306E;&#x30EB;&#x30FC;&#x30D7;&#x3067;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>setTimeout(fn, 0)</code> &#x306E;&#x5358;&#x7D14;&#x306A;&#x30A8;&#x30A4;&#x30EA;&#x30A2;&#x30B9;<em>&#x3067;&#x306F;&#x306A;&#x304F;</em>&#x3001;
+&#x306F;&#x308B;&#x304B;&#x306B;&#x52B9;&#x7387;&#x7684;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x901A;&#x5E38;&#x4ED6;&#x306E; I/O &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3088;&#x308A;&#x3082;&#x524D;&#x306B;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x4F8B;&#x5916;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x5F8C;&#x8FF0;&#x306E; <code>process.maxTickDepth</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<pre><code>process.nextTick(function() {
+  console.log(&apos;nextTick callback&apos;);
+});</code></pre>
+<!--
+This is important in developing APIs where you want to give the user the
+chance to assign event handlers after an object has been constructed,
+but before any I/O has occurred.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; API &#x306E;&#x958B;&#x767A;&#x306B;&#x304A;&#x3044;&#x3066;&#x3001;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x304C;&#x69CB;&#x7BC9;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067;
+&#x3069;&#x3093;&#x306A; I/O &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3088;&#x308A;&#x3082;&#x524D;&#x306B;&#x3001;
+&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x3092;&#x5272;&#x308A;&#x5F53;&#x3066;&#x308B;&#x30C1;&#x30E3;&#x30F3;&#x30B9;&#x3092;&#x30E6;&#x30FC;&#x30B6;&#x306B;&#x4E0E;&#x3048;&#x305F;&#x3044;&#x5834;&#x5408;&#x306B;&#x91CD;&#x8981;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>function MyThing(options) {
+  this.setupOptions(options);
+
+  process.nextTick(function() {
+    this.startDoingStuff();
+  }.bind(this));
+}
+
+var thing = new MyThing();
+thing.getReadyForStuff();
+
+// thing.startDoingStuff() gets called now, not before.</code></pre>
+<!--
+It is very important for APIs to be either 100% synchronous or 100%
+asynchronous.  Consider this example:
+-->
+
+<p>API &#x306F; 100% &#x540C;&#x671F;&#x7684;&#x304B;&#x3001;100% &#x975E;&#x540C;&#x671F;&#x7684;&#x304B;&#x306E;&#x3069;&#x3061;&#x3089;&#x304B;&#x3067;&#x3042;&#x308B;&#x3053;&#x3068;&#x304C;&#x3068;&#x3066;&#x3082;&#x91CD;&#x8981;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x4F8B;&#x3092;&#x8003;&#x3048;&#x3066;&#x307F;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;:
+
+</p>
+<pre><code>// WARNING!  DO NOT USE!  BAD UNSAFE HAZARD!
+function maybeSync(arg, cb) {
+  if (arg) {
+    cb();
+    return;
+  }
+
+  fs.stat(&apos;file&apos;, cb);
+}</code></pre>
+<!--
+This API is hazardous.  If you do this:
+-->
+
+<p>&#x3053;&#x306E; API &#x306F;&#x5371;&#x967A;&#x3067;&#x3059;&#x3002;&#x3053;&#x3046;&#x3059;&#x308B;&#x3068;:
+
+</p>
+<pre><code>maybeSync(true, function() {
+  foo();
+});
+bar();</code></pre>
+<!--
+then it's not clear whether `foo()` or `bar()` will be called first.
+-->
+
+<p><code>foo()</code> &#x3068; <code>bar()</code> &#x306E;&#x3069;&#x3061;&#x3089;&#x304C;&#x5148;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x304B;&#x4E0D;&#x660E;&#x77AD;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This approach is much better:
+-->
+
+<p>&#x4EE5;&#x4E0B;&#x306E;&#x30A2;&#x30D7;&#x30ED;&#x30FC;&#x30C1;&#x306F;&#x305A;&#x3063;&#x3068;&#x512A;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;:
+
+</p>
+<pre><code>function definitelyAsync(arg, cb) {
+  if (arg) {
+    process.nextTick(cb);
+    return;
+  }
+
+  fs.stat(&apos;file&apos;, cb);
+}</code></pre>
+<h2>process.maxTickDepth<span><a class="mark" href="#process_process_maxtickdepth" id="process_process_maxtickdepth">#</a></span></h2>
+<div class="signature"><ul>
+<li><span class="type">Number</span> Default = 1000</li>
+</ul></div>
+<!--
+Callbacks passed to `process.nextTick` will *usually* be called at the
+end of the current flow of execution, and are thus approximately as fast
+as calling a function synchronously.  Left unchecked, this would starve
+the event loop, preventing any I/O from occurring.
+-->
+
+<p><code>process.nextTick()</code> &#x306B;&#x6E21;&#x3055;&#x308C;&#x305F;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x3001;<em>&#x901A;&#x5E38;</em> &#x73FE;&#x5728;&#x306E;&#x5B9F;&#x884C;&#x30D5;&#x30ED;&#x30FC;&#x306E;
+&#x5F8C;&#x3067;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3001;&#x305D;&#x308C;&#x306F;&#x95A2;&#x6570;&#x3092;&#x540C;&#x671F;&#x7684;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3059;&#x306E;&#x3068;&#x540C;&#x3058;&#x304F;&#x3089;&#x3044;&#x9AD8;&#x901F;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x3092;&#x653E;&#x7F6E;&#x3059;&#x308B;&#x3068;&#x3042;&#x3089;&#x3086;&#x308B; I/O &#x304C;&#x963B;&#x307E;&#x308C;&#x3001;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x306F;&#x98E2;&#x9913;&#x72B6;&#x614B;&#x3068;&#x306A;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+
+</p>
+<!--
+Consider this code:
+-->
+
+<p>&#x4EE5;&#x4E0B;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x8003;&#x3048;&#x3066;&#x307F;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<pre><code>process.nextTick(function foo() {
+  process.nextTick(foo);
+});</code></pre>
+<!--
+In order to avoid the situation where Node is blocked by an infinite
+loop of recursive series of nextTick calls, it defers to allow some I/O
+to be done every so often.
+-->
+
+<p>nextTick &#x306E;&#x518D;&#x5E30;&#x304C;&#x9023;&#x9396;&#x3059;&#x308B;&#x7121;&#x9650;&#x30EB;&#x30FC;&#x30D7;&#x306B;&#x3088;&#x3063;&#x3066; Node &#x304C;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3059;&#x308B;&#x72B6;&#x6CC1;&#x3092;
+&#x907F;&#x3051;&#x308B;&#x306B;&#x306F;&#x3001;&#x305D;&#x308C;&#x3092;&#x5148;&#x9001;&#x308A;&#x3057;&#x3066;&#x6642;&#x3005; I/O &#x3092;&#x53EF;&#x80FD;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The `process.maxTickDepth` value is the maximum depth of
+nextTick-calling nextTick-callbacks that will be evaluated before
+allowing other forms of I/O to occur.
+-->
+
+<p><code>process.maxTickDepth</code> &#x306E;&#x5024;&#x306F;&#x3001;nextTick &#x304C; nextTick &#x306E;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;
+&#x6700;&#x5927;&#x306E;&#x6DF1;&#x3055;&#x3067;&#x3001;&#x4ED6;&#x306E; I/O &#x3092;&#x53EF;&#x80FD;&#x306B;&#x3059;&#x308B;&#x524D;&#x306B;&#x8A55;&#x4FA1;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>process.umask([mask])<span><a class="mark" href="#process_process_umask_mask" id="process_process_umask_mask">#</a></span></h2>
+<!--
+Sets or reads the process's file mode creation mask. Child processes inherit
+the mask from the parent process. Returns the old mask if `mask` argument is
+given, otherwise returns the current mask.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30E2;&#x30FC;&#x30C9;&#x4F5C;&#x6210;&#x30DE;&#x30B9;&#x30AF;&#x3092;&#x8A2D;&#x5B9A;&#x307E;&#x305F;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304B;&#x3089;&#x30DE;&#x30B9;&#x30AF;&#x3092;&#x7D99;&#x627F;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>mask</code> &#x5F15;&#x6570;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B;&#x3068;&#x5143;&#x306E;&#x30DE;&#x30B9;&#x30AF;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x3001;&#x305D;&#x3046;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x73FE;&#x5728;&#x306E;&#x30DE;&#x30B9;&#x30AF;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var oldmask, newmask = 0644;
+
+oldmask = process.umask(newmask);
+console.log(&apos;Changed umask from: &apos; + oldmask.toString(8) +
+            &apos; to &apos; + newmask.toString(8));</code></pre>
+<h2>process.uptime()<span><a class="mark" href="#process_process_uptime" id="process_process_uptime">#</a></span></h2>
+<!--
+Number of seconds Node has been running.
+-->
+
+<p>Node &#x304C;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x3066;&#x304B;&#x3089;&#x306E;&#x79D2;&#x6570;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>process.hrtime()<span><a class="mark" href="#process_process_hrtime" id="process_process_hrtime">#</a></span></h2>
+<!--
+Returns the current high-resolution real time in a `[seconds, nanoseconds]`
+tuple Array. It is relative to an arbitrary time in the past. It is not
+related to the time of day and therefore not subject to clock drift. The
+primary use is for measuring performance between intervals.
+
+You may pass in the result of a previous call to `process.hrtime()` to get
+a diff reading, useful for benchmarks and measuring intervals:
+-->
+
+<p>&#x9AD8;&#x5206;&#x89E3;&#x80FD;&#x306A;&#x73FE;&#x5728;&#x6642;&#x523B;&#x3092; <code>[seconds, nanoseconds]</code> &#x306E;&#x914D;&#x5217;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x904E;&#x53BB;&#x306E;&#x4EFB;&#x610F;&#x306E;&#x6642;&#x9593;&#x3068;&#x306E;&#x6BD4;&#x8F03;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x4E00;&#x65E5;&#x306B;&#x304A;&#x3051;&#x308B;&#x6642;&#x523B;&#x306B;&#x306F;&#x95A2;&#x9023;&#x304C;&#x7121;&#x3044;&#x305F;&#x3081;&#x3001;&#x30AF;&#x30ED;&#x30C3;&#x30AF;&#x30C9;&#x30EA;&#x30D5;&#x30C8;&#x306B;&#x5F71;&#x97FF;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x4E3B;&#x306A;&#x7528;&#x9014;&#x306F;&#x30D9;&#x30F3;&#x30C1;&#x30DE;&#x30FC;&#x30AF;&#x3084;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D0;&#x30EB;&#x306E;&#x6E2C;&#x5B9A;&#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x4EE5;&#x524D;&#x306B; <code>process.hrtime()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x7D50;&#x679C;&#x3092;&#x6E21;&#x3059;&#x3053;&#x3068;&#x306B;&#x3088;&#x308A;&#x3001;
+&#x5DEE;&#x5206;&#x3092;&#x5F97;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;&#x3053;&#x308C;&#x306F;&#x30D9;&#x30F3;&#x30C1;&#x30DE;&#x30FC;&#x30AF;&#x3084;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D0;&#x30EB;&#x306E;&#x6E2C;&#x5B9A;&#x306B;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code>var time = process.hrtime();
+// [ 1800216, 25 ]
+
+setTimeout(function() {
+  var diff = process.hrtime(time);
+  // [ 1, 552 ]
+
+  console.log(&apos;benchmark took %d nanoseconds&apos;, diff[0] * 1e9 + diff[1]);
+  // benchmark took 1000000527 nanoseconds
+}, 1000);</code></pre>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

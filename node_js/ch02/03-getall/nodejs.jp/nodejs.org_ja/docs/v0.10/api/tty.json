@@ -1,0 +1,105 @@
+{
+  &quot;source&quot;: &quot;doc/api/tty.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;TTY&quot;,
+      &quot;name&quot;: &quot;tty&quot;,
+      &quot;stability&quot;: 2,
+      &quot;stabilityText&quot;: &quot;Unstable&quot;,
+      &quot;desc&quot;: &quot;<!--\nThe `tty` module houses the `tty.ReadStream` and `tty.WriteStream` classes. In\nmost cases, you will not need to use this module directly.\n-->\n\n<p><code>tty</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F; <code>tty.ReadStream</code> &#x3068; <code>tty.WriteStream</code> &#x30AF;&#x30E9;&#x30B9;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;\n&#x591A;&#x304F;&#x306E;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x76F4;&#x63A5;&#x4F7F;&#x3046;&#x5FC5;&#x8981;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nWhen node detects that it is being run inside a TTY context, then `process.stdin`\nwill be a `tty.ReadStream` instance and `process.stdout` will be\na `tty.WriteStream` instance. The preferred way to check if node is being run in\na TTY context is to check `process.stdout.isTTY`:\n-->\n\n<p>node &#x306F; TTY &#x30B3;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x306E;&#x4E2D;&#x306B;&#x3044;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3092;&#x691C;&#x51FA;&#x3057;&#x3001;\n<code>process.stdin</code> &#x306F; <code>tty.ReadStream</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306B;&#x3001;\n<code>process.stdout</code> &#x306F; <code>tty.WriteStream</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x3082;&#x3057; node &#x304C; TTY &#x306E;&#x30B3;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x3067;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3092;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3057;&#x305F;&#x3051;&#x308C;&#x3070;&#x3001;\n<code>process.stdout.isTTY</code> &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;:\n\n</p>\n<pre><code>$ node -p -e &quot;Boolean(process.stdout.isTTY)&quot;\ntrue\n$ node -p -e &quot;Boolean(process.stdout.isTTY)&quot; | cat\nfalse</code></pre>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;tty.isatty(fd)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;isatty&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns `true` or `false` depending on if the `fd` is associated with a\nterminal.\n-->\n\n<p><code>fd</code> &#x304C;&#x7AEF;&#x672B;&#x306B;&#x95A2;&#x9023;&#x3065;&#x3051;&#x3089;&#x308C;&#x3066;&#x3044;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3092; <code>true</code> &#x307E;&#x305F;&#x306F; <code>false</code> &#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;fd&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;tty.setRawMode(mode)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;setRawMode&quot;,
+          &quot;desc&quot;: &quot;<!--\nDeprecated. Use `tty.ReadStream#setRawMode()`\n(i.e. `process.stdin.setRawMode()`) instead.\n-->\n\n<p>Deprecated.\n&#x4EE3;&#x308F;&#x308A;&#x306B; <code>tty.ReadStream#setRawMode()</code> (&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;<code>process.stdin.setRawMode()</code>)\n&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;mode&quot;
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;classes&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Class: ReadStream&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;ReadStream&quot;,
+          &quot;desc&quot;: &quot;<!--\nA `net.Socket` subclass that represents the readable portion of a tty. In normal\ncircumstances, `process.stdin` will be the only `tty.ReadStream` instance in any\nnode program (only when `isatty(0)` is true).\n-->\n\n<p><code>net.Socket</code> &#x306E;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3001;tty &#x306E;&#x5165;&#x529B;&#x5074;&#x3092;&#x8868;&#x73FE;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x4E00;&#x822C;&#x7684;&#x306A;&#x72B6;&#x6CC1;&#x3067;&#x306F;&#x3001;&#x3069;&#x3093;&#x306A;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067;&#x3082; (<code>isatty(0)</code> &#x304C; true &#x306E;&#x5834;&#x5408;&#x306B;&#x9650;&#x308A;)\n<code>process.stdin</code> &#x304C;&#x552F;&#x4E00;&#x306E; <code>tty.ReadStream</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;rs.isRaw&quot;,
+              &quot;name&quot;: &quot;isRaw&quot;,
+              &quot;desc&quot;: &quot;<!--\nA `Boolean` that is initialized to `false`. It represents the current \"raw\" state\nof the `tty.ReadStream` instance.\n-->\n\n<p><code>Boolean</code> &#x5024;&#x3067; <code>false</code> &#x306B;&#x521D;&#x671F;&#x5316;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>tty.ReadStream</code> &#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306E;&#x73FE;&#x5728;&#x306E; &quot;raw&quot; &#x72B6;&#x614B;&#x3092;&#x8868;&#x73FE;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            }
+          ],
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;rs.setRawMode(mode)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setRawMode&quot;,
+              &quot;desc&quot;: &quot;<!--\n`mode` should be `true` or `false`. This sets the properties of the\n`tty.ReadStream` to act either as a raw device or default. `isRaw` will be set\nto the resulting mode.\n-->\n\n<p><code>mode</code> &#x306F; <code>true</code> &#x307E;&#x305F;&#x306F; <code>false</code> &#x306E;&#x3069;&#x3061;&#x3089;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F; <code>tty.ReadStream</code> &#x304C;&#x30ED;&#x30FC;&#x30C7;&#x30D0;&#x30A4;&#x30B9;&#x304B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x3069;&#x3061;&#x3089;&#x3067;&#x632F;&#x308B;&#x821E;&#x3046;&#x304B;&#x3092;\n&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x7D50;&#x679C;&#x306E;&#x30E2;&#x30FC;&#x30C9;&#x306F; <code>isRaw</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;mode&quot;
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: WriteStream&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;WriteStream&quot;,
+          &quot;desc&quot;: &quot;<!--\nA `net.Socket` subclass that represents the writable portion of a tty. In normal\ncircumstances, `process.stdout` will be the only `tty.WriteStream` instance\never created (and only when `isatty(1)` is true).\n-->\n\n<p><code>net.Socket</code> &#x306E;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3001;tty &#x306E;&#x51FA;&#x529B;&#x5074;&#x3092;&#x8868;&#x73FE;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x4E00;&#x822C;&#x7684;&#x306A;&#x72B6;&#x6CC1;&#x3067;&#x306F;&#x3001;&#x3069;&#x3093;&#x306A;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067;&#x3082; (<code>isatty(1)</code> &#x304C; true &#x306E;&#x5834;&#x5408;&#x306B;&#x9650;&#x308A;)\n<code>process.stdout</code> &#x304C;&#x552F;&#x4E00;&#x306E; <code>tty.WriteStream</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;ws.columns&quot;,
+              &quot;name&quot;: &quot;columns&quot;,
+              &quot;desc&quot;: &quot;<!--\nA `Number` that gives the number of columns the TTY currently has. This property\ngets updated on \"resize\" events.\n-->\n\n<p>TTY &#x306E;&#x73FE;&#x5728;&#x306E;&#x30AB;&#x30E9;&#x30E0;&#x6570;&#x3092;&#x4FDD;&#x6301;&#x3059;&#x308B; <code>Number</code> &#x5024;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F; <code>&apos;resize&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3067;&#x66F4;&#x65B0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;ws.rows&quot;,
+              &quot;name&quot;: &quot;rows&quot;,
+              &quot;desc&quot;: &quot;<!--\nA `Number` that gives the number of rows the TTY currently has. This property\ngets updated on \"resize\" events.\n-->\n\n<p>TTY &#x306E;&#x73FE;&#x5728;&#x306E;&#x884C;&#x6570;&#x3092;&#x4FDD;&#x6301;&#x3059;&#x308B; <code>Number</code> &#x5024;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F; <code>&apos;resize&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3067;&#x66F4;&#x65B0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            }
+          ],
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;resize&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;resize&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () {}</code>\n\n</p>\n<!--\nEmitted by `refreshSize()` when either of the `columns` or `rows` properties\nhas changed.\n-->\n\n<p><code>columns</code> &#x307E;&#x305F;&#x306F; <code>rows</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x304C;&#x5909;&#x66F4;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;\n<code>refreshSize()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>process.stdout.on(&apos;resize&apos;, function() {\n  console.log(&apos;screen size has changed!&apos;);\n  console.log(process.stdout.columns + &apos;x&apos; + process.stdout.rows);\n});</code></pre>\n&quot;,
+              &quot;params&quot;: []
+            }
+          ]
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;TTY&quot;
+    }
+  ]
+}

@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Modules Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/modules.html">
+</head>
+<body class="alt apidoc" id="api-section-modules">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="modules.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#modules_modules">Modules</a><ul>
+<li><a href="#modules_cycles">Cycles</a></li>
+<li><a href="#modules_core_modules">Core Modules</a></li>
+<li><a href="#modules_file_modules">File Modules</a></li>
+<li><a href="#modules_loading_from_node_modules_folders">Loading from <code>node_modules</code> Folders</a></li>
+<li><a href="#modules_folders_as_modules">Folders as Modules</a></li>
+<li><a href="#modules_caching">Caching</a><ul>
+<li><a href="#modules_module_caching_caveats">Module Caching Caveats</a></li>
+</ul>
+</li>
+<li><a href="#modules_the_module_object">The <code>module</code> Object</a><ul>
+<li><a href="#modules_module_exports">module.exports</a><ul>
+<li><a href="#modules_exports_alias">exports alias</a></li>
+</ul>
+</li>
+<li><a href="#modules_module_require_id">module.require(id)</a></li>
+<li><a href="#modules_module_id">module.id</a></li>
+<li><a href="#modules_module_filename">module.filename</a></li>
+<li><a href="#modules_module_loaded">module.loaded</a></li>
+<li><a href="#modules_module_parent">module.parent</a></li>
+<li><a href="#modules_module_children">module.children</a></li>
+</ul>
+</li>
+<li><a href="#modules_all_together">All Together...</a></li>
+<li><a href="#modules_loading_from_the_global_folders">Loading from the global folders</a></li>
+<li><a href="#modules_accessing_the_main_module">Accessing the main module</a></li>
+<li><a href="#modules_addenda_package_manager_tips">Addenda: Package Manager Tips</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Modules<span><a class="mark" href="#modules_modules" id="modules_modules">#</a></span></h1>
+<pre class="api_stability_5">Stability: 5 - Locked</pre><!--name=module-->
+
+<!--
+Node has a simple module loading system.  In Node, files and modules are in
+one-to-one correspondence.  As an example, `foo.js` loads the module
+`circle.js` in the same directory.
+-->
+
+<p>Node &#x306F;&#x30B7;&#x30F3;&#x30D7;&#x30EB;&#x306A;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30ED;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+Node &#x3067;&#x306F;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3068;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#xFF11;&#x5BFE;&#xFF11;&#x306B;&#x5BFE;&#x5FDC;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4F8B;&#x3068;&#x3057;&#x3066;&#x3001; <code>foo.js</code> &#x306F;&#x3001;&#x540C;&#x3058;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306B;&#x3042;&#x308B; <code>circle.js</code> &#x3092;&#x30ED;&#x30FC;&#x30C9;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The contents of `foo.js`:
+-->
+
+<p><code>foo.js</code> &#x306E;&#x5185;&#x5BB9;:
+
+</p>
+<pre><code>var circle = require(&apos;./circle.js&apos;);
+console.log( &apos;The area of a circle of radius 4 is &apos;
+           + circle.area(4));</code></pre>
+<!--
+The contents of `circle.js`:
+-->
+
+<p><code>circle.js</code> &#x306E;&#x5185;&#x5BB9;:
+
+</p>
+<pre><code>var PI = Math.PI;
+
+exports.area = function (r) {
+  return PI * r * r;
+};
+
+exports.circumference = function (r) {
+  return 2 * PI * r;
+};</code></pre>
+<!--
+The module `circle.js` has exported the functions `area()` and
+`circumference()`.  To add functions and objects to the root of your module,
+you can add them to the special `exports` object.
+-->
+
+<p><code>circle.js</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F; <code>area()</code> &#x3068; <code>circumference()</code> &#x3092;&#x516C;&#x958B;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x95A2;&#x6570;&#x3084;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30EB;&#x30FC;&#x30C8;&#x306B;&#x52A0;&#x3048;&#x308B;&#x306B;&#x306F;&#x3001;
+<code>exports</code> &#x3068;&#x3044;&#x3046;&#x7279;&#x5225;&#x306A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x52A0;&#x3048;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Variables local to the module will be private, as though the module was wrapped
+in a function. In this example the variable `PI` is private to `circle.js`.
+-->
+
+<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x5909;&#x6570;&#x306F;&#x95A2;&#x6570;&#x306B;&#x5305;&#x307E;&#x308C;&#x3066;&#x3044;&#x308B;&#x304B;&#x306E;&#x3088;&#x3046;&#x306B;&#x30D7;&#x30E9;&#x30A4;&#x30D9;&#x30FC;&#x30C8;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x4F8B;&#x306E;&#x5834;&#x5408;&#x3001;&#x5909;&#x6570; <code>PI</code> &#x306F; <code>circle.js</code> &#x306E;&#x30D7;&#x30E9;&#x30A4;&#x30D9;&#x30FC;&#x30C8;&#x5909;&#x6570;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+If you want the root of your module's export to be a function (such as a
+constructor) or if you want to export a complete object in one assignment
+instead of building it one property at a time, assign it to `module.exports`
+instead of `exports`.
+-->
+
+<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30EB;&#x30FC;&#x30C8;&#x3068;&#x3057;&#x3066;&#x95A2;&#x6570; (&#x305F;&#x3068;&#x3048;&#x3070;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;) &#x3092;&#x5F8C;&#x6094;&#x3057;&#x305F;&#x308A;&#x3001;
+&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x4E00;&#x3064;&#x305A;&#x3064;&#x4EE3;&#x5165;&#x3059;&#x308B;&#x306E;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5B8C;&#x5168;&#x306A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4E00;&#x5EA6;&#x306B;
+&#x516C;&#x958B;&#x3057;&#x305F;&#x3051;&#x308C;&#x3070;&#x3001;<code>exports</code> &#x306E;&#x4EE3;&#x308F;&#x308A;&#x306B; <code>module.exports</code>&#x306B;&#x4EE3;&#x5165;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Below, `bar.js` makes use of the `square` module, which exports a constructor:
+-->
+
+<p>&#x4EE5;&#x4E0B;&#x3067;&#x306F;&#x3001;<code>bar.js</code> &#x306F; <code>square</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x516C;&#x958B;&#x3059;&#x308B;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3092;
+&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var square = require(&apos;./square.js&apos;);
+var mySquare = square(2);
+console.log(&apos;The area of my square is &apos; + mySquare.area());</code></pre>
+<!--
+The `square` module is defined in `square.js`:
+-->
+
+<p><code>square.js</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F; <code>square.js</code> &#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>// assigning to exports will not modify module, must use module.exports
+module.exports = function(width) {
+  return {
+    area: function() {
+      return width * width;
+    }
+  };
+}</code></pre>
+<!--
+The module system is implemented in the `require("module")` module.
+-->
+
+<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306F; <code>require(&quot;module&quot;)</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x3088;&#x3063;&#x3066;&#x5B9F;&#x88C5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Cycles<span><a class="mark" href="#modules_cycles" id="modules_cycles">#</a></span></h2>
+<!--type=misc-->
+
+<!--
+When there are circular `require()` calls, a module might not be
+done being executed when it is returned.
+
+Consider this situation:
+-->
+
+<p><code>require()</code> &#x304C;&#x5FAA;&#x74B0;&#x7684;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x5834;&#x5408;&#x3001;&#x5B9F;&#x884C;&#x304C;&#x5B8C;&#x4E86;&#x3057;&#x3066;&#x3044;&#x306A;&#x3044;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;
+&#x8FD4;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x6B21;&#x306E;&#x72B6;&#x6CC1;&#x3092;&#x8003;&#x3048;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;:
+
+</p>
+<p><code>a.js</code>:
+
+</p>
+<pre><code>console.log(&apos;a starting&apos;);
+exports.done = false;
+var b = require(&apos;./b.js&apos;);
+console.log(&apos;in a, b.done = %j&apos;, b.done);
+exports.done = true;
+console.log(&apos;a done&apos;);</code></pre>
+<p><code>b.js</code>:
+
+</p>
+<pre><code>console.log(&apos;b starting&apos;);
+exports.done = false;
+var a = require(&apos;./a.js&apos;);
+console.log(&apos;in b, a.done = %j&apos;, a.done);
+exports.done = true;
+console.log(&apos;b done&apos;);</code></pre>
+<p><code>main.js</code>:
+
+</p>
+<pre><code>console.log(&apos;main starting&apos;);
+var a = require(&apos;./a.js&apos;);
+var b = require(&apos;./b.js&apos;);
+console.log(&apos;in main, a.done=%j, b.done=%j&apos;, a.done, b.done);</code></pre>
+<!--
+When `main.js` loads `a.js`, then `a.js` in turn loads `b.js`.  At that
+point, `b.js` tries to load `a.js`.  In order to prevent an infinite
+loop an **unfinished copy** of the `a.js` exports object is returned to the
+`b.js` module.  `b.js` then finishes loading, and its `exports` object is
+provided to the `a.js` module.
+
+By the time `main.js` has loaded both modules, they're both finished.
+The output of this program would thus be:
+-->
+
+<p><code>main.js</code> &#x304C; <code>a.js</code> &#x3092;&#x30ED;&#x30FC;&#x30C9;&#x3059;&#x308B;&#x3068;&#x3001;<code>a.js</code> &#x306F; <code>b.js</code> &#x3092;&#x30ED;&#x30FC;&#x30C9;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306F;&#x3001;<code>b.js</code> &#x306F; <code>a.js</code> &#x306E;&#x30ED;&#x30FC;&#x30C9;&#x3092;&#x8A66;&#x307F;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;
+&#x7121;&#x9650;&#x30EB;&#x30FC;&#x30D7;&#x3092;&#x907F;&#x3051;&#x308B;&#x305F;&#x3081;&#x3001;<code>a.js</code> &#x304C;&#x30A8;&#x30AF;&#x30B9;&#x30DD;&#x30FC;&#x30C8;&#x3057;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;
+<strong>&#x672A;&#x5B8C;&#x4E86;&#x306E;&#x30B3;&#x30D4;&#x30FC;</strong> &#x304C; <code>b.js</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>b.js</code> &#x306E;&#x30ED;&#x30FC;&#x30C9;&#x304C;&#x5B8C;&#x4E86;&#x3059;&#x308B;&#x3068;&#x3001;<code>exports</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x304C; <code>a.js</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;
+&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>main.js</code> &#x304C;&#x4E21;&#x65B9;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x30ED;&#x30FC;&#x30C9;&#x3059;&#x308B;&#x307E;&#x3067;&#x306B;&#x306F;&#x3001;&#x3069;&#x3061;&#x3089;&#x3082;&#x5B8C;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x51FA;&#x529B;&#x306F;&#x3053;&#x306E;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;:
+
+</p>
+<pre><code>$ node main.js
+main starting
+a starting
+b starting
+in b, a.done = false
+b done
+in a, b.done = true
+a done
+in main, a.done=true, b.done=true</code></pre>
+<!--
+If you have cyclic module dependencies in your program, make sure to
+plan accordingly.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304C;&#x5FAA;&#x74B0;&#x53C2;&#x7167;&#x3059;&#x308B;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x6301;&#x3064;&#x5834;&#x5408;&#x306F;&#x3001;&#x8A08;&#x753B;&#x304C;&#x9069;&#x5207;&#x304B;&#x78BA;&#x8A8D;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+
+</p>
+<h2>Core Modules<span><a class="mark" href="#modules_core_modules" id="modules_core_modules">#</a></span></h2>
+<!--type=misc-->
+
+<!--
+Node has several modules compiled into the binary.  These modules are
+described in greater detail elsewhere in this documentation.
+
+The core modules are defined in node's source in the `lib/` folder.
+
+Core modules are always preferentially loaded if their identifier is
+passed to `require()`.  For instance, `require('http')` will always
+return the built in HTTP module, even if there is a file by that name.
+-->
+
+<p>Node &#x306B;&#x306F;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x306B;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x6E08;&#x307F;&#x306E;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x3089;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x3064;&#x3044;&#x3066;&#x306F;&#x3001;&#x3053;&#x306E;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;&#x306E;&#x4ED6;&#x306E;&#x5834;&#x6240;&#x3067;&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x8A18;&#x8FF0;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x30B3;&#x30A2;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x3001; Node &#x306E;&#x30BD;&#x30FC;&#x30B9;&#x306E; <code>lib/</code> &#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x306B;&#x3066;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>require()</code> &#x3067;&#x306F;&#x5E38;&#x306B;&#x30B3;&#x30A2;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x8B58;&#x5225;&#x540D;&#x3092;&#x512A;&#x5148;&#x7684;&#x306B;&#x89E3;&#x91C8;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4F8B;&#x3048;&#x3070; <code>require(&apos;http&apos;)</code> &#x306F;&#x3001;&#x4F8B;&#x3048;&#x540C;&#x540D;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x5B58;&#x5728;&#x3057;&#x3066;&#x3044;&#x305F;&#x3068;&#x3057;&#x3066;&#x3082;&#x3001;&#x5E38;&#x306B;&#x30D3;&#x30EB;&#x30C8;&#x30A4;&#x30A4;&#x30F3;&#x306E; HTTP &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>File Modules<span><a class="mark" href="#modules_file_modules" id="modules_file_modules">#</a></span></h2>
+<!--type=misc-->
+
+<!--
+If the exact filename is not found, then node will attempt to load the
+required filename with the added extension of `.js`, `.json`, and then `.node`.
+
+`.js` files are interpreted as JavaScript text files, and `.json` files are
+parsed as JSON text files. `.node` files are interpreted as compiled addon
+modules loaded with `dlopen`.
+
+A module prefixed with `'/'` is an absolute path to the file.  For
+example, `require('/home/marco/foo.js')` will load the file at
+`/home/marco/foo.js`.
+
+A module prefixed with `'./'` is relative to the file calling `require()`.
+That is, `circle.js` must be in the same directory as `foo.js` for
+`require('./circle')` to find it.
+
+Without a leading '/' or './' to indicate a file, the module is either a
+"core module" or is loaded from a `node_modules` folder.
+-->
+
+<p>&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x540D;&#x524D;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x898B;&#x3064;&#x304B;&#x3089;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001; Node &#x306F;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x306B;
+<code>.js</code>&#x3001;<code>.json</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>.node</code> &#x3092;&#x4ED8;&#x3051;&#x305F;&#x3082;&#x306E;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3082;&#x3046;&#x3068;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>.js</code> &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306F; JavaScript &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3068;&#x3057;&#x3066;&#x89E3;&#x91C8;&#x3055;&#x308C;&#x3001;
+<code>.json</code> &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306F; JSON &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3068;&#x3057;&#x3066;&#x89E3;&#x91C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x4E00;&#x65B9; <code>.node</code> &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306F;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x6E08;&#x307F;&#x306E;&#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3068;&#x3057;&#x3066;&#x89E3;&#x91C8;&#x3055;&#x308C;&#x3001;
+<code>dlopen</code> &#x3092;&#x4F7F;&#x3063;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307E;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>&apos;/&apos;</code> &#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3078;&#x306E;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3068;&#x898B;&#x306A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x4F8B;&#x3048;&#x3070;&#x3001; <code>require(&apos;/home/marco/foo.js&apos;)</code> &#x306F; <code>/home/macro/foo.js</code> &#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>&apos;./&apos;</code> &#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x3001; <code>require()</code> &#x3092;&#x547C;&#x3093;&#x3060;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304B;&#x3089;&#x306E;&#x76F8;&#x5BFE;&#x30D1;&#x30B9;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3059;&#x306A;&#x308F;&#x3061;&#x3001; <code>foo.js</code> &#x304B;&#x3089; <code>require(&apos;./circle&apos;)</code> &#x306B;&#x3088;&#x3063;&#x3066; <code>circle.js</code> &#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x306B;&#x306F;&#x3001; <code>circle.js</code> &#x306F; <code>foo.js</code> &#x3068;&#x540C;&#x3058;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306B;&#x5B58;&#x5728;&#x3057;&#x3066;&#x3044;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<p>&apos;/&apos; &#x3084; &apos;./&apos; &#x304C;&#x5148;&#x982D;&#x306B;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F; &quot;&#x30B3;&#x30A2;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&quot; &#x3067;&#x3042;&#x308B;&#x304B;&#x3082;&#x3057;&#x304F;&#x306F; <code>node_modules</code> &#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x304B;&#x3089;&#x8AAD;&#x307F;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If the given path does not exist, `require()` will throw an Error with its
+`code` property set to `'MODULE_NOT_FOUND'`.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30D1;&#x30B9;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x3001;<code>require()</code> &#x306F; <code>code</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306B;
+<code>&apos;MODULE_NOT_FOUND&apos;</code> &#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x305F;&#x30A8;&#x30E9;&#x30FC;&#x3092;&#x30B9;&#x30ED;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Loading from <code>node_modules</code> Folders<span><a class="mark" href="#modules_loading_from_node_modules_folders" id="modules_loading_from_node_modules_folders">#</a></span></h2>
+<!--type=misc-->
+
+<!--
+If the module identifier passed to `require()` is not a native module,
+and does not begin with `'/'`, `'../'`, or `'./'`, then node starts at the
+parent directory of the current module, and adds `/node_modules`, and
+attempts to load the module from that location.
+
+If it is not found there, then it moves to the parent directory, and so
+on, until the root of the tree is reached.
+
+For example, if the file at `'/home/ry/projects/foo.js'` called
+`require('bar.js')`, then node would look in the following locations, in
+this order:
+-->
+
+<p>&#x3082;&#x3057; <code>require()</code> &#x306B;&#x6E21;&#x3055;&#x308C;&#x305F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x8B58;&#x5225;&#x5B50;&#x304C;&#x30CD;&#x30A4;&#x30C6;&#x30A3;&#x30D6;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x304B;&#x3064;  <code>&apos;/&apos;</code> &#x3084; <code>&apos;../&apos;</code> &#x3084; <code>&apos;./&apos;</code> &#x304B;&#x3089;&#x59CB;&#x307E;&#x3089;&#x306A;&#x3044;&#x306A;&#x3089;&#x3070;&#x3001; Node &#x306F;&#x73FE;&#x5728;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x89AA;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306B; <code>&apos;/node_modules&apos;</code> &#x3092;&#x4ED8;&#x4E0E;&#x3057;&#x3066;&#x305D;&#x3053;&#x304B;&#x3089;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3082;&#x3046;&#x3068;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x305D;&#x3053;&#x306B;&#x898B;&#x3064;&#x304B;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x3055;&#x3089;&#x306B;&#x89AA;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306B;&#x79FB;&#x52D5;&#x3057;&#x3001;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x898B;&#x3064;&#x304B;&#x308B;&#x304B; root &#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306B;&#x5230;&#x9054;&#x3059;&#x308B;&#x307E;&#x3067;&#x540C;&#x69D8;&#x306E;&#x3053;&#x3068;&#x3092;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x3066;&#x3044;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x4F8B;&#x3048;&#x3070; <code>&apos;/home/ry/projects/foo.js&apos;</code> &#x306E;&#x4E2D;&#x3067; <code>require(&apos;bar.js&apos;)</code> &#x3092;&#x547C;&#x3093;&#x3067;&#x3044;&#x305F;&#x5834;&#x5408;&#x3001; Node &#x306F;&#x4E0B;&#x8A18;&#x306E;&#x4F4D;&#x7F6E;&#x3092;&#x4E0A;&#x304B;&#x3089;&#x9806;&#x756A;&#x306B;&#x898B;&#x3066;&#x3044;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<ul>
+<li><code>/home/ry/projects/node_modules/bar.js</code></li>
+<li><code>/home/ry/node_modules/bar.js</code></li>
+<li><code>/home/node_modules/bar.js</code></li>
+<li><code>/node_modules/bar.js</code></li>
+</ul>
+<!--
+This allows programs to localize their dependencies, so that they do not
+clash.
+-->
+
+<p>&#x3053;&#x306E;&#x4ED5;&#x7D44;&#x307F;&#x306B;&#x3088;&#x3063;&#x3066;&#x3001;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x30AF;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x907F;&#x3051;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F9D;&#x5B58;&#x95A2;&#x4FC2;&#x3092;&#x4E0A;&#x66F8;&#x304D;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x306E;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>Folders as Modules<span><a class="mark" href="#modules_folders_as_modules" id="modules_folders_as_modules">#</a></span></h2>
+<!--type=misc-->
+
+<!--
+It is convenient to organize programs and libraries into self-contained
+directories, and then provide a single entry point to that library.
+There are three ways in which a folder may be passed to `require()` as
+an argument.
+
+The first is to create a `package.json` file in the root of the folder,
+which specifies a `main` module.  An example package.json file might
+look like this:
+-->
+
+<p>&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3068;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x3092;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x5185;&#x306B;&#x307E;&#x3068;&#x3081;&#x3066;&#x3001;&#x305D;&#x306E;&#x30A8;&#x30F3;&#x30C8;&#x30EA;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3092;&#x63D0;&#x793A;&#x3059;&#x308B;&#x3068;&#x3044;&#x3046;&#x4FBF;&#x5229;&#x306A;&#x65B9;&#x6CD5;&#x3082;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306B;&#x306F; <code>require()</code> &#x306B;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x4F55;&#x3092;&#x6E21;&#x3059;&#x304B;&#x306B;&#x3088;&#x3063;&#x3066;3&#x901A;&#x308A;&#x306E;&#x65B9;&#x6CD5;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>1&#x3064;&#x76EE;&#x306F;&#x3001; <code>package.json</code> &#x3068;&#x3044;&#x3046;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x76F4;&#x4E0B;&#x306B;&#x4F5C;&#x6210;&#x3057;&#x3001; <code>main</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3044;&#x3046;&#x65B9;&#x6CD5;&#x3067;&#x3059;&#x3002;
+&#x4F8B;&#x3048;&#x3070;&#x3001; package.json &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x3088;&#x3046;&#x306A;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;:
+
+</p>
+<pre><code>{ &quot;name&quot; : &quot;some-library&quot;,
+  &quot;main&quot; : &quot;./lib/some-library.js&quot; }</code></pre>
+<!--
+If this was in a folder at `./some-library`, then
+`require('./some-library')` would attempt to load
+`./some-library/lib/some-library.js`.
+
+This is the extent of Node's awareness of package.json files.
+
+If there is no package.json file present in the directory, then node
+will attempt to load an `index.js` or `index.node` file out of that
+directory.  For example, if there was no package.json file in the above
+example, then `require('./some-library')` would attempt to load:
+-->
+
+<p>&#x3082;&#x3057; <code>./some-library</code> &#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x5185;&#x306B;&#x3053;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x3042;&#x308C;&#x3070;&#x3001; <code>require(&apos;./some-library&apos;)</code> &#x306F; <code>./some-library/lib/some-library.js</code> &#x3092;&#x8AAD;&#x307F;&#x306B;&#x3044;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3053;&#x308C;&#x306F;&#x3001; Node &#x304C; package.json &#x306E;&#x5B58;&#x5728;&#x306B;&#x6C17;&#x3065;&#x304F;&#x3053;&#x3068;&#x306B;&#x3088;&#x3063;&#x3066;&#x3082;&#x305F;&#x3089;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057; package.json &#x304C;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306B;&#x5B58;&#x5728;&#x3057;&#x3066;&#x3044;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001; Node &#x306F;&#x305D;&#x306E;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x3067; <code>index.js</code> &#x3082;&#x3057;&#x304F;&#x306F; <code>index.node</code> &#x3092;&#x63A2;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4F8B;&#x3048;&#x3070;&#x3001;&#x3082;&#x3057;&#x4E0A;&#x306E;&#x4F8B;&#x3067; package.json &#x304C;&#x3044;&#x308B;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x3068;&#x3059;&#x308B;&#x3068;&#x3001; <code>require(&apos;./some-library&apos;)</code> &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3082;&#x3046;&#x3068;&#x3057;&#x307E;&#x3059;: 
+
+</p>
+<ul>
+<li><code>./some-library/index.js</code></li>
+<li><code>./some-library/index.node</code></li>
+</ul>
+<h2>Caching<span><a class="mark" href="#modules_caching" id="modules_caching">#</a></span></h2>
+<!--type=misc-->
+
+<!--
+Modules are cached after the first time they are loaded.  This means
+(among other things) that every call to `require('foo')` will get
+exactly the same object returned, if it would resolve to the same file.
+-->
+
+<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x521D;&#x3081;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x3068;&#x304D;&#x306B;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3059;&#x306A;&#x308F;&#x3061;&#xFF08;&#x4ED6;&#x306E;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3068;&#x540C;&#x69D8;&#x306B;&#xFF09; <code>require(&apos;foo&apos;)</code> &#x3092;&#x547C;&#x3076;&#x305F;&#x3073;&#x306B;&#x3001;&#x3082;&#x3057;&#x5F15;&#x6570;&#x306E;&#x610F;&#x5473;&#x3059;&#x308B;&#x3082;&#x306E;&#x304C;&#x540C;&#x4E00;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3067;&#x3042;&#x3063;&#x305F;&#x306A;&#x3089;&#x5168;&#x304F;&#x540C;&#x4E00;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Multiple calls to `require('foo')` may not cause the module code to be
+executed multiple times.  This is an important feature.  With it,
+"partially done" objects can be returned, thus allowing transitive
+dependencies to be loaded even when they would cause cycles.
+-->
+
+<p><code>require(&apos;foo&apos;)</code> &#x304C;&#x8907;&#x6570;&#x56DE;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3082;&#x3001;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x8907;&#x6570;&#x56DE;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306B;&#x306F;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x91CD;&#x8981;&#x306A;&#x7279;&#x5FB4;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x305F;&#x3081;&#x3001;&#x300C;&#x90E8;&#x5206;&#x7684;&#x306B;&#x5B8C;&#x4E86;&#x3057;&#x305F;&#x300D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3059;&#x3053;&#x3068;&#x3067;&#x3001;
+&#x63A8;&#x79FB;&#x7684;&#x306A;&#x4F9D;&#x5B58;&#x95A2;&#x4FC2;&#x304C;&#x5FAA;&#x74B0;&#x3057;&#x3066;&#x3044;&#x3066;&#x3082;&#x30ED;&#x30FC;&#x30C9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If you want to have a module execute code multiple times, then export a
+function, and call that function.
+-->
+
+<p>&#x3082;&#x3057;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x8907;&#x6570;&#x56DE;&#x5B9F;&#x884C;&#x3057;&#x305F;&#x3051;&#x308C;&#x3070;&#x3001;&#x95A2;&#x6570;&#x3092;&#x516C;&#x958B;&#x3057;&#x3066;&#x3001;
+&#x305D;&#x306E;&#x95A2;&#x6570;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>Module Caching Caveats<span><a class="mark" href="#modules_module_caching_caveats" id="modules_module_caching_caveats">#</a></span></h3>
+<!--type=misc-->
+
+<!--
+Modules are cached based on their resolved filename.  Since modules may
+resolve to a different filename based on the location of the calling
+module (loading from `node_modules` folders), it is not a *guarantee*
+that `require('foo')` will always return the exact same object, if it
+would resolve to different files.
+-->
+
+<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x306B;&#x57FA;&#x3065;&#x3044;&#x3066;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x7570;&#x306A;&#x308B;&#x5834;&#x6240;&#x306B;&#x3042;&#x308B;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304B;&#x3089;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x3001;
+(<code>node_module</code> &#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x304B;&#x3089;&#x30ED;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;) &#x7570;&#x306A;&#x3063;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3067;
+&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x3001; <code>require(&apos;foo&apos;)</code> &#x304C;&#x5E38;&#x306B;&#x540C;&#x3058;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3059;
+<em>&#x4FDD;&#x8A3C;</em>&#x306F;&#x306A;&#x304F;&#x3001;&#x7570;&#x306A;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3068;&#x3057;&#x3066;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>The <code>module</code> Object<span><a class="mark" href="#modules_the_module_object" id="modules_the_module_object">#</a></span></h2>
+<!-- type=var -->
+
+<p>!-- name=module --&gt;
+
+</p>
+<ul>
+<li>{Object}</li>
+</ul>
+<!--
+In each module, the `module` free variable is a reference to the object
+representing the current module.  For convenience, `module.exports` is
+also accessible via the `exports` module-global. `module` isn't actually
+a global but rather local to each module.
+-->
+
+<p>&#x3069;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3067;&#x3082;&#x3001;<code>module</code> &#x81EA;&#x7531;&#x5909;&#x6570;&#x306F;&#x73FE;&#x5728;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;
+&#x53C2;&#x7167;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x5229;&#x4FBF;&#x6027;&#x306E;&#x305F;&#x3081;&#x3001;<code>module.exports</code> &#x306F; <code>exports</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x901A;&#x3058;&#x3066;
+&#x53C2;&#x7167;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+<code>module</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x5909;&#x6570;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>module.exports<span><a class="mark" href="#modules_module_exports" id="modules_module_exports">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">Object</span></li>
+</ul></div>
+<!--
+The `module.exports` object is created by the Module system. Sometimes this is not
+acceptable; many want their module to be an instance of some class. To do this
+assign the desired export object to `module.exports`. Note that assigning the
+desired object to `exports` will simply rebind the local `exports` variable,
+which is probably not what you want to do.
+-->
+
+<p><code>module.exports</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x6642;&#x3005;&#x3053;&#x308C;&#x306F;&#x53D7;&#x3051;&#x5165;&#x308C;&#x3089;&#x307E;&#x305B;&#x3093;;
+&#x591A;&#x304F;&#x306E;&#x4EBA;&#x3005;&#x306F;&#x3001;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x4F55;&#x3089;&#x304B;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3042;&#x308B;&#x3053;&#x3068;&#x3092;&#x671B;&#x307F;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306B;&#x306F;&#x3001;&#x516C;&#x958B;&#x3057;&#x305F;&#x3044;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092; <code>module.exports</code> &#x306B;&#x5272;&#x308A;&#x5F53;&#x3066;&#x307E;&#x3059;&#x3002;
+&#x671B;&#x307E;&#x3057;&#x3044;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092; <code>exports</code> &#x3078;&#x4EE3;&#x5165;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3001;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x5909;&#x6570; <code>exports</code> &#x3078;&#x306E;
+&#x518D;&#x4EE3;&#x5165;&#x306B;&#x904E;&#x304E;&#x305A;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3059;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x304A;&#x305D;&#x3089;&#x304F;&#x3001;&#x3084;&#x308A;&#x305F;&#x304B;&#x3063;&#x305F;&#x3053;&#x3068;&#x3067;&#x306F;&#x306A;&#x3044;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+
+</p>
+<!--
+For example suppose we were making a module called `a.js`
+-->
+
+<p>&#x4F8B;&#x3048;&#x3070; <code>a.js</code> &#x3068;&#x547C;&#x3070;&#x308C;&#x308B;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x4F5C;&#x308B;&#x3068;&#x3057;&#x305F;&#x3089;
+
+</p>
+<pre><code>var EventEmitter = require(&apos;events&apos;).EventEmitter;
+
+module.exports = new EventEmitter();
+
+// Do some work, and after some time emit
+// the &apos;ready&apos; event from the module itself.
+setTimeout(function() {
+  module.exports.emit(&apos;ready&apos;);
+}, 1000);</code></pre>
+<!--
+Then in another file we could do
+-->
+
+<p>&#x305D;&#x3057;&#x3066;&#x5225;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3067;
+
+</p>
+<pre><code>var a = require(&apos;./a&apos;);
+a.on(&apos;ready&apos;, function() {
+  console.log(&apos;module a is ready&apos;);
+});</code></pre>
+<!--
+Note that assignment to `module.exports` must be done immediately. It cannot be
+done in any callbacks.  This does not work:
+-->
+
+<p><code>module.exports</code> &#x3078;&#x306E;&#x4EE3;&#x5165;&#x306F;&#x3059;&#x3050;&#x306B;&#x884C;&#x308F;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306E;&#x4E2D;&#x3067;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;&#x4EE5;&#x4E0B;&#x306F;&#x52D5;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<p>x.js:
+
+</p>
+<pre><code>setTimeout(function() {
+  module.exports = { a: &quot;hello&quot; };
+}, 0);</code></pre>
+<p>y.js:
+
+</p>
+<pre><code>var x = require(&apos;./x&apos;);
+console.log(x.a);</code></pre>
+<h4>exports alias<span><a class="mark" href="#modules_exports_alias" id="modules_exports_alias">#</a></span></h4>
+<!--
+The `exports` variable that is available within a module starts as a reference
+to `module.exports`. As with any variable, if you assign a new value to it, it
+is no longer bound to the previous value.
+-->
+
+<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x5185;&#x3067;&#x5229;&#x7528;&#x51FA;&#x6765;&#x308B; <code>exports</code> &#x5909;&#x6570;&#x306F;&#x3001;&#x6700;&#x521D;&#x306F; <code>module.exports</code>
+&#x3078;&#x306E;&#x53C2;&#x7167;&#x3067;&#x3059;&#x3002;
+&#x4ED6;&#x306E;&#x5909;&#x6570;&#x3068;&#x540C;&#x69D8;&#x3001;&#x305D;&#x308C;&#x306B;&#x65B0;&#x3057;&#x3044;&#x5024;&#x3092;&#x5272;&#x308A;&#x5F53;&#x3066;&#x308B;&#x3068;&#x5143;&#x306E;&#x5024;&#x306F;&#x3082;&#x306F;&#x3084;&#x675F;&#x7E1B;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+To illustrate the behaviour, imagine this hypothetical implementation of
+`require()`:
+-->
+
+<p>&#x305D;&#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x3092;&#x793A;&#x3059;&#x305F;&#x3081;&#x306B;&#x3001;&#x3053;&#x306E;&#x4EEE;&#x5B9A;&#x306E;&#x5B9F;&#x88C5;&#x3092;&#x60F3;&#x50CF;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<pre><code>function require(...) {
+  // ...
+  function (module, exports) {
+    // Your module code here
+    exports = some_func;        // re-assigns exports, exports is no longer
+                                // a shortcut, and nothing is exported.
+    module.exports = some_func; // makes your module export 0
+  } (module, module.exports);
+  return module;
+}</code></pre>
+<!--
+As a guideline, if the relationship between `exports` and `module.exports`
+seems like magic to you, ignore `exports` and only use `module.exports`.
+-->
+
+<p>&#x30AC;&#x30A4;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x3068;&#x3057;&#x3066;&#x3001;&#x3082;&#x3057; <code>exports</code> &#x3068; <code>module.exports</code> &#x306E;&#x9593;&#x306E;&#x95A2;&#x4FC2;&#x304C;&#x9B54;&#x6CD5;&#x306E;&#x3088;&#x3046;&#x306B;
+&#x898B;&#x3048;&#x308B;&#x306A;&#x3089;&#x3001;<code>exports</code> &#x3092;&#x7121;&#x8996;&#x3057;&#x3066; <code>module.exports</code> &#x3060;&#x3051;&#x3092;&#x4F7F;&#x3046;&#x3088;&#x3046;&#x306B;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>module.require(id)<span><a class="mark" href="#modules_module_require_id" id="modules_module_require_id">#</a></span></h3>
+<!--
+* `id` {String}
+* Return: {Object} `module.exports` from the resolved module
+-->
+
+<ul>
+<li><code>id</code> {String}</li>
+<li>Return: {Object} &#x89E3;&#x6C7A;&#x3055;&#x308C;&#x305F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E; <code>module.exports</code></li>
+</ul>
+<!--
+The `module.require` method provides a way to load a module as if
+`require()` was called from the original module.
+-->
+
+<p><code>module.require</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x3001;&#x5143;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C; <code>require()</code>
+&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x304B;&#x306E;&#x3088;&#x3046;&#x306B;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x30ED;&#x30FC;&#x30C9;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that in order to do this, you must get a reference to the `module`
+object.  Since `require()` returns the `module.exports`, and the `module` is
+typically *only* available within a specific module's code, it must be
+explicitly exported in order to be used.
+-->
+
+<p>&#x305D;&#x308C;&#x306B;&#x306F; <code>module</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x53C2;&#x7167;&#x304C;&#x5FC5;&#x8981;&#x306A;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+<code>require()</code> &#x304C; <code>module.exports</code> &#x3092;&#x8FD4;&#x3057;&#x305F;&#x5F8C;&#x3001;&#x4E00;&#x822C;&#x7684;&#x306B; <code>module</code> 
+&#x306F;&#x305D;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x3067; <em>&#x306E;&#x307F;</em> &#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x304C;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;&#x660E;&#x793A;&#x7684;&#x306B;&#x30A8;&#x30AF;&#x30B9;&#x30DD;&#x30FC;&#x30C8;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>module.id<span><a class="mark" href="#modules_module_id" id="modules_module_id">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">String</span></li>
+</ul></div>
+<!--
+The identifier for the module.  Typically this is the fully resolved
+filename.
+-->
+
+<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x8B58;&#x5225;&#x5B50;&#x3002;&#x901A;&#x5E38;&#x306F;&#x5B8C;&#x5168;&#x306B;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h3>module.filename<span><a class="mark" href="#modules_module_filename" id="modules_module_filename">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">String</span></li>
+</ul></div>
+<!--
+The fully resolved filename to the module.
+-->
+
+<p>&#x5B8C;&#x5168;&#x306B;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x305F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h3>module.loaded<span><a class="mark" href="#modules_module_loaded" id="modules_module_loaded">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">Boolean</span></li>
+</ul></div>
+<!--
+Whether or not the module is done loading, or is in the process of
+loading.
+-->
+
+<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30ED;&#x30FC;&#x30C9;&#x304C;&#x5B8C;&#x4E86;&#x3057;&#x305F;&#x304B;&#xFF0C;&#x3042;&#x308B;&#x3044;&#x306F;&#x30ED;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x4E2D;&#x304B;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h3>module.parent<span><a class="mark" href="#modules_module_parent" id="modules_module_parent">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">Module Object</span></li>
+</ul></div>
+<!--
+The module that required this one.
+-->
+
+<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x8981;&#x6C42;&#x3057;&#x305F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h3>module.children<span><a class="mark" href="#modules_module_children" id="modules_module_children">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">Array</span></li>
+</ul></div>
+<!--
+The module objects required by this one.
+-->
+
+<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x8981;&#x6C42;&#x3057;&#x305F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3067;&#x3059;&#x3002;
+
+
+
+</p>
+<h2>All Together...<span><a class="mark" href="#modules_all_together" id="modules_all_together">#</a></span></h2>
+<!-- type=misc -->
+
+<!--
+To get the exact filename that will be loaded when `require()` is called, use
+the `require.resolve()` function.
+-->
+
+<p><code>require()</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x6B63;&#x78BA;&#x306A;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3092;&#x5F97;&#x308B;&#x305F;&#x3081;&#x306B; <code>require.resolve()</code> &#x304C;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Putting together all of the above, here is the high-level algorithm
+in pseudocode of what require.resolve does:
+-->
+
+<p>&#x4E0A;&#x3067;&#x8FF0;&#x3079;&#x305F;&#x3053;&#x3068;&#x3092;&#x307E;&#x3068;&#x3081;&#x308B;&#x3068;&#x3001; require.resolve &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x64EC;&#x4F3C;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x8A18;&#x8FF0;&#x3055;&#x308C;&#x308B;&#x3088;&#x3046;&#x306A;&#x30CF;&#x30A4;&#x30EC;&#x30D9;&#x30EB;&#x306A;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306B;&#x5247;&#x3063;&#x3066;&#x3044;&#x307E;&#x3059;:
+
+</p>
+<pre><code>require(X) from module at path Y
+1. If X is a core module,
+   a. return the core module
+   b. STOP
+2. If X begins with &apos;./&apos; or &apos;/&apos; or &apos;../&apos;
+   a. LOAD_AS_FILE(Y + X)
+   b. LOAD_AS_DIRECTORY(Y + X)
+3. LOAD_NODE_MODULES(X, dirname(Y))
+4. THROW &quot;not found&quot;
+
+LOAD_AS_FILE(X)
+1. If X is a file, load X as JavaScript text.  STOP
+2. If X.js is a file, load X.js as JavaScript text.  STOP
+3. If X.node is a file, load X.node as binary addon.  STOP
+
+LOAD_AS_DIRECTORY(X)
+1. If X/package.json is a file,
+   a. Parse X/package.json, and look for &quot;main&quot; field.
+   b. let M = X + (json main field)
+   c. LOAD_AS_FILE(M)
+2. If X/index.js is a file, load X/index.js as JavaScript text.  STOP
+3. If X/index.node is a file, load X/index.node as binary addon.  STOP
+
+LOAD_NODE_MODULES(X, START)
+1. let DIRS=NODE_MODULES_PATHS(START)
+2. for each DIR in DIRS:
+   a. LOAD_AS_FILE(DIR/X)
+   b. LOAD_AS_DIRECTORY(DIR/X)
+
+NODE_MODULES_PATHS(START)
+1. let PARTS = path split(START)
+2. let ROOT = index of first instance of &quot;node_modules&quot; in PARTS, or 0
+3. let I = count of PARTS - 1
+4. let DIRS = []
+5. while I &gt; ROOT,
+   a. if PARTS[I] = &quot;node_modules&quot; CONTINUE
+   c. DIR = path join(PARTS[0 .. I] + &quot;node_modules&quot;)
+   b. DIRS = DIRS + DIR
+   c. let I = I - 1
+6. return DIRS</code></pre>
+<h2>Loading from the global folders<span><a class="mark" href="#modules_loading_from_the_global_folders" id="modules_loading_from_the_global_folders">#</a></span></h2>
+<!-- type=misc -->
+
+<!--
+If the `NODE_PATH` environment variable is set to a colon-delimited list
+of absolute paths, then node will search those paths for modules if they
+are not found elsewhere.  (Note: On Windows, `NODE_PATH` is delimited by
+semicolons instead of colons.)
+
+Additionally, node will search in the following locations:
+-->
+
+<p><code>NODE_PATH</code> &#x74B0;&#x5883;&#x5909;&#x6570;&#x306B;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3092;&#x30B3;&#x30ED;&#x30F3;&#x3067;&#x533A;&#x5207;&#x3063;&#x305F;&#x30EA;&#x30B9;&#x30C8;&#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3001;
+node &#x306F;&#x4ED6;&#x3067;&#x898B;&#x3064;&#x304B;&#x3089;&#x306A;&#x304B;&#x3063;&#x305F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x305D;&#x308C;&#x3089;&#x306E;&#x30D1;&#x30B9;&#x304B;&#x3089;&#x63A2;&#x3057;&#x307E;&#x3059;&#x3002;
+(&#x6CE8;&#x610F;: Windows &#x3067;&#x306F;&#x3001;<code>NODE_PATH</code> &#x306F;&#x30B3;&#x30ED;&#x30F3;&#x3067;&#x306F;&#x306A;&#x304F;&#x30BB;&#x30DF;&#x30B3;&#x30ED;&#x30F3;&#x3067;&#x533A;&#x5207;&#x3089;&#x308C;&#x307E;&#x3059;)
+
+</p>
+<p>&#x52A0;&#x3048;&#x308B;&#x3068;&#x3001;node &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x5834;&#x6240;&#x304B;&#x3089;&#x691C;&#x7D22;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<ul>
+<li>1: <code>$HOME/.node_modules</code></li>
+<li>2: <code>$HOME/.node_libraries</code></li>
+<li>3: <code>$PREFIX/lib/node</code></li>
+</ul>
+<!--
+Where `$HOME` is the user's home directory, and `$PREFIX` is node's
+configured `node_prefix`.
+
+These are mostly for historic reasons.  You are highly encouraged to
+place your dependencies locally in `node_modules` folders.  They will be
+loaded faster, and more reliably.
+-->
+
+<p><code>$HOME</code> &#x306F;&#x30E6;&#x30FC;&#x30B6;&#x306E;&#x30DB;&#x30FC;&#x30E0;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x3001;<code>$PREFIX</code> &#x306F; node &#x3092;
+configure &#x3057;&#x305F;&#x6642;&#x306E; <code>node_prefix</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x3053;&#x308C;&#x3089;&#x306F;&#x4E3B;&#x306B;&#x6B74;&#x53F2;&#x7684;&#x306A;&#x7406;&#x7531;&#x306B;&#x3088;&#x308B;&#x3082;&#x306E;&#x3067;&#x3059;&#x3002;
+&#x3042;&#x306A;&#x305F;&#x304C;&#x4F9D;&#x5B58;&#x3059;&#x308B;&#x3082;&#x306E;&#x306F;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x306E; <code>node_modules</code> &#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x306B;&#x7F6E;&#x304F;&#x3053;&#x3068;&#x304C;
+&#x5F37;&#x304F;&#x63A8;&#x5968;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x305D;&#x308C;&#x306F;&#x7D20;&#x65E9;&#x304F;&#x30ED;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x3001;&#x78BA;&#x5B9F;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>Accessing the main module<span><a class="mark" href="#modules_accessing_the_main_module" id="modules_accessing_the_main_module">#</a></span></h2>
+<!-- type=misc -->
+
+<!--
+When a file is run directly from Node, `require.main` is set to its
+`module`. That means that you can determine whether a file has been run
+directly by testing
+-->
+
+<p>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;Node&#x306B;&#x3088;&#x3063;&#x3066;&#x76F4;&#x63A5;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x308B;&#x5834;&#x5408;&#x3001;&#x305D;&#x306E; <code>module</code> &#x304C;
+<code>require.main</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x76F4;&#x63A5;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x305F;&#x304B;&#x3092;&#x6C7A;&#x5B9A;&#x3067;&#x304D;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>require.main === module</code></pre>
+<!--
+For a file `foo.js`, this will be `true` if run via `node foo.js`, but
+`false` if run by `require('./foo')`.
+
+Because `module` provides a `filename` property (normally equivalent to
+`__filename`), the entry point of the current application can be obtained
+by checking `require.main.filename`.
+-->
+
+<p><code>foo.js</code> &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x5834;&#x5408;&#x3001;<code>node foo.js</code> &#x3068;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;&#x3053;&#x308C;&#x306F; <code>true</code> 
+&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x304C;&#x3001;<code>require(&apos;./foo&apos;)</code> &#x3067;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F; <code>false</code> &#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>module</code> &#x306F; <code>filename</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3; (&#x901A;&#x5E38; <code>__filename</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;) 
+&#x3092;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x305F;&#x3081;&#x3001;&#x73FE;&#x5728;&#x306E;&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x30A8;&#x30F3;&#x30C8;&#x30EA;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306F;
+<code>require.main.filename</code> &#x3092;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x5F97;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Addenda: Package Manager Tips<span><a class="mark" href="#modules_addenda_package_manager_tips" id="modules_addenda_package_manager_tips">#</a></span></h2>
+<!-- type=misc -->
+
+<!--
+The semantics of Node's `require()` function were designed to be general
+enough to support a number of sane directory structures. Package manager
+programs such as `dpkg`, `rpm`, and `npm` will hopefully find it possible to
+build native packages from Node modules without modification.
+-->
+
+<p>Node &#x306E; <code>require()</code> &#x306F;&#x666E;&#x901A;&#x306E;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x69CB;&#x9020;&#x3092;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x6C4E;&#x7528;&#x7684;&#x306B;&#x8A2D;&#x8A08;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+<code>dpkg</code> &#x3084; <code>rpm</code> &#x3084; <code>npm</code> &#x306E;&#x3088;&#x3046;&#x306A;&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x7BA1;&#x7406;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x4FEE;&#x6B63;&#x306A;&#x3057;&#x306B; Node &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304B;&#x3089;&#x30CD;&#x30A4;&#x30C6;&#x30A3;&#x30D6;&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x3092;&#x7D44;&#x307F;&#x7ACB;&#x3066;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+
+</p>
+<!--
+Below we give a suggested directory structure that could work:
+
+Let's say that we wanted to have the folder at
+`/usr/lib/node/<some-package>/<some-version>` hold the contents of a
+specific version of a package.
+-->
+
+<p>&#x63A8;&#x5968;&#x3059;&#x308B;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x69CB;&#x9020;&#x306F;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;:
+
+</p>
+<p>&#x4F8B;&#x3048;&#x3070; <code>/usr/lib/node/&lt;some-package&gt;/&lt;some-version&gt;</code> &#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x306B;&#x3001;&#x3042;&#x308B;&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x306E;&#x7279;&#x5B9A;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3092;&#x4FDD;&#x6301;&#x3059;&#x308B;&#x5F62;&#x5F0F;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Packages can depend on one another. In order to install package `foo`, you
+may have to install a specific version of package `bar`.  The `bar` package
+may itself have dependencies, and in some cases, these dependencies may even
+collide or form cycles.
+-->
+
+<p>&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x306F;&#x76F8;&#x4E92;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x3042;&#x3046;&#x3053;&#x3068;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+<code>foo</code> &#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x3092;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x306F;&#x3042;&#x308B;&#x7279;&#x5B9A;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x306E; <code>bar</code> &#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x3092;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+<code>bar</code> &#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x81EA;&#x8EAB;&#x3082;&#x4F9D;&#x5B58;&#x95A2;&#x4FC2;&#x3092;&#x3082;&#x3063;&#x3066;&#x3044;&#x308B;&#x306E;&#x3067;&#x3001;&#x3068;&#x304D;&#x306B;&#x306F;&#x4F9D;&#x5B58;&#x95A2;&#x4FC2;&#x304C;&#x885D;&#x7A81;&#x3057;&#x305F;&#x308A;&#x5FAA;&#x74B0;&#x3057;&#x305F;&#x308A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Since Node looks up the `realpath` of any modules it loads (that is,
+resolves symlinks), and then looks for their dependencies in the
+`node_modules` folders as described above, this situation is very simple to
+resolve with the following architecture:
+-->
+
+<p>Node &#x306F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E; <code>realpath</code> &#xFF08;&#x30B7;&#x30F3;&#x30DC;&#x30EA;&#x30C3;&#x30AF;&#x30EA;&#x30F3;&#x30AF;&#x3092;&#x89E3;&#x91C8;&#x3057;&#x307E;&#x3059;&#xFF09;&#x3092;&#x8ABF;&#x3079;&#x3001;&#x305D;&#x306E;&#x4F9D;&#x5B58;&#x95A2;&#x4FC2;&#x3092;&#x4E0A;&#x8FF0;&#x306E; <code>node_modules</code> &#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x306E;&#x4ED5;&#x7D44;&#x307F;&#x3067;&#x63A2;&#x3057;&#x306B;&#x3044;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306B;&#x3088;&#x3063;&#x3066;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306A;&#x69CB;&#x9020;&#x3092;&#x3068;&#x3066;&#x3082;&#x30B7;&#x30F3;&#x30D7;&#x30EB;&#x306B;&#x89E3;&#x91C8;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+* `/usr/lib/node/foo/1.2.3/` - Contents of the `foo` package, version 1.2.3.
+* `/usr/lib/node/bar/4.3.2/` - Contents of the `bar` package that `foo`
+  depends on.
+* `/usr/lib/node/foo/1.2.3/node_modules/bar` - Symbolic link to
+  `/usr/lib/node/bar/4.3.2/`.
+* `/usr/lib/node/bar/4.3.2/node_modules/*` - Symbolic links to the packages
+  that `bar` depends on.
+-->
+
+<ul>
+<li><code>/usr/lib/node/foo/1.2.3/</code> - <code>foo</code> &#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x306E;&#x4E2D;&#x8EAB;&#x3002;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;1.2.3&#x3002;</li>
+<li><code>/usr/lib/node/bar/4.3.2/</code> - <code>bar</code> &#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x306E;&#x4E2D;&#x8EAB;&#x3002; <code>foo</code> &#x304C;&#x4F9D;&#x5B58;&#x3057;&#x3066;&#x3044;&#x308B;&#x3002;</li>
+<li><code>/usr/lib/node/foo/1.2.3/node_modules/bar</code> - <code>/usr/lib/node/bar/4.3.2/</code> &#x3078;&#x306E;&#x30B7;&#x30F3;&#x30DC;&#x30EA;&#x30C3;&#x30AF;&#x30EA;&#x30F3;&#x30AF;&#x3002;</li>
+<li><code>/usr/lib/node/bar/4.3.2/node_modules/*</code> - <code>bar</code> &#x304C;&#x4F9D;&#x5B58;&#x3057;&#x3066;&#x3044;&#x308B;&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x3078;&#x306E;&#x30B7;&#x30F3;&#x30DC;&#x30EA;&#x30C3;&#x30AF;&#x30EA;&#x30F3;&#x30AF;&#x3002;</li>
+</ul>
+<!--
+Thus, even if a cycle is encountered, or if there are dependency
+conflicts, every module will be able to get a version of its dependency
+that it can use.
+
+When the code in the `foo` package does `require('bar')`, it will get the
+version that is symlinked into `/usr/lib/node/foo/1.2.3/node_modules/bar`.
+Then, when the code in the `bar` package calls `require('quux')`, it'll get
+the version that is symlinked into
+`/usr/lib/node/bar/4.3.2/node_modules/quux`.
+
+Furthermore, to make the module lookup process even more optimal, rather
+than putting packages directly in `/usr/lib/node`, we could put them in
+`/usr/lib/node_modules/<name>/<version>`.  Then node will not bother
+looking for missing dependencies in `/usr/node_modules` or `/node_modules`.
+
+In order to make modules available to the node REPL, it might be useful to
+also add the `/usr/lib/node_modules` folder to the `$NODE_PATH` environment
+variable.  Since the module lookups using `node_modules` folders are all
+relative, and based on the real path of the files making the calls to
+`require()`, the packages themselves can be anywhere.
+-->
+
+<p>&#x3053;&#x306E;&#x3088;&#x3046;&#x306B;&#x3057;&#x3066;&#x3001;&#x3082;&#x3057;&#x4EEE;&#x306B;&#x4F9D;&#x5B58;&#x95A2;&#x4FC2;&#x306B;&#x5FAA;&#x74B0;&#x3084;&#x885D;&#x7A81;&#x304C;&#x898B;&#x3064;&#x304B;&#x3063;&#x305F;&#x3068;&#x3057;&#x3066;&#x3082;&#x3001;&#x5168;&#x3066;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x4F9D;&#x5B58;&#x3057;&#x3066;&#x3044;&#x308B;&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x306E;&#x7279;&#x5B9A;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>foo</code> &#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x306E;&#x4E2D;&#x3067; <code>require(&apos;bar&apos;)</code> &#x3057;&#x305F;&#x3089;&#x3001; <code>/usr/lib/node/foo/1.2.3/node_modules/bar</code> &#x304B;&#x3089;&#x30EA;&#x30F3;&#x30AF;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3092;&#x53D6;&#x5F97;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x3057;&#x3066;&#x3001; <code>bar</code> &#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x5185;&#x3067; <code>require(&apos;quux&apos;)</code> &#x3092;&#x547C;&#x3093;&#x3060;&#x3089;&#x3001; <code>/usr/lib/node/bar/4.3.2/node_modules/quux</code> &#x304B;&#x3089;&#x30EA;&#x30F3;&#x30AF;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3092;&#x53D6;&#x5F97;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3055;&#x3089;&#x306B;&#x3001;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x63A2;&#x7D22;&#x3059;&#x308B;&#x904E;&#x7A0B;&#x3092;&#x3088;&#x308A;&#x6700;&#x9069;&#x5316;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001; <code>/usr/lib/node</code> &#x306B;&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x3092;&#x7F6E;&#x304F;&#x3088;&#x308A;&#x3082; <code>/usr/lib/node_modules/&lt;name&gt;/&lt;version&gt;</code> &#x306B;&#x7F6E;&#x304F;&#x306E;&#x3092;&#x304A;&#x52E7;&#x3081;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x3046;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067; Node &#x306F;&#x898B;&#x3064;&#x304B;&#x3089;&#x306A;&#x3044;&#x4F9D;&#x5B58;&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x3092; <code>/usr/node_modules</code> &#x3084; <code>/node_modules</code> &#x306B;&#x63A2;&#x3057;&#x306B;&#x3044;&#x304B;&#x306A;&#x304F;&#x3066;&#x3082;&#x3088;&#x3046;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>Node &#x306E; REPL &#x3067;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x4F7F;&#x3048;&#x308B;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001; <code>/usr/lib/node_modules</code> &#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x3092; <code>$NODE_PATH</code> &#x74B0;&#x5883;&#x5909;&#x6570;&#x306B;&#x8FFD;&#x52A0;&#x3059;&#x308B;&#x3068;&#x3088;&#x3044;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+<code>node_modules</code> &#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x3092;&#x4F7F;&#x3063;&#x305F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x63A2;&#x7D22;&#x306F;&#x5168;&#x3066;&#x76F8;&#x5BFE;&#x7684;&#x306A;&#x3082;&#x306E;&#x3067;&#x3042;&#x308A;&#x3001; <code>require()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3092;&#x57FA;&#x6E96;&#x3068;&#x3057;&#x3066;&#x3044;&#x308B;&#x306E;&#x3067;&#x3001;&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x81EA;&#x4F53;&#x306F;&#x3069;&#x3053;&#x306B;&#x3067;&#x3082;&#x914D;&#x7F6E;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

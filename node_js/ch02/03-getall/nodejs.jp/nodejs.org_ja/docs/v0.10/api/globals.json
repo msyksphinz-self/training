@@ -1,0 +1,299 @@
+{
+  &quot;source&quot;: &quot;doc/api/globals.markdown&quot;,
+  &quot;globals&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;global&quot;,
+      &quot;name&quot;: &quot;global&quot;,
+      &quot;type&quot;: &quot;global&quot;,
+      &quot;desc&quot;: &quot;<!--\n* {Object} The global namespace object.\n-->\n\n<ul>\n<li>{Object} &#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x306A;&#x30CD;&#x30FC;&#x30E0;&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;</li>\n</ul>\n<!--\nIn browsers, the top-level scope is the global scope. That means that in\nbrowsers if you're in the global scope `var something` will define a global\nvariable. In Node this is different. The top-level scope is not the global\nscope; `var something` inside a Node module will be local to that module.\n-->\n\n<p>&#x30D6;&#x30E9;&#x30A6;&#x30B6;&#x3067;&#x306F;&#x3001;&#x30C8;&#x30C3;&#x30D7;&#x30EC;&#x30D9;&#x30EB;&#x306E;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x3001;&#x30D6;&#x30E9;&#x30A6;&#x30B6;&#x3067;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x3067; <code>var something</code> &#x3068;&#x5B9A;&#x7FA9;&#x3059;&#x308B;&#x3068;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x5909;&#x6570;&#x306B;&#x306A;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;\nNode &#x3067;&#x306F;&#x7570;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x30C8;&#x30C3;&#x30D7;&#x30EC;&#x30D9;&#x30EB;&#x306E;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;;\nNode &#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x5185;&#x3067;&#x306E; <code>var something</code> &#x306F;&#x305D;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3067;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+    },
+    {
+      &quot;textRaw&quot;: &quot;process&quot;,
+      &quot;name&quot;: &quot;process&quot;,
+      &quot;type&quot;: &quot;global&quot;,
+      &quot;desc&quot;: &quot;<!--\nThe process object. See the [process object][] section.\n-->\n\n<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;[process &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;][] &#x306E;&#x7BC0;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+    },
+    {
+      &quot;textRaw&quot;: &quot;console&quot;,
+      &quot;name&quot;: &quot;console&quot;,
+      &quot;type&quot;: &quot;global&quot;,
+      &quot;desc&quot;: &quot;<!--\nUsed to print to stdout and stderr. See the [console][] section.\n-->\n\n<p>&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x304A;&#x3088;&#x3073;&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x51FA;&#x529B;&#x3078;&#x306E;&#x30D7;&#x30EA;&#x30F3;&#x30C8;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n[&#x30B3;&#x30F3;&#x30BD;&#x30FC;&#x30EB;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+    },
+    {
+      &quot;textRaw&quot;: &quot;Class: Buffer&quot;,
+      &quot;type&quot;: &quot;global&quot;,
+      &quot;name&quot;: &quot;Buffer&quot;,
+      &quot;desc&quot;: &quot;<!--\nUsed to handle binary data. See the [buffer section][]\n-->\n\n<p>&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6271;&#x3046;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n[&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30BB;&#x30AF;&#x30B7;&#x30E7;&#x30F3;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+    },
+    {
+      &quot;textRaw&quot;: &quot;clearInterval(t)&quot;,
+      &quot;type&quot;: &quot;global&quot;,
+      &quot;name&quot;: &quot;clearInterval&quot;,
+      &quot;desc&quot;: &quot;<!--\nStop a timer that was previously created with `setInterval()`. The callback\nwill not execute.\n-->\n\n<p><code>setInterval()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x4EE5;&#x524D;&#x306B;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x305F;&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe timer functions are global variables. See the [timers][] section.\n-->\n\n<p>&#x30BF;&#x30A4;&#x30DE;&#x30FC;&#x95A2;&#x6570;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x5909;&#x6570;&#x3067;&#x3059;&#x3002;[&#x30BF;&#x30A4;&#x30DE;&#x30FC;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\n[buffer section]: buffer.html\n[module section]: modules.html\n[module system documentation]: modules.html\n[Modules]: modules.html#modules_modules\n[process object]: process.html#process_process\n[console]: console.html\n[timers]: timers.html\n-->\n\n&quot;
+    }
+  ],
+  &quot;vars&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;require()&quot;,
+      &quot;type&quot;: &quot;var&quot;,
+      &quot;name&quot;: &quot;require&quot;,
+      &quot;desc&quot;: &quot;<!--\nTo require modules. See the [Modules][] section.  `require` isn't actually a\nglobal but rather local to each module.\n-->\n\n<p>require &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x6307;&#x3057;&#x307E;&#x3059;&#x3002;[&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;][] &#x306E;&#x7BC0;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n<code>require</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;require.resolve()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;resolve&quot;,
+          &quot;desc&quot;: &quot;<!--\nUse the internal `require()` machinery to look up the location of a module,\nbut rather than loading the module, just return the resolved filename.\n-->\n\n<p><code>require()</code> &#x306E;&#x5185;&#x90E8;&#x3067;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x4F4D;&#x7F6E;&#x3092;&#x691C;&#x7D22;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30ED;&#x30FC;&#x30C9;&#x306F;&#x884C;&#x308F;&#x305A;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3092;&#x89E3;&#x6C7A;&#x3057;&#x3066;&#x8FD4;&#x3059;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        }
+      ],
+      &quot;properties&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;`cache` {Object} &quot;,
+          &quot;name&quot;: &quot;cache&quot;,
+          &quot;desc&quot;: &quot;<!--\nModules are cached in this object when they are required. By deleting a key\nvalue from this object, the next `require` will reload the module.\n-->\n\n<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x8981;&#x6C42;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x4E2D;&#x306B;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x304B;&#x3089;&#x30AD;&#x30FC;&#x3068;&#x5024;&#x3092;&#x524A;&#x9664;&#x3059;&#x308B;&#x3068;&#x3001;&#x6B21;&#x306B;&#x305D;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;\n<code>require</code> &#x3055;&#x308C;&#x305F;&#x3068;&#x304D;&#x306B;&#x30EA;&#x30ED;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;`extensions` {Object} &quot;,
+          &quot;name&quot;: &quot;extensions&quot;,
+          &quot;stability&quot;: 0,
+          &quot;stabilityText&quot;: &quot;Deprecated&quot;,
+          &quot;desc&quot;: &quot;<!--\nInstruct `require` on how to handle certain file extensions.\n\nProcess files with the extension `.sjs` as `.js`:\n-->\n\n<p><code>require</code> &#x306B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x62E1;&#x5F35;&#x5B50;&#x3092;&#x6271;&#x3046;&#x65B9;&#x6CD5;&#x3092;&#x6559;&#x3048;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x62E1;&#x5F35;&#x5B50;&#x304C; <code>.sjs</code> &#x3067;&#x3042;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x51E6;&#x7406;&#x3092; <code>.js</code> &#x3068;&#x540C;&#x3058;&#x306B;&#x3059;&#x308B;&#x306B;&#x306F;:\n\n</p>\n<pre><code>require.extensions[&apos;.sjs&apos;] = require.extensions[&apos;.js&apos;];</code></pre>\n<!--\n**Deprecated**  In the past, this list has been used to load\nnon-JavaScript modules into Node by compiling them on-demand.\nHowever, in practice, there are much better ways to do this, such as\nloading modules via some other Node program, or compiling them to\nJavaScript ahead of time.\n-->\n\n<p><strong>&#x5EC3;&#x6B62;&#x4E88;&#x5B9A;</strong> &#x304B;&#x3064;&#x3066;&#x3001;&#x3053;&#x306E;&#x30EA;&#x30B9;&#x30C8;&#x306F;&#x975E; JavaScript &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x5FC5;&#x8981;&#x306B;&#x5FDC;&#x3058;&#x3066;\n&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3057;&#x3001;Node &#x306B;&#x30ED;&#x30FC;&#x30C9;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x3002;\n&#x3057;&#x304B;&#x3057;&#x5B9F;&#x969B;&#x306B;&#x306F;&#x3001;&#x4ED6;&#x306E; Node &#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x901A;&#x3058;&#x3066;&#x30ED;&#x30FC;&#x30C9;&#x3057;&#x305F;&#x308A;&#x3001;\n&#x4E8B;&#x524D;&#x306B; JavaScript &#x306B;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3059;&#x308B;&#x306A;&#x3069;&#x3001;&#x3088;&#x308A;&#x3088;&#x3044;&#x65B9;&#x6CD5;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nSince the Module system is locked, this feature will probably never go\naway.  However, it may have subtle bugs and complexities that are best\nleft untouched.\n-->\n\n<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306F;&#x30ED;&#x30C3;&#x30AF;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x306E;&#x3067;&#x3001;&#x3053;&#x306E;&#x6A5F;&#x80FD;&#x306F;&#x304A;&#x305D;&#x3089;&#x304F;\n&#x7121;&#x304F;&#x306A;&#x3089;&#x306A;&#x3044;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;\n&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x305D;&#x308C;&#x306F;&#x5FAE;&#x5999;&#x306A;&#x30D0;&#x30B0;&#x3084;&#x8907;&#x96D1;&#x3055;&#x304C;&#x3042;&#x3063;&#x3066;&#x3082;&#x305D;&#x306E;&#x307E;&#x307E;&#x653E;&#x7F6E;&#x3055;&#x308C;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;\n\n</p>\n&quot;
+        }
+      ]
+    },
+    {
+      &quot;textRaw&quot;: &quot;__filename&quot;,
+      &quot;name&quot;: &quot;__filename&quot;,
+      &quot;type&quot;: &quot;var&quot;,
+      &quot;desc&quot;: &quot;<!--\nThe filename of the code being executed.  This is the resolved absolute path\nof this code file.  For a main program this is not necessarily the same\nfilename used in the command line.  The value inside a module is the path\nto that module file.\n-->\n\n<p>&#x5B9F;&#x884C;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3067;&#x3059;&#x3002;&#x3053;&#x308C;&#x306F;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x305F;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3067;&#x3059;&#x3002;\n&#x30E1;&#x30A4;&#x30F3;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067;&#x306F;&#x3001;&#x5FC5;&#x305A;&#x3057;&#x3082;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x5F15;&#x6570;&#x3067;&#x4F7F;&#x308F;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3068;\n&#x540C;&#x3058;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x4E2D;&#x3067;&#x306F;&#x3001;&#x3053;&#x306E;&#x5024;&#x306F;&#x305D;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x30D1;&#x30B9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample: running `node example.js` from `/Users/mjr`\n-->\n\n<p>&#x4F8B;: <code>node example.js</code> &#x3092; <code>/Users/mjr</code> &#x3067;&#x5B9F;&#x884C;&#x3059;&#x308B;\n\n</p>\n<pre><code>console.log(__filename);\n// /Users/mjr/example.js</code></pre>\n<!--\n`__filename` isn't actually a global but rather local to each module.\n-->\n\n<p><code>__filename</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;
+    },
+    {
+      &quot;textRaw&quot;: &quot;__dirname&quot;,
+      &quot;name&quot;: &quot;__dirname&quot;,
+      &quot;type&quot;: &quot;var&quot;,
+      &quot;desc&quot;: &quot;<!--\nThe name of the directory that the currently executing script resides in.\n-->\n\n<p>&#x73FE;&#x5728;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306E;&#x540D;&#x524D;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nExample: running `node example.js` from `/Users/mjr`\n-->\n\n<p>&#x4F8B;: <code>node example.js</code> &#x3092; <code>/Users/mjr</code> &#x3067;&#x5B9F;&#x884C;&#x3059;&#x308B;\n\n</p>\n<pre><code>console.log(__dirname);\n// /Users/mjr</code></pre>\n<!--\n`__dirname` isn't actually a global but rather local to each module.\n-->\n\n<p><code>__dirname</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n\n</p>\n&quot;
+    },
+    {
+      &quot;textRaw&quot;: &quot;module&quot;,
+      &quot;name&quot;: &quot;module&quot;,
+      &quot;type&quot;: &quot;var&quot;,
+      &quot;desc&quot;: &quot;<!--\nA reference to the current module. In particular\n`module.exports` is used for defining what a module exports and makes\navailable through `require()`.\n-->\n\n<p>&#x73FE;&#x5728;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3078;&#x306E;&#x53C2;&#x7167;&#x3067;&#x3059;&#x3002;\n<code>module.exports</code> &#x306F;&#x3001;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x516C;&#x958B;&#x3057;&#x3066; <code>require()</code> &#x3092;&#x901A;&#x3058;&#x3066;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x308B;\n&#x3082;&#x306E;&#x3092;&#x5B9A;&#x3081;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`module` isn't actually a global but rather local to each module.\n-->\n\n<p><code>module</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nSee the [module system documentation][] for more information.\n-->\n\n<p>&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x306F; [&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+    },
+    {
+      &quot;textRaw&quot;: &quot;exports&quot;,
+      &quot;name&quot;: &quot;exports&quot;,
+      &quot;type&quot;: &quot;var&quot;,
+      &quot;desc&quot;: &quot;<!--\nA reference to the `module.exports` that is shorter to type.\nSee [module system documentation][] for details on when to use `exports` and\nwhen to use `module.exports`.\n-->\n\n<p><code>module.exports</code> &#x3078;&#x306E;&#x53C2;&#x7167;&#x3067;&#x3059;&#x3002;\n&#x3044;&#x3064; <code>exports</code> &#x3092;&#x4F7F;&#x3044;&#x3001;&#x3044;&#x3064; <code>module.exports</code> &#x3092;&#x4F7F;&#x3046;&#x304B;&#x306E;&#x8A73;&#x7D30;&#x306F;\n[&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\n`exports` isn't actually a global but rather local to each module.\n-->\n\n<p><code>exports</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nSee the [module system documentation][] for more information.\n\nSee the [module section][] for more information.\n-->\n\n<p>&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x306F; [&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+    }
+  ],
+  &quot;methods&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;setTimeout(cb, ms)&quot;,
+      &quot;type&quot;: &quot;method&quot;,
+      &quot;name&quot;: &quot;setTimeout&quot;,
+      &quot;desc&quot;: &quot;<!--\nRun callback `cb` after *at least* `ms` milliseconds. The actual delay depends\non external factors like OS timer granularity and system load.\n-->\n\n<p><em>&#x5C11;&#x306A;&#x304F;&#x3068;&#x3082;</em> <code>ms</code> &#x30DF;&#x30EA;&#x79D2;&#x304C;&#x7D4C;&#x904E;&#x3057;&#x305F;&#x5F8C;&#x3001;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF; <code>cb</code> &#x3092;&#x5B9F;&#x884C;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x5B9F;&#x969B;&#x306E;&#x9045;&#x5EF6;&#x306F; OS &#x306E;&#x30BF;&#x30A4;&#x30DE;&#x5206;&#x89E3;&#x80FD;&#x3084;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x8CA0;&#x8377;&#x306A;&#x3069;&#x5916;&#x90E8;&#x8981;&#x56E0;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe timeout must be in the range of 1-2,147,483,647 inclusive. If the value is\noutside that range, it's changed to 1 millisecond. Broadly speaking, a timer\ncannot span more than 24.8 days.\n-->\n\n<p>&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x5024;&#x306F; 1&#xFF5E;2,147,483,647 &#x306E;&#x7BC4;&#x56F2;&#x5185;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3082;&#x3057;&#x5024;&#x304C;&#x3053;&#x306E;&#x7BC4;&#x56F2;&#x5916;&#x3060;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F; 1 &#x30DF;&#x30EA;&#x79D2;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x5927;&#x96D1;&#x628A;&#x306B;&#x8A00;&#x3063;&#x3066;&#x3001;&#x30BF;&#x30A4;&#x30DE;&#x306F; 24.8 &#x65E5;&#x3092;&#x8D8A;&#x3048;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nReturns an opaque value that represents the timer.\n-->\n\n<p>&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x4E0D;&#x900F;&#x660E;&#x306A;&#x5024;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+      &quot;signatures&quot;: [
+        {
+          &quot;params&quot;: [
+            {
+              &quot;name&quot;: &quot;cb&quot;
+            },
+            {
+              &quot;name&quot;: &quot;ms&quot;
+            }
+          ]
+        }
+      ]
+    },
+    {
+      &quot;textRaw&quot;: &quot;clearTimeout(t)&quot;,
+      &quot;type&quot;: &quot;method&quot;,
+      &quot;name&quot;: &quot;clearTimeout&quot;,
+      &quot;desc&quot;: &quot;<!--\nStop a timer that was previously created with `setTimeout()`. The callback will\nnot execute.\n-->\n\n<p><code>setTimeout()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x4EE5;&#x524D;&#x306B;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x305F;&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+      &quot;signatures&quot;: [
+        {
+          &quot;params&quot;: [
+            {
+              &quot;name&quot;: &quot;t&quot;
+            }
+          ]
+        }
+      ]
+    },
+    {
+      &quot;textRaw&quot;: &quot;setInterval(cb, ms)&quot;,
+      &quot;type&quot;: &quot;method&quot;,
+      &quot;name&quot;: &quot;setInterval&quot;,
+      &quot;desc&quot;: &quot;<!--\nRun callback `cb` repeatedly every `ms` milliseconds. Note that the actual\ninterval may vary, depending on external factors like OS timer granularity and\nsystem load. It's never less than `ms` but it may be longer.\n-->\n\n<p><code>ms</code> &#x30DF;&#x30EA;&#x79D2;&#x3054;&#x3068;&#x306B;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF; <code>cb</code> &#x3092;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x5B9F;&#x884C;&#x3057;&#x307E;&#x3059;&#x3002;\nOS &#x306E;&#x30BF;&#x30A4;&#x30DE;&#x5206;&#x89E3;&#x80FD;&#x3084;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x8CA0;&#x8377;&#x306A;&#x3069;&#x5916;&#x90E8;&#x8981;&#x56E0;&#x306B;&#x3088;&#x3063;&#x3066;&#x3001;\n&#x5B9F;&#x969B;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D0;&#x30EB;&#x304C;&#x7570;&#x306A;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x305D;&#x308C;&#x306F;&#x6C7A;&#x3057;&#x3066; <code>ms</code> &#x3088;&#x308A;&#x77ED;&#x3044;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x304C;&#x3001;&#x3088;&#x308A;&#x9577;&#x3044;&#x3053;&#x3068;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe interval must be in the range of 1-2,147,483,647 inclusive. If the value is\noutside that range, it's changed to 1 millisecond. Broadly speaking, a timer\ncannot span more than 24.8 days.\n-->\n\n<p>&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D0;&#x30EB;&#x5024;&#x306F; 1&#xFF5E;2,147,483,647 &#x306E;&#x7BC4;&#x56F2;&#x5185;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3082;&#x3057;&#x5024;&#x304C;&#x3053;&#x306E;&#x7BC4;&#x56F2;&#x5916;&#x3060;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F; 1 &#x30DF;&#x30EA;&#x79D2;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x5927;&#x96D1;&#x628A;&#x306B;&#x8A00;&#x3063;&#x3066;&#x3001;&#x30BF;&#x30A4;&#x30DE;&#x306F; 24.8 &#x65E5;&#x3092;&#x8D8A;&#x3048;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nReturns an opaque value that represents the timer.\n-->\n\n<p>&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x4E0D;&#x900F;&#x660E;&#x306A;&#x5024;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+      &quot;signatures&quot;: [
+        {
+          &quot;params&quot;: [
+            {
+              &quot;name&quot;: &quot;cb&quot;
+            },
+            {
+              &quot;name&quot;: &quot;ms&quot;
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  &quot;miscs&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;Global Objects&quot;,
+      &quot;name&quot;: &quot;Global Objects&quot;,
+      &quot;type&quot;: &quot;misc&quot;,
+      &quot;desc&quot;: &quot;<!--\nThese objects are available in all modules. Some of these objects aren't\nactually in the global scope but in the module scope - this will be noted.\n-->\n\n<p>&#x3053;&#x308C;&#x3089;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x5168;&#x3066;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3067;&#x6709;&#x52B9;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x3089;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x3044;&#x304F;&#x3064;&#x304B;&#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x3067;&#x306F;&#x306A;&#x304F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x3067;&#x3059; - &#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+      &quot;globals&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;global&quot;,
+          &quot;name&quot;: &quot;global&quot;,
+          &quot;type&quot;: &quot;global&quot;,
+          &quot;desc&quot;: &quot;<!--\n* {Object} The global namespace object.\n-->\n\n<ul>\n<li>{Object} &#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x306A;&#x30CD;&#x30FC;&#x30E0;&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;</li>\n</ul>\n<!--\nIn browsers, the top-level scope is the global scope. That means that in\nbrowsers if you're in the global scope `var something` will define a global\nvariable. In Node this is different. The top-level scope is not the global\nscope; `var something` inside a Node module will be local to that module.\n-->\n\n<p>&#x30D6;&#x30E9;&#x30A6;&#x30B6;&#x3067;&#x306F;&#x3001;&#x30C8;&#x30C3;&#x30D7;&#x30EC;&#x30D9;&#x30EB;&#x306E;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x3001;&#x30D6;&#x30E9;&#x30A6;&#x30B6;&#x3067;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x3067; <code>var something</code> &#x3068;&#x5B9A;&#x7FA9;&#x3059;&#x308B;&#x3068;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x5909;&#x6570;&#x306B;&#x306A;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;\nNode &#x3067;&#x306F;&#x7570;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x30C8;&#x30C3;&#x30D7;&#x30EC;&#x30D9;&#x30EB;&#x306E;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;;\nNode &#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x5185;&#x3067;&#x306E; <code>var something</code> &#x306F;&#x305D;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3067;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;process&quot;,
+          &quot;name&quot;: &quot;process&quot;,
+          &quot;type&quot;: &quot;global&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe process object. See the [process object][] section.\n-->\n\n<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;[process &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;][] &#x306E;&#x7BC0;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;console&quot;,
+          &quot;name&quot;: &quot;console&quot;,
+          &quot;type&quot;: &quot;global&quot;,
+          &quot;desc&quot;: &quot;<!--\nUsed to print to stdout and stderr. See the [console][] section.\n-->\n\n<p>&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x304A;&#x3088;&#x3073;&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x51FA;&#x529B;&#x3078;&#x306E;&#x30D7;&#x30EA;&#x30F3;&#x30C8;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n[&#x30B3;&#x30F3;&#x30BD;&#x30FC;&#x30EB;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: Buffer&quot;,
+          &quot;type&quot;: &quot;global&quot;,
+          &quot;name&quot;: &quot;Buffer&quot;,
+          &quot;desc&quot;: &quot;<!--\nUsed to handle binary data. See the [buffer section][]\n-->\n\n<p>&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6271;&#x3046;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n[&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30BB;&#x30AF;&#x30B7;&#x30E7;&#x30F3;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;clearInterval(t)&quot;,
+          &quot;type&quot;: &quot;global&quot;,
+          &quot;name&quot;: &quot;clearInterval&quot;,
+          &quot;desc&quot;: &quot;<!--\nStop a timer that was previously created with `setInterval()`. The callback\nwill not execute.\n-->\n\n<p><code>setInterval()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x4EE5;&#x524D;&#x306B;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x305F;&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe timer functions are global variables. See the [timers][] section.\n-->\n\n<p>&#x30BF;&#x30A4;&#x30DE;&#x30FC;&#x95A2;&#x6570;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x5909;&#x6570;&#x3067;&#x3059;&#x3002;[&#x30BF;&#x30A4;&#x30DE;&#x30FC;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\n[buffer section]: buffer.html\n[module section]: modules.html\n[module system documentation]: modules.html\n[Modules]: modules.html#modules_modules\n[process object]: process.html#process_process\n[console]: console.html\n[timers]: timers.html\n-->\n\n&quot;
+        }
+      ],
+      &quot;vars&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;require()&quot;,
+          &quot;type&quot;: &quot;var&quot;,
+          &quot;name&quot;: &quot;require&quot;,
+          &quot;desc&quot;: &quot;<!--\nTo require modules. See the [Modules][] section.  `require` isn't actually a\nglobal but rather local to each module.\n-->\n\n<p>require &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x6307;&#x3057;&#x307E;&#x3059;&#x3002;[&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;][] &#x306E;&#x7BC0;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n<code>require</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;require.resolve()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;resolve&quot;,
+              &quot;desc&quot;: &quot;<!--\nUse the internal `require()` machinery to look up the location of a module,\nbut rather than loading the module, just return the resolved filename.\n-->\n\n<p><code>require()</code> &#x306E;&#x5185;&#x90E8;&#x3067;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x4F4D;&#x7F6E;&#x3092;&#x691C;&#x7D22;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30ED;&#x30FC;&#x30C9;&#x306F;&#x884C;&#x308F;&#x305A;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3092;&#x89E3;&#x6C7A;&#x3057;&#x3066;&#x8FD4;&#x3059;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            }
+          ],
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;`cache` {Object} &quot;,
+              &quot;name&quot;: &quot;cache&quot;,
+              &quot;desc&quot;: &quot;<!--\nModules are cached in this object when they are required. By deleting a key\nvalue from this object, the next `require` will reload the module.\n-->\n\n<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x8981;&#x6C42;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x4E2D;&#x306B;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x304B;&#x3089;&#x30AD;&#x30FC;&#x3068;&#x5024;&#x3092;&#x524A;&#x9664;&#x3059;&#x308B;&#x3068;&#x3001;&#x6B21;&#x306B;&#x305D;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;\n<code>require</code> &#x3055;&#x308C;&#x305F;&#x3068;&#x304D;&#x306B;&#x30EA;&#x30ED;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;`extensions` {Object} &quot;,
+              &quot;name&quot;: &quot;extensions&quot;,
+              &quot;stability&quot;: 0,
+              &quot;stabilityText&quot;: &quot;Deprecated&quot;,
+              &quot;desc&quot;: &quot;<!--\nInstruct `require` on how to handle certain file extensions.\n\nProcess files with the extension `.sjs` as `.js`:\n-->\n\n<p><code>require</code> &#x306B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x62E1;&#x5F35;&#x5B50;&#x3092;&#x6271;&#x3046;&#x65B9;&#x6CD5;&#x3092;&#x6559;&#x3048;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x62E1;&#x5F35;&#x5B50;&#x304C; <code>.sjs</code> &#x3067;&#x3042;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x51E6;&#x7406;&#x3092; <code>.js</code> &#x3068;&#x540C;&#x3058;&#x306B;&#x3059;&#x308B;&#x306B;&#x306F;:\n\n</p>\n<pre><code>require.extensions[&apos;.sjs&apos;] = require.extensions[&apos;.js&apos;];</code></pre>\n<!--\n**Deprecated**  In the past, this list has been used to load\nnon-JavaScript modules into Node by compiling them on-demand.\nHowever, in practice, there are much better ways to do this, such as\nloading modules via some other Node program, or compiling them to\nJavaScript ahead of time.\n-->\n\n<p><strong>&#x5EC3;&#x6B62;&#x4E88;&#x5B9A;</strong> &#x304B;&#x3064;&#x3066;&#x3001;&#x3053;&#x306E;&#x30EA;&#x30B9;&#x30C8;&#x306F;&#x975E; JavaScript &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x5FC5;&#x8981;&#x306B;&#x5FDC;&#x3058;&#x3066;\n&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3057;&#x3001;Node &#x306B;&#x30ED;&#x30FC;&#x30C9;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x3002;\n&#x3057;&#x304B;&#x3057;&#x5B9F;&#x969B;&#x306B;&#x306F;&#x3001;&#x4ED6;&#x306E; Node &#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x901A;&#x3058;&#x3066;&#x30ED;&#x30FC;&#x30C9;&#x3057;&#x305F;&#x308A;&#x3001;\n&#x4E8B;&#x524D;&#x306B; JavaScript &#x306B;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3059;&#x308B;&#x306A;&#x3069;&#x3001;&#x3088;&#x308A;&#x3088;&#x3044;&#x65B9;&#x6CD5;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nSince the Module system is locked, this feature will probably never go\naway.  However, it may have subtle bugs and complexities that are best\nleft untouched.\n-->\n\n<p>&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306F;&#x30ED;&#x30C3;&#x30AF;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x306E;&#x3067;&#x3001;&#x3053;&#x306E;&#x6A5F;&#x80FD;&#x306F;&#x304A;&#x305D;&#x3089;&#x304F;\n&#x7121;&#x304F;&#x306A;&#x3089;&#x306A;&#x3044;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;\n&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x305D;&#x308C;&#x306F;&#x5FAE;&#x5999;&#x306A;&#x30D0;&#x30B0;&#x3084;&#x8907;&#x96D1;&#x3055;&#x304C;&#x3042;&#x3063;&#x3066;&#x3082;&#x305D;&#x306E;&#x307E;&#x307E;&#x653E;&#x7F6E;&#x3055;&#x308C;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;\n\n</p>\n&quot;
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;__filename&quot;,
+          &quot;name&quot;: &quot;__filename&quot;,
+          &quot;type&quot;: &quot;var&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe filename of the code being executed.  This is the resolved absolute path\nof this code file.  For a main program this is not necessarily the same\nfilename used in the command line.  The value inside a module is the path\nto that module file.\n-->\n\n<p>&#x5B9F;&#x884C;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3067;&#x3059;&#x3002;&#x3053;&#x308C;&#x306F;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x305F;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3067;&#x3059;&#x3002;\n&#x30E1;&#x30A4;&#x30F3;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067;&#x306F;&#x3001;&#x5FC5;&#x305A;&#x3057;&#x3082;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x5F15;&#x6570;&#x3067;&#x4F7F;&#x308F;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3068;\n&#x540C;&#x3058;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x4E2D;&#x3067;&#x306F;&#x3001;&#x3053;&#x306E;&#x5024;&#x306F;&#x305D;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x30D1;&#x30B9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample: running `node example.js` from `/Users/mjr`\n-->\n\n<p>&#x4F8B;: <code>node example.js</code> &#x3092; <code>/Users/mjr</code> &#x3067;&#x5B9F;&#x884C;&#x3059;&#x308B;\n\n</p>\n<pre><code>console.log(__filename);\n// /Users/mjr/example.js</code></pre>\n<!--\n`__filename` isn't actually a global but rather local to each module.\n-->\n\n<p><code>__filename</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;__dirname&quot;,
+          &quot;name&quot;: &quot;__dirname&quot;,
+          &quot;type&quot;: &quot;var&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe name of the directory that the currently executing script resides in.\n-->\n\n<p>&#x73FE;&#x5728;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306E;&#x540D;&#x524D;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nExample: running `node example.js` from `/Users/mjr`\n-->\n\n<p>&#x4F8B;: <code>node example.js</code> &#x3092; <code>/Users/mjr</code> &#x3067;&#x5B9F;&#x884C;&#x3059;&#x308B;\n\n</p>\n<pre><code>console.log(__dirname);\n// /Users/mjr</code></pre>\n<!--\n`__dirname` isn't actually a global but rather local to each module.\n-->\n\n<p><code>__dirname</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;module&quot;,
+          &quot;name&quot;: &quot;module&quot;,
+          &quot;type&quot;: &quot;var&quot;,
+          &quot;desc&quot;: &quot;<!--\nA reference to the current module. In particular\n`module.exports` is used for defining what a module exports and makes\navailable through `require()`.\n-->\n\n<p>&#x73FE;&#x5728;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3078;&#x306E;&#x53C2;&#x7167;&#x3067;&#x3059;&#x3002;\n<code>module.exports</code> &#x306F;&#x3001;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x304C;&#x516C;&#x958B;&#x3057;&#x3066; <code>require()</code> &#x3092;&#x901A;&#x3058;&#x3066;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x308B;\n&#x3082;&#x306E;&#x3092;&#x5B9A;&#x3081;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`module` isn't actually a global but rather local to each module.\n-->\n\n<p><code>module</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nSee the [module system documentation][] for more information.\n-->\n\n<p>&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x306F; [&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;exports&quot;,
+          &quot;name&quot;: &quot;exports&quot;,
+          &quot;type&quot;: &quot;var&quot;,
+          &quot;desc&quot;: &quot;<!--\nA reference to the `module.exports` that is shorter to type.\nSee [module system documentation][] for details on when to use `exports` and\nwhen to use `module.exports`.\n-->\n\n<p><code>module.exports</code> &#x3078;&#x306E;&#x53C2;&#x7167;&#x3067;&#x3059;&#x3002;\n&#x3044;&#x3064; <code>exports</code> &#x3092;&#x4F7F;&#x3044;&#x3001;&#x3044;&#x3064; <code>module.exports</code> &#x3092;&#x4F7F;&#x3046;&#x304B;&#x306E;&#x8A73;&#x7D30;&#x306F;\n[&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\n`exports` isn't actually a global but rather local to each module.\n-->\n\n<p><code>exports</code> &#x306F;&#x5B9F;&#x969B;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x5404;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x6BCE;&#x306E;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nSee the [module system documentation][] for more information.\n\nSee the [module section][] for more information.\n-->\n\n<p>&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x306F; [&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+        }
+      ],
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;setTimeout(cb, ms)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;setTimeout&quot;,
+          &quot;desc&quot;: &quot;<!--\nRun callback `cb` after *at least* `ms` milliseconds. The actual delay depends\non external factors like OS timer granularity and system load.\n-->\n\n<p><em>&#x5C11;&#x306A;&#x304F;&#x3068;&#x3082;</em> <code>ms</code> &#x30DF;&#x30EA;&#x79D2;&#x304C;&#x7D4C;&#x904E;&#x3057;&#x305F;&#x5F8C;&#x3001;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF; <code>cb</code> &#x3092;&#x5B9F;&#x884C;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x5B9F;&#x969B;&#x306E;&#x9045;&#x5EF6;&#x306F; OS &#x306E;&#x30BF;&#x30A4;&#x30DE;&#x5206;&#x89E3;&#x80FD;&#x3084;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x8CA0;&#x8377;&#x306A;&#x3069;&#x5916;&#x90E8;&#x8981;&#x56E0;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe timeout must be in the range of 1-2,147,483,647 inclusive. If the value is\noutside that range, it's changed to 1 millisecond. Broadly speaking, a timer\ncannot span more than 24.8 days.\n-->\n\n<p>&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x5024;&#x306F; 1&#xFF5E;2,147,483,647 &#x306E;&#x7BC4;&#x56F2;&#x5185;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3082;&#x3057;&#x5024;&#x304C;&#x3053;&#x306E;&#x7BC4;&#x56F2;&#x5916;&#x3060;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F; 1 &#x30DF;&#x30EA;&#x79D2;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x5927;&#x96D1;&#x628A;&#x306B;&#x8A00;&#x3063;&#x3066;&#x3001;&#x30BF;&#x30A4;&#x30DE;&#x306F; 24.8 &#x65E5;&#x3092;&#x8D8A;&#x3048;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nReturns an opaque value that represents the timer.\n-->\n\n<p>&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x4E0D;&#x900F;&#x660E;&#x306A;&#x5024;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;cb&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;ms&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;clearTimeout(t)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;clearTimeout&quot;,
+          &quot;desc&quot;: &quot;<!--\nStop a timer that was previously created with `setTimeout()`. The callback will\nnot execute.\n-->\n\n<p><code>setTimeout()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x4EE5;&#x524D;&#x306B;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x305F;&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;t&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;setInterval(cb, ms)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;setInterval&quot;,
+          &quot;desc&quot;: &quot;<!--\nRun callback `cb` repeatedly every `ms` milliseconds. Note that the actual\ninterval may vary, depending on external factors like OS timer granularity and\nsystem load. It's never less than `ms` but it may be longer.\n-->\n\n<p><code>ms</code> &#x30DF;&#x30EA;&#x79D2;&#x3054;&#x3068;&#x306B;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF; <code>cb</code> &#x3092;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x5B9F;&#x884C;&#x3057;&#x307E;&#x3059;&#x3002;\nOS &#x306E;&#x30BF;&#x30A4;&#x30DE;&#x5206;&#x89E3;&#x80FD;&#x3084;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x8CA0;&#x8377;&#x306A;&#x3069;&#x5916;&#x90E8;&#x8981;&#x56E0;&#x306B;&#x3088;&#x3063;&#x3066;&#x3001;\n&#x5B9F;&#x969B;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D0;&#x30EB;&#x304C;&#x7570;&#x306A;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x305D;&#x308C;&#x306F;&#x6C7A;&#x3057;&#x3066; <code>ms</code> &#x3088;&#x308A;&#x77ED;&#x3044;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x304C;&#x3001;&#x3088;&#x308A;&#x9577;&#x3044;&#x3053;&#x3068;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe interval must be in the range of 1-2,147,483,647 inclusive. If the value is\noutside that range, it's changed to 1 millisecond. Broadly speaking, a timer\ncannot span more than 24.8 days.\n-->\n\n<p>&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D0;&#x30EB;&#x5024;&#x306F; 1&#xFF5E;2,147,483,647 &#x306E;&#x7BC4;&#x56F2;&#x5185;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3082;&#x3057;&#x5024;&#x304C;&#x3053;&#x306E;&#x7BC4;&#x56F2;&#x5916;&#x3060;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F; 1 &#x30DF;&#x30EA;&#x79D2;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x5927;&#x96D1;&#x628A;&#x306B;&#x8A00;&#x3063;&#x3066;&#x3001;&#x30BF;&#x30A4;&#x30DE;&#x306F; 24.8 &#x65E5;&#x3092;&#x8D8A;&#x3048;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nReturns an opaque value that represents the timer.\n-->\n\n<p>&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x4E0D;&#x900F;&#x660E;&#x306A;&#x5024;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;cb&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;ms&quot;
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

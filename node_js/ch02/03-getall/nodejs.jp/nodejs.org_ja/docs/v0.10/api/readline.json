@@ -1,0 +1,279 @@
+{
+  &quot;source&quot;: &quot;doc/api/readline.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;Readline&quot;,
+      &quot;name&quot;: &quot;readline&quot;,
+      &quot;stability&quot;: 2,
+      &quot;stabilityText&quot;: &quot;Unstable&quot;,
+      &quot;desc&quot;: &quot;<!--\nTo use this module, do `require('readline')`. Readline allows reading of a\nstream (such as `process.stdin`) on a line-by-line basis.\n-->\n\n<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;<code>require(&apos;readline&apos;)</code> &#x3092;&#x3057;&#x307E;&#x3059;&#x3002;\nReadline &#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0; (&#x305F;&#x3068;&#x3048;&#x3070; <code>process.stdin</code>)\n&#x3092;&#x884C;&#x3054;&#x3068;&#x306B;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x3092;&#x53EF;&#x80FD;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote that once you've invoked this module, your node program will not\nterminate until you've closed the interface. Here's how to allow your\nprogram to gracefully exit:\n-->\n\n<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x4E00;&#x5EA6;&#x8D77;&#x52D5;&#x3059;&#x308B;&#x3068;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;\n&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3059;&#x308B;&#x307E;&#x3067; node &#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x7D42;&#x4E86;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x30B9;&#x30E0;&#x30FC;&#x30BA;&#x306B;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x3092;&#x4EE5;&#x4E0B;&#x306B;&#x793A;&#x3057;&#x307E;&#x3059;:\n\n</p>\n<pre><code>var readline = require(&apos;readline&apos;);\n\nvar rl = readline.createInterface({\n  input: process.stdin,\n  output: process.stdout\n});\n\nrl.question(&quot;What do you think of node.js? &quot;, function(answer) {\n  // TODO: Log the answer in a database\n  console.log(&quot;Thank you for your valuable feedback:&quot;, answer);\n\n  rl.close();\n});</code></pre>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;readline.createInterface(options)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createInterface&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates a readline `Interface` instance. Accepts an \"options\" Object that takes\nthe following values:\n-->\n\n<p>&#x884C;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3080; <code>Interface</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x4EE5;&#x4E0B;&#x306E;&#x5024;&#x3092;&#x542B;&#x3080; <code>options</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n - `input` - the readable stream to listen to (Required).\n\n - `output` - the writable stream to write readline data to (Required).\n\n - `completer` - an optional function that is used for Tab autocompletion. See\n   below for an example of using this.\n\n - `terminal` - pass `true` if the `input` and `output` streams should be\n   treated like a TTY, and have ANSI/VT100 escape codes written to it.\n   Defaults to checking `isTTY` on the `output` stream upon instantiation.\n-->\n\n<ul>\n<li><p><code>input</code> - &#x76E3;&#x8996;&#x3059;&#x308B;&#x5165;&#x529B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0; (&#x5FC5;&#x9808;)&#x3002;</p>\n</li>\n<li><p><code>output</code> - &#x8AAD;&#x307F;&#x8FBC;&#x3093;&#x3060;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x66F8;&#x304F;&#x305F;&#x3081;&#x306E;&#x51FA;&#x529B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0; (&#x5FC5;&#x9808;)&#x3002;</p>\n</li>\n<li><p><code>completer</code> - &#x30BF;&#x30D6;&#x306B;&#x3088;&#x308B;&#x81EA;&#x52D5;&#x88DC;&#x5B8C;&#x306E;&#x305F;&#x3081;&#x306E;&#x95A2;&#x6570; (&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;)&#x3002;\n&#x5F8C;&#x8FF0;&#x306E;&#x4F8B;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</p>\n</li>\n<li><p><code>terminal</code> - <code>input</code> &#x304A;&#x3088;&#x3073; <code>output</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; TTY &#x30C7;&#x30D0;&#x30A4;&#x30B9;&#x3067;&#x3001;\nANSI/VT100 &#x30A8;&#x30B9;&#x30B1;&#x30FC;&#x30D7;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x51FA;&#x529B;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F; <code>true</code> &#x3092;&#x6E21;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x751F;&#x6210;&#x6642;&#x306B; <code>output</code> &#x306B;&#x5BFE;&#x3057;&#x3066;\n<code>isTTY</code> &#x3067;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;</p>\n</li>\n</ul>\n<!--\nThe `completer` function is given the current line entered by the user, and\nis supposed to return an Array with 2 entries:\n-->\n\n<p><code>completer</code> &#x95A2;&#x6570;&#x306B;&#x306F;&#x30E6;&#x30FC;&#x30B6;&#x304C;&#x5165;&#x529B;&#x3057;&#x305F;&#x73FE;&#x5728;&#x306E;&#x884C;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x3001;\n2 &#x3064;&#x306E;&#x30A8;&#x30F3;&#x30C8;&#x30EA;&#x3092;&#x542B;&#x3080;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3059;&#x3053;&#x3068;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;:\n\n</p>\n<!--\n 1. An Array with matching entries for the completion.\n\n 2. The substring that was used for the matching.\n-->\n\n<ol>\n<li><p>&#x88DC;&#x5B8C;&#x306B;&#x3088;&#x3063;&#x3066;&#x30DE;&#x30C3;&#x30C1;&#x3059;&#x308B;&#x30A8;&#x30F3;&#x30C8;&#x30EA;&#x306E;&#x914D;&#x5217;&#x3002;</p>\n</li>\n<li><p>&#x30DE;&#x30C3;&#x30C1;&#x30F3;&#x30B0;&#x306B;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x305F;&#x90E8;&#x5206;&#x6587;&#x5B57;&#x5217;&#x3002;</p>\n</li>\n</ol>\n<!--\nWhich ends up looking something like:\n`[[substr1, substr2, ...], originalsubstring]`.\n-->\n\n<p>&#x305D;&#x308C;&#x306F;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;:\n<code>[[substr1, substr2, ...], originalsubstring]</code>&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>function completer(line) {\n  var completions = &apos;.help .error .exit .quit .q&apos;.split(&apos; &apos;)\n  var hits = completions.filter(function(c) { return c.indexOf(line) == 0 })\n  // show all completions if none found\n  return [hits.length ? hits : completions, line]\n}</code></pre>\n<!--\nAlso `completer` can be run in async mode if it accepts two arguments:\n-->\n\n<p><code>completer</code> &#x304C;&#x4E8C;&#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x6301;&#x3064;&#x306A;&#x3089;&#x3001;&#x305D;&#x308C;&#x306F;&#x975E;&#x540C;&#x671F;&#x30E2;&#x30FC;&#x30C9;&#x3067;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>function completer(linePartial, callback) {\n  callback(null, [[&apos;123&apos;], linePartial]);\n}</code></pre>\n<!--\n`createInterface` is commonly used with `process.stdin` and\n`process.stdout` in order to accept user input:\n-->\n\n<p><code>createInterface</code> &#x306B;&#x306F;&#x901A;&#x5E38;&#x3001;&#x30E6;&#x30FC;&#x30B6;&#x304B;&#x3089;&#x306E;&#x5165;&#x529B;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B;&#x305F;&#x3081;&#x306B; <code>process.stdin</code> &#x3068;\n<code>process.stdout</code> &#x304C;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var readline = require(&apos;readline&apos;);\nvar rl = readline.createInterface({\n  input: process.stdin,\n  output: process.stdout\n});</code></pre>\n<!--\nOnce you have a readline instance, you most commonly listen for the\n`\"line\"` event.\n-->\n\n<p>readline &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x3068;&#x3001;&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x5834;&#x5408; <code>&apos;line&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;\n&#x76E3;&#x8996;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIf `terminal` is `true` for this instance then the `output` stream will get\nthe best compatibility if it defines an `output.columns` property, and fires\na `\"resize\"` event on the `output` if/when the columns ever change\n(`process.stdout` does this automatically when it is a TTY).\n-->\n\n<p>&#x3082;&#x3057;&#x3053;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306E; <code>terminal</code> &#x304C; <code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;\n<code>output</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3082;&#x3057; <code>outout.columns</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x304C;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x3066;&#x3044;&#x308C;&#x3070;\n&#x305D;&#x308C;&#x306B;&#x9069;&#x5408;&#x3057;&#x3001;&#x30AB;&#x30E9;&#x30E0;&#x5E45;&#x304C;&#x5909;&#x66F4;&#x3055;&#x308C;&#x308B;&#x3068; <code>output</code> &#x4E0A;&#x3067;\n<code>&apos;resize&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;\n(<code>process.stdout</code> &#x304C; TTY &#x306E;&#x5834;&#x5408;&#x3001;&#x305D;&#x308C;&#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x884C;&#x308F;&#x308C;&#x307E;&#x3059;)&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;readline.cursorTo(stream, x, y)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;cursorTo&quot;,
+          &quot;desc&quot;: &quot;<!--\nMove cursor to the specified position in a given TTY stream.\n-->\n\n<p>&#x30AB;&#x30FC;&#x30BD;&#x30EB;&#x3092;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; TTY &#x30B9;&#x30AF;&#x30EA;&#x30FC;&#x30F3;&#x306E;&#x6307;&#x5B9A;&#x306E;&#x4F4D;&#x7F6E;&#x306B;&#x79FB;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;stream&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;x&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;y&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;readline.moveCursor(stream, dx, dy)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;moveCursor&quot;,
+          &quot;desc&quot;: &quot;<!--\nMove cursor relative to it's current position in a given TTY stream.\n-->\n\n<p>&#x30AB;&#x30FC;&#x30BD;&#x30EB;&#x3092;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; TTY &#x30B9;&#x30AF;&#x30EA;&#x30FC;&#x30F3;&#x306E;&#x73FE;&#x5728;&#x306E;&#x4F4D;&#x7F6E;&#x304B;&#x3089;&#x306E;&#x76F8;&#x5BFE;&#x4F4D;&#x7F6E;&#x306B;&#x79FB;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;stream&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;dx&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;dy&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;readline.clearLine(stream, dir)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;clearLine&quot;,
+          &quot;desc&quot;: &quot;<!--\nClears current line of given TTY stream in a specified direction.\n`dir` should have one of following values:\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; TTY &#x30B9;&#x30AF;&#x30EA;&#x30FC;&#x30F3;&#x306E;&#x73FE;&#x5728;&#x306E;&#x884C;&#x3092;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x65B9;&#x5411;&#x306B;&#x6D88;&#x53BB;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>dir</code> &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x5024;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;:\n\n</p>\n<!--\n* `-1` - to the left from cursor\n* `1` - to the right from cursor\n* `0` - the entire line\n-->\n\n<ul>\n<li><code>-1</code> - &#x30AB;&#x30FC;&#x30BD;&#x30EB;&#x304B;&#x3089;&#x5DE6;&#x65B9;&#x5411;</li>\n<li><code>1</code> - &#x30AB;&#x30FC;&#x30BD;&#x30EB;&#x304B;&#x3089;&#x53F3;&#x65B9;&#x5411;</li>\n<li><code>0</code> - &#x884C;&#x5168;&#x4F53;</li>\n</ul>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;stream&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;dir&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;readline.clearScreenDown(stream)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;clearScreenDown&quot;,
+          &quot;desc&quot;: &quot;<!--\nClears the screen from the current position of the cursor down.\n-->\n\n<p>&#x30B9;&#x30AF;&#x30EA;&#x30FC;&#x30F3;&#x306E;&#x30AB;&#x30FC;&#x30BD;&#x30EB;&#x3088;&#x308A;&#x4E0B;&#x3092;&#x6D88;&#x53BB;&#x3057;&#x307E;&#x3059;&#x3002;\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;stream&quot;
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;classes&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Class: Interface&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;Interface&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe class that represents a readline interface with an input and output\nstream.\n-->\n\n<p>&#x5165;&#x529B;&#x3068;&#x51FA;&#x529B;&#x3092;&#x6301;&#x3064; readline &#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;rl.setPrompt(prompt, length)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setPrompt&quot;,
+              &quot;desc&quot;: &quot;<!--\nSets the prompt, for example when you run `node` on the command line, you see\n`> `, which is node's prompt.\n-->\n\n<p>&#x30D7;&#x30ED;&#x30F3;&#x30D7;&#x30C8;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30D7;&#x30ED;&#x30F3;&#x30D7;&#x30C8;&#x3067; <code>node</code> &#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3092;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x3068;&#x3001;\n<code>&gt; </code> &#x3092;&#x898B;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;&#x3053;&#x308C;&#x304C; Node &#x306E;&#x30D7;&#x30ED;&#x30F3;&#x30D7;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;prompt&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;length&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;rl.prompt([preserveCursor])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;prompt&quot;,
+              &quot;desc&quot;: &quot;<!--\nReadies readline for input from the user, putting the current `setPrompt`\noptions on a new line, giving the user a new spot to write. Set `preserveCursor`\nto `true` to prevent the cursor placement being reset to `0`.\n\nThis will also resume the `input` stream used with `createInterface` if it has\nbeen paused.\n-->\n\n<p>&#x30E6;&#x30FC;&#x30B6;&#x304B;&#x3089;&#x306E;&#x5165;&#x529B;&#x3092; 1 &#x884C;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;\n&#x73FE;&#x5728;&#x306E; <code>setPrompt()</code> &#x306E;&#x5024;&#x3092;&#x65B0;&#x3057;&#x3044;&#x884C;&#x306B;&#x51FA;&#x529B;&#x3057;&#x3001;\n&#x30E6;&#x30FC;&#x30B6;&#x306B;&#x65B0;&#x3057;&#x3044;&#x5165;&#x529B;&#x30A8;&#x30EA;&#x30A2;&#x3092;&#x4E0E;&#x3048;&#x307E;&#x3059;&#x3002;\n<code>preserveCursor</code> &#x3092; <code>true</code> &#x306B;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3001;&#x30AB;&#x30FC;&#x30BD;&#x30EB;&#x4F4D;&#x7F6E;&#x304C;\n<code>0</code> &#x306B;&#x30EA;&#x30BB;&#x30C3;&#x30C8;&#x3055;&#x308C;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x3053;&#x308C;&#x306F;&#x3001; <code>createInterface()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F7F;&#x308F;&#x308C;&#x308B; <code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;\n&#x4E2D;&#x65AD;&#x3055;&#x308C;&#x3066;&#x3044;&#x308C;&#x3070;&#x518D;&#x958B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;preserveCursor&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;rl.question(query, callback)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;question&quot;,
+              &quot;desc&quot;: &quot;<!--\nPrepends the prompt with `query` and invokes `callback` with the user's\nresponse. Displays the query to the user, and then invokes `callback`\nwith the user's response after it has been typed.\n\nThis will also resume the `input` stream used with `createInterface` if\nit has been paused.\n-->\n\n<p><code>query</code> &#x3092;&#x30D7;&#x30ED;&#x30F3;&#x30D7;&#x30C8;&#x3068;&#x3057;&#x3066;&#x3001;&#x30E6;&#x30FC;&#x30B6;&#x304C;&#x5FDC;&#x7B54;&#x3059;&#x308B;&#x3068; <code>callback</code> &#x3092;&#x8D77;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30E6;&#x30FC;&#x30B6;&#x306B;&#x8CEA;&#x554F;&#x3092;&#x8868;&#x793A;&#x3057;&#x3001;&#x30E6;&#x30FC;&#x30B6;&#x304C;&#x5FDC;&#x7B54;&#x3092;&#x30BF;&#x30A4;&#x30D7;&#x3059;&#x308B;&#x3068;&#x3001;<code>callback</code> &#x304C;&#x8D77;&#x52D5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x3053;&#x308C;&#x306F;&#x3001; <code>createInterface()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F7F;&#x308F;&#x308C;&#x308B; <code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;\n&#x4E2D;&#x65AD;&#x3055;&#x308C;&#x3066;&#x3044;&#x308C;&#x3070;&#x518D;&#x958B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample usage:\n-->\n\n<p>&#x4F7F;&#x7528;&#x4F8B;:\n\n</p>\n<pre><code>interface.question(&apos;What is your favorite food?&apos;, function(answer) {\n  console.log(&apos;Oh, so your favorite food is &apos; + answer);\n});</code></pre>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;query&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;rl.pause()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;pause&quot;,
+              &quot;desc&quot;: &quot;<!--\nPauses the readline `in` stream, allowing it to be resumed later if needed.\nPauses the readline `input` stream, allowing it to be resumed later if needed.\n-->\n\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304B;&#x3089;&#x306E;&#x5165;&#x529B;&#x3092;&#x4E2D;&#x65AD;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x5FC5;&#x8981;&#x306A;&#x3089;&#x5F8C;&#x3067;&#x518D;&#x958B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;rl.resume()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;resume&quot;,
+              &quot;desc&quot;: &quot;<!--\nResumes the readline `input` stream.\n-->\n\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304B;&#x3089;&#x306E;&#x5165;&#x529B;&#x3092;&#x518D;&#x958B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;rl.close()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<!--\nCloses the `Interface` instance, relinquishing control on the `input` and\n`output` streams. The \"close\" event will also be emitted.\n-->\n\n<p><code>Interface</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x3001;<code>input</code> &#x304A;&#x3088;&#x3073; <code>output</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;\n&#x5236;&#x5FA1;&#x3092;&#x89E3;&#x653E;&#x3057;&#x307E;&#x3059;&#x3002;<code>&apos;close&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3082;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;rl.write(data, [key])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;write&quot;,
+              &quot;desc&quot;: &quot;<!--\nWrites `data` to `output` stream. `key` is an object literal to represent a key\nsequence; available if the terminal is a TTY.\n-->\n\n<p><code>data</code> &#x3092; <code>output</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>key</code> &#x306F;&#x30AD;&#x30FC;&#x30B7;&#x30FC;&#x30B1;&#x30F3;&#x30B9;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30EA;&#x30C6;&#x30E9;&#x30EB;&#x3067;&#x3059;;\n&#x30BF;&#x30FC;&#x30DF;&#x30CA;&#x30EB;&#x304C; TTY &#x306E;&#x5834;&#x5408;&#x306B;&#x6709;&#x52B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThis will also resume the `input` stream if it has been paused.\n-->\n\n<p>&#x3053;&#x308C;&#x306F;&#x3001;<code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x4E2D;&#x65AD;&#x3055;&#x308C;&#x3066;&#x3044;&#x308C;&#x3070;&#x518D;&#x958B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>rl.write(&apos;Delete me!&apos;);\n// Simulate ctrl+u to delete the line written previously\nrl.write(null, {ctrl: true, name: &apos;u&apos;});</code></pre>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;key&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;modules&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Events&quot;,
+          &quot;name&quot;: &quot;events&quot;,
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;line&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;line&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (line) {}</code>\n\n</p>\n<!--\nEmitted whenever the `input` stream receives a `\\n`, usually received when the\nuser hits enter, or return. This is a good hook to listen for user input.\n-->\n\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304B;&#x3089; <code>\\n</code> &#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x3054;&#x3068;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x901A;&#x5E38;&#x3001;&#x30E6;&#x30FC;&#x30B6;&#x304C;&#x30A8;&#x30F3;&#x30BF;&#x30FC;&#x307E;&#x305F;&#x306F;&#x30EA;&#x30BF;&#x30FC;&#x30F3;&#x3092;&#x6253;&#x3064;&#x3054;&#x3068;&#x306B;&#x53D7;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x30E6;&#x30FC;&#x30B6;&#x5165;&#x529B;&#x306E;&#x3088;&#x3044;&#x30D5;&#x30C3;&#x30AF;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample of listening for `line`:\n-->\n\n<p><code>line</code> &#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:\n\n</p>\n<pre><code>rl.on(&apos;line&apos;, function (cmd) {\n  console.log(&apos;You just typed: &apos;+cmd);\n});</code></pre>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;pause&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;pause&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () {}</code>\n\n</p>\n<!--\nEmitted whenever the `input` stream is paused.\n-->\n\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x4E2D;&#x65AD;&#x3055;&#x308C;&#x305F;&#x3068;&#x304D;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nAlso emitted whenever the `input` stream is not paused and receives the\n`SIGCONT` event. (See events `SIGTSTP` and `SIGCONT`)\n-->\n\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x4E2D;&#x65AD;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x6642;&#x306B; <code>SIGCONT</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x969B;&#x306B;&#x3082;\n&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059; (<code>SIGTSTP</code> &#x304A;&#x3088;&#x3073; <code>SIGCONT</code> &#x3082;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;)&#x3002;\n\n</p>\n<!--\nExample of listening for `pause`:\n-->\n\n<p><code>&apos;pause&apos;</code> &#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:\n\n</p>\n<pre><code>rl.on(&apos;pause&apos;, function() {\n  console.log(&apos;Readline paused.&apos;);\n});</code></pre>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;resume&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;resume&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () {}</code>\n\n</p>\n<!--\nEmitted whenever the `input` stream is resumed.\n\nExample of listening for `resume`:\n-->\n\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x518D;&#x958B;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p><code>&apos;resume&apos;</code> &#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:\n\n</p>\n<pre><code>rl.on(&apos;resume&apos;, function() {\n  console.log(&apos;Readline resumed.&apos;);\n});</code></pre>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;close&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () {}</code>\n\n</p>\n<!--\nEmitted when `close()` is called.\n-->\n\n<p><code>close()</code> &#x304C;&#x547C;&#x3070;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nAlso emitted when the `input` stream receives its \"end\" event. The `Interface`\ninstance should be considered \"finished\" once this is emitted. For example, when\nthe `input` stream receives `^D`, respectively known as `EOT`.\n-->\n\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <code>&apos;end&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x3082;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3001;<code>Interface</code> &#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306F;&#x5B8C;&#x4E86;&#x3057;&#x305F;&#x3068;&#x8003;&#x3048;&#x3089;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;\n&#x4F8B;&#x3048;&#x3070;&#x3001;<code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <code>EOT</code> &#x3068;&#x3057;&#x3066;&#x77E5;&#x3089;&#x308C;&#x308B; <code>^D</code> &#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x305F;&#x5834;&#x5408;&#x3002;\n\n</p>\n<!--\nThis event is also called if there is no `SIGINT` event listener present when\nthe `input` stream receives a `^C`, respectively known as `SIGINT`.\n-->\n\n<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F; <code>SIGINT</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x3001;\n<code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <code>SIGINT</code> &#x3068;&#x3057;&#x3066;&#x77E5;&#x3089;&#x308C;&#x308B; <code>^C</code> &#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x3082;\n&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;SIGINT&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;SIGINT&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () {}</code>\n\n</p>\n<!--\nEmitted whenever the `input` stream receives a `^C`, respectively known as\n`SIGINT`. If there is no `SIGINT` event listener present when the `input`\nstream receives a `SIGINT`, `pause` will be triggered.\n\nExample of listening for `SIGINT`:\n-->\n\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <code>SIGINT</code> &#x3068;&#x3057;&#x3066;&#x77E5;&#x3089;&#x308C;&#x308B; <code>^C</code> &#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;\n&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3082;&#x3057; <code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <code>SIGINT</code> &#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x6642;&#x306B; <code>&apos;SIGINT&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;\n&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;<code>&apos;pause&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x30C8;&#x30EA;&#x30AC;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p><code>&apos;SIGINT&apos;</code> &#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:\n\n</p>\n<pre><code>rl.on(&apos;SIGINT&apos;, function() {\n  rl.question(&apos;Are you sure you want to exit?&apos;, function(answer) {\n    if (answer.match(/^y(es)?$/i)) rl.pause();\n  });\n});</code></pre>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;SIGTSTP&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;SIGTSTP&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () {}</code>\n\n</p>\n<!--\n**This does not work on Windows.**\n\nEmitted whenever the `input` stream receives a `^Z`, respectively known as\n`SIGTSTP`. If there is no `SIGTSTP` event listener present when the `input`\nstream receives a `SIGTSTP`, the program will be sent to the background.\n\nWhen the program is resumed with `fg`, the `pause` and `SIGCONT` events will be\nemitted. You can use either to resume the stream.\n\nThe `pause` and `SIGCONT` events will not be triggered if the stream was paused\nbefore the program was sent to the background.\n\nExample of listening for `SIGTSTP`:\n-->\n\n<p><strong>&#x3053;&#x308C;&#x306F; Windows &#x3067;&#x306F;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;</strong>\n\n</p>\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <code>SIGTSTP</code> &#x3068;&#x3057;&#x3066;&#x77E5;&#x3089;&#x308C;&#x308B; <code>^Z</code> &#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;\n&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3082;&#x3057; <code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <code>SIGTSTP</code> &#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x6642;&#x306B; <code>&apos;SIGTSTP&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;\n&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x30D0;&#x30C3;&#x30AF;&#x30B0;&#x30E9;&#x30A6;&#x30F3;&#x30C9;&#x306B;&#x9001;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304C; <code>fg</code> &#x306B;&#x3088;&#x308A;&#x518D;&#x958B;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;<code>&apos;pause&apos;</code> &#x304A;&#x3088;&#x3073; <code>&apos;SIGCONT&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;\n&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x3069;&#x3061;&#x3089;&#x3082;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x518D;&#x958B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304C;&#x30D0;&#x30C3;&#x30AF;&#x30B0;&#x30E9;&#x30A6;&#x30F3;&#x30C9;&#x306B;&#x9001;&#x3089;&#x308C;&#x308B;&#x524D;&#x306B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x4E2D;&#x65AD;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x3068;&#x3001;\n<code>&apos;pause&apos;</code> &#x304A;&#x3088;&#x3073; <code>&apos;SIGCONT&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<p><code>&apos;SIGTSTP&apos;</code> &#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:\n\n</p>\n<pre><code>rl.on(&apos;SIGTSTP&apos;, function() {\n  // This will override SIGTSTP and prevent the program from going to the\n  // background.\n  console.log(&apos;Caught SIGTSTP.&apos;);\n});</code></pre>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;SIGCONT&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;SIGCONT&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () {}</code>\n\n</p>\n<!--\n**This does not work on Windows.**\n\nEmitted whenever the `input` stream is sent to the background with `^Z`,\nrespectively known as `SIGTSTP`, and then continued with `fg(1)`. This event\nonly emits if the stream was not paused before sending the program to the\nbackground.\n\nExample of listening for `SIGCONT`:\n-->\n\n<p><strong>&#x3053;&#x308C;&#x306F; Windows &#x3067;&#x306F;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;</strong>\n\n</p>\n<p><code>input</code> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <code>SIGTSTP</code> &#x3068;&#x3057;&#x3066;&#x77E5;&#x3089;&#x308C;&#x308B; <code>^Z</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x30D0;&#x30C3;&#x30AF;&#x30B0;&#x30E9;&#x30A6;&#x30F3;&#x30C9;&#x306B;\n&#x9001;&#x3089;&#x308C;&#x305F;&#x5F8C;&#x3067;&#x3001;<code>fg(1)</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x518D;&#x958B;&#x3055;&#x308C;&#x308B;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304C;&#x30D0;&#x30C3;&#x30AF;&#x30B0;&#x30E9;&#x30A6;&#x30F3;&#x30C9;&#x306B;&#x9001;&#x3089;&#x308C;&#x308B;&#x524D;&#x306B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x4E2D;&#x65AD;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x306E;&#x307F;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p><code>&apos;SIGCONT&apos;</code> &#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x4F8B;:\n\n</p>\n<pre><code>rl.on(&apos;SIGCONT&apos;, function() {\n  // `prompt` will automatically resume the stream\n  rl.prompt();\n});</code></pre>\n<h2>Example: Tiny CLI</h2>\n<!--\nHere's an example of how to use all these together to craft a tiny command\nline interface:\n-->\n\n<p>&#x5168;&#x3066;&#x3092;&#x4E00;&#x7DD2;&#x306B;&#x4F7F;&#x3046;&#x3001;&#x5C0F;&#x3055;&#x306A;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306E;&#x4F8B;:\n\n</p>\n<pre><code>var readline = require(&apos;readline&apos;),\n    rl = readline.createInterface(process.stdin, process.stdout);\n\nrl.setPrompt(&apos;OHAI&gt; &apos;);\nrl.prompt();\n\nrl.on(&apos;line&apos;, function(line) {\n  switch(line.trim()) {\n    case &apos;hello&apos;:\n      console.log(&apos;world!&apos;);\n      break;\n    default:\n      console.log(&apos;Say what? I might have heard `&apos; + line.trim() + &apos;`&apos;);\n      break;\n  }\n  rl.prompt();\n}).on(&apos;close&apos;, function() {\n  console.log(&apos;Have a great day!&apos;);\n  process.exit(0);\n});</code></pre>\n&quot;,
+              &quot;params&quot;: []
+            }
+          ],
+          &quot;type&quot;: &quot;module&quot;,
+          &quot;displayName&quot;: &quot;Events&quot;
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;Readline&quot;
+    }
+  ]
+}

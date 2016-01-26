@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>DNS Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/dns.html">
+</head>
+<body class="alt apidoc" id="api-section-dns">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="dns.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#dns_dns">DNS</a><ul>
+<li><a href="#dns_dns_lookup_domain_family_callback">dns.lookup(domain, [family], callback)</a></li>
+<li><a href="#dns_dns_resolve_domain_rrtype_callback">dns.resolve(domain, [rrtype], callback)</a></li>
+<li><a href="#dns_dns_resolve4_domain_callback">dns.resolve4(domain, callback)</a></li>
+<li><a href="#dns_dns_resolve6_domain_callback">dns.resolve6(domain, callback)</a></li>
+<li><a href="#dns_dns_resolvemx_domain_callback">dns.resolveMx(domain, callback)</a></li>
+<li><a href="#dns_dns_resolvetxt_domain_callback">dns.resolveTxt(domain, callback)</a></li>
+<li><a href="#dns_dns_resolvesrv_domain_callback">dns.resolveSrv(domain, callback)</a></li>
+<li><a href="#dns_dns_resolvens_domain_callback">dns.resolveNs(domain, callback)</a></li>
+<li><a href="#dns_dns_resolvecname_domain_callback">dns.resolveCname(domain, callback)</a></li>
+<li><a href="#dns_dns_reverse_ip_callback">dns.reverse(ip, callback)</a></li>
+<li><a href="#dns_error_codes">Error codes</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>DNS<span><a class="mark" href="#dns_dns" id="dns_dns">#</a></span></h1>
+<pre class="api_stability_3">Stability: 3 - Stable</pre><!--
+Use `require('dns')` to access this module. All methods in the dns module
+use C-Ares except for `dns.lookup` which uses `getaddrinfo(3)` in a thread
+pool. C-Ares is much faster than `getaddrinfo` but the system resolver is
+more consistent with how other programs operate. When a user does
+`net.connect(80, 'google.com')` or `http.get({ host: 'google.com' })` the
+`dns.lookup` method is used. Users who need to do a large number of lookups
+quickly should use the methods that go through C-Ares.
+-->
+
+<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x306B;&#x306F; <code>require(&apos;dns&apos;)</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;
+dns &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x5168;&#x3066;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F; C-Ares &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305F;&#x3060;&#x3057;&#x3001;<code>dns.lookup</code> &#x306F;&#x30B9;&#x30EC;&#x30C3;&#x30C9;&#x30D7;&#x30FC;&#x30EB;&#x4E0A;&#x3067; <code>getaddrinfo(3)</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;
+C-Ares &#x306F; <code>getaddrinfo</code> &#x3088;&#x308A;&#x305A;&#x3063;&#x3068;&#x901F;&#x3044;&#x3082;&#x306E;&#x306E;&#x3001;
+&#x4ED6;&#x306E;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3068;&#x9023;&#x643A;&#x3059;&#x308B;&#x306B;&#x306F;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x30EA;&#x30BE;&#x30EB;&#x30D0;&#x306E;&#x65B9;&#x304C;&#x4E00;&#x8CAB;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x30E6;&#x30FC;&#x30B6;&#x304C; <code>net.connect(80, &apos;google.com&apos;)</code> &#x307E;&#x305F;&#x306F;
+<code>http.get({ host: &apos;google.com&apos; })</code> &#x3092;&#x884C;&#x3063;&#x305F;&#x6642;&#x3001;<code>dns.lookup</code>
+&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x591A;&#x6570;&#x306E;&#x30EB;&#x30C3;&#x30AF;&#x30A2;&#x30C3;&#x30D7;&#x3092;&#x7D20;&#x65E9;&#x304F;&#x5B9F;&#x884C;&#x3057;&#x305F;&#x3044;&#x30E6;&#x30FC;&#x30B6;&#x306F;&#x3001;
+C-Ares &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Here is an example which resolves `'www.google.com'` then reverse
+resolves the IP addresses which are returned.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; <code>&apos;www.google.com&apos;</code> &#x3092;&#x89E3;&#x6C7A;&#x3057;&#x3066;&#x3001;&#x8FD4;&#x3055;&#x308C;&#x305F; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3092;&#x9006;&#x5F15;&#x304D;&#x3067;&#x89E3;&#x6C7A;&#x3059;&#x308B;&#x4F8B;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code>var dns = require(&apos;dns&apos;);
+
+dns.resolve4(&apos;www.google.com&apos;, function (err, addresses) {
+  if (err) throw err;
+
+  console.log(&apos;addresses: &apos; + JSON.stringify(addresses));
+
+  addresses.forEach(function (a) {
+    dns.reverse(a, function (err, domains) {
+      if (err) {
+        throw err;
+      }
+
+      console.log(&apos;reverse for &apos; + a + &apos;: &apos; + JSON.stringify(domains));
+    });
+  });
+});</code></pre>
+<h2>dns.lookup(domain, [family], callback)<span><a class="mark" href="#dns_dns_lookup_domain_family_callback" id="dns_dns_lookup_domain_family_callback">#</a></span></h2>
+<!--
+Resolves a domain (e.g. `'google.com'`) into the first found A (IPv4) or
+AAAA (IPv6) record.
+The `family` can be the integer `4` or `6`. Defaults to `null` that indicates
+both Ip v4 and v6 address family.
+-->
+
+<p>&#x30C9;&#x30E1;&#x30A4;&#x30F3; (&#x4F8B; <code>&apos;google.com&apos;</code>) &#x3092;&#x89E3;&#x6C7A;&#x3057;&#x3066;&#x6700;&#x521D;&#x306B;&#x898B;&#x3064;&#x304B;&#x3063;&#x305F;
+A (IPv4) &#x307E;&#x305F;&#x306F; AAAA (IPv6) &#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>family</code> &#x306F;&#x6574;&#x6570;&#x306E; <code>4</code> &#x307E;&#x305F;&#x306F; <code>6</code> &#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>null</code> &#x3067;&#x3001;IP v4 &#x3068; v6 &#x306E;&#x4E21;&#x65B9;&#x3092;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x30D5;&#x30A1;&#x30DF;&#x30EA;&#x30FC;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The callback has arguments `(err, address, family)`.  The `address` argument
+is a string representation of a IP v4 or v6 address. The `family` argument
+is either the integer 4 or 6 and denotes the family of `address` (not
+necessarily the value initially passed to `lookup`).
+-->
+
+<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x5F15;&#x6570; <code>(err, address, family)</code> &#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+<code>address</code> &#x5F15;&#x6570;&#x306F; IP v4 &#x307E;&#x305F;&#x306F; v6 &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3092;&#x8868;&#x73FE;&#x3059;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;
+<code>family</code> &#x5F15;&#x6570;&#x306F;&#x6574;&#x6570;&#x306E; 4 &#x307E;&#x305F;&#x306F; 6 &#x3067;&#x3001;<code>address</code> &#x306E;&#x30D5;&#x30A1;&#x30DF;&#x30EA;&#x30FC;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;
+(&#x3053;&#x306E;&#x5024;&#x306F;&#x5FC5;&#x305A;&#x3057;&#x3082;&#x6700;&#x521D;&#x306B; <code>lookup</code> &#x306B;&#x6E21;&#x3059;&#x5FC5;&#x8981;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;)&#x3002;
+
+</p>
+<!--
+On error, `err` is an `Error` object, where `err.code` is the error code.
+Keep in mind that `err.code` will be set to `'ENOENT'` not only when
+the domain does not exist but also when the lookup fails in other ways
+such as no available file descriptors.
+-->
+
+<p>&#x30A8;&#x30E9;&#x30FC;&#x6642;&#x3001;<code>err</code> &#x306F; <code>Error</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3001;<code>err.code</code> &#x306F;&#x30A8;&#x30E9;&#x30FC;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x3059;&#x3002;
+<code>err.code</code> &#x304C; <code>&apos;ENOENT&apos;</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x306E;&#x306F;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x3060;&#x3051;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;
+&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x304C;&#x4F7F;&#x3048;&#x306A;&#x3044;&#x306A;&#x3069;&#x30EB;&#x30C3;&#x30AF;&#x30A2;&#x30C3;&#x30D7;&#x304C;&#x5931;&#x6557;&#x3057;&#x305F;&#x5834;&#x5408;&#x3082;&#x3042;&#x308B;&#x3053;&#x3068;&#x306B;
+&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+
+</p>
+<h2>dns.resolve(domain, [rrtype], callback)<span><a class="mark" href="#dns_dns_resolve_domain_rrtype_callback" id="dns_dns_resolve_domain_rrtype_callback">#</a></span></h2>
+<!--
+Resolves a domain (e.g. `'google.com'`) into an array of the record types
+specified by rrtype. Valid rrtypes are `'A'` (IPV4 addresses, default),
+`'AAAA'` (IPV6 addresses), `'MX'` (mail exchange records), `'TXT'` (text
+records), `'SRV'` (SRV records), `'PTR'` (used for reverse IP lookups),
+`'NS'` (name server records) and `'CNAME'` (canonical name records).
+-->
+
+<p>&#x30C9;&#x30E1;&#x30A4;&#x30F3; (&#x4F8B; <code>&apos;google.com&apos;</code>) &#x3092;&#x89E3;&#x6C7A;&#x3057;&#x3066; <code>rrtype</code> &#x3067;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x30BF;&#x30A4;&#x30D7;&#x306E;&#x914D;&#x5217;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x59A5;&#x5F53;&#x306A; <code>rrtype</code> &#x306F; <code>&apos;A&apos;</code> (IPV4&#x30A2;&#x30C9;&#x30EC;&#x30B9;)&#x3001;<code>&apos;AAAA&apos;</code> (IPV6&#x30A2;&#x30C9;&#x30EC;&#x30B9;)&#x3001;
+<code>&apos;MX&apos;</code> (mail exchange&#x30EC;&#x30B3;&#x30FC;&#x30C9;), <code>&apos;TXT&apos;</code> (&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x30EC;&#x30B3;&#x30FC;&#x30C9;)&#x3001;
+<code>&apos;SRV&apos;</code> (SRV&#x30EC;&#x30B3;&#x30FC;&#x30C9;)&#x3001;<code>&apos;PTR&apos;</code> (IP &#x3092;&#x9006;&#x5F15;&#x304D;&#x3067;&#x30EB;&#x30C3;&#x30AF;&#x30A2;&#x30C3;&#x30D7;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x308B;)&#x3001;
+<code>&apos;NS&apos;</code> (&#x30CD;&#x30FC;&#x30E0;&#x30B5;&#x30FC;&#x30D0;&#x30EC;&#x30B3;&#x30FC;&#x30C9;)&#x3001;&#x305D;&#x3057;&#x3066; <code>&apos;CNAME&apos;</code> (&#x5225;&#x540D;&#x30EC;&#x30B3;&#x30FC;&#x30C9;) &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+The callback has arguments `(err, addresses)`.  The type of each item
+in `addresses` is determined by the record type, and described in the
+documentation for the corresponding lookup methods below.
+-->
+
+<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x5F15;&#x6570; <code>(err, addresses)</code> &#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+<code>addresses</code> &#x306E;&#x5404;&#x8981;&#x7D20;&#x306E;&#x7A2E;&#x985E;&#x306F;&#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x7A2E;&#x985E;&#x306B;&#x3088;&#x3063;&#x3066;&#x6C7A;&#x307E;&#x308A;&#x3001;
+&#x5BFE;&#x5FDC;&#x3059;&#x308B;&#x5F8C;&#x8FF0;&#x306E;&#x30EB;&#x30C3;&#x30AF;&#x30A2;&#x30C3;&#x30D7;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3067;&#x8A18;&#x8FF0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+On error, `err` is an `Error` object, where `err.code` is
+one of the error codes listed below.
+-->
+
+<p>&#x30A8;&#x30E9;&#x30FC;&#x6642;&#x3001;<code>err</code> &#x306F; <code>Error</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3001;
+<code>err.errno</code> &#x306F;&#x5F8C;&#x8FF0;&#x3059;&#x308B;&#x30A8;&#x30E9;&#x30FC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h2>dns.resolve4(domain, callback)<span><a class="mark" href="#dns_dns_resolve4_domain_callback" id="dns_dns_resolve4_domain_callback">#</a></span></h2>
+<!--
+The same as `dns.resolve()`, but only for IPv4 queries (`A` records).
+`addresses` is an array of IPv4 addresses (e.g.
+`['74.125.79.104', '74.125.79.105', '74.125.79.106']`).
+-->
+
+<p><code>dns.resolve()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x304C;&#x3001;IPv4 &#x30A2;&#x30C9;&#x30EC;&#x30B9; (<code>A</code> &#x30EC;&#x30B3;&#x30FC;&#x30C9;) &#x3060;&#x3051;&#x3092;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x307E;&#x3059;&#x3002;
+<code>addresses</code> &#x306F; IPv4 &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x306E;&#x914D;&#x5217;&#x3067;&#x3059; (&#x4F8B;<br>
+<code>[&apos;74.125.79.104&apos;, &apos;74.125.79.105&apos;, &apos;74.125.79.106&apos;]</code>)
+
+</p>
+<h2>dns.resolve6(domain, callback)<span><a class="mark" href="#dns_dns_resolve6_domain_callback" id="dns_dns_resolve6_domain_callback">#</a></span></h2>
+<!--
+The same as `dns.resolve4()` except for IPv6 queries (an `AAAA` query).
+-->
+
+<p>IPv6 (<code>AAAA</code> &#x30EC;&#x30B3;&#x30FC;&#x30C9;) &#x3092;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x308B;&#x3053;&#x3068;&#x3092;&#x9664;&#x3044;&#x3066; <code>dns.resolve4()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h2>dns.resolveMx(domain, callback)<span><a class="mark" href="#dns_dns_resolvemx_domain_callback" id="dns_dns_resolvemx_domain_callback">#</a></span></h2>
+<!--
+The same as `dns.resolve()`, but only for mail exchange queries (`MX` records).
+-->
+
+<p><code>dns.resolve()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x304C;&#x3001;mail exchange (<code>MX</code> &#x30EC;&#x30B3;&#x30FC;&#x30C9;) &#x3060;&#x3051;&#x3092;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+`addresses` is an array of MX records, each with a priority and an exchange
+attribute (e.g. `[{'priority': 10, 'exchange': 'mx.example.com'},...]`).
+-->
+
+<p><code>addresses</code> &#x306F; MX &#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x914D;&#x5217;&#x3067;&#x3001;&#x305D;&#x308C;&#x305E;&#x308C;&#x306F; priority &#x3068; exchange &#x306E;&#x5C5E;&#x6027;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;
+(&#x4F8B; <code>[{&apos;priority&apos;: 10, &apos;exchange&apos;: &apos;mx.example.com&apos;},...]</code>)&#x3002;
+
+</p>
+<h2>dns.resolveTxt(domain, callback)<span><a class="mark" href="#dns_dns_resolvetxt_domain_callback" id="dns_dns_resolvetxt_domain_callback">#</a></span></h2>
+<!--
+The same as `dns.resolve()`, but only for text queries (`TXT` records).
+`addresses` is an array of the text records available for `domain` (e.g.,
+`['v=spf1 ip4:0.0.0.0 ~all']`).
+-->
+
+<p><code>dns.resolve()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x304C;&#x3001;&#x30C6;&#x30AD;&#x30B9;&#x30C8; (<code>TXT</code> &#x30EC;&#x30B3;&#x30FC;&#x30C9;) &#x3060;&#x3051;&#x3092;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x307E;&#x3059;&#x3002;
+<code>addresses</code> &#x306F; <code>domain</code> &#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x914D;&#x5217;&#x3067;&#x3059;&#x3002;
+(&#x4F8B;&#x3001;<code>[&apos;v=spf1 ip4:0.0.0.0 ~all&apos;]</code>)
+
+</p>
+<h2>dns.resolveSrv(domain, callback)<span><a class="mark" href="#dns_dns_resolvesrv_domain_callback" id="dns_dns_resolvesrv_domain_callback">#</a></span></h2>
+<!--
+The same as `dns.resolve()`, but only for service records (`SRV` records).
+`addresses` is an array of the SRV records available for `domain`. Properties
+of SRV records are priority, weight, port, and name (e.g.,
+`[{'priority': 10, {'weight': 5, 'port': 21223, 'name': 'service.example.com'}, ...]`).
+-->
+
+<p><code>dns.resolve()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x304C;&#x3001;&#x30B5;&#x30FC;&#x30D3;&#x30B9;&#x30EC;&#x30B3;&#x30FC;&#x30C9; (<code>SRV</code> &#x30EC;&#x30B3;&#x30FC;&#x30C9;) &#x3060;&#x3051;&#x3092;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x307E;&#x3059;&#x3002;
+<code>addresses</code> &#x306F; <code>domain</code> &#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A; SRV &#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x914D;&#x5217;&#x3067;&#x3059;&#x3002;
+SRV &#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F; priority&#x3001;weight&#x3001;port&#x3001;&#x305D;&#x3057;&#x3066; name &#x3067;&#x3059;
+(&#x4F8B; <code>[{&apos;priority&apos;: 10, {&apos;weight&apos;: 5, &apos;port&apos;: 21223, &apos;name&apos;: &apos;service.example.com&apos;}, ...]</code>)&#x3002;
+
+</p>
+<h2>dns.resolveNs(domain, callback)<span><a class="mark" href="#dns_dns_resolvens_domain_callback" id="dns_dns_resolvens_domain_callback">#</a></span></h2>
+<!--
+The same as `dns.resolve()`, but only for name server records (`NS` records).
+`addresses` is an array of the name server records available for `domain`
+(e.g., `['ns1.example.com', 'ns2.example.com']`).
+-->
+
+<p><code>dns.resolve()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x304C;&#x3001;&#x30CD;&#x30FC;&#x30E0;&#x30B5;&#x30FC;&#x30D0;&#x30EC;&#x30B3;&#x30FC;&#x30C9; (<code>NS</code> &#x30EC;&#x30B3;&#x30FC;&#x30C9;) 
+&#x3060;&#x3051;&#x3092;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x307E;&#x3059;&#x3002;
+<code>address</code> &#x306F; <code>domain</code> &#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30CD;&#x30FC;&#x30E0;&#x30B5;&#x30FC;&#x30D0;&#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x914D;&#x5217;&#x3067;&#x3059;
+(&#x4F8B; <code>[&apos;ns1.example.com&apos;, &apos;ns2.example.com&apos;]</code>)&#x3002;
+
+</p>
+<h2>dns.resolveCname(domain, callback)<span><a class="mark" href="#dns_dns_resolvecname_domain_callback" id="dns_dns_resolvecname_domain_callback">#</a></span></h2>
+<!--
+The same as `dns.resolve()`, but only for canonical name records (`CNAME`
+records). `addresses` is an array of the canonical name records available for
+`domain` (e.g., `['bar.example.com']`).
+-->
+
+<p><code>dns.resolve()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x304C;&#x3001;&#x5225;&#x540D;&#x30EC;&#x30B3;&#x30FC;&#x30C9; (<code>CNAME</code> &#x30EC;&#x30B3;&#x30FC;&#x30C9;) 
+&#x3060;&#x3051;&#x3092;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x307E;&#x3059;&#x3002;
+<code>address</code> &#x306F; <code>domain</code> &#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x5225;&#x540D;&#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x914D;&#x5217;&#x3067;&#x3059;
+<code>domain</code> (e.g., <code>[&apos;bar.example.com&apos;]</code>)&#x3002;
+
+</p>
+<h2>dns.reverse(ip, callback)<span><a class="mark" href="#dns_dns_reverse_ip_callback" id="dns_dns_reverse_ip_callback">#</a></span></h2>
+<!--
+Reverse resolves an ip address to an array of domain names.
+-->
+
+<p>IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x304B;&#x3089;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x306E;&#x914D;&#x5217;&#x3078;&#x9006;&#x5F15;&#x304D;&#x3067;&#x89E3;&#x6C7A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The callback has arguments `(err, domains)`.
+-->
+
+<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x5F15;&#x6570; <code>(err, domains)</code> &#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+On error, `err` is an `Error` object, where `err.code` is
+one of the error codes listed below.
+-->
+
+<p>&#x30A8;&#x30E9;&#x30FC;&#x6642;&#x3001;<code>err</code> &#x306F; <code>Error</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3001;
+<code>err.errno</code> &#x306F;&#x5F8C;&#x8FF0;&#x3059;&#x308B;&#x30A8;&#x30E9;&#x30FC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>Error codes<span><a class="mark" href="#dns_error_codes" id="dns_error_codes">#</a></span></h2>
+<!--
+Each DNS query can return one of the following error codes:
+-->
+
+<p>&#x3069;&#x306E; DNS &#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x3082;&#x4EE5;&#x4E0B;&#x306E;&#x30A8;&#x30E9;&#x30FC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x4E00;&#x3064;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<!--
+- `dns.NODATA`: DNS server returned answer with no data.
+- `dns.FORMERR`: DNS server claims query was misformatted.
+- `dns.SERVFAIL`: DNS server returned general failure.
+- `dns.NOTFOUND`: Domain name not found.
+- `dns.NOTIMP`: DNS server does not implement requested operation.
+- `dns.REFUSED`: DNS server refused query.
+- `dns.BADQUERY`: Misformatted DNS query.
+- `dns.BADNAME`: Misformatted domain name.
+- `dns.BADFAMILY`: Unsupported address family.
+- `dns.BADRESP`: Misformatted DNS reply.
+- `dns.CONNREFUSED`: Could not contact DNS servers.
+- `dns.TIMEOUT`: Timeout while contacting DNS servers.
+- `dns.EOF`: End of file.
+- `dns.FILE`: Error reading file.
+- `dns.NOMEM`: Out of memory.
+- `dns.DESTRUCTION`: Channel is being destroyed.
+- `dns.BADSTR`: Misformatted string.
+- `dns.BADFLAGS`: Illegal flags specified.
+- `dns.NONAME`: Given hostname is not numeric.
+- `dns.BADHINTS`: Illegal hints flags specified.
+- `dns.NOTINITIALIZED`: c-ares library initialization not yet performed.
+- `dns.LOADIPHLPAPI`: Error loading iphlpapi.dll.
+- `dns.ADDRGETNETWORKPARAMS`: Could not find GetNetworkParams function.
+- `dns.CANCELLED`: DNS query cancelled.
+-->
+
+<ul>
+<li><code>dns.NODATA</code>: DNS &#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x306A;&#x3044;&#x3068;&#x5FDC;&#x7B54;&#x3057;&#x305F;&#x3002;</li>
+<li><code>dns.FORMERR</code>: DNS &#x30B5;&#x30FC;&#x30D0;&#x304C;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x304C;&#x4E0D;&#x6B63;&#x3060;&#x3068;&#x4E3B;&#x5F35;&#x3057;&#x305F;&#x3002;</li>
+<li><code>dns.SERVFAIL</code>: DNS &#x30B5;&#x30FC;&#x30D0;&#x304C;&#x4E00;&#x822C;&#x7684;&#x306A;&#x5931;&#x6557;&#x3092;&#x8FD4;&#x3057;&#x305F;&#x3002;</li>
+<li><code>dns.NOTFOUND</code>: &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x304C;&#x898B;&#x3064;&#x304B;&#x3089;&#x306A;&#x3044;&#x3002;</li>
+<li><code>dns.NOTIMP</code>: DNS &#x30B5;&#x30FC;&#x30D0;&#x306F;&#x8981;&#x6C42;&#x3055;&#x308C;&#x305F;&#x64CD;&#x4F5C;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x3066;&#x3044;&#x306A;&#x3044;&#x3002;</li>
+<li><code>dns.REFUSED</code>: DNS &#x30B5;&#x30FC;&#x30D0;&#x304C;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x3092;&#x62D2;&#x5426;&#x3057;&#x305F;&#x3002;</li>
+<li><code>dns.BADQUERY</code>: DNS &#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x306E;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x304C;&#x4E0D;&#x6B63;&#x3002;</li>
+<li><code>dns.BADNAME</code>: &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x306E;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x304C;&#x4E0D;&#x6B63;&#x3002;</li>
+<li><code>dns.BADFAMILY</code>: &#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x306A;&#x3044;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x30D5;&#x30A1;&#x30DF;&#x30EA;&#x30FC;&#x3002;</li>
+<li><code>dns.BADRESP</code>: DNS &#x5FDC;&#x7B54;&#x306E;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x304C;&#x4E0D;&#x6B63;&#x3002;</li>
+<li><code>dns.CONNREFUSED</code>: DNS &#x30B5;&#x30FC;&#x30D0;&#x306B;&#x63A5;&#x7D9A;&#x3067;&#x304D;&#x306A;&#x3044;&#x3002;</li>
+<li><code>dns.TIMEOUT</code>: DNS &#x30B5;&#x30FC;&#x30D0;&#x3078;&#x306E;&#x63A5;&#x7D9A;&#x304C;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x3002;</li>
+<li><code>dns.EOF</code>: &#x30A8;&#x30F3;&#x30C9;&#x30AA;&#x30D6;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3002;</li>
+<li><code>dns.FILE</code>: &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x304C;&#x30A8;&#x30E9;&#x30FC;&#x3002;</li>
+<li><code>dns.NOMEM</code>: &#x30E1;&#x30E2;&#x30EA;&#x4E0D;&#x8DB3;&#x3002;</li>
+<li><code>dns.DESTRUCTION</code>: &#x30C1;&#x30E3;&#x30CD;&#x30EB;&#x304C;&#x58CA;&#x308C;&#x3066;&#x3044;&#x308B;&#x3002;</li>
+<li><code>dns.BADSTR</code>: &#x6587;&#x5B57;&#x5217;&#x306E;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x304C;&#x4E0D;&#x6B63;&#x3002;</li>
+<li><code>dns.BADFLAGS</code>: &#x4E0D;&#x6B63;&#x306A;&#x30D5;&#x30E9;&#x30B0;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x3002;</li>
+<li><code>dns.NONAME</code>: &#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x304C;&#x6570;&#x5024;&#x3067;&#x306F;&#x306A;&#x3044;&#x3002;</li>
+<li><code>dns.BADHINTS</code>: &#x4E0D;&#x6B63;&#x306A;&#x30D2;&#x30F3;&#x30C8;&#x30D5;&#x30E9;&#x30B0;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x3002;</li>
+<li><code>dns.NOTINITIALIZED</code>: c-ares &#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x304C;&#x521D;&#x671F;&#x5316;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x3002;</li>
+<li><code>dns.LOADIPHLPAPI</code>: iphlpapi.dll &#x306E;&#x30ED;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x30A8;&#x30E9;&#x30FC;&#x3002;</li>
+<li><code>dns.ADDRGETNETWORKPARAMS</code>: GetNetworkParams &#x95A2;&#x6570;&#x304C;&#x898B;&#x3064;&#x304B;&#x3089;&#x306A;&#x3044;&#x3002;</li>
+<li><code>dns.CANCELLED</code>: DNS &#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x304C;&#x30AD;&#x30E3;&#x30F3;&#x30BB;&#x30EB;&#x3055;&#x308C;&#x305F;&#x3002;</li>
+</ul>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

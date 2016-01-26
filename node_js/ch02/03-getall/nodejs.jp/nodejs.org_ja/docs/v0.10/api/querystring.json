@@ -1,0 +1,80 @@
+{
+  &quot;source&quot;: &quot;doc/api/querystring.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;Query String&quot;,
+      &quot;name&quot;: &quot;querystring&quot;,
+      &quot;stability&quot;: 3,
+      &quot;stabilityText&quot;: &quot;Stable&quot;,
+      &quot;desc&quot;: &quot;<!--\nThis module provides utilities for dealing with query strings.\nIt provides the following methods:\n-->\n\n<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x30AF;&#x30A8;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092;&#x51E6;&#x7406;&#x3059;&#x308B;&#x30E6;&#x30FC;&#x30C6;&#x30A3;&#x30EA;&#x30C6;&#x30A3;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002; &#x4EE5;&#x4E0B;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304B;&#x3089;&#x6210;&#x308A;&#x307E;&#x3059;:\n\n</p>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;querystring.stringify(obj, [sep], [eq])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;stringify&quot;,
+          &quot;Serialize an object to a query string.\nOptionally override the default separator (`&apos;&amp;&apos;`) and assignment (`&apos;&quot;: &quot;&apos;`)\ncharacters.&quot;,
+          &quot;desc&quot;: &quot;<p>&#x30AF;&#x30A8;&#x30EA;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x6587;&#x5B57;&#x5217;&#x3078;&#x76F4;&#x5217;&#x5316;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3068;&#x3057;&#x3066;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x533A;&#x5207;&#x308A;&#x6587;&#x5B57; (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;&amp;&apos;</code>) &#x3068;&#x4EE3;&#x5165;&#x6587;&#x5B57;\n(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;=&apos;</code>) &#x3092;&#x4E0A;&#x66F8;&#x304D;&#x6307;&#x5B9A;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>querystring.stringify({ foo: &apos;bar&apos;, baz: [&apos;qux&apos;, &apos;quux&apos;], corge: &apos;&apos; })\n// returns\n&apos;foo=bar&amp;baz=qux&amp;baz=quux&amp;corge=&apos;\n\nquerystring.stringify({foo: &apos;bar&apos;, baz: &apos;qux&apos;}, &apos;;&apos;, &apos;:&apos;)\n// returns\n&apos;foo:bar;baz:qux&apos;</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;obj&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;sep&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;eq&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;querystring.parse(str, [sep], [eq], [options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;parse&quot;,
+          &quot;Deserialize a query string to an object.\nOptionally override the default separator (`&apos;&amp;&apos;`) and assignment (`&apos;&quot;: &quot;&apos;`)\ncharacters.\n\nOptions object may contain `maxKeys` property (equal to 1000 by default), it&apos;ll\nbe used to limit processed keys. Set it to 0 to remove key count limitation.&quot;,
+          &quot;desc&quot;: &quot;<p>&#x30AF;&#x30A8;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x5FA9;&#x5143;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3068;&#x3057;&#x3066;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x533A;&#x5207;&#x308A;&#x6587;&#x5B57; (<code>&apos;&amp;&apos;</code>) &#x3068;&#x4EE3;&#x5165;&#x6587;&#x5B57; (<code>&apos;=&apos;</code>)\n&#x3092;&#x4E0A;&#x66F8;&#x304D;&#x6307;&#x5B9A;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; <code>maxKeys</code> &#x3092;&#x542B;&#x3080;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059; (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F;\n1000 &#x3067;&#x3059;)&#x3002;&#x305D;&#x308C;&#x306F;&#x30AD;&#x30FC;&#x3092;&#x51E6;&#x7406;&#x3059;&#x308B;&#x4E0A;&#x9650;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n0 &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x5236;&#x9650;&#x306F;&#x53D6;&#x308A;&#x9664;&#x304B;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>querystring.parse(&apos;foo=bar&amp;baz=qux&amp;baz=quux&amp;corge&apos;)\n// returns\n{ foo: &apos;bar&apos;, baz: [&apos;qux&apos;, &apos;quux&apos;], corge: &apos;&apos; }</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;str&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;sep&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;eq&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;properties&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;querystring.escape&quot;,
+          &quot;name&quot;: &quot;escape&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe escape function used by `querystring.stringify`,\nprovided so that it could be overridden if necessary.\n-->\n\n<p>escape &#x95A2;&#x6570;&#x306F; <code>querystring.stringify</code> &#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x3066;&#x3044;&#x3066;&#x3001;&#x5FC5;&#x8981;&#x306A;&#x5834;&#x5408;&#x306B;&#x30AA;&#x30FC;&#x30D0;&#x30FC;&#x30E9;&#x30A4;&#x30C9;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;querystring.unescape&quot;,
+          &quot;name&quot;: &quot;unescape&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe unescape function used by `querystring.parse`,\nprovided so that it could be overridden if necessary.\n-->\n\n<p>unescape&#x95A2;&#x6570;&#x306F; <code>querystring.parse</code> &#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x3066;&#x3044;&#x3066;&#x3001;&#x5FC5;&#x8981;&#x306A;&#x5834;&#x5408;&#x306B;&#x30AA;&#x30FC;&#x30D0;&#x30FC;&#x30E9;&#x30A4;&#x30C9;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;\n</p>\n&quot;
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;querystring&quot;
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  &quot;source&quot;: &quot;doc/api/punycode.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;punycode&quot;,
+      &quot;name&quot;: &quot;punycode&quot;,
+      &quot;stability&quot;: 2,
+      &quot;stabilityText&quot;: &quot;Unstable&quot;,
+      &quot;desc&quot;: &quot;<!--\n[Punycode.js](http://mths.be/punycode) is bundled with Node.js v0.6.2+. Use\n`require('punycode')` to access it. (To use it with other Node.js versions,\nuse npm to install the `punycode` module first.)\n-->\n\n<p><a href="\&quot;http://mths.be/punycode\&quot;">Punycode.js</a> &#x306F; Node.js v0.6.2 &#x4EE5;&#x964D;&#x306B;\n&#x30D0;&#x30F3;&#x30C9;&#x30EB;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;\n&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x306B;&#x306F; <code>require(&apos;punycode&apos;)</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;\n(&#x4ED6;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x306E; Node.js &#x3067;&#x3053;&#x308C;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;&#x5148;&#x306B; npm &#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066; <code>punycode</code>\n&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;)&#x3002;\n\n</p>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;punycode.decode(string)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;decode&quot;,
+          &quot;desc&quot;: &quot;<!--\nConverts a Punycode string of ASCII code points to a string of Unicode code\npoints.\n-->\n\n<p>ASCII &#x30B3;&#x30FC;&#x30C9;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x308B; Punycode &#x6587;&#x5B57;&#x5217;&#x3092; Unicode &#x30B3;&#x30FC;&#x30C9;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306B;\n&#x5909;&#x63DB;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>// decode domain name parts\npunycode.decode(&apos;maana-pta&apos;); // &apos;ma&#xF1;ana&apos;\npunycode.decode(&apos;--dqo34k&apos;); // &apos;&#x2603;-&#x2318;&apos;</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;string&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;punycode.encode(string)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;encode&quot;,
+          &quot;desc&quot;: &quot;<!--\nConverts a string of Unicode code points to a Punycode string of ASCII code\npoints.\n-->\n\n<p>Unicode &#x30B3;&#x30FC;&#x30C9;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3092; ASCII &#x30B3;&#x30FC;&#x30C9;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x308B; Punycode &#x6587;&#x5B57;&#x5217;&#x306B;\n&#x5909;&#x63DB;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>// encode domain name parts\npunycode.encode(&apos;ma&#xF1;ana&apos;); // &apos;maana-pta&apos;\npunycode.encode(&apos;&#x2603;-&#x2318;&apos;); // &apos;--dqo34k&apos;</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;string&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;punycode.toUnicode(domain)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;toUnicode&quot;,
+          &quot;desc&quot;: &quot;<!--\nConverts a Punycode string representing a domain name to Unicode. Only the\nPunycoded parts of the domain name will be converted, i.e. it doesn't matter if\nyou call it on a string that has already been converted to Unicode.\n-->\n\n<p>Punycode &#x6587;&#x5B57;&#x5217;&#x3067;&#x8868;&#x73FE;&#x3055;&#x308C;&#x305F;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x3092; Unicode &#x306B;&#x5909;&#x63DB;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x306E;&#x4E2D;&#x306E; Punycode &#x5316;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3060;&#x3051;&#x304C;&#x5909;&#x63DB;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x306E;&#x305F;&#x3081;&#x3001;&#x3059;&#x3067;&#x306B; Unicode &#x306B;&#x5909;&#x63DB;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3082;&#x6C17;&#x306B;&#x305B;&#x305A;&#x306B;&#x6E21;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>// decode domain names\npunycode.toUnicode(&apos;xn--maana-pta.com&apos;); // &apos;ma&#xF1;ana.com&apos;\npunycode.toUnicode(&apos;xn----dqo34k.com&apos;); // &apos;&#x2603;-&#x2318;.com&apos;</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;domain&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;punycode.toASCII(domain)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;toASCII&quot;,
+          &quot;desc&quot;: &quot;<!--\nConverts a Unicode string representing a domain name to Punycode. Only the\nnon-ASCII parts of the domain name will be converted, i.e. it doesn't matter if\nyou call it with a domain that's already in ASCII.\n-->\n\n<p>Unicode &#x6587;&#x5B57;&#x5217;&#x3067;&#x8868;&#x73FE;&#x3055;&#x308C;&#x305F;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x3092; Punycode &#x306B;&#x5909;&#x63DB;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x306E;&#x4E2D;&#x306E;&#x975E; ASCII &#x6587;&#x5B57;&#x3060;&#x3051;&#x304C;&#x5909;&#x63DB;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;&#x3059;&#x3067;&#x306B; ASCII &#x5316;&#x3055;&#x308C;&#x305F;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x3067;&#x3082;&#x6C17;&#x306B;&#x305B;&#x305A;&#x306B;&#x6E21;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>// encode domain names\npunycode.toASCII(&apos;ma&#xF1;ana.com&apos;); // &apos;xn--maana-pta.com&apos;\npunycode.toASCII(&apos;&#x2603;-&#x2318;.com&apos;); // &apos;xn----dqo34k.com&apos;</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;domain&quot;
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;properties&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;punycode.ucs2&quot;,
+          &quot;name&quot;: &quot;ucs2&quot;,
+          &quot;modules&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;punycode.ucs2.decode(string)&quot;,
+              &quot;name&quot;: &quot;punycode.ucs2.decode(string)&quot;,
+              &quot;desc&quot;: &quot;<!--\nCreates an array containing the decimal code points of each Unicode character\nin the string. While [JavaScript uses UCS-2\ninternally](http://mathiasbynens.be/notes/javascript-encoding), this function\nwill convert a pair of surrogate halves (each of which UCS-2 exposes as\nseparate characters) into a single code point, matching UTF-16.\n-->\n\n<p>&#x6587;&#x5B57;&#x5217;&#x4E2D;&#x306E; Unicode &#x6587;&#x5B57;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306B;&#x5BFE;&#x5FDC;&#x3059;&#x308B;&#x6570;&#x5024;&#x3092;&#x542B;&#x3080;&#x914D;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n<a href="\&quot;http://mathiasbynens.be/notes/javascript-encoding\&quot;">JavaScript uses UCS-2 internally</a>\n&#x306E;&#x3088;&#x3046;&#x306B;&#x3001;&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x30B5;&#x30ED;&#x30B2;&#x30FC;&#x30C8;&#x30DA;&#x30A2; (&#x305D;&#x308C;&#x305E;&#x308C;&#x306F; UCS-2 &#x306E;&#x72EC;&#x7ACB;&#x3057;&#x305F;&#x6587;&#x5B57;) &#x3092;\nUTF-16 &#x306B;&#x30DE;&#x30C3;&#x30C1;&#x3059;&#x308B;&#x4E00;&#x3064;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306B;&#x5909;&#x63DB;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>punycode.ucs2.decode(&apos;abc&apos;); // [97, 98, 99]\n// surrogate pair for U+1D306 tetragram for centre:\npunycode.ucs2.decode(&apos;\\uD834\\uDF06&apos;); // [0x1D306]</code></pre>\n&quot;,
+              &quot;type&quot;: &quot;module&quot;,
+              &quot;displayName&quot;: &quot;punycode.ucs2.decode(string)&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;punycode.ucs2.encode(codePoints)&quot;,
+              &quot;name&quot;: &quot;punycode.ucs2.encode(codepoints)&quot;,
+              &quot;desc&quot;: &quot;<!--\nCreates a string based on an array of decimal code points.\n-->\n\n<p>&#x30B3;&#x30FC;&#x30C9;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306E;&#x6570;&#x5024;&#x3092;&#x542B;&#x3080;&#x914D;&#x5217;&#x3092;&#x5143;&#x306B;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>punycode.ucs2.encode([97, 98, 99]); // &apos;abc&apos;\npunycode.ucs2.encode([0x1D306]); // &apos;\\uD834\\uDF06&apos;</code></pre>\n&quot;,
+              &quot;type&quot;: &quot;module&quot;,
+              &quot;displayName&quot;: &quot;punycode.ucs2.encode(codePoints)&quot;
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;punycode.version&quot;,
+          &quot;name&quot;: &quot;version&quot;,
+          &quot;desc&quot;: &quot;<!--\nA string representing the current Punycode.js version number.\n-->\n\n<p>&#x73FE;&#x5728;&#x306E; Punycode.js &#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x756A;&#x53F7;&#x3092;&#x8868;&#x3059;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;\n</p>\n&quot;
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;punycode&quot;
+    }
+  ]
+}

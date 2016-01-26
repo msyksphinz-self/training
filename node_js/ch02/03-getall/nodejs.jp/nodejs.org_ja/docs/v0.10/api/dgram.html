@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>UDP / Datagram Sockets Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/dgram.html">
+</head>
+<body class="alt apidoc" id="api-section-dgram">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="dgram.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#dgram_udp_datagram_sockets">UDP / Datagram Sockets</a><ul>
+<li><a href="#dgram_dgram_createsocket_type_callback">dgram.createSocket(type, [callback])</a></li>
+<li><a href="#dgram_class_dgram_socket">Class: dgram.Socket</a><ul>
+<li><a href="#dgram_event_message">Event: &apos;message&apos;</a></li>
+<li><a href="#dgram_event_listening">Event: &apos;listening&apos;</a></li>
+<li><a href="#dgram_event_close">Event: &apos;close&apos;</a></li>
+<li><a href="#dgram_event_error">Event: &apos;error&apos;</a></li>
+<li><a href="#dgram_socket_send_buf_offset_length_port_address_callback">socket.send(buf, offset, length, port, address, [callback])</a></li>
+<li><a href="#dgram_socket_bind_port_address_callback">socket.bind(port, [address], [callback])</a></li>
+<li><a href="#dgram_socket_close">socket.close()</a></li>
+<li><a href="#dgram_socket_address">socket.address()</a></li>
+<li><a href="#dgram_socket_setbroadcast_flag">socket.setBroadcast(flag)</a></li>
+<li><a href="#dgram_socket_setttl_ttl">socket.setTTL(ttl)</a></li>
+<li><a href="#dgram_socket_setmulticastttl_ttl">socket.setMulticastTTL(ttl)</a></li>
+<li><a href="#dgram_socket_setmulticastloopback_flag">socket.setMulticastLoopback(flag)</a></li>
+<li><a href="#dgram_socket_addmembership_multicastaddress_multicastinterface">socket.addMembership(multicastAddress, [multicastInterface])</a></li>
+<li><a href="#dgram_socket_dropmembership_multicastaddress_multicastinterface">socket.dropMembership(multicastAddress, [multicastInterface])</a></li>
+<li><a href="#dgram_socket_unref">socket.unref()</a></li>
+<li><a href="#dgram_socket_ref">socket.ref()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>UDP / Datagram Sockets<span><a class="mark" href="#dgram_udp_datagram_sockets" id="dgram_udp_datagram_sockets">#</a></span></h1>
+<pre class="api_stability_3">Stability: 3 - Stable</pre><!-- name=dgram -->
+
+<!--
+Datagram sockets are available through `require('dgram')`.
+-->
+
+<p>&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F; <code>require(&apos;dgram&apos;)</code> &#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Important note: the behavior of `dgram.Socket#bind()` has changed in v0.10
+and is always asynchronous now.  If you have code that looks like this:
+-->
+
+<p>&#x91CD;&#x8981;&#x306A;&#x6CE8;&#x610F;: <code>dgram.Socket#bind()</code> &#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x306F; v0.10 &#x3067;&#x5909;&#x66F4;&#x3055;&#x308C;&#x3001;
+&#x305D;&#x308C;&#x306F;&#x5E38;&#x306B;&#x975E;&#x540C;&#x671F;&#x306B;&#x306A;&#x308A;&#x307E;&#x3057;&#x305F;&#x3002;
+&#x3082;&#x3057;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306A;&#x30B3;&#x30FC;&#x30C9;&#x304C;&#x3042;&#x308B;&#x3068;:
+
+</p>
+<pre><code>var s = dgram.createSocket(&apos;udp4&apos;);
+s.bind(1234);
+s.addMembership(&apos;224.0.0.114&apos;);</code></pre>
+<!--
+You have to change it to this:
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x5909;&#x66F4;&#x3055;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<pre><code>var s = dgram.createSocket(&apos;udp4&apos;);
+s.bind(1234, function() {
+  s.addMembership(&apos;224.0.0.114&apos;);
+});</code></pre>
+<h2>dgram.createSocket(type, [callback])<span><a class="mark" href="#dgram_dgram_createsocket_type_callback" id="dgram_dgram_createsocket_type_callback">#</a></span></h2>
+<!--
+* `type` String. Either 'udp4' or 'udp6'
+* `callback` Function. Attached as a listener to `message` events.
+  Optional
+* Returns: Socket object
+-->
+
+<ul>
+<li><code>type</code> String. &apos;udp4&apos; &#x307E;&#x305F;&#x306F; &apos;udp6&apos; &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;</li>
+<li><code>callback</code> Function. <code>&apos;message&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x308B;&#x3001;
+Optional</li>
+<li>Returns: Socket object</li>
+</ul>
+<!--
+Creates a datagram Socket of the specified types.  Valid types are `udp4`
+and `udp6`.
+
+Takes an optional callback which is added as a listener for `message` events.
+
+Call `socket.bind` if you want to receive datagrams. `socket.bind()` will bind
+to the "all interfaces" address on a random port (it does the right thing for
+both `udp4` and `udp6` sockets). You can then retrieve the address and port
+with `socket.address().address` and `socket.address().port`.
+-->
+
+<p>&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x7A2E;&#x985E;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x59A5;&#x5F53;&#x306A;&#x7A2E;&#x985E;&#x306F; <code>udp4</code> &#x3068; <code>udp6</code>&#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F; <code>message</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F; <code>socket.bind()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>socket.bind()</code> &#x306F;&#x300C;&#x5168;&#x3066;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x300D;&#x306E;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x306B;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&#x30DD;&#x30FC;&#x30C8;
+(<code>udp4</code> &#x3068; <code>udp6</code> &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x4E21;&#x65B9;&#x3067;&#x6B63;&#x3057;&#x3044;&#x3082;&#x306E;&#x3067;&#x3059;) &#x3092;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3068;&#x30DD;&#x30FC;&#x30C8;&#x306F; <code>socket.address().address</code> &#x304A;&#x3088;&#x3073;
+<code>socket.address().port</code> &#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Class: dgram.Socket<span><a class="mark" href="#dgram_class_dgram_socket" id="dgram_class_dgram_socket">#</a></span></h2>
+<!--
+The dgram Socket class encapsulates the datagram functionality.  It
+should be created via `dgram.createSocket(type, [callback])`.
+-->
+
+<p>dgram Scoket &#x30AF;&#x30E9;&#x30B9;&#x306F;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x6A5F;&#x80FD;&#x3092;&#x30AB;&#x30D7;&#x30BB;&#x30EB;&#x5316;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F; <code>dgram.createSocket(type, [callback])</code> &#x3092;&#x901A;&#x3058;&#x3066;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;message&apos;<span><a class="mark" href="#dgram_event_message" id="dgram_event_message">#</a></span></h3>
+<!--
+* `msg` Buffer object. The message
+* `rinfo` Object. Remote address information
+-->
+
+<ul>
+<li><code>msg</code> Buffer object. &#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;</li>
+<li><code>rinfo</code> Object. &#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x306E;&#x60C5;&#x5831;</li>
+</ul>
+<!--
+Emitted when a new datagram is available on a socket.  `msg` is a `Buffer` and `rinfo` is
+an object with the sender's address information and the number of bytes in the datagram.
+-->
+
+<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x4E0A;&#x3067;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x304C;&#x5230;&#x7740;&#x3057;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;<code>msg</code> &#x306F; <code>Buffer</code> &#x3067;&#x3001;
+<code>rinfo</code> &#x306F;&#x9001;&#x4FE1;&#x8005;&#x306E;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x60C5;&#x5831;&#x3068;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3092;&#x6301;&#x3063;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;listening&apos;<span><a class="mark" href="#dgram_event_listening" id="dgram_event_listening">#</a></span></h3>
+<!--
+Emitted when a socket starts listening for datagrams.  This happens as soon as UDP sockets
+are created.
+-->
+
+<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x3092;&#x958B;&#x59CB;&#x3059;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; UDP &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x308B;&#x3068;&#x3059;&#x3050;&#x306B;&#x767A;&#x751F;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;close&apos;<span><a class="mark" href="#dgram_event_close" id="dgram_event_close">#</a></span></h3>
+<!--
+Emitted when a socket is closed with `close()`.  No new `message` events will be emitted
+on this socket.
+-->
+
+<p><code>close()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3059;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x306F;&#x65B0;&#x3057;&#x3044; <code>message</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;error&apos;<span><a class="mark" href="#dgram_event_error" id="dgram_event_error">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>exception</code> Error object</li>
+</ul></div>
+<!--
+Emitted when an error occurs.
+-->
+
+<p>&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>socket.send(buf, offset, length, port, address, [callback])<span><a class="mark" href="#dgram_socket_send_buf_offset_length_port_address_callback" id="dgram_socket_send_buf_offset_length_port_address_callback">#</a></span></h3>
+<!--
+* `buf` Buffer object.  Message to be sent
+* `offset` Integer. Offset in the buffer where the message starts.
+* `length` Integer. Number of bytes in the message.
+* `port` Integer. Destination port.
+* `address` String. Destination hostname or IP address.
+* `callback` Function. Called when the message has been sent. Optional.
+-->
+
+<ul>
+<li><code>buf</code> Buffer &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3002;</li>
+<li><code>offset</code> &#x6574;&#x6570;&#x3002;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306E;&#x958B;&#x59CB;&#x4F4D;&#x7F6E;&#x3068;&#x306A;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x5185;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;&#x3002;</li>
+<li><code>length</code> &#x6574;&#x6570;&#x3002;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306E;&#x30D0;&#x30A4;&#x30C8;&#x9577;&#x3002;</li>
+<li><code>port</code> &#x6574;&#x6570;&#x3002;&#x63A5;&#x7D9A;&#x5148;&#x306E;&#x30DD;&#x30FC;&#x30C8;&#x756A;&#x53F7;&#x3002;</li>
+<li><code>address</code> &#x6587;&#x5B57;&#x5217;&#x3002;&#x63A5;&#x7D9A;&#x5148;&#x306E;&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x307E;&#x305F;&#x306F; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3002;</li>
+<li><code>callback</code> &#x95A2;&#x6570;&#x3002;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x304C;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x3068;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3055;&#x308C;&#x308B;&#x3002;&#x4EFB;&#x610F;&#x3002;</li>
+</ul>
+<!--
+For UDP sockets, the destination port and address must be specified.  A string
+may be supplied for the `address` parameter, and it will be resolved with DNS.
+-->
+
+<p>UDP &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x306F;&#x3001;&#x76F8;&#x624B;&#x5148;&#x306E;&#x30DD;&#x30FC;&#x30C8;&#x3068;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x306F;&#x5FC5;&#x305A;&#x6307;&#x5B9A;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+<code>address</code> &#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x306B;&#x6587;&#x5B57;&#x5217;&#x3092;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x3068;&#x3001;&#x305D;&#x308C;&#x306F; DNS &#x306B;&#x3088;&#x3063;&#x3066;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If the address is omitted or is an empty string, `'0.0.0.0'` or `'::0'` is used
+instead.  Depending on the network configuration, those defaults may or may not
+work; it's best to be explicit about the destination address.
+-->
+
+<p>&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x3084;&#x7A7A;&#x6587;&#x5B57;&#x5217;&#x3060;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x4EE3;&#x308F;&#x308A;&#x306B; <code>&apos;0.0.0.0&apos;</code> &#x307E;&#x305F;&#x306F;
+<code>&apos;::0&apos;</code> &#x304C;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x306E;&#x69CB;&#x6210;&#x306B;&#x3088;&#x3063;&#x3066;&#x306F;&#x3001;&#x3053;&#x308C;&#x3089;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x306F;
+&#x52D5;&#x4F5C;&#x3057;&#x305F;&#x308A;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x308A;&#x3057;&#x307E;&#x3059;; &#x76F8;&#x624B;&#x5148;&#x306E;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x306F;&#x660E;&#x793A;&#x7684;&#x306B;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x6700;&#x9069;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+If the socket has not been previously bound with a call to `bind`, it gets
+assigned a random port number and is bound to the "all interfaces" address
+(`'0.0.0.0'` for `udp4` sockets, `'::0'` for `udp6` sockets.)
+-->
+
+<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x4EE5;&#x524D;&#x306B; <code>bind</code> &#x306E;&#x547C;&#x3073;&#x51FA;&#x3057;&#x306B;&#x3088;&#x3063;&#x3066;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;
+&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&#x30DD;&#x30FC;&#x30C8;&#x756A;&#x53F7;&#x304C;&#x300C;&#x5168;&#x3066;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x300D;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x307E;&#x3059;
+(<code>udp4</code> &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x306F; 0.0.0.0&#x3001;<code>udp6</code> &#x3067;&#x306F; ::0)&#x3002;
+
+</p>
+<!--
+An optional callback may be specified to detect DNS errors or for determining
+when it's safe to reuse the `buf` object.  Note that DNS lookups delay the time
+to send for at least one tick.  The only way to know for sure that the datagram
+has been sent is by using a callback.
+-->
+
+<p>DNS &#x306B;&#x304A;&#x3051;&#x308B;&#x30A8;&#x30E9;&#x30FC;&#x691C;&#x51FA;&#x3068;&#x3001;<code>buf</code> &#x304C;&#x518D;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x3063;&#x305F;&#x3053;&#x3068;&#x3092;&#x5B89;&#x5168;&#x306B;&#x77E5;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;
+&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+DNS &#x30EB;&#x30C3;&#x30AF;&#x30A2;&#x30C3;&#x30D7;&#x306F;&#x9001;&#x4FE1;&#x3092;&#x5C11;&#x306A;&#x304F;&#x3068;&#x3082;&#x6B21;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x307E;&#x3067;&#x9045;&#x3089;&#x305B;&#x308B;&#x3053;&#x3068;&#x306B;
+&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x9001;&#x4FE1;&#x304C;&#x884C;&#x308F;&#x308C;&#x305F;&#x3053;&#x3068;&#x3092;&#x78BA;&#x5B9F;&#x306B;&#x77E5;&#x308B;&#x552F;&#x4E00;&#x306E;&#x624B;&#x6BB5;&#x306F;&#x3001;
+&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example of sending a UDP packet to a random port on `localhost`;
+-->
+
+<p><code>localhost</code> &#x306E;&#x9069;&#x5F53;&#x306A;&#x30DD;&#x30FC;&#x30C8;&#x306B; UDP &#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x4F8B;;
+
+</p>
+<pre><code>var dgram = require(&apos;dgram&apos;);
+var message = new Buffer(&quot;Some bytes&quot;);
+var client = dgram.createSocket(&quot;udp4&quot;);
+client.send(message, 0, message.length, 41234, &quot;localhost&quot;, function(err, bytes) {
+  client.close();
+});</code></pre>
+<!--
+**A Note about UDP datagram size**
+
+The maximum size of an `IPv4/v6` datagram depends on the `MTU` (_Maximum Transmission Unit_)
+and on the `Payload Length` field size.
+
+- The `Payload Length` field is `16 bits` wide, which means that a normal payload
+  cannot be larger than 64K octets including internet header and data
+  (65,507 bytes = 65,535 − 8 bytes UDP header − 20 bytes IP header);
+  this is generally true for loopback interfaces, but such long datagrams
+  are impractical for most hosts and networks.
+
+- The `MTU` is the largest size a given link layer technology can support for datagrams.
+  For any link, `IPv4` mandates a minimum `MTU` of `68` octets, while the recommended `MTU`
+  for IPv4 is `576` (typically recommended as the `MTU` for dial-up type applications),
+  whether they arrive whole or in fragments.
+
+  For `IPv6`, the minimum `MTU` is `1280` octets, however, the mandatory minimum
+  fragment reassembly buffer size is `1500` octets.
+  The value of `68` octets is very small, since most current link layer technologies have
+  a minimum `MTU` of `1500` (like Ethernet).
+
+Note that it's impossible to know in advance the MTU of each link through which
+a packet might travel, and that generally sending a datagram greater than
+the (receiver) `MTU` won't work (the packet gets silently dropped, without
+informing the source that the data did not reach its intended recipient).
+-->
+
+<p><strong>UDP &#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x306B;&#x3064;&#x3044;&#x3066;</strong>
+
+</p>
+<p><code>IPv4/v6</code> &#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x6700;&#x5927;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x306F; <code>MTU</code> (<em>Maximum Transmission Unit</em>) &#x3068;&#x3001;
+<code>Payload Length</code> &#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x30B5;&#x30A4;&#x30BA;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<ul>
+<li><p><code>Payload Length</code> &#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x30B5;&#x30A4;&#x30BA;&#x306F; 16bit &#x9577;&#x3067;&#x3001;&#x3053;&#x308C;&#x306F;&#x901A;&#x5E38;&#x306E;&#x30DA;&#x30A4;&#x30ED;&#x30FC;&#x30C9;&#x304C;
+IP &#x30D8;&#x30C3;&#x30C0;&#x3068;&#x30C7;&#x30FC;&#x30BF;&#x542B;&#x3081;&#x3066; 64K &#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x3088;&#x308A;&#x9577;&#x304F;&#x306A;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;
+(65,507 &#x30D0;&#x30A4;&#x30C8; = 65,535 &#x2212; 8 &#x30D0;&#x30A4;&#x30C8;&#x306E; UDP &#x30D8;&#x30C3;&#x30C0; &#x2212; 20 &#x30D0;&#x30A4;&#x30C8;&#x306E; IP &#x30D8;&#x30C3;&#x30C0;);
+&#x3053;&#x308C;&#x306F;&#x4E00;&#x822C;&#x7684;&#x306B;&#x30EB;&#x30FC;&#x30D7;&#x30D0;&#x30C3;&#x30AF;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x6B63;&#x3057;&#x3044;&#x3082;&#x306E;&#x306E;&#x3001;
+&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x30DB;&#x30B9;&#x30C8;&#x3068;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x306B;&#x3068;&#x3063;&#x3066;&#x9577;&#x5927;&#x306A;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x306F;
+&#x73FE;&#x5B9F;&#x7684;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;</p>
+</li>
+<li><p><code>MTU</code> &#x306F;&#x30EA;&#x30F3;&#x30AF;&#x5C64;&#x306B;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x4E0E;&#x3048;&#x308B;&#x6280;&#x8853;&#x3067;&#x3001;
+&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x3069;&#x3093;&#x306A;&#x30EA;&#x30F3;&#x30AF;&#x3067;&#x3082;&#x3001;&#x305D;&#x308C;&#x3089;&#x304C;&#x5168;&#x4F53;&#x3068;&#x3057;&#x3066;&#x5230;&#x7740;&#x3059;&#x308B;&#x304B;&#x65AD;&#x7247;&#x5316;&#x3055;&#x308C;&#x308B;&#x304B;&#x306B;&#x95A2;&#x308F;&#x3089;&#x305A;&#x3001;
+<code>IPv4</code> &#x306F;&#x6700;&#x4F4E; <code>69</code> &#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x5FC5;&#x8981;&#x3067;&#x3001;&#x63A8;&#x5968;&#x3055;&#x308C;&#x308B; <code>IPv4</code> &#x306E; <code>MTU</code> &#x306F; <code>576</code> &#x3067;&#x3059;
+(&#x5178;&#x578B;&#x7684;&#x306A;&#x30C0;&#x30A4;&#x30E4;&#x30EB;&#x30A2;&#x30C3;&#x30D7;&#x578B;&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>MUT</code> &#x63A8;&#x5968;&#x5024;)&#x3002;</p>
+<p><code>IPv6</code> &#x3067;&#x306F;&#x6700;&#x5C0F;&#x306E; <code>MTU</code> &#x306F; <code>1280</code> &#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x3067;&#x3059;&#x304C;&#x3001;&#x30D5;&#x30E9;&#x30B0;&#x30E1;&#x30F3;&#x30C8;&#x3092;&#x518D;&#x69CB;&#x7BC9;&#x3059;&#x308B;
+&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30B5;&#x30A4;&#x30BA;&#x306F;&#x6700;&#x4F4E; <code>1500</code> &#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x304C;&#x5FC5;&#x8981;&#x3067;&#x3059;&#x3002;
+<code>68</code> &#x30AA;&#x30AF;&#x30C6;&#x30C3;&#x30C8;&#x306F;&#x3068;&#x3066;&#x3082;&#x5C0F;&#x3055;&#x3044;&#x306E;&#x3067;&#x3001;&#x3082;&#x3063;&#x3068;&#x3082;&#x73FE;&#x4EE3;&#x7684;&#x306A;&#x30EA;&#x30F3;&#x30AF;&#x5C64;&#x6280;&#x8853;&#x3067;&#x306F;&#x3001;
+&#x6700;&#x5C0F;&#x306E; <code>MTU</code> &#x306F; <code>1500</code> &#x3067;&#x3059; (&#x30A4;&#x30FC;&#x30B5;&#x30CD;&#x30C3;&#x30C8;&#x3068;&#x540C;&#x3058;&#x3067;&#x3059;)&#x3002;</p>
+</li>
+</ul>
+<p>&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x901A;&#x904E;&#x3059;&#x308B;&#x5404;&#x30EA;&#x30F3;&#x30AF;&#x306E; MTU &#x3092;&#x3042;&#x3089;&#x304B;&#x3058;&#x3081;&#x77E5;&#x308B;&#x3053;&#x3068;&#x306F;
+&#x3067;&#x304D;&#x306A;&#x3044;&#x3053;&#x3068;&#x3001;(&#x53D7;&#x4FE1;&#x5074;&#x306E;) <code>MTU</code> &#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x3066;&#x3082;
+&#x901A;&#x5E38;&#x306F;&#x52D5;&#x4F5C;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;
+(&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x9001;&#x308A;&#x4E3B;&#x306B;&#x77E5;&#x3089;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306A;&#x304F;&#x9ED9;&#x3063;&#x3066;&#x6368;&#x3066;&#x3089;&#x308C;&#x3001;
+&#x610F;&#x56F3;&#x3057;&#x305F;&#x53D7;&#x4FE1;&#x8005;&#x306B;&#x5230;&#x9054;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;)&#x3002;
+
+
+</p>
+<h3>socket.bind(port, [address], [callback])<span><a class="mark" href="#dgram_socket_bind_port_address_callback" id="dgram_socket_bind_port_address_callback">#</a></span></h3>
+<!--
+* `port` Integer
+* `address` String, Optional
+* `callback` Function with no parameters, Optional. Callback when
+  binding is done.
+-->
+
+<ul>
+<li><code>port</code> Integer</li>
+<li><code>address</code> String&#x3001;&#x4EFB;&#x610F;</li>
+<li><code>callback</code> &#x5F15;&#x6570;&#x306E;&#x306A;&#x3044;&#x95A2;&#x6570;&#x3001;&#x4EFB;&#x610F;&#x3002;&#x30D0;&#x30A4;&#x30F3;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x6642;&#x306B;
+&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+For UDP sockets, listen for datagrams on a named `port` and optional
+`address`. If `address` is not specified, the OS will try to listen on
+all addresses.  After binding is done, a "listening" event is emitted
+and the `callback`(if specified) is called. Specifying both a
+"listening" event listener and `callback` is not harmful but not very
+useful.
+-->
+
+<p>UDP &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x3001;<code>port</code> &#x3068;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>address</code> &#x3067;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x3092;
+&#x5F85;&#x3061;&#x53D7;&#x3051;&#x307E;&#x3059;&#x3002;
+<code>address</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;OS &#x306F;&#x5168;&#x3066;&#x306E;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x304B;&#x3089;&#x306E;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x3092;&#x8A66;&#x307F;&#x307E;&#x3059;&#x3002;
+&#x30D0;&#x30A4;&#x30F3;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x5B8C;&#x4E86;&#x3059;&#x308B;&#x3068;&#x3001;<code>&apos;listening&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x3001;
+(&#x3082;&#x3057;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x3066;&#x3044;&#x308C;&#x3070;) <code>callback</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>&apos;listening&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EA;&#x30B9;&#x30CA;&#x3068; <code>callback</code> &#x306E;&#x4E21;&#x65B9;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x3066;&#x3082;&#x6709;&#x5BB3;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x304C;
+&#x3042;&#x307E;&#x308A;&#x5F79;&#x306B;&#x306F;&#x7ACB;&#x3061;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+A bound datagram socket keeps the node process running to receive
+datagrams.
+-->
+
+<p>&#x675F;&#x7E1B;&#x3055;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x30C7;&#x30FC;&#x30BF;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B; node &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;
+&#x5B9F;&#x884C;&#x3092;&#x7DAD;&#x6301;&#x3057;&#x7D9A;&#x3051;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If binding fails, an "error" event is generated. In rare case (e.g.
+binding a closed socket), an `Error` may be thrown by this method.
+-->
+
+<p>&#x30D0;&#x30A4;&#x30F3;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x5931;&#x6557;&#x3059;&#x308B;&#x3068;&#x3001;<code>&apos;error&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x307E;&#x308C;&#x306A;&#x30B1;&#x30FC;&#x30B9; (&#x305F;&#x3068;&#x3048;&#x3070;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3078;&#x306E;&#x30D0;&#x30A4;&#x30F3;&#x30C7;&#x30A3;&#x30F3;&#x30B0;) &#x3067;&#x306F;&#x3001;
+&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F; <code>Error</code> &#x3092;&#x30B9;&#x30ED;&#x30FC;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example of a UDP server listening on port 41234:
+-->
+
+<p>41234 &#x756A;&#x30DD;&#x30FC;&#x30C8;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x308B; UDP &#x30B5;&#x30FC;&#x30D0;&#x306E;&#x4F8B;:
+
+</p>
+<pre><code>var dgram = require(&quot;dgram&quot;);
+
+var server = dgram.createSocket(&quot;udp4&quot;);
+
+server.on(&quot;error&quot;, function (err) {
+  console.log(&quot;server error:\n&quot; + err.stack);
+  server.close();
+});
+
+server.on(&quot;message&quot;, function (msg, rinfo) {
+  console.log(&quot;server got: &quot; + msg + &quot; from &quot; +
+    rinfo.address + &quot;:&quot; + rinfo.port);
+});
+
+server.on(&quot;listening&quot;, function () {
+  var address = server.address();
+  console.log(&quot;server listening &quot; +
+      address.address + &quot;:&quot; + address.port);
+});
+
+server.bind(41234);
+// server listening 0.0.0.0:41234</code></pre>
+<h3>socket.close()<span><a class="mark" href="#dgram_socket_close" id="dgram_socket_close">#</a></span></h3>
+<!--
+Close the underlying socket and stop listening for data on it.
+-->
+
+<p>&#x4E0B;&#x5C64;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>socket.address()<span><a class="mark" href="#dgram_socket_address" id="dgram_socket_address">#</a></span></h3>
+<!--
+Returns an object containing the address information for a socket.  For UDP sockets,
+this object will contain `address` , `family` and `port`.
+-->
+
+<p>&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x304C;&#x6301;&#x3063;&#x3066;&#x3044;&#x308B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x60C5;&#x5831;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; <code>address</code>&#x3001;<code>port</code>&#x3001;&#x305D;&#x3057;&#x3066; <code>family</code> &#x3092;&#x6301;&#x3063;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>socket.setBroadcast(flag)<span><a class="mark" href="#dgram_socket_setbroadcast_flag" id="dgram_socket_setbroadcast_flag">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>flag</code> Boolean</li>
+</ul></div>
+<!--
+Sets or clears the `SO_BROADCAST` socket option.  When this option is set, UDP packets
+may be sent to a local interface's broadcast address.
+-->
+
+<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3; <code>SO_BROADCAST</code> &#x3092;&#x8A2D;&#x5B9A;&#x307E;&#x305F;&#x306F;&#x30AF;&#x30EA;&#x30A2;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;UDP &#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306E;&#x30D6;&#x30ED;&#x30FC;&#x30C9;&#x30AD;&#x30E3;&#x30B9;&#x30C8;&#x7528;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>socket.setTTL(ttl)<span><a class="mark" href="#dgram_socket_setttl_ttl" id="dgram_socket_setttl_ttl">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>ttl</code> Integer</li>
+</ul></div>
+<!--
+Sets the `IP_TTL` socket option.  TTL stands for "Time to Live," but in this context it
+specifies the number of IP hops that a packet is allowed to go through.  Each router or
+gateway that forwards a packet decrements the TTL.  If the TTL is decremented to 0 by a
+router, it will not be forwarded.  Changing TTL values is typically done for network
+probes or when multicasting.
+-->
+
+<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>IP_TTL</code> &#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+TTL &#x306F;&#x300C;&#x751F;&#x5B58;&#x671F;&#x9593;&#x300D;&#x3092;&#x8868;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;&#x3053;&#x306E;&#x30B3;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x3067;&#x306F;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x901A;&#x904E;&#x3092;&#x8A31;&#x53EF;&#x3055;&#x308C;&#x308B; IP &#x306E;&#x30DB;&#x30C3;&#x30D7;&#x6570;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x5404;&#x30EB;&#x30FC;&#x30BF;&#x307E;&#x305F;&#x306F;&#x30B2;&#x30FC;&#x30C8;&#x30A6;&#x30A7;&#x30A4;&#x306F;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9001;&#x51FA;&#x3059;&#x308B;&#x969B; TTL &#x3092;&#x30C7;&#x30AF;&#x30EA;&#x30E1;&#x30F3;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30EB;&#x30FC;&#x30BF;&#x306B;&#x3088;&#x3063;&#x3066; TTL &#x304C;&#x30C7;&#x30AF;&#x30EA;&#x30E1;&#x30F3;&#x30C8;&#x3055;&#x308C;&#x3066; 0 &#x306B;&#x306A;&#x308B;&#x3068;&#x305D;&#x308C;&#x306F;&#x9001;&#x51FA;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+TTL &#x5024;&#x306E;&#x5909;&#x66F4;&#x306F;&#x901A;&#x5E38;&#x3001;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x306E;&#x8ABF;&#x67FB;&#x3084;&#x30DE;&#x30EB;&#x30C1;&#x30AD;&#x30E3;&#x30B9;&#x30C8;&#x3067;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The argument to `setTTL()` is a number of hops between 1 and 255.  The default on most
+systems is 64.
+-->
+
+<p><code>setTTL()</code> &#x306E;&#x5F15;&#x6570;&#x306F; 1 &#x304B;&#x3089; 255 &#x306E;&#x30DB;&#x30C3;&#x30D7;&#x6570;&#x3067;&#x3067;&#x3059;&#x3002;&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3067;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; 64 &#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>socket.setMulticastTTL(ttl)<span><a class="mark" href="#dgram_socket_setmulticastttl_ttl" id="dgram_socket_setmulticastttl_ttl">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>ttl</code> Integer</li>
+</ul></div>
+<!--
+Sets the `IP_MULTICAST_TTL` socket option.  TTL stands for "Time to Live," but in this
+context it specifies the number of IP hops that a packet is allowed to go through,
+specifically for multicast traffic.  Each router or gateway that forwards a packet
+decrements the TTL. If the TTL is decremented to 0 by a router, it will not be forwarded.
+
+The argument to `setMulticastTTL()` is a number of hops between 0 and 255.  The default on most
+systems is 1.
+-->
+
+<p><code>IP_MULTICAST_TTL</code> &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+TTL &#x306F;&#x300C;&#x751F;&#x5B58;&#x671F;&#x9593;&#x300D;&#x3092;&#x8868;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;&#x3053;&#x306E;&#x6587;&#x8108;&#x3067;&#x306F;&#x7279;&#x306B;&#x30DE;&#x30EB;&#x30C1;&#x30AD;&#x30E3;&#x30B9;&#x30C8;&#x306E;&#x30C8;&#x30E9;&#x30D5;&#x30A3;&#x30C3;&#x30AF;&#x306B;&#x304A;&#x3044;&#x3066;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x901A;&#x904E;&#x3067;&#x304D;&#x308B;IP&#x30DB;&#x30C3;&#x30D7;&#x306E;&#x6570;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x30EB;&#x30FC;&#x30BF;&#x30FC;&#x307E;&#x305F;&#x306F;&#x30B2;&#x30FC;&#x30C8;&#x30A6;&#x30A7;&#x30A4;&#x306F;&#x3001;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x8EE2;&#x9001;&#x3059;&#x308B;&#x969B;&#x306B; TTL &#x3092;&#x30C7;&#x30AF;&#x30EA;&#x30E1;&#x30F3;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;
+TTL &#x304C;&#x30EB;&#x30FC;&#x30BF;&#x30FC;&#x306B;&#x3088;&#x3063;&#x3066; 0 &#x307E;&#x3067;&#x30C7;&#x30AF;&#x30EA;&#x30E1;&#x30F3;&#x30C8;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x305D;&#x308C;&#x306F;&#x8EE2;&#x9001;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+<code>setMulticastTTL()</code> &#x306E;&#x5F15;&#x6570;&#x306F;&#x30DB;&#x30C3;&#x30D7;&#x3092;&#x8868;&#x3059;&#x6570;&#x5024;&#x3067;&#x3001;0 &#x304B;&#x3089; 255 &#x306E;&#x9593;&#x3067;&#x3059;&#x3002;
+&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3067;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; 1 &#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>socket.setMulticastLoopback(flag)<span><a class="mark" href="#dgram_socket_setmulticastloopback_flag" id="dgram_socket_setmulticastloopback_flag">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>flag</code> Boolean</li>
+</ul></div>
+<!--
+Sets or clears the `IP_MULTICAST_LOOP` socket option.  When this option is set, multicast
+packets will also be received on the local interface.
+-->
+
+<p><code>IP_MULTICAST_LOOP</code> &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x8A2D;&#x5B9A;&#x307E;&#x305F;&#x306F;&#x30AF;&#x30EA;&#x30A2;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x30DE;&#x30EB;&#x30C1;&#x30AD;&#x30E3;&#x30B9;&#x30C8;&#x306E;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3067;&#x3082;&#x53D7;&#x4FE1;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>socket.addMembership(multicastAddress, [multicastInterface])<span><a class="mark" href="#dgram_socket_addmembership_multicastaddress_multicastinterface" id="dgram_socket_addmembership_multicastaddress_multicastinterface">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>multicastAddress</code> String</li>
+<li><code>multicastInterface</code> String, Optional</li>
+</ul></div>
+<!--
+Tells the kernel to join a multicast group with `IP_ADD_MEMBERSHIP` socket option.
+
+If `multicastInterface` is not specified, the OS will try to add membership to all valid
+interfaces.
+-->
+
+<p><code>IP_ADD_MEMBERSHIP</code> &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x3001;&#x30DE;&#x30EB;&#x30C1;&#x30AD;&#x30E3;&#x30B9;&#x30C8;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x306B;&#x53C2;&#x52A0;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x30AB;&#x30FC;&#x30CD;&#x30EB;&#x306B;&#x4F1D;&#x3048;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>multicastInterface</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x5168;&#x3066;&#x306E;&#x59A5;&#x5F53;&#x306A;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x30E1;&#x30F3;&#x30D0;&#x30FC;&#x30B7;&#x30C3;&#x30D7;&#x306B;&#x52A0;&#x3048;&#x3088;&#x3046;&#x3068;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>socket.dropMembership(multicastAddress, [multicastInterface])<span><a class="mark" href="#dgram_socket_dropmembership_multicastaddress_multicastinterface" id="dgram_socket_dropmembership_multicastaddress_multicastinterface">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>multicastAddress</code> String</li>
+<li><code>multicastInterface</code> String, Optional</li>
+</ul></div>
+<!--
+Opposite of `addMembership` - tells the kernel to leave a multicast group with
+`IP_DROP_MEMBERSHIP` socket option. This is automatically called by the kernel
+when the socket is closed or process terminates, so most apps will never need to call
+this.
+
+If `multicastInterface` is not specified, the OS will try to drop membership to all valid
+interfaces.
+-->
+
+<p><code>addMembership</code> &#x306E;&#x53CD;&#x5BFE;&#x3067;&#x3059; - <code>IP_DROP_MEMBERSHIP</code> &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x3088;&#x3063;&#x3066;&#x3001;&#x30DE;&#x30EB;&#x30C1;&#x30AD;&#x30E3;&#x30B9;&#x30C8;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x304B;&#x3089;&#x629C;&#x3051;&#x308B;&#x3053;&#x3068;&#x3092;&#x30AB;&#x30FC;&#x30CD;&#x30EB;&#x306B;&#x4F1D;&#x3048;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x6642;&#x3084;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x7D42;&#x4E86;&#x6642;&#x306B;&#x30AB;&#x30FC;&#x30CD;&#x30EB;&#x306B;&#x3088;&#x3063;&#x3066;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;&#x3001;&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x3053;&#x308C;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<p><code>multicastInterface</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x5168;&#x3066;&#x306E;&#x59A5;&#x5F53;&#x306A;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x30E1;&#x30F3;&#x30D0;&#x30FC;&#x30B7;&#x30C3;&#x30D7;&#x304B;&#x3089;&#x524A;&#x9664;&#x3057;&#x3088;&#x3046;&#x3068;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>socket.unref()<span><a class="mark" href="#dgram_socket_unref" id="dgram_socket_unref">#</a></span></h3>
+<!--
+Calling `unref` on a socket will allow the program to exit if this is the only
+active socket in the event system. If the socket is already `unref`d calling
+`unref` again will have no effect.
+-->
+
+<p>&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x304A;&#x3044;&#x3066;&#x3001;&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3060;&#x3051;&#x304C;&#x30A2;&#x30AF;&#x30C6;&#x30A3;&#x30D6;&#x306A;&#x5834;&#x5408;&#x306B;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;
+&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;<code>unref</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x65E2;&#x306B; <code>unref</code> &#x3055;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x518D;&#x3073; <code>unref</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3082;&#x5F71;&#x97FF;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>socket.ref()<span><a class="mark" href="#dgram_socket_ref" id="dgram_socket_ref">#</a></span></h3>
+<!--
+Opposite of `unref`, calling `ref` on a previously `unref`d socket will *not*
+let the program exit if it's the only socket left (the default behavior). If
+the socket is `ref`d calling `ref` again will have no effect.
+-->
+
+<p><code>unref</code> &#x3068;&#x306F;&#x9006;&#x306B;&#x3001;&#x4EE5;&#x524D;&#x306B; <code>unref</code> &#x3055;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x552F;&#x4E00;&#x6B8B;&#x3063;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x306A;&#x3063;&#x3066;&#x3082;&#x3001;
+&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304C;&#x7D42;&#x4E86; (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x52D5;&#x4F5C;&#x3067;&#x3059;) &#x3057;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3001;<code>ref</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x65E2;&#x306B; <code>ref</code> &#x3055;&#x308C;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x518D;&#x3073; <code>ref</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3082;&#x5F71;&#x97FF;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+
