@@ -1,0 +1,11 @@
+{
+  &quot;source&quot;: &quot;doc/api/synopsis.markdown&quot;,
+  &quot;miscs&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;Synopsis&quot;,
+      &quot;name&quot;: &quot;Synopsis&quot;,
+      &quot;type&quot;: &quot;misc&quot;,
+      &quot;desc&quot;: &quot;<!--\nAn example of a [web server](http.html) written with Node which responds with 'Hello\nWorld':\n-->\n\n<p>&apos;Hello World&apos; &#x3068;&#x8FD4;&#x7B54;&#x3059;&#x308B; Node &#x3067;&#x66F8;&#x304B;&#x308C;&#x305F;Web&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x4F8B;:\n\n</p>\n<pre><code>var http = require(&apos;http&apos;);\n\nhttp.createServer(function (request, response) {\n  response.writeHead(200, {&apos;Content-Type&apos;: &apos;text/plain&apos;});\n  response.end(&apos;Hello World\\n&apos;);\n}).listen(8124);\n\nconsole.log(&apos;Server running at http://127.0.0.1:8124/&apos;);</code></pre>\n<!--\nTo run the server, put the code into a file called `example.js` and execute\nit with the node program\n-->\n\n<p>&#x3053;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;&#x30B3;&#x30FC;&#x30C9;&#x3092; <code>example.js</code> &#x3068;&#x3044;&#x3046;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x4FDD;&#x5B58;&#x3057;&#x3001;\nnode &#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3067;&#x5B9F;&#x884C;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<pre><code>&gt; node example.js\nServer running at http://127.0.0.1:8124/</code></pre>\n<!--\nAll of the examples in the documentation can be run similarly.\n-->\n\n<p>&#x3053;&#x306E;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;&#x306E;&#x5168;&#x3066;&#x306E;&#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x306F;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n</p>\n&quot;
+    }
+  ]
+}

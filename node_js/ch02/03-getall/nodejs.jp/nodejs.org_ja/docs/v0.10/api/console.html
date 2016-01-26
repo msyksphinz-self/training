@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>console Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/console.html">
+</head>
+<body class="alt apidoc" id="api-section-console">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="console.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#console_console">console</a><ul>
+<li><a href="#console_console_log_data">console.log([data], [...])</a></li>
+<li><a href="#console_console_info_data">console.info([data], [...])</a></li>
+<li><a href="#console_console_error_data">console.error([data], [...])</a></li>
+<li><a href="#console_console_warn_data">console.warn([data], [...])</a></li>
+<li><a href="#console_console_dir_obj">console.dir(obj)</a></li>
+<li><a href="#console_console_time_label">console.time(label)</a></li>
+<li><a href="#console_console_timeend_label">console.timeEnd(label)</a></li>
+<li><a href="#console_console_trace_label">console.trace(label)</a></li>
+<li><a href="#console_console_assert_expression_message">console.assert(expression, [message])</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>console<span><a class="mark" href="#console_console" id="console_console">#</a></span></h1>
+<pre class="api_stability_4">Stability: 4 - API Frozen</pre><div class="signature"><ul>
+<li><span class="type">Object</span></li>
+</ul></div>
+<!--type=global-->
+
+<!--
+For printing to stdout and stderr.  Similar to the console object functions
+provided by most web browsers, here the output is sent to stdout or stderr.
+-->
+
+<p>&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x3068;&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x306B;&#x51FA;&#x529B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x3082;&#x306E;&#x3067;&#x3059;&#x3002;
+&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x30D6;&#x30E9;&#x30A6;&#x30B6;&#x3067;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30B3;&#x30F3;&#x30BD;&#x30FC;&#x30EB;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x304C;&#x3001;
+&#x51FA;&#x529B;&#x306F;&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x304B;&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x51FA;&#x529B;&#x306B;&#x9001;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The console functions are synchronous when the destination is a terminal or
+a file (to avoid lost messages in case of premature exit) and asynchronous
+when it's a pipe (to avoid blocking for long periods of time).
+-->
+
+<p>&#x30B3;&#x30F3;&#x30BD;&#x30FC;&#x30EB;&#x95A2;&#x6570;&#x306F;&#x51FA;&#x529B;&#x5148;&#x304C;&#x30BF;&#x30FC;&#x30DF;&#x30CA;&#x30EB;&#x307E;&#x305F;&#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x540C;&#x671F;
+(&#x65E9;&#x3059;&#x304E;&#x308B;&#x7D42;&#x4E86;&#x306B;&#x3088;&#x308A;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x304C;&#x5931;&#x308F;&#x308C;&#x308B;&#x30B1;&#x30FC;&#x30B9;&#x3092;&#x9632;&#x3050;&#x305F;&#x3081;)&#x3001;
+&#x30D1;&#x30A4;&#x30D7;&#x306E;&#x5834;&#x5408;&#x306F;&#x975E;&#x540C;&#x671F; (&#x9577;&#x6642;&#x9593;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x9632;&#x3050;&#x305F;&#x3081;) &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+That is, in the following example, stdout is non-blocking while stderr
+is blocking:
+-->
+
+<p>&#x3064;&#x307E;&#x308A;&#x3001;&#x4EE5;&#x4E0B;&#x306E;&#x4F8B;&#x3067;&#x306F;&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x306F;&#x30CE;&#x30F3;&#x30D6;&#x30ED;&#x30C3;&#x30AD;&#x30F3;&#x30B0;&#x3067;&#x3059;&#x304C;&#x3001;
+&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x51FA;&#x529B;&#x306F;&#x30D6;&#x30ED;&#x30C3;&#x30AD;&#x30F3;&#x30B0;&#x3067;&#x3059;:
+
+</p>
+<pre><code>$ node script.js 2&gt; error.log | tee info.log</code></pre>
+<!--
+In daily use, the blocking/non-blocking dichotomy is not something you
+should worry about unless you log huge amounts of data.
+-->
+
+<p>&#x901A;&#x5E38;&#x306E;&#x4F7F;&#x7528;&#x3067;&#x306F;&#x3001;&#x81A8;&#x5927;&#x306A;&#x91CF;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x8A18;&#x9332;&#x3059;&#x308B;&#x306E;&#x3067;&#x306F;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;
+&#x30D6;&#x30ED;&#x30C3;&#x30AD;&#x30F3;&#x30B0;&#xFF0F;&#x30CE;&#x30F3;&#x30D6;&#x30ED;&#x30C3;&#x30AD;&#x30F3;&#x30B0;&#x306E;&#x3069;&#x3061;&#x3089;&#x306A;&#x306E;&#x304B;&#x3092;&#x5FC3;&#x914D;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+
+</p>
+<h2>console.log([data], [...])<span><a class="mark" href="#console_console_log_data" id="console_console_log_data">#</a></span></h2>
+<!--
+Prints to stdout with newline. This function can take multiple arguments in a
+`printf()`-like way. Example:
+-->
+
+<p>&#x6539;&#x884C;&#x3092;&#x4F34;&#x3063;&#x3066;&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x3078;&#x30D7;&#x30EA;&#x30F3;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; <code>printf()</code> &#x306E;&#x3088;&#x3046;&#x306B;&#x8907;&#x6570;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>console.log(&apos;count: %d&apos;, count);</code></pre>
+<!--
+If formatting elements are not found in the first string then `util.inspect`
+is used on each argument.  See [util.format()][] for more information.
+-->
+
+<p>&#x6700;&#x521D;&#x306E;&#x5F15;&#x6570;&#x6587;&#x5B57;&#x5217;&#x304B;&#x3089;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x8981;&#x7D20;&#x304C;&#x898B;&#x3064;&#x304B;&#x3089;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;
+<code>util.inspect</code> &#x304C;&#x5404;&#x5F15;&#x6570;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3088;&#x308A;&#x8A73;&#x7D30;&#x306F; <a href="util.html#util_util_format_format">util.format()</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>console.info([data], [...])<span><a class="mark" href="#console_console_info_data" id="console_console_info_data">#</a></span></h2>
+<!--
+Same as `console.log`.
+-->
+
+<p><code>console.log</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>console.error([data], [...])<span><a class="mark" href="#console_console_error_data" id="console_console_error_data">#</a></span></h2>
+<!--
+Same as `console.log` but prints to stderr.
+-->
+
+<p><code>console.log</code> &#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x304C;&#x3001;&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x51FA;&#x529B;&#x306B;&#x30D7;&#x30EA;&#x30F3;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>console.warn([data], [...])<span><a class="mark" href="#console_console_warn_data" id="console_console_warn_data">#</a></span></h2>
+<!--
+Same as `console.error`.
+-->
+
+<p><code>console.error()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>console.dir(obj)<span><a class="mark" href="#console_console_dir_obj" id="console_console_dir_obj">#</a></span></h2>
+<!--
+Uses `util.inspect` on `obj` and prints resulting string to stdout.
+-->
+
+<p><code>util.inspect</code> &#x3092;&#x4F7F;&#x3063;&#x3066; <code>obj</code> &#x3092;&#x6587;&#x5B57;&#x5217;&#x5316;&#x3057;&#x305F;&#x7D50;&#x679C;&#x3092;&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x306B;&#x30D7;&#x30EA;&#x30F3;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>console.time(label)<span><a class="mark" href="#console_console_time_label" id="console_console_time_label">#</a></span></h2>
+<!--
+Mark a time.
+-->
+
+<p>&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>console.timeEnd(label)<span><a class="mark" href="#console_console_timeend_label" id="console_console_timeend_label">#</a></span></h2>
+<!--
+Finish timer, record output. Example:
+-->
+
+<p>&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x3001;&#x7D50;&#x679C;&#x3092;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;&#x4F8B;:
+
+</p>
+<pre><code>console.time(&apos;100-elements&apos;);
+for (var i = 0; i &lt; 100; i++) {
+  ;
+}
+console.timeEnd(&apos;100-elements&apos;);</code></pre>
+<h2>console.trace(label)<span><a class="mark" href="#console_console_trace_label" id="console_console_trace_label">#</a></span></h2>
+<!--
+Print a stack trace to stderr of the current position.
+-->
+
+<p>&#x73FE;&#x5728;&#x306E;&#x30B9;&#x30BF;&#x30C3;&#x30AF;&#x30C8;&#x30EC;&#x30FC;&#x30B9;&#x3092;&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x51FA;&#x529B;&#x306B;&#x30D7;&#x30EA;&#x30F3;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>console.assert(expression, [message])<span><a class="mark" href="#console_console_assert_expression_message" id="console_console_assert_expression_message">#</a></span></h2>
+<!--
+Same as [assert.ok()][] where if the `expression` evaluates as `false` throw an
+AssertionError with `message`.
+-->
+
+<p><a href="assert.html#assert_assert_value_message_assert_ok_value_message">assert.ok()</a> &#x3068;&#x540C;&#x69D8;&#x306B;&#x3001;&#x3082;&#x3057; <code>expression</code> &#x304C; <code>false</code> &#x306B;&#x8A55;&#x4FA1;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;
+<code>message</code> &#x3092;&#x6301;&#x3064; AssertionError &#x304C;&#x30B9;&#x30ED;&#x30FC;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

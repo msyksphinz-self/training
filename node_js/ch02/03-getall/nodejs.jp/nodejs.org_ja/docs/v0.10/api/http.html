@@ -1,0 +1,1963 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>HTTP Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/http.html">
+</head>
+<body class="alt apidoc" id="api-section-http">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="http.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#http_http">HTTP</a><ul>
+<li><a href="#http_http_status_codes">http.STATUS_CODES</a></li>
+<li><a href="#http_http_createserver_requestlistener">http.createServer([requestListener])</a></li>
+<li><a href="#http_http_createclient_port_host">http.createClient([port], [host])</a></li>
+<li><a href="#http_class_http_server">Class: http.Server</a><ul>
+<li><a href="#http_event_request">Event: &apos;request&apos;</a></li>
+<li><a href="#http_event_connection">Event: &apos;connection&apos;</a></li>
+<li><a href="#http_event_close">Event: &apos;close&apos;</a></li>
+<li><a href="#http_event_checkcontinue">Event: &apos;checkContinue&apos;</a></li>
+<li><a href="#http_event_connect">Event: &apos;connect&apos;</a></li>
+<li><a href="#http_event_upgrade">Event: &apos;upgrade&apos;</a></li>
+<li><a href="#http_event_clienterror">Event: &apos;clientError&apos;</a></li>
+<li><a href="#http_server_listen_port_hostname_backlog_callback">server.listen(port, [hostname], [backlog], [callback])</a></li>
+<li><a href="#http_server_listen_path_callback">server.listen(path, [callback])</a></li>
+<li><a href="#http_server_listen_handle_callback">server.listen(handle, [callback])</a></li>
+<li><a href="#http_server_close_callback">server.close([callback])</a></li>
+<li><a href="#http_server_maxheaderscount">server.maxHeadersCount</a></li>
+<li><a href="#http_server_settimeout_msecs_callback">server.setTimeout(msecs, callback)</a></li>
+<li><a href="#http_server_timeout">server.timeout</a></li>
+</ul>
+</li>
+<li><a href="#http_class_http_serverresponse">Class: http.ServerResponse</a><ul>
+<li><a href="#http_event_close_1">Event: &apos;close&apos;</a></li>
+<li><a href="#http_event_finish">Event: &apos;finish&apos;</a></li>
+<li><a href="#http_response_writecontinue">response.writeContinue()</a></li>
+<li><a href="#http_response_writehead_statuscode_reasonphrase_headers">response.writeHead(statusCode, [reasonPhrase], [headers])</a></li>
+<li><a href="#http_response_settimeout_msecs_callback">response.setTimeout(msecs, callback)</a></li>
+<li><a href="#http_response_statuscode">response.statusCode</a></li>
+<li><a href="#http_response_setheader_name_value">response.setHeader(name, value)</a></li>
+<li><a href="#http_response_headerssent">response.headersSent</a></li>
+<li><a href="#http_response_senddate">response.sendDate</a></li>
+<li><a href="#http_response_getheader_name">response.getHeader(name)</a></li>
+<li><a href="#http_response_removeheader_name">response.removeHeader(name)</a></li>
+<li><a href="#http_response_write_chunk_encoding">response.write(chunk, [encoding])</a></li>
+<li><a href="#http_response_addtrailers_headers">response.addTrailers(headers)</a></li>
+<li><a href="#http_response_end_data_encoding">response.end([data], [encoding])</a></li>
+</ul>
+</li>
+<li><a href="#http_http_request_options_callback">http.request(options, [callback])</a></li>
+<li><a href="#http_http_get_options_callback">http.get(options, [callback])</a></li>
+<li><a href="#http_class_http_agent">Class: http.Agent</a><ul>
+<li><a href="#http_agent_maxsockets">agent.maxSockets</a></li>
+<li><a href="#http_agent_sockets">agent.sockets</a></li>
+<li><a href="#http_agent_requests">agent.requests</a></li>
+</ul>
+</li>
+<li><a href="#http_http_globalagent">http.globalAgent</a></li>
+<li><a href="#http_class_http_clientrequest">Class: http.ClientRequest</a><ul>
+<li><a href="#http_event_response">Event &apos;response&apos;</a></li>
+<li><a href="#http_event_socket">Event: &apos;socket&apos;</a></li>
+<li><a href="#http_event_connect_1">Event: &apos;connect&apos;</a></li>
+<li><a href="#http_event_upgrade_1">Event: &apos;upgrade&apos;</a></li>
+<li><a href="#http_event_continue">Event: &apos;continue&apos;</a></li>
+<li><a href="#http_request_write_chunk_encoding">request.write(chunk, [encoding])</a></li>
+<li><a href="#http_request_end_data_encoding">request.end([data], [encoding])</a></li>
+<li><a href="#http_request_abort">request.abort()</a></li>
+<li><a href="#http_request_settimeout_timeout_callback">request.setTimeout(timeout, [callback])</a></li>
+<li><a href="#http_request_setnodelay_nodelay">request.setNoDelay([noDelay])</a></li>
+<li><a href="#http_request_setsocketkeepalive_enable_initialdelay">request.setSocketKeepAlive([enable], [initialDelay])</a></li>
+</ul>
+</li>
+<li><a href="#http_http_incomingmessage">http.IncomingMessage</a><ul>
+<li><a href="#http_event_close_2">Event: &apos;close&apos;</a></li>
+<li><a href="#http_message_httpversion">message.httpVersion</a></li>
+<li><a href="#http_message_headers">message.headers</a></li>
+<li><a href="#http_message_trailers">message.trailers</a></li>
+<li><a href="#http_message_settimeout_msecs_callback">message.setTimeout(msecs, callback)</a></li>
+<li><a href="#http_message_method">message.method</a></li>
+<li><a href="#http_message_url">message.url</a></li>
+<li><a href="#http_message_statuscode">message.statusCode</a></li>
+<li><a href="#http_message_socket">message.socket</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>HTTP<span><a class="mark" href="#http_http" id="http_http">#</a></span></h1>
+<pre class="api_stability_3">Stability: 3 - Stable</pre><!--
+To use the HTTP server and client one must `require('http')`.
+-->
+
+<p>HTTP &#x30B5;&#x30FC;&#x30D0;&#x304A;&#x3088;&#x3073;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x306B;&#x306F;&#x3044;&#x305A;&#x308C;&#x3082; <code>require(&apos;http&apos;)</code> &#x304C;&#x5FC5;&#x8981;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+The HTTP interfaces in Node are designed to support many features
+of the protocol which have been traditionally difficult to use.
+In particular, large, possibly chunk-encoded, messages. The interface is
+careful to never buffer entire requests or responses--the
+user is able to stream data.
+-->
+
+<p>Node &#x306E; HTTP &#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306F;&#x3001;
+&#x4F1D;&#x7D71;&#x7684;&#x306B;&#x6271;&#x3044;&#x304C;&#x96E3;&#x3057;&#x304B;&#x3063;&#x305F;&#x30D7;&#x30ED;&#x30C8;&#x30B3;&#x30EB;&#x306E;&#x591A;&#x304F;&#x306E;&#x6A5F;&#x80FD;&#x3092;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x8A2D;&#x8A08;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x3068;&#x308A;&#x308F;&#x3051;&#x5927;&#x304D;&#x304F;&#x3066;&#x3001;&#x5834;&#x5408;&#x306B;&#x3088;&#x3063;&#x3066;&#x306F;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x5316;&#x3055;&#x308C;&#x305F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3067;&#x3059;&#x3002;
+&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306F;&#x6C7A;&#x3057;&#x3066;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x307E;&#x305F;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x5168;&#x4F53;&#x3092;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3057;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x6C17;&#x3092;&#x3064;&#x3051;&#x3066;&#x3044;&#x307E;&#x3059;
+&#xFF0D; &#x5229;&#x7528;&#x8005;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+HTTP message headers are represented by an object like this:
+-->
+
+<p>HTTP &#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x30D8;&#x30C3;&#x30C0;&#x306F;&#x3053;&#x306E;&#x3088;&#x3046;&#x306A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3068;&#x3057;&#x3066;&#x8868;&#x73FE;&#x3055;&#x308C;&#x307E;&#x3059;:
+
+</p>
+<pre><code>{ &apos;content-length&apos;: &apos;123&apos;,
+  &apos;content-type&apos;: &apos;text/plain&apos;,
+  &apos;connection&apos;: &apos;keep-alive&apos;,
+  &apos;accept&apos;: &apos;*/*&apos; }</code></pre>
+<!--
+Keys are lowercased. Values are not modified.
+-->
+
+<p>&#x30AD;&#x30FC;&#x306F;&#x5C0F;&#x6587;&#x5B57;&#x5316;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x5024;&#x306F;&#x5909;&#x66F4;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+In order to support the full spectrum of possible HTTP applications, Node's
+HTTP API is very low-level. It deals with stream handling and message
+parsing only. It parses a message into headers and body but it does not
+parse the actual headers or the body.
+-->
+
+<p>&#x8003;&#x3048;&#x3089;&#x308C;&#x308B; HTTP &#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x5B8C;&#x5168;&#x306B;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;
+Node &#x306E; HTTP API &#x306F;&#x3068;&#x3066;&#x3082;&#x4F4E;&#x6C34;&#x6E96;&#x3067;&#x3059;&#x3002;&#x305D;&#x308C;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30EA;&#x30F3;&#x30B0;&#x3068;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306E;&#x89E3;&#x6790;&#x3060;&#x3051;&#x306B;&#x5BFE;&#x51E6;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x89E3;&#x6790;&#x306F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x30D8;&#x30C3;&#x30C0;&#x3068;&#x30DC;&#x30C7;&#x30A3;&#x306B;&#x5206;&#x3051;&#x307E;&#x3059;&#x304C;&#x3001;&#x5B9F;&#x969B;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x3068;&#x30DC;&#x30C7;&#x30A3;&#x306F;&#x89E3;&#x6790;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+
+
+</p>
+<h2>http.STATUS_CODES<span><a class="mark" href="#http_http_status_codes" id="http_http_status_codes">#</a></span></h2>
+<div class="signature"><ul>
+<li><span class="type">Object</span></li>
+</ul></div>
+<!--
+A collection of all the standard HTTP response status codes, and the
+short description of each.  For example, `http.STATUS_CODES[404] === 'Not
+Found'`.
+-->
+
+<p>&#x5168;&#x3066;&#x306E; HTTP &#x6A19;&#x6E96;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3068;&#x77ED;&#x3044;&#x8AAC;&#x660E;&#x306E;&#x30B3;&#x30EC;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x3059;&#x3002;
+&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;<code>http.STATUS_CODES[404] === &apos;Not Found&apos;</code>&#x3002;
+
+</p>
+<h2>http.createServer([requestListener])<span><a class="mark" href="#http_http_createserver_requestlistener" id="http_http_createserver_requestlistener">#</a></span></h2>
+<!--
+Returns a new web server object.
+-->
+
+<p>&#x65B0;&#x3057;&#x3044; Web &#x30B5;&#x30FC;&#x30D0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The `requestListener` is a function which is automatically
+added to the `'request'` event.
+-->
+
+<p><code>requestListener</code> &#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B; <code>&apos;request&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x52A0;&#x3048;&#x3089;&#x308C;&#x308B;&#x95A2;&#x6570;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>http.createClient([port], [host])<span><a class="mark" href="#http_http_createclient_port_host" id="http_http_createclient_port_host">#</a></span></h2>
+<!--
+This function is **deprecated**; please use [http.request()][] instead.
+Constructs a new HTTP client. `port` and `host` refer to the server to be
+connected to.
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; <strong>deprecated</strong> &#x3067;&#x3059;; &#x4EE3;&#x308F;&#x308A;&#x306B;
+<a href="#http_http_request_options_callback">http.request()</a> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x65B0;&#x3057;&#x3044; HTTP &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3092;&#x69CB;&#x7BC9;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>port</code> &#x3068; <code>host</code> &#x306F;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Class: http.Server<span><a class="mark" href="#http_class_http_server" id="http_class_http_server">#</a></span></h2>
+<!--
+This is an [EventEmitter][] with the following events:
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x6301;&#x3064; <a href="events.html#events_class_events_eventemitter">EventEmitter</a> &#x3067;&#x3059;:
+
+</p>
+<h3>Event: &apos;request&apos;<span><a class="mark" href="#http_event_request" id="http_event_request">#</a></span></h3>
+<p><code>function (request, response) { }</code>
+
+</p>
+<!--
+Emitted each time there is a request. Note that there may be multiple requests
+per connection (in the case of keep-alive connections).
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3054;&#x3068;&#x306B;&#x8907;&#x6570;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;&#x3042;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;
+(Keep Alive &#x306A;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x5834;&#x5408;)&#x3002;
+
+</p>
+<!--
+ `request` is an instance of [http.IncomingMessage][] and `response` is
+an instance of [http.ServerResponse][].
+-->
+
+<p><code>request</code> &#x306F; <a href="#http_http_incomingmessage">http.IncomingMessage</a> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3001;
+<code>response</code> &#x306F; <a href="#http_class_http_serverresponse">http.ServerResponse</a> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;connection&apos;<span><a class="mark" href="#http_event_connection" id="http_event_connection">#</a></span></h3>
+<p><code>function (socket) { }</code>
+
+</p>
+<!--
+ When a new TCP stream is established. `socket` is an object of type
+ `net.Socket`. Usually users will not want to access this event. In
+ particular, the socket will not emit `readable` events because of how
+ the protocol parser attaches to the socket. The `socket` can also be
+ accessed at `request.connection`.
+-->
+
+<p>&#x65B0;&#x3057;&#x3044; TCP &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x78BA;&#x7ACB;&#x3057;&#x305F;&#x6642;&#x3002;
+<code>socket</code> &#x306F; <code>net.Socket</code> &#x578B;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+&#x901A;&#x5E38;&#x306E;&#x5229;&#x7528;&#x8005;&#x304C;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3057;&#x305F;&#x304F;&#x306A;&#x308B;&#x3053;&#x3068;&#x306F;&#x306A;&#x3044;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+&#x3068;&#x308A;&#x308F;&#x3051;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x30D7;&#x30ED;&#x30C8;&#x30B3;&#x30EB;&#x30D1;&#x30FC;&#x30B5;&#x306B;&#x30A2;&#x30BF;&#x30C3;&#x30C1;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;&#x3001;
+<code>&apos;readable&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+<code>socket</code> &#x306F; <code>request.connection</code> &#x304B;&#x3089;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;close&apos;<span><a class="mark" href="#http_event_close" id="http_event_close">#</a></span></h3>
+<p><code>function () { }</code>
+
+</p>
+<!--
+ Emitted when the server closes.
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;checkContinue&apos;<span><a class="mark" href="#http_event_checkcontinue" id="http_event_checkcontinue">#</a></span></h3>
+<p><code>function (request, response) { }</code>
+
+</p>
+<!--
+Emitted each time a request with an http Expect: 100-continue is received.
+If this event isn't listened for, the server will automatically respond
+with a 100 Continue as appropriate.
+-->
+
+<p>http&#x306E; Expect: 100-continue &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B; 100 Continue &#x3092;&#x5FDC;&#x7B54;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Handling this event involves calling [response.writeContinue()][] if the client
+should continue to send the request body, or generating an appropriate HTTP
+response (e.g., 400 Bad Request) if the client should not continue to send the
+request body.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x51E6;&#x7406;&#x3059;&#x308B;&#x5834;&#x5408;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x7D9A;&#x3051;&#x308B;&#x3079;&#x304D;&#x306A;&#x3089;
+<a href="#http_response_writecontinue">response.writeContinue()</a> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3042;&#x308B;&#x3044;&#x306F;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x7D9A;&#x3051;&#x308B;&#x3079;&#x304D;&#x3067;&#x306A;&#x3044;&#x306A;&#x3089;&#x3001;
+&#x9069;&#x5207;&#x306A; HTTP &#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9; (&#x4F8B;&#x3048;&#x3070; 400 Bad Request) &#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that when this event is emitted and handled, the `request` event will
+not be emitted.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x3066;&#x51E6;&#x7406;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;<code>request</code>&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>Event: &apos;connect&apos;<span><a class="mark" href="#http_event_connect" id="http_event_connect">#</a></span></h3>
+<p><code>function (request, socket, head) { }</code>
+
+</p>
+<!--
+Emitted each time a client requests a http CONNECT method. If this event isn't
+listened for, then clients requesting a CONNECT method will have their
+connections closed.
+-->
+
+<p>&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C; HTTP &#x306E; CONNECT &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x8981;&#x6C42;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;CONNECT &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x8981;&#x6C42;&#x3057;&#x305F;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+* `request` is the arguments for the http request, as it is in the request
+  event.
+* `socket` is the network socket between the server and client.
+* `head` is an instance of Buffer, the first packet of the tunneling stream,
+  this may be empty.
+-->
+
+<ul>
+<li><code>request</code> &#x306F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x5F15;&#x6570;&#x3068;&#x540C;&#x69D8;&#x306B; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x3059;&#x3002;</li>
+<li><code>socket</code> &#x306F;&#x30B5;&#x30FC;&#x30D0;&#x3068;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x9593;&#x306E;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x3059;&#x3002;</li>
+<li><code>head</code> &#x306F;&#x30C8;&#x30F3;&#x30CD;&#x30EA;&#x30F3;&#x30B0;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x6700;&#x521D;&#x306E;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x6301;&#x3064; Buffer &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;
+&#x7A7A;&#x306E;&#x5834;&#x5408;&#x3082;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+After this event is emitted, the request's socket will not have a `data`
+event listener, meaning you will need to bind to it in order to handle data
+sent to the server on that socket.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x5143;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x3082;&#x3046; <code>data</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x6301;&#x3061;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x9001;&#x3089;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6271;&#x3046;&#x305F;&#x3081;&#x306B;&#x305D;&#x308C;&#x3092;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;upgrade&apos;<span><a class="mark" href="#http_event_upgrade" id="http_event_upgrade">#</a></span></h3>
+<p><code>function (request, socket, head) { }</code>
+
+</p>
+<!--
+Emitted each time a client requests a http upgrade. If this event isn't
+listened for, then clients requesting an upgrade will have their connections
+closed.
+-->
+
+<p>&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C; HTTP &#x306E;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x3092;&#x8981;&#x6C42;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x3092;&#x8981;&#x6C42;&#x3057;&#x305F;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+* `request` is the arguments for the http request, as it is in the request
+  event.
+* `socket` is the network socket between the server and client.
+* `head` is an instance of Buffer, the first packet of the upgraded stream,
+  this may be empty.
+-->
+
+<ul>
+<li><code>request</code> &#x306F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x5F15;&#x6570;&#x3068;&#x540C;&#x69D8;&#x306B; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x3059;&#x3002;</li>
+<li><code>socket</code> &#x306F;&#x30B5;&#x30FC;&#x30D0;&#x3068;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x9593;&#x306E;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x3059;&#x3002;</li>
+<li><code>head</code> &#x306F;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x6700;&#x521D;&#x306E;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x6301;&#x3064; Buffer &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;
+&#x7A7A;&#x306E;&#x5834;&#x5408;&#x3082;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+After this event is emitted, the request's socket will not have a `data`
+event listener, meaning you will need to bind to it in order to handle data
+sent to the server on that socket.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x5143;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x3082;&#x3046; <code>data</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x6301;&#x3061;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x9001;&#x3089;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6271;&#x3046;&#x305F;&#x3081;&#x306B;&#x305D;&#x308C;&#x3092;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;clientError&apos;<span><a class="mark" href="#http_event_clienterror" id="http_event_clienterror">#</a></span></h3>
+<p><code>function (exception, socket) { }</code>
+
+</p>
+<!--
+If a client connection emits an 'error' event - it will forwarded here.
+-->
+
+<p>&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x304C; &apos;error&apos; &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x767A;&#x3057;&#x305F;&#x5834;&#x5408; &#xFF0D; &#x3053;&#x3053;&#x306B;&#x8EE2;&#x9001;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+`socket` is the `net.Socket` object that the error originated from.
+-->
+
+<p><code>socket</code> &#x306F;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F; <code>net.Socket</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h3>server.listen(port, [hostname], [backlog], [callback])<span><a class="mark" href="#http_server_listen_port_hostname_backlog_callback" id="http_server_listen_port_hostname_backlog_callback">#</a></span></h3>
+<!--
+Begin accepting connections on the specified port and hostname.  If the
+hostname is omitted, the server will accept connections directed to any
+IPv4 address (`INADDR_ANY`).
+-->
+
+<p>&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30DD;&#x30FC;&#x30C8;&#x3068;&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x3067;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x53D7;&#x3051;&#x5165;&#x308C;&#x3092;&#x958B;&#x59CB;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x3069;&#x3093;&#x306A; IPv4 &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3078;&#x306E;&#x63A5;&#x7D9A;&#x3082;&#x53D7;&#x3051;&#x5165;&#x308C;&#x307E;&#x3059; (<code>INADDR_ANY</code>)&#x3002;
+
+</p>
+<!--
+To listen to a unix socket, supply a filename instead of port and hostname.
+-->
+
+<p>UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x308B;&#x5834;&#x5408;&#x3001;&#x30DD;&#x30FC;&#x30C8;&#x3068;&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x3067;&#x306F;&#x306A;&#x304F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Backlog is the maximum length of the queue of pending connections.
+The actual length will be determined by your OS through sysctl settings such as
+`tcp_max_syn_backlog` and `somaxconn` on linux. The default value of this
+parameter is 511 (not 512).
+-->
+
+<p>&#x30D0;&#x30C3;&#x30AF;&#x30ED;&#x30B0;&#x306F;&#x4FDD;&#x7559;&#x3055;&#x308C;&#x305F;&#x63A5;&#x7D9A;&#x306E;&#x30AD;&#x30E5;&#x30FC;&#x306E;&#x6700;&#x5927;&#x9577;&#x3067;&#x3059;&#x3002;
+&#x5B9F;&#x969B;&#x306E;&#x9577;&#x3055;&#x306F; Linux &#x3067;&#x306F; <code>tcp_max_syn_backlog</code> &#x3084; <code>somaxconn</code> &#x306A;&#x3069;&#x3001;
+sysctl &#x306E;&#x8A2D;&#x5B9A;&#x3092;&#x901A;&#x3058;&#x3066; OS &#x306B;&#x3088;&#x3063;&#x3066;&#x6C7A;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x306F; 511 (512 &#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;) &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+This function is asynchronous. The last parameter `callback` will be added as
+a listener for the ['listening'][] event.  See also [net.Server.listen(port)][].
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570;&#x306E; <code>callback</code> &#x306F;
+<a href="net.html#net_event_listening">&apos;listening&apos;</a> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x8A73;&#x7D30;&#x306F; <a href="net.html#net_server_listen_port_host_backlog_callback">net.Server.listen(port)</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+
+</p>
+<h3>server.listen(path, [callback])<span><a class="mark" href="#http_server_listen_path_callback" id="http_server_listen_path_callback">#</a></span></h3>
+<!--
+Start a UNIX socket server listening for connections on the given `path`.
+-->
+
+<p><code>path</code> &#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x308B; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x958B;&#x59CB;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This function is asynchronous. The last parameter `callback` will be added as
+a listener for the ['listening'][] event.  See also [net.Server.listen(path)][].
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570;&#x306E; <code>callback</code> &#x306F;
+<a href="net.html#net_event_listening">&apos;listening&apos;</a> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x8A73;&#x7D30;&#x306F; <a href="net.html#net_server_listen_path_callback">net.Server.listen(path)</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+
+</p>
+<h3>server.listen(handle, [callback])<span><a class="mark" href="#http_server_listen_handle_callback" id="http_server_listen_handle_callback">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>handle</code> <span class="type">Object</span></li>
+<li><code>callback</code> <span class="type">Function</span></li>
+</ul></div>
+<!--
+The `handle` object can be set to either a server or socket (anything
+with an underlying `_handle` member), or a `{fd: <n>}` object.
+-->
+
+<p><code>handle</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x306F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x307E;&#x305F;&#x306F;&#x30BD;&#x30B1;&#x30C3;&#x30C8; (&#x4E0B;&#x5C64;&#x306E; <code>_handle</code> &#x30E1;&#x30F3;&#x30D0;&#x306A;&#x3089;
+&#x306A;&#x3093;&#x3067;&#x3082;) &#x307E;&#x305F;&#x306F;&#x3001; <code>{fd: &lt;n&gt;}</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This will cause the server to accept connections on the specified
+handle, but it is presumed that the file descriptor or handle has
+already been bound to a port or domain socket.
+-->
+
+<p>&#x3053;&#x308C;&#x306B;&#x3088;&#x308A;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x3078;&#x306E;&#x63A5;&#x7D9A;&#x3092;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x307E;&#x305F;&#x306F;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x306F;&#x65E2;&#x306B;&#x30DD;&#x30FC;&#x30C8;&#x307E;&#x305F;&#x306F;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;
+&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x3082;&#x306E;&#x3068;&#x898B;&#x306A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Listening on a file descriptor is not supported on Windows.
+-->
+
+<p>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3078;&#x306E;&#x30EA;&#x30B9;&#x30CB;&#x30F3;&#x30B0;&#x306F; Windows &#x3067;&#x306F;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+This function is asynchronous. The last parameter `callback` will be added as
+a listener for the ['listening'](net.html#event_listening_) event.
+See also [net.Server.listen()](net.html#net_server_listen_handle_callback).
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570;&#x306E; <code>callback</code> &#x306F;
+<a href="net.html#event_listening_">&apos;listening&apos;</a> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x8A73;&#x7D30;&#x306F; <a href="net.html#net_server_listen_handle_callback">net.Server.listen()</a>
+&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>server.close([callback])<span><a class="mark" href="#http_server_close_callback" id="http_server_close_callback">#</a></span></h3>
+<!--
+Stops the server from accepting new connections.  See [net.Server.close()][].
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x65B0;&#x3057;&#x3044;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x308B;&#x306E;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+<a href="net.html#net_server_close_callback">net.Server.close()</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>server.maxHeadersCount<span><a class="mark" href="#http_server_maxheaderscount" id="http_server_maxheaderscount">#</a></span></h3>
+<!--
+Limits maximum incoming headers count, equal to 1000 by default. If set to 0 -
+no limit will be applied.
+-->
+
+<p>&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x308B;&#x30D8;&#x30C3;&#x30C0;&#x6570;&#x306E;&#x4E0A;&#x9650;&#x3067;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; 1000 &#x3067;&#x3059;&#x3002;
+0 &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x5236;&#x9650;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>server.setTimeout(msecs, callback)<span><a class="mark" href="#http_server_settimeout_msecs_callback" id="http_server_settimeout_msecs_callback">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>msecs</code> <span class="type">Number</span></li>
+<li><code>callback</code> <span class="type">Function</span></li>
+</ul></div>
+<!--
+Sets the timeout value for sockets, and emits a `'timeout'` event on
+the Server object, passing the socket as an argument, if a timeout
+occurs.
+-->
+
+<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x5024;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x4E0A;&#x3067; <code>&apos;timeout&apos;</code>
+&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3068;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If there is a `'timeout'` event listener on the Server object, then it
+will be called with the timed-out socket as an argument.
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B; <code>&apos;timeout&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x3068;&#x3001;
+&#x305D;&#x308C;&#x306F;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+By default, the Server's timeout value is 2 minutes, and sockets are
+destroyed automatically if they time out.  However, if you assign a
+callback to the Server's `'timeout'` event, then you are responsible
+for handling socket timeouts.
+-->
+
+<p>&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x5024;&#x306F; 2 &#x5206;&#x3067;&#x3001;
+&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x7834;&#x68C4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;<code>&apos;timeout&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x30B5;&#x30FC;&#x30D0;&#x306B;&#x5272;&#x308A;&#x5F53;&#x3066;&#x305F;&#x5834;&#x5408;&#x3001;
+&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30EA;&#x30F3;&#x30B0;&#x306F;&#x3042;&#x306A;&#x305F;&#x306E;&#x8CAC;&#x52D9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>server.timeout<span><a class="mark" href="#http_server_timeout" id="http_server_timeout">#</a></span></h3>
+<!--
+* {Number} Default = 120000 (2 minutes)
+-->
+
+<ul>
+<li>{Number} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8; = 120000 (2 &#x5206;)</li>
+</ul>
+<!--
+The number of milliseconds of inactivity before a socket is presumed
+to have timed out.
+-->
+
+<p>&#x4E0D;&#x6D3B;&#x6027;&#x306A;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x3068;&#x63A8;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x307E;&#x3067;&#x306E;&#x30DF;&#x30EA;&#x79D2;&#x3092;&#x8868;&#x3059;&#x6570;&#x5024;&#x3002;
+
+</p>
+<!--
+Note that the socket timeout logic is set up on connection, so
+changing this value only affects *new* connections to the server, not
+any existing connections.
+-->
+
+<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x51E6;&#x7406;&#x306F;&#x63A5;&#x7D9A;&#x306E;&#x30BB;&#x30C3;&#x30C8;&#x30A2;&#x30C3;&#x30D7;&#x6642;&#x306B;&#x884C;&#x308F;&#x308C;&#x308B;&#x305F;&#x3081;&#x3001;
+&#x3053;&#x306E;&#x5024;&#x306E;&#x5909;&#x66F4;&#x306F;&#x65E2;&#x5B58;&#x306E;&#x63A5;&#x7D9A;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x306E; <em>&#x65B0;&#x3057;&#x3044;</em> &#x63A5;&#x7D9A;&#x306B;&#x3060;&#x3051;
+&#x5F71;&#x97FF;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Set to 0 to disable any kind of automatic timeout behavior on incoming
+connections.
+-->
+
+<p>0 &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3001;&#x5230;&#x7740;&#x3059;&#x308B;&#x63A5;&#x7D9A;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x81EA;&#x52D5;&#x7684;&#x306A;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x306F;
+&#x7121;&#x52B9;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Class: http.ServerResponse<span><a class="mark" href="#http_class_http_serverresponse" id="http_class_http_serverresponse">#</a></span></h2>
+<!--
+This object is created internally by a HTTP server--not by the user. It is
+passed as the second parameter to the `'request'` event.
+
+The response implements the [Writable Stream][] interface. This is an
+[EventEmitter][] with the following events:
+-->
+
+<p>&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; HTTP &#x30B5;&#x30FC;&#x30D0;&#x5185;&#x90E8; &#xFF0D; &#x30E6;&#x30FC;&#x30B6;&#x3067;&#x306F;&#x306A;&#x304F; &#xFF0D; &#x3067;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>&apos;request&apos;</code> &#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x306E;&#x7B2C; 2 &#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306F; <a href="stream.html#stream_writable_stream">Writable  Stream</a> &#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x6301;&#x3064; <a href="events.html#events_class_events_eventemitter">EventEmitter</a> &#x3067;&#x3059;:
+
+</p>
+<h3>Event: &apos;close&apos;<span><a class="mark" href="#http_event_close_1" id="http_event_close_1">#</a></span></h3>
+<p><code>function () { }</code>
+
+</p>
+<!--
+Indicates that the underlying connection was terminated before
+[response.end()][] was called or able to flush.
+-->
+
+<p><a href="#http_response_end_data_encoding">response.end()</a> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x308A;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x308B;&#x524D;&#x306B;&#x3001;
+&#x4E0B;&#x5C64;&#x306E;&#x63A5;&#x7D9A;&#x304C;&#x5207;&#x65AD;&#x3055;&#x308C;&#x305F;&#x3053;&#x3068;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;finish&apos;<span><a class="mark" href="#http_event_finish" id="http_event_finish">#</a></span></h3>
+<p><code>function () { }</code>
+
+</p>
+<!--
+Emitted when the response has been sent. More specifically, this event is
+emitted when the last segment of the response headers and body have been
+handed off to the operating system for transmission over the network. It
+does not imply that the client has received anything yet.
+-->
+
+<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x304C;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x306F;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x304A;&#x3088;&#x3073;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x6700;&#x5F8C;&#x306E;&#x30BB;&#x30B0;&#x30E1;&#x30F3;&#x30C8;&#x304C;
+&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x306B;&#x8EE2;&#x9001;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;OS&#x306B;&#x6E21;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x4F55;&#x304B;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+After this event, no more events will be emitted on the response object.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x5F8C;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x4E0A;&#x3067;&#x306F;&#x3069;&#x3093;&#x306A;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3082;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>response.writeContinue()<span><a class="mark" href="#http_response_writecontinue" id="http_response_writecontinue">#</a></span></h3>
+<!--
+Sends a HTTP/1.1 100 Continue message to the client, indicating that
+the request body should be sent. See the ['checkContinue'][] event on `Server`.
+-->
+
+<p>HTTP/1.1 &#x306E; 100 Continue &#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306B;&#x9001;&#x4FE1;&#x3057;&#x3001;
+&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x3066;&#x3082;&#x3088;&#x3044;&#x3053;&#x3068;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>Server</code>&#x306E; <a href="#http_event_checkcontinue">&apos;checkContinue&apos;</a> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>response.writeHead(statusCode, [reasonPhrase], [headers])<span><a class="mark" href="#http_response_writehead_statuscode_reasonphrase_headers" id="http_response_writehead_statuscode_reasonphrase_headers">#</a></span></h3>
+<!--
+Sends a response header to the request. The status code is a 3-digit HTTP
+status code, like `404`. The last argument, `headers`, are the response headers.
+Optionally one can give a human-readable `reasonPhrase` as the second
+argument.
+-->
+
+<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x306F; <code>404</code> &#x306E;&#x3088;&#x3046;&#x306A; 3 &#x6841;&#x306E;&#x6570;&#x5B57;&#x306B;&#x3088;&#x308B; HTTP &#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x3059;&#x3002;
+&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570; <code>headers</code> &#x306F;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x3067;&#x3059;&#x3002;
+&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3068;&#x3057;&#x3066;&#x4EBA;&#x306B;&#x8AAD;&#x3081;&#x308B;&#x5F62;&#x5F0F;&#x306E; <code>reasonPhrase</code> &#x3092;&#x7B2C; 2 &#x5F15;&#x6570;&#x3067;&#x4E0E;&#x3048;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var body = &apos;hello world&apos;;
+response.writeHead(200, {
+  &apos;Content-Length&apos;: body.length,
+  &apos;Content-Type&apos;: &apos;text/plain&apos; });</code></pre>
+<!--
+This method must only be called once on a message and it must
+be called before [response.end()][] is called.
+
+If you call [response.write()][] or [response.end()][] before calling this, the
+implicit/mutable headers will be calculated and call this function for you.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3054;&#x3068;&#x306B; 1 &#x56DE;&#x3060;&#x3051;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x306A;&#x304F;&#x3066;&#x306F;&#x306A;&#x3089;&#x305A;&#x3001;
+<a href="#http_response_end_data_encoding">response.end()</a> &#x306E;&#x524D;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<p>&#x3082;&#x3057;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x524D;&#x306B; <a href="#http_response_write_chunk_encoding">response.write()</a> &#x307E;&#x305F;&#x306F;
+<a href="#http_response_end_data_encoding">response.end()</a> &#x304C;&#x547C;&#x3070;&#x308C;&#x308B;&#x3068;&#x3001;&#x6697;&#x9ED9;&#x7684;&#x306B;&#x53EF;&#x5909;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x7B97;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3001;
+&#x3053;&#x306E;&#x95A2;&#x6570;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note: that Content-Length is given in bytes not characters. The above example
+works because the string `'hello world'` contains only single byte characters.
+If the body contains higher coded characters then `Buffer.byteLength()`
+should be used to determine the number of bytes in a given encoding.
+And Node does not check whether Content-Length and the length of the body
+which has been transmitted are equal or not.
+-->
+
+<p>&#x6CE8;&#x610F;: <code>Content-Length</code> &#x306F;&#x6587;&#x5B57;&#x6570;&#x3067;&#x306F;&#x306A;&#x304F;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x4E0A;&#x306E;&#x4F8B;&#x304C;&#x52D5;&#x4F5C;&#x3059;&#x308B;&#x306E;&#x306F; <code>&apos;hello world&apos;</code> &#x3068;&#x3044;&#x3046;&#x6587;&#x5B57;&#x5217;&#x304C;&#x5358;&#x4E00;&#x30D0;&#x30A4;&#x30C8;&#x6587;&#x5B57;&#x3060;&#x3051;&#x3092;&#x542B;&#x3080;&#x305F;&#x3081;&#x3067;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x30DC;&#x30C7;&#x30A3;&#x304C;&#x3088;&#x308A;&#x4E0A;&#x4F4D;&#x306B;&#x30B3;&#x30FC;&#x30C9;&#x5316;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x3092;&#x542B;&#x3080;&#x5834;&#x5408;&#x306F;&#x3001;
+&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306B;&#x3088;&#x308B;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3092;&#x5F97;&#x308B;&#x305F;&#x3081;&#x306B; <code>Buffer.byteLength()</code> &#x3092;&#x4F7F;&#x3046;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+Node &#x306F;&#x3001;Content-Length &#x3068;&#x5B9F;&#x969B;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x305F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x9577;&#x3055;&#x304C;&#x7B49;&#x3057;&#x3044;&#x304B;&#x3069;&#x3046;&#x304B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>response.setTimeout(msecs, callback)<span><a class="mark" href="#http_response_settimeout_msecs_callback" id="http_response_settimeout_msecs_callback">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>msecs</code> <span class="type">Number</span></li>
+<li><code>callback</code> <span class="type">Function</span></li>
+</ul></div>
+<!--
+Sets the Socket's timeout value to `msecs`.  If a callback is
+provided, then it is added as a listener on the `'timeout'` event on
+the response object.
+-->
+
+<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x5024;&#x3092; <code>msec</code> &#x306B;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B;&#x3068;&#x3001;&#x305D;&#x308C;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E; <code>&apos;timeout&apos;</code>
+&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If no `'timeout'` listener is added to the request, the response, or
+the server, then sockets are destroyed when they time out.  If you
+assign a handler on the request, the response, or the server's
+`'timeout'` events, then it is your responsibility to handle timed out
+sockets.
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3001;&#x305D;&#x3057;&#x3066;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x3044;&#x305A;&#x308C;&#x306B;&#x3082; <code>&apos;timeout&apos;</code>
+&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x7834;&#x68C4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x306B; <code>&apos;timeout&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;
+&#x8A2D;&#x5B9A;&#x3057;&#x305F;&#x5834;&#x5408;&#x3001;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30EA;&#x30F3;&#x30B0;&#x306F;&#x3042;&#x306A;&#x305F;&#x306E;&#x8CAC;&#x52D9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>response.statusCode<span><a class="mark" href="#http_response_statuscode" id="http_response_statuscode">#</a></span></h3>
+<!--
+When using implicit headers (not calling [response.writeHead()][] explicitly),
+this property controls the status code that will be sent to the client when
+the headers get flushed.
+-->
+
+<p>(<a href="#http_response_writehead_statuscode_reasonphrase_headers">response.writeHead()</a> &#x304C;&#x660E;&#x793A;&#x7684;&#x306B;&#x547C;&#x3070;&#x308C;&#x306A;&#x3044;&#x305F;&#x3081;&#x306B;) &#x6697;&#x9ED9;&#x7684;&#x306A;&#x30D8;&#x30C3;&#x30C0;&#x304C;
+&#x4F7F;&#x308F;&#x308C;&#x308B;&#x5834;&#x5408;&#x3001;&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x308B;&#x6642;&#x306B;
+&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3078;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x5236;&#x5FA1;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>response.statusCode = 404;</code></pre>
+<!--
+After response header was sent to the client, this property indicates the
+status code which was sent out.
+-->
+
+<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3001;
+&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x305F;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>response.setHeader(name, value)<span><a class="mark" href="#http_response_setheader_name_value" id="http_response_setheader_name_value">#</a></span></h3>
+<!--
+Sets a single header value for implicit headers.  If this header already exists
+in the to-be-sent headers, its value will be replaced.  Use an array of strings
+here if you need to send multiple headers with the same name.
+-->
+
+<p>&#x6697;&#x9ED9;&#x7684;&#x30D8;&#x30C3;&#x30C0;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x5024;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x9001;&#x4FE1;&#x3055;&#x308C;&#x3088;&#x3046;&#x3068;&#x3057;&#x3066;&#x3044;&#x308B;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x306B;&#x3053;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x65E2;&#x306B;&#x542B;&#x307E;&#x308C;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;
+&#x305D;&#x306E;&#x5024;&#x306F;&#x7F6E;&#x304D;&#x63DB;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x540C;&#x3058;&#x540D;&#x524D;&#x3067;&#x8907;&#x6570;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F;&#x6587;&#x5B57;&#x5217;&#x306E;&#x914D;&#x5217;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>response.setHeader(&quot;Content-Type&quot;, &quot;text/html&quot;);</code></pre>
+<!--
+or
+-->
+
+<p>&#x307E;&#x305F;&#x306F;
+
+</p>
+<pre><code>response.setHeader(&quot;Set-Cookie&quot;, [&quot;type=ninja&quot;, &quot;language=javascript&quot;]);</code></pre>
+<h3>response.headersSent<span><a class="mark" href="#http_response_headerssent" id="http_response_headerssent">#</a></span></h3>
+<!--
+Boolean (read-only). True if headers were sent, false otherwise.
+-->
+
+<p>(&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5C02;&#x7528;&#x306E;) Boolean&#x3002;
+&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x9001;&#x4FE1;&#x6E08;&#x307F;&#x306A;&#x3089; true&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306F; false &#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>response.sendDate<span><a class="mark" href="#http_response_senddate" id="http_response_senddate">#</a></span></h3>
+<!--
+When true, the Date header will be automatically generated and sent in
+the response if it is not already present in the headers. Defaults to true.
+
+This should only be disabled for testing; HTTP requires the Date header
+in responses.
+-->
+
+<p><code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;Date &#x30D8;&#x30C3;&#x30C0;&#x304C;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3068;&#x3057;&#x3066;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x307E;&#x3059;
+(<code>headers</code> &#x306B;&#x3059;&#x3067;&#x306B;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;)&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>true</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x3053;&#x308C;&#x3092;&#x7121;&#x52B9;&#x306B;&#x3059;&#x308B;&#x306E;&#x306F;&#x30C6;&#x30B9;&#x30C8;&#x3067;&#x306E;&#x307F;&#x306B;&#x3059;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+HTTP &#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306B; Date &#x30D8;&#x30C3;&#x30C0;&#x3092;&#x8981;&#x6C42;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>response.getHeader(name)<span><a class="mark" href="#http_response_getheader_name" id="http_response_getheader_name">#</a></span></h3>
+<!--
+Reads out a header that's already been queued but not sent to the client.  Note
+that the name is case insensitive.  This can only be called before headers get
+implicitly flushed.
+-->
+
+<p>&#x3059;&#x3067;&#x306B;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x3066;&#x3044;&#x308B;&#x304C;&#x672A;&#x9001;&#x4FE1;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x8AAD;&#x307F;&#x4E0A;&#x3052;&#x307E;&#x3059;&#xFF0E;
+&#x540D;&#x524D;&#x306F;&#x5927;&#x6587;&#x5B57;&#x5C0F;&#x6587;&#x5B57;&#x3092;&#x533A;&#x5225;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x6697;&#x9ED9;&#x7684;&#x306B;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x308B;&#x524D;&#x3060;&#x3051;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var contentType = response.getHeader(&apos;content-type&apos;);</code></pre>
+<h3>response.removeHeader(name)<span><a class="mark" href="#http_response_removeheader_name" id="http_response_removeheader_name">#</a></span></h3>
+<!--
+Removes a header that's queued for implicit sending.
+-->
+
+<p>&#x6697;&#x9ED9;&#x7684;&#x306B;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x305F;&#x3081;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x305F;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x524A;&#x9664;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>response.removeHeader(&quot;Content-Encoding&quot;);</code></pre>
+<h3>response.write(chunk, [encoding])<span><a class="mark" href="#http_response_write_chunk_encoding" id="http_response_write_chunk_encoding">#</a></span></h3>
+<!--
+If this method is called and [response.writeHead()][] has not been called,
+it will switch to implicit header mode and flush the implicit headers.
+
+This sends a chunk of the response body. This method may
+be called multiple times to provide successive parts of the body.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3001;<a href="#http_response_writehead_statuscode_reasonphrase_headers">response.writeHead()</a> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;
+&#x6697;&#x9ED9;&#x7684;&#x30D8;&#x30C3;&#x30C0;&#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5207;&#x308A;&#x66FF;&#x308F;&#x308A;&#x3001;&#x6697;&#x9ED9;&#x7684;&#x30D8;&#x30C3;&#x30C0;&#x306F;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3053;&#x308C;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x9023;&#x7D9A;&#x3057;&#x305F;&#x90E8;&#x5206;&#x3092;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x8907;&#x6570;&#x56DE;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+`chunk` can be a string or a buffer. If `chunk` is a string,
+the second parameter specifies how to encode it into a byte stream.
+By default the `encoding` is `'utf8'`.
+-->
+
+<p><code>chunk</code> &#x306F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+<code>chunk</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x306E;&#x5834;&#x5408;&#x3001;&#x3069;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x30D0;&#x30A4;&#x30C8;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x3059;&#x308B;&#x304B;&#x3092;&#x7B2C; 2 &#x5F15;&#x6570;&#x3067;&#x6307;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E; <code>encoding</code> &#x306F; <code>&apos;utf8&apos;</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+**Note**: This is the raw HTTP body and has nothing to do with
+higher-level multi-part body encodings that may be used.
+-->
+
+<p><strong>&#x6CE8;&#x610F;</strong>: &#x3053;&#x308C;&#x306F;&#x751F;&#x306E; HTTP &#x30DC;&#x30C7;&#x30A3;&#x3067;&#x3001;
+&#x9AD8;&#x6C34;&#x6E96;&#x306E;&#x30DE;&#x30EB;&#x30C1;&#x30D1;&#x30FC;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x3082;&#x306E;&#x3068;&#x306F;&#x7121;&#x95A2;&#x4FC2;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+The first time `response.write()` is called, it will send the buffered
+header information and the first body to the client. The second time
+`response.write()` is called, Node assumes you're going to be streaming
+data, and sends that separately. That is, the response is buffered up to the
+first chunk of body.
+-->
+
+<p>&#x521D;&#x3081;&#x3066; <code>response.write()</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;
+&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x3066;&#x3044;&#x305F;&#x30D8;&#x30C3;&#x30C0;&#x60C5;&#x5831;&#x3068;&#x6700;&#x521D;&#x306E;&#x30DC;&#x30C7;&#x30A3;&#x304C;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+2 &#x56DE;&#x76EE;&#x306B; <code>response.write()</code> &#x304C;&#x547C;&#x3070;&#x308C;&#x308B;&#x3068;&#x3001;
+Node &#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30DF;&#x30F3;&#x30B0;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5206;&#x5272;&#x3057;&#x3066;&#x9001;&#x4FE1;&#x3057;&#x3088;&#x3046;&#x3068;&#x3057;&#x3066;&#x3044;&#x308B;&#x3068;&#x4EEE;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306F;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x6700;&#x521D;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x307E;&#x3067;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Returns `true` if the entire data was flushed successfully to the kernel
+buffer. Returns `false` if all or part of the data was queued in user memory.
+`'drain'` will be emitted when the buffer is again free.
+-->
+
+<p>&#x30C7;&#x30FC;&#x30BF;&#x5168;&#x4F53;&#x306E;&#x30AB;&#x30FC;&#x30CD;&#x30EB;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3078;&#x306E;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x304C;&#x6210;&#x529F;&#x3059;&#x308B;&#x3068; <code>true</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30FC;&#x30BF;&#x5168;&#x4F53;&#x307E;&#x305F;&#x306F;&#x4E00;&#x90E8;&#x304C;&#x30E6;&#x30FC;&#x30B6;&#x30E1;&#x30E2;&#x30EA;&#x5185;&#x306E;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;
+<code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x518D;&#x3073;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x7A7A;&#x3044;&#x305F;&#x5834;&#x5408;&#x306F; <code>&apos;drain&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>response.addTrailers(headers)<span><a class="mark" href="#http_response_addtrailers_headers" id="http_response_addtrailers_headers">#</a></span></h3>
+<!--
+This method adds HTTP trailing headers (a header but at the end of the
+message) to the response.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F; HTTP &#x30C8;&#x30EC;&#x30FC;&#x30E9;&#x30D8;&#x30C3;&#x30C0; (&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306E;&#x6700;&#x5F8C;&#x306B;&#x7F6E;&#x304B;&#x308C;&#x308B;&#x30D8;&#x30C3;&#x30C0;) &#x3092;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306B;&#x8FFD;&#x52A0;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Trailers will **only** be emitted if chunked encoding is used for the
+response; if it is not (e.g., if the request was HTTP/1.0), they will
+be silently discarded.
+-->
+
+<p>&#x30C8;&#x30EC;&#x30FC;&#x30E9;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x304C;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x5316;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;<strong>&#x306E;&#x307F;</strong>&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;;
+&#x305D;&#x3046;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070; (&#x4F8B;&#x3048;&#x3070;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C; HTTP/1.0)&#x3001;&#x9ED9;&#x3063;&#x3066;&#x7834;&#x68C4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that HTTP requires the `Trailer` header to be sent if you intend to
+emit trailers, with a list of the header fields in its value. E.g.,
+-->
+
+<p>HTTP &#x306F;&#x3001;&#x30C8;&#x30EC;&#x30FC;&#x30E9;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x306A;&#x3089;&#x305D;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x306E;&#x30EA;&#x30B9;&#x30C8;&#x3092;&#x5024;&#x3068;&#x3057;&#x3066;
+<code>Trailer</code> &#x30D8;&#x30C3;&#x30C0;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x8981;&#x6C42;&#x3057;&#x3066;&#x3044;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<pre><code>response.writeHead(200, { &apos;Content-Type&apos;: &apos;text/plain&apos;,
+                          &apos;Trailer&apos;: &apos;Content-MD5&apos; });
+response.write(fileData);
+response.addTrailers({&apos;Content-MD5&apos;: &quot;7895bf4b8828b55ceaf47747b4bca667&quot;});
+response.end();</code></pre>
+<h3>response.end([data], [encoding])<span><a class="mark" href="#http_response_end_data_encoding" id="http_response_end_data_encoding">#</a></span></h3>
+<!--
+This method signals to the server that all of the response headers and body
+have been sent; that server should consider this message complete.
+The method, `response.end()`, MUST be called on each
+response.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306E;&#x5168;&#x3066;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x3068;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x305F;&#x3053;&#x3068;&#x3092;&#x30B5;&#x30FC;&#x30D0;&#x306B;&#x4F1D;&#x3048;&#x307E;&#x3059;;
+&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x3068;&#x8003;&#x3048;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x306E; <code>response.end()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5404;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3054;&#x3068;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x3051;&#x308C;&#x3070;<em>&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;</em>&#x3002;
+
+</p>
+<!--
+If `data` is specified, it is equivalent to calling `response.write(data, encoding)`
+followed by `response.end()`.
+-->
+
+<p><code>data</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;
+<code>response.write(data, encoding)</code> &#x306B;&#x7D9A;&#x3051;&#x3066; <code>response.end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x306E;&#x3068;&#x7B49;&#x4FA1;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h2>http.request(options, [callback])<span><a class="mark" href="#http_http_request_options_callback" id="http_http_request_options_callback">#</a></span></h2>
+<!--
+Node maintains several connections per server to make HTTP requests.
+This function allows one to transparently issue requests.
+-->
+
+<p>Node &#x306F; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x884C;&#x3046;&#x305F;&#x3081;&#x306B;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x3054;&#x3068;&#x306B;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;
+&#x4FDD;&#x6301;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x305D;&#x306E;&#x4E00;&#x3064;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x900F;&#x904E;&#x7684;&#x306B;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x767A;&#x884C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+`options` can be an object or a string. If `options` is a string, it is
+automatically parsed with [url.parse()][].
+-->
+
+<p><code>options</code> &#x306F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x307E;&#x305F;&#x306F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;
+&#x3082;&#x3057; <code>options</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x306A;&#x3089;&#x3001;&#x305D;&#x308C;&#x306F; <a href="url.html#url_url_parse_urlstr_parsequerystring_slashesdenotehost">url.parse()</a> &#x306B;&#x3088;&#x3063;&#x3066;&#x81EA;&#x52D5;&#x7684;&#x306B;
+&#x89E3;&#x6790;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Options:
+-->
+
+<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;:
+
+</p>
+<!--
+- `host`: A domain name or IP address of the server to issue the request to.
+  Defaults to `'localhost'`.
+- `hostname`: To support `url.parse()` `hostname` is preferred over `host`
+- `port`: Port of remote server. Defaults to 80.
+- `localAddress`: Local interface to bind for network connections.
+- `socketPath`: Unix Domain Socket (use one of host:port or socketPath)
+- `method`: A string specifying the HTTP request method. Defaults to `'GET'`.
+- `path`: Request path. Defaults to `'/'`. Should include query string if any.
+  E.G. `'/index.html?page=12'`
+- `headers`: An object containing request headers.
+- `auth`: Basic authentication i.e. `'user:password'` to compute an
+  Authorization header.
+- `agent`: Controls [Agent][] behavior. When an Agent is used request will
+  default to `Connection: keep-alive`. Possible values:
+ - `undefined` (default): use [global Agent][] for this host and port.
+ - `Agent` object: explicitly use the passed in `Agent`.
+ - `false`: opts out of connection pooling with an Agent, defaults request to
+   `Connection: close`.
+-->
+
+<ul>
+<li><code>host</code>: &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x767A;&#x884C;&#x3059;&#x308B;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x307E;&#x305F;&#x306F; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3002;</li>
+<li><code>hostname</code>: <code>url.parse()</code> &#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3002;<code>hostname</code> &#x306F; <code>host</code> &#x3092;&#x4E0A;&#x66F8;&#x304D;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>port</code>: &#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30DD;&#x30FC;&#x30C8;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; 80 &#x3067;&#x3059;&#x3002;</li>
+<li><code>localAddress</code>: &#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x63A5;&#x7D9A;&#x3092;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3059;&#x308B;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3067;&#x3059;&#x3002;</li>
+<li><code>socketPath</code>: Unix &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8; (host:port &#x307E;&#x305F;&#x306F; socketPath &#x306E;&#x3069;&#x3061;&#x3089;&#x304B;)</li>
+<li><code>method</code>: HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306E;&#x6587;&#x5B57;&#x5217;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;GET&apos;</code> &#x3067;&#x3059;&#x3002;</li>
+<li><code>path</code>: &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30D1;&#x30B9;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;/&apos;</code> &#x3067;&#x3059;&#x3002;
+&#x5FC5;&#x8981;&#x306A;&#x3089;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x6587;&#x5B57;&#x5217;&#x3092;&#x542B;&#x3081;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#xFF0E;
+&#x4F8B; <code>&apos;/index.html?page=12&apos;</code></li>
+<li><code>headers</code>: &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x542B;&#x3080;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3002;</li>
+<li><code>auth</code>: &#x30D9;&#x30FC;&#x30B7;&#x30C3;&#x30AF;&#x8A8D;&#x8A3C;&#x3059;&#x306A;&#x308F;&#x3061; Authorization &#x30D8;&#x30C3;&#x30C0;&#x306E;&#x305F;&#x3081;&#x306E;
+<code>&apos;user:password&apos;</code>&#x3002;</li>
+<li><code>agent</code>: <a href="#http_class_http_agent">Agent</a> &#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x3092;&#x5236;&#x5FA1;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x304C;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x5834;&#x5408;&#x3001;Connection:keep-alive &#x304C;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x53EF;&#x80FD;&#x306A;&#x5024;&#x306F;:<ul>
+<li><code>undefined</code> (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;): &#x30DB;&#x30B9;&#x30C8;&#x3068;&#x30DD;&#x30FC;&#x30C8;&#x3067; <a href="#http_http_globalagent">global Agent</a> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>Agent</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;: &#x660E;&#x793A;&#x7684;&#x306B;&#x6E21;&#x3055;&#x308C;&#x305F; <code>Agent</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>false</code>: Agent &#x306B;&#x3088;&#x308B;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x30D7;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+ Connection:close &#x306E;&#x5834;&#x5408;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x3059;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<!--
+The optional `callback` parameter will be added as a one time listener for
+the ['response'][] event.
+-->
+
+<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>callback</code> &#x5F15;&#x6570;&#x306F;&#x3001;<a href="#http_event_response">&apos;response&apos;</a> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3078;&#x306E;
+&#x4E00;&#x56DE;&#x9650;&#x308A;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+`http.request()` returns an instance of the [http.ClientRequest][]
+class. The `ClientRequest` instance is a writable stream. If one needs to
+upload a file with a POST request, then write to the `ClientRequest` object.
+-->
+
+<p><code>http.request()</code> &#x306F; <a href="#http_class_http_clientrequest">http.ClientRequest</a> &#x30AF;&#x30E9;&#x30B9;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>http.ClientRequest</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306A;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x3059;&#x3002;
+&#x3082;&#x3057; POST &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x30A2;&#x30C3;&#x30D7;&#x30ED;&#x30FC;&#x30C9;&#x304C;&#x3057;&#x305F;&#x3051;&#x308C;&#x3070;&#x3001;
+<code>http.ClientRequest</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x51FA;&#x529B;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var options = {
+  hostname: &apos;www.google.com&apos;,
+  port: 80,
+  path: &apos;/upload&apos;,
+  method: &apos;POST&apos;
+};
+
+var req = http.request(options, function(res) {
+  console.log(&apos;STATUS: &apos; + res.statusCode);
+  console.log(&apos;HEADERS: &apos; + JSON.stringify(res.headers));
+  res.setEncoding(&apos;utf8&apos;);
+  res.on(&apos;data&apos;, function (chunk) {
+    console.log(&apos;BODY: &apos; + chunk);
+  });
+});
+
+req.on(&apos;error&apos;, function(e) {
+  console.log(&apos;problem with request: &apos; + e.message);
+});
+
+// write data to request body
+req.write(&apos;data\n&apos;);
+req.write(&apos;data\n&apos;);
+req.end();</code></pre>
+<!--
+Note that in the example `req.end()` was called. With `http.request()` one
+must always call `req.end()` to signify that you're done with the request -
+even if there is no data being written to the request body.
+-->
+
+<p>&#x3053;&#x306E;&#x4F8B;&#x3067; <code>req.end()</code> &#x304C;&#x547C;&#x3070;&#x308C;&#x3066;&#x3044;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+<code>http.request()</code> &#x3067;&#x306F;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x3053;&#x3068;&#x3092;&#x793A;&#x3059;&#x305F;&#x3081;&#x306B;&#x3001;
+&#x5E38;&#x306B; <code>req.end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;
+- &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30DC;&#x30C7;&#x30A3;&#x306B;&#x51FA;&#x529B;&#x3059;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x306A;&#x304B;&#x3063;&#x305F;&#x3068;&#x3057;&#x3066;&#x3082;&#x3002;
+
+</p>
+<!--
+If any error is encountered during the request (be that with DNS resolution,
+TCP level errors, or actual HTTP parse errors) an `'error'` event is emitted
+on the returned request object.
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x4E2D;&#x306B;&#x4F55;&#x3089;&#x304B;&#x306E;&#x30A8;&#x30E9;&#x30FC; (DNS &#x89E3;&#x6C7A;&#x3001;TCP &#x30EC;&#x30D9;&#x30EB;&#x306E;&#x30A8;&#x30E9;&#x30FC;&#x3001;HTTP &#x30D1;&#x30FC;&#x30B9;&#x30A8;&#x30E9;&#x30FC;&#x306A;&#x3069;) &#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3068;&#x3001;&#x623B;&#x308A;&#x5024;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067; <code>&apos;error&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<!--
+There are a few special headers that should be noted.
+-->
+
+<p>&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x7279;&#x5225;&#x306A;&#x30D8;&#x30C3;&#x30C0;&#x306B;&#x6CE8;&#x610F;&#x304C;&#x5FC5;&#x8981;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+* Sending a 'Connection: keep-alive' will notify Node that the connection to
+  the server should be persisted until the next request.
+
+* Sending a 'Content-length' header will disable the default chunked encoding.
+
+* Sending an 'Expect' header will immediately send the request headers.
+  Usually, when sending 'Expect: 100-continue', you should both set a timeout
+  and listen for the `continue` event. See RFC2616 Section 8.2.3 for more
+  information.
+
+* Sending an Authorization header will override using the `auth` option
+  to compute basic authentication.
+-->
+
+<ul>
+<li><p>&apos;Connection: keep-alive&apos; &#x306E;&#x9001;&#x4FE1;&#x306F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x6B21;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x307E;&#x3067;&#x6301;&#x7D9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092; Node &#x306B;&#x901A;&#x77E5;&#x3057;&#x307E;&#x3059;&#x3002;</p>
+</li>
+<li><p>&apos;Content-length&apos; &#x30D8;&#x30C3;&#x30C0;&#x306E;&#x9001;&#x4FE1;&#x306F;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3092;&#x7121;&#x52B9;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;</p>
+</li>
+<li><p>&apos;Expect&apos; &#x30D8;&#x30C3;&#x30C0;&#x306E;&#x9001;&#x4FE1;&#x306F;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x5373;&#x6642;&#x306B;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x901A;&#x5E38;&#x3001;&apos;Expect: 100-continue&apos; &#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3068;&#x3001;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3068; <code>continue</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x307E;&#x3059;&#x3002;&#x8A73;&#x7D30;&#x306F; RFC2616 &#x306E; 8.2.3 &#x7BC0;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</p>
+</li>
+<li><p>Authorization &#x30D8;&#x30C3;&#x30C0;&#x306E;&#x9001;&#x4FE1;&#x306F;&#x3001;<code>auth</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x3088;&#x308B;&#x30D9;&#x30FC;&#x30B7;&#x30C3;&#x30AF;&#x8A8D;&#x8A3C;&#x3092;
+&#x4E0A;&#x66F8;&#x304D;&#x3057;&#x307E;&#x3059;&#x3002;</p>
+</li>
+</ul>
+<h2>http.get(options, [callback])<span><a class="mark" href="#http_http_get_options_callback" id="http_http_get_options_callback">#</a></span></h2>
+<!--
+Since most requests are GET requests without bodies, Node provides this
+convenience method. The only difference between this method and `http.request()`
+is that it sets the method to GET and calls `req.end()` automatically.
+-->
+
+<p>&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306F;&#x672C;&#x6587;&#x306E;&#x306A;&#x3044; GET &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x3042;&#x308B;&#x305F;&#x3081;&#x3001;
+Node &#x306F;&#x4FBF;&#x5229;&#x306A;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3068; <code>http.request()</code> &#x306E;&#x9593;&#x306E;&#x9055;&#x3044;&#x306F;&#x3001;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092; GET &#x306B;&#x8A2D;&#x5B9A;&#x3057;&#x3066;
+<code>req.end()</code> &#x3092;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>http.get(&quot;http://www.google.com/index.html&quot;, function(res) {
+  console.log(&quot;Got response: &quot; + res.statusCode);
+}).on(&apos;error&apos;, function(e) {
+  console.log(&quot;Got error: &quot; + e.message);
+});</code></pre>
+<h2>Class: http.Agent<span><a class="mark" href="#http_class_http_agent" id="http_class_http_agent">#</a></span></h2>
+<!--
+In node 0.5.3+ there is a new implementation of the HTTP Agent which is used
+for pooling sockets used in HTTP client requests.
+
+Previously, a single agent instance helped pool for a single host+port. The
+current implementation now holds sockets for any number of hosts.
+
+The current HTTP Agent also defaults client requests to using
+Connection:keep-alive. If no pending HTTP requests are waiting on a socket
+to become free the socket is closed. This means that node's pool has the
+benefit of keep-alive when under load but still does not require developers
+to manually close the HTTP clients using keep-alive.
+
+Sockets are removed from the agent's pool when the socket emits either a
+"close" event or a special "agentRemove" event. This means that if you intend
+to keep one HTTP request open for a long time and don't want it to stay in the
+pool you can do something along the lines of:
+-->
+
+<p>Node 0.5.3 &#x4EE5;&#x964D;&#x306B;&#x306F;&#x3001;HTTP &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;
+&#x30D7;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x65B0;&#x3057;&#x3044; HTTP Agent &#x306E;&#x5B9F;&#x88C5;&#x304C;&#x5B58;&#x5728;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x4EE5;&#x524D;&#x306F;&#x3001;&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x306E;&#x4E00;&#x3064;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x304C;&#x4E00;&#x3064;&#x306E;&#x30DB;&#x30B9;&#x30C8; + &#x30DD;&#x30FC;&#x30C8;&#x306E;&#x30D7;&#x30FC;&#x30EB;&#x3092;
+&#x52A9;&#x3051;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x304C;&#x3001;&#x73FE;&#x5728;&#x306E;&#x5B9F;&#x88C5;&#x3067;&#x306F;&#x4EFB;&#x610F;&#x306E;&#x6570;&#x306E;&#x30DB;&#x30B9;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;
+&#x4FDD;&#x6301;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3057;&#x305F;&#x3002;
+
+</p>
+<p>&#x73FE;&#x5728;&#x306E; HTTP Agent &#x3067;&#x306F;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;
+Connection:keep-alive &#x3092;&#x4F7F;&#x3046;&#x3088;&#x3046;&#x306B;&#x3082;&#x306A;&#x308A;&#x307E;&#x3057;&#x305F;&#x3002;
+&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5F85;&#x3063;&#x3066;&#x30DA;&#x30F3;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306B;&#x306A;&#x3063;&#x3066;&#x3044;&#x308B; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;
+&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;node &#x306E;&#x30D7;&#x30FC;&#x30EB;&#x306F;&#x9AD8;&#x8CA0;&#x8377;&#x6642;&#x306B; keep-alive &#x306E;&#x30E1;&#x30EA;&#x30C3;&#x30C8;&#x3092;&#x6301;&#x3061;&#x306A;&#x304C;&#x3089;&#x3001;
+keep-alive &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B; HTTP &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3092;&#x958B;&#x767A;&#x8005;&#x304C;&#x624B;&#x52D5;&#x3067;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3059;&#x308B;
+&#x5FC5;&#x8981;&#x304C;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F; <code>&apos;close&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x307E;&#x305F;&#x306F;&#x7279;&#x5225;&#x306A; <code>&apos;agentRemove&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;
+&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x306E;&#x30D7;&#x30FC;&#x30EB;&#x304B;&#x3089;&#x524A;&#x9664;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;&#x4E00;&#x3064;&#x306E; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x9577;&#x6642;&#x9593;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x305F;&#x307E;&#x307E;&#x306B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;
+&#x30D7;&#x30FC;&#x30EB;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x3068;&#x3069;&#x307E;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x56F3;&#x3059;&#x308B;&#x306A;&#x3089;&#x3001;
+&#x4EE5;&#x4E0B;&#x306E;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<pre><code>http.get(options, function(res) {
+  // Do stuff
+}).on(&quot;socket&quot;, function (socket) {
+  socket.emit(&quot;agentRemove&quot;);
+});</code></pre>
+<!--
+Alternatively, you could just opt out of pooling entirely using `agent:false`:
+-->
+
+<p>&#x5225;&#x306E;&#x65B9;&#x6CD5;&#x3068;&#x3057;&#x3066;&#x3001; <code>agent: false</code> &#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3001;
+&#x30D7;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;:
+
+</p>
+<pre><code>http.get({hostname:&apos;localhost&apos;, port:80, path:&apos;/&apos;, agent:false}, function (res) {
+  // Do stuff
+})</code></pre>
+<h3>agent.maxSockets<span><a class="mark" href="#http_agent_maxsockets" id="http_agent_maxsockets">#</a></span></h3>
+<!--
+By default set to 5. Determines how many concurrent sockets the agent can have
+open per origin. Origin is either a 'host:port' or 'host:port:localAddress'
+combination.
+-->
+
+<p>&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F; 5 &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x304C;&#x30AA;&#x30EA;&#x30B8;&#x30F3;&#x6BCE;&#x306B;&#x3044;&#x304F;&#x3064;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x4E26;&#x884C;&#x306B;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3059;&#x308B;&#x304B;&#x3092;&#x6C7A;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30AA;&#x30EA;&#x30B8;&#x30F3;&#x306F; <code>&apos;host:port&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;host:port:localAddress&apos;</code>
+&#x306E;&#x7D44;&#x307F;&#x5408;&#x308F;&#x305B;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>agent.sockets<span><a class="mark" href="#http_agent_sockets" id="http_agent_sockets">#</a></span></h3>
+<!--
+An object which contains arrays of sockets currently in use by the Agent. Do not
+modify.
+-->
+
+<p>&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x304C;&#x73FE;&#x5728;&#x4F7F;&#x3063;&#x3066;&#x3044;&#x308B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x914D;&#x5217;&#x3067;&#x3059;&#x3002;
+&#x5909;&#x66F4;&#x3057;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>agent.requests<span><a class="mark" href="#http_agent_requests" id="http_agent_requests">#</a></span></h3>
+<!--
+An object which contains queues of requests that have not yet been assigned to
+sockets. Do not modify.
+-->
+
+<p>&#x307E;&#x3060;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30AD;&#x30E5;&#x30FC;&#x3092;&#x542B;&#x3080;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+&#x5909;&#x66F4;&#x3057;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>http.globalAgent<span><a class="mark" href="#http_http_globalagent" id="http_http_globalagent">#</a></span></h2>
+<!--
+Global instance of Agent which is used as the default for all http client
+requests.
+-->
+
+<p>&#x5168;&#x3066;&#x306E; HTTP &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E; Agent &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h2>Class: http.ClientRequest<span><a class="mark" href="#http_class_http_clientrequest" id="http_class_http_clientrequest">#</a></span></h2>
+<!--
+This object is created internally and returned from `http.request()`.  It
+represents an _in-progress_ request whose header has already been queued.  The
+header is still mutable using the `setHeader(name, value)`, `getHeader(name)`,
+`removeHeader(name)` API.  The actual header will be sent along with the first
+data chunk or when closing the connection.
+-->
+
+<p>&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; HTTP &#x30B5;&#x30FC;&#x30D0;&#x5185;&#x90E8;&#x3067;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x3001;<code>http.request()</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x305F; <em>&#x9032;&#x884C;&#x4E2D;</em> &#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x8868;&#x73FE;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30D8;&#x30C3;&#x30C0;&#x306F; <code>setHeader(name, value)</code>, <code>getHeader(name)</code>, <code>removeHeader(name)</code> API &#x306B;&#x3088;&#x3063;&#x3066;&#x307E;&#x3060;&#x53EF;&#x5909;&#x306E;&#x307E;&#x307E;&#x3067;&#x3059;&#x3002;
+&#x5B9F;&#x969B;&#x306B;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x306E;&#x306F;&#x3001;&#x6700;&#x521D;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x304C;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x6642;&#x307E;&#x305F;&#x306F;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x308B;&#x6642;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+To get the response, add a listener for `'response'` to the request object.
+`'response'` will be emitted from the request object when the response
+headers have been received.  The `'response'` event is executed with one
+argument which is an instance of [http.IncomingMessage][].
+-->
+
+<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;<code>&apos;response&apos;</code> &#x7528;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x52A0;&#x3048;&#x307E;&#x3059;&#x3002;
+<code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x3068;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x3088;&#x3063;&#x3066;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F; <a href="#http_http_incomingmessage">http.IncomingMessage</a> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;
+&#x552F;&#x4E00;&#x306E;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+During the `'response'` event, one can add listeners to the
+response object; particularly to listen for the `'data'` event.
+-->
+
+<p><code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x9593;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x52A0;&#x3048;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;;
+&#x3068;&#x308A;&#x308F;&#x3051; <code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+If no `'response'` handler is added, then the response will be
+entirely discarded.  However, if you add a `'response'` event handler,
+then you **must** consume the data from the response object, either by
+calling `response.read()` whenever there is a `'readable'` event, or
+by adding a `'data'` handler, or by calling the `.resume()` method.
+Until the data is consumed, the `'end'` event will not fire.  Also, until
+the data is read it will consume memory that can eventually lead to a
+'process out of memory' error.
+-->
+
+<p><code>&apos;response&apos;</code> &#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x304C;&#x52A0;&#x3048;&#x3089;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306F;&#x5B8C;&#x5168;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x3001;<code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x3092;&#x52A0;&#x3048;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;
+<code>&apos;readable&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F;&#x6642;&#x306B; <code>response.read()</code> &#x3092;&#x547C;&#x3076;&#x304B;&#x3001;
+<code>&apos;data&apos;</code> &#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x3092;&#x52A0;&#x3048;&#x308B;&#x304B;&#x3001;<code>.resume()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x304B;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x306B;&#x3088;&#x308A;&#x3001;
+&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x304B;&#x3089;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x8CBB;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070; <em>&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;</em> &#x3002;
+&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x6D88;&#x8CBB;&#x3055;&#x308C;&#x308B;&#x307E;&#x3067;&#x3001;<code>&apos;end&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x307E;&#x305F;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x8AAD;&#x307E;&#x308C;&#x308B;&#x307E;&#x3067;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x6D88;&#x8CBB;&#x3057;&#x3001;&apos;process out of memory&apos;
+&#x30A8;&#x30E9;&#x30FC;&#x306B;&#x3064;&#x306A;&#x304C;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This is a `Writable Stream`.
+Note: Node does not check whether Content-Length and the length of the body
+which has been transmitted are equal or not.
+
+Note: Node does not check whether Content-Length and the length of the body
+which has been transmitted are equal or not.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; <code>Writable Stream</code> &#x3067;&#x3059;&#x3002;
+&#x6CE8;&#x610F;: Node &#x306F; Content-Length &#x3068;&#x5B9F;&#x969B;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x305F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x9577;&#x3055;&#x304C;&#x7B49;&#x3057;&#x3044;&#x304B;&#x3069;&#x3046;&#x304B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<p><code>ServerRequest</code> &#x304C; <code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x305F;&#x6642;&#x306B;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;
+<strong>&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x5931;&#x308F;&#x308C;&#x308B;</strong>&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+The request implements the [Writable Stream][] interface. This is an
+[EventEmitter][] with the following events:
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306F; <a href="stream.html#stream_writable_stream">Writable  Stream</a> &#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x6301;&#x3064; <a href="events.html#events_class_events_eventemitter">EventEmitter</a> &#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>Event &apos;response&apos;<span><a class="mark" href="#http_event_response" id="http_event_response">#</a></span></h3>
+<p><code>function (response) { }</code>
+
+</p>
+<!--
+Emitted when a response is received to this request. This event is emitted only
+once. The `response` argument will be an instance of [http.IncomingMessage][].
+-->
+
+<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x4E00;&#x56DE;&#x3060;&#x3051;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>response</code> &#x5F15;&#x6570;&#x306F; <a href="#http_http_incomingmessage">http.IncomingMessage</a> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Options:
+-->
+
+<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;:
+
+</p>
+<!--
+- `host`: A domain name or IP address of the server to issue the request to.
+- `port`: Port of remote server.
+- `socketPath`: Unix Domain Socket (use one of host:port or socketPath)
+-->
+
+<ul>
+<li><code>host</code>: &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x767A;&#x884C;&#x3059;&#x308B;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x307E;&#x305F;&#x306F; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3002;</li>
+<li><code>port</code>: &#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30DD;&#x30FC;&#x30C8;&#x3002;</li>
+<li><code>soocketPath</code>: Unix &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8; (host:port &#x307E;&#x305F;&#x306F; socketPath &#x306E;&#x3069;&#x3061;&#x3089;&#x304B;)</li>
+</ul>
+<h3>Event: &apos;socket&apos;<span><a class="mark" href="#http_event_socket" id="http_event_socket">#</a></span></h3>
+<p><code>function (socket) { }</code>
+
+</p>
+<!--
+Emitted after a socket is assigned to this request.
+-->
+
+<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x305F;&#x5F8C;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;connect&apos;<span><a class="mark" href="#http_event_connect_1" id="http_event_connect_1">#</a></span></h3>
+<p><code>function (response, socket, head) { }</code>
+
+</p>
+<!--
+Emitted each time a server responds to a request with a CONNECT method. If this
+event isn't being listened for, clients receiving a CONNECT method will have
+their connections closed.
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x304C; CONNECT &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306E;&#x8981;&#x6C42;&#x306B;&#x5FDC;&#x7B54;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C; CONNECT &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3078;&#x306E;
+&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x3068;&#x3001;&#x305D;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+A client server pair that show you how to listen for the `connect` event.
+-->
+
+<p>&#x3069;&#x306E;&#x3088;&#x3046;&#x306B; <code>connect</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x304B;&#x3092;&#x793A;&#x3059;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3068;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30DA;&#x30A2;:
+
+
+</p>
+<pre><code>var http = require(&apos;http&apos;);
+var net = require(&apos;net&apos;);
+var url = require(&apos;url&apos;);
+
+// Create an HTTP tunneling proxy
+var proxy = http.createServer(function (req, res) {
+  res.writeHead(200, {&apos;Content-Type&apos;: &apos;text/plain&apos;});
+  res.end(&apos;okay&apos;);
+});
+proxy.on(&apos;connect&apos;, function(req, cltSocket, head) {
+  // connect to an origin server
+  var srvUrl = url.parse(&apos;http://&apos; + req.url);
+  var srvSocket = net.connect(srvUrl.port, srvUrl.hostname, function() {
+    cltSocket.write(&apos;HTTP/1.1 200 Connection Established\r\n&apos; +
+                    &apos;Proxy-agent: Node-Proxy\r\n&apos; +
+                    &apos;\r\n&apos;);
+    srvSocket.write(head);
+    srvSocket.pipe(cltSocket);
+    cltSocket.pipe(srvSocket);
+  });
+});
+
+// now that proxy is running
+proxy.listen(1337, &apos;127.0.0.1&apos;, function() {
+
+  // make a request to a tunneling proxy
+  var options = {
+    port: 1337,
+    hostname: &apos;127.0.0.1&apos;,
+    method: &apos;CONNECT&apos;,
+    path: &apos;www.google.com:80&apos;
+  };
+
+  var req = http.request(options);
+  req.end();
+
+  req.on(&apos;connect&apos;, function(res, socket, head) {
+    console.log(&apos;got connected!&apos;);
+
+    // make a request over an HTTP tunnel
+    socket.write(&apos;GET / HTTP/1.1\r\n&apos; +
+                 &apos;Host: www.google.com:80\r\n&apos; +
+                 &apos;Connection: close\r\n&apos; +
+                 &apos;\r\n&apos;);
+    socket.on(&apos;data&apos;, function(chunk) {
+      console.log(chunk.toString());
+    });
+    socket.on(&apos;end&apos;, function() {
+      proxy.close();
+    });
+  });
+});</code></pre>
+<h3>Event: &apos;upgrade&apos;<span><a class="mark" href="#http_event_upgrade_1" id="http_event_upgrade_1">#</a></span></h3>
+<p><code>function (response, socket, head) { }</code>
+
+</p>
+<!--
+Emitted each time a server responds to a request with an upgrade. If this
+event isn't being listened for, clients receiving an upgrade header will have
+their connections closed.
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x8981;&#x6C42;&#x306B;&#x5FDC;&#x7B54;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x3068;&#x305D;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+A client server pair that show you how to listen for the `upgrade` event.
+-->
+
+<p>&#x3069;&#x306E;&#x3088;&#x3046;&#x306B; <code>upgrade</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x304B;&#x3092;&#x793A;&#x3059;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3068;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30DA;&#x30A2;:
+
+</p>
+<pre><code>var http = require(&apos;http&apos;);
+
+// Create an HTTP server
+var srv = http.createServer(function (req, res) {
+  res.writeHead(200, {&apos;Content-Type&apos;: &apos;text/plain&apos;});
+  res.end(&apos;okay&apos;);
+});
+srv.on(&apos;upgrade&apos;, function(req, socket, head) {
+  socket.write(&apos;HTTP/1.1 101 Web Socket Protocol Handshake\r\n&apos; +
+               &apos;Upgrade: WebSocket\r\n&apos; +
+               &apos;Connection: Upgrade\r\n&apos; +
+               &apos;\r\n&apos;);
+
+  socket.pipe(socket); // echo back
+});
+
+// now that server is running
+srv.listen(1337, &apos;127.0.0.1&apos;, function() {
+
+  // make a request
+  var options = {
+    port: 1337,
+    hostname: &apos;127.0.0.1&apos;,
+    headers: {
+      &apos;Connection&apos;: &apos;Upgrade&apos;,
+      &apos;Upgrade&apos;: &apos;websocket&apos;
+    }
+  };
+
+  var req = http.request(options);
+  req.end();
+
+  req.on(&apos;upgrade&apos;, function(res, socket, upgradeHead) {
+    console.log(&apos;got upgraded!&apos;);
+    socket.end();
+    process.exit(0);
+  });
+});</code></pre>
+<h3>Event: &apos;continue&apos;<span><a class="mark" href="#http_event_continue" id="http_event_continue">#</a></span></h3>
+<p><code>function () { }</code>
+
+</p>
+<!--
+Emitted when the server sends a '100 Continue' HTTP response, usually because
+the request contained 'Expect: 100-continue'. This is an instruction that
+the client should send the request body.
+-->
+
+<p>&#x901A;&#x5E38;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C; &apos;Expect: 100-continue&apos; &#x3092;&#x542B;&#x3093;&#x3067;&#x3044;&#x305F;&#x3053;&#x3068;&#x306B;&#x3088;&#x308A;&#x3001;
+&#x30B5;&#x30FC;&#x30D0;&#x304C; &apos;100 Continue&apos; HTTP &#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x3079;&#x304D;&#x4E8B;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>request.write(chunk, [encoding])<span><a class="mark" href="#http_request_write_chunk_encoding" id="http_request_write_chunk_encoding">#</a></span></h3>
+<!--
+Sends a chunk of the body.  By calling this method
+many times, the user can stream a request body to a
+server--in that case it is suggested to use the
+`['Transfer-Encoding', 'chunked']` header line when
+creating the request.
+-->
+
+<p>&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F55;&#x56DE;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3068;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x5316;&#x3067;&#x304D;&#x307E;&#x3059; &#xFF0D; 
+&#x3053;&#x306E;&#x30B1;&#x30FC;&#x30B9;&#x306F; <code>[&apos;Transfer-Encoding&apos;, &apos;chunked&apos;]</code> &#x30D8;&#x30C3;&#x30C0;&#x3067;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x305F;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The `chunk` argument should be a [Buffer][] or a string.
+-->
+
+<p><code>chunk</code> &#x5F15;&#x6570;&#x306F; <a href="buffer.html#buffer_buffer">Buffer</a> &#x307E;&#x305F;&#x306F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+The `encoding` argument is optional and only applies when `chunk` is a string.
+Defaults to `'utf8'`.
+-->
+
+<p><code>encoding</code> &#x5F15;&#x6570;&#x306F;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x3001;<code>chunk</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x306E;&#x5834;&#x5408;&#x3060;&#x3051;&#x9069;&#x7528;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;utf8&apos;</code> &#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h3>request.end([data], [encoding])<span><a class="mark" href="#http_request_end_data_encoding" id="http_request_end_data_encoding">#</a></span></h3>
+<!--
+Finishes sending the request. If any parts of the body are
+unsent, it will flush them to the stream. If the request is
+chunked, this will send the terminating `'0\r\n\r\n'`.
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x9001;&#x4FE1;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x90E8;&#x5206;&#x304C;&#x307E;&#x3060;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x305D;&#x308C;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x5316;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;&#x3053;&#x308C;&#x306F;&#x7D42;&#x7AEF;&#x306E; <code>&apos;0\r\n\r\n&apos;</code> &#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If `data` is specified, it is equivalent to calling
+`request.write(data, encoding)` followed by `request.end()`.
+-->
+
+<p><code>data</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;
+<code>request.write(data, encoding)</code> &#x306B;&#x7D9A;&#x3051;&#x3066; <code>request.end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x306E;&#x3068;&#x7B49;&#x4FA1;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h3>request.abort()<span><a class="mark" href="#http_request_abort" id="http_request_abort">#</a></span></h3>
+<!--
+Aborts a request.  (New since v0.3.8.)
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x30A2;&#x30DC;&#x30FC;&#x30C8;&#x3057;&#x307E;&#x3059; (v0.3.8 &#x304B;&#x3089;&#x306E;&#x65B0;&#x6A5F;&#x80FD;)
+
+</p>
+<h3>request.setTimeout(timeout, [callback])<span><a class="mark" href="#http_request_settimeout_timeout_callback" id="http_request_settimeout_timeout_callback">#</a></span></h3>
+<!--
+Once a socket is assigned to this request and is connected
+[socket.setTimeout()][] will be called.
+-->
+
+<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x3066;&#x63A5;&#x7D9A;&#x3057;&#x305F;&#x969B;&#x306B;&#x3001;
+<a href="net.html#net_socket_settimeout_timeout_callback">socket.setTimeout()</a> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>request.setNoDelay([noDelay])<span><a class="mark" href="#http_request_setnodelay_nodelay" id="http_request_setnodelay_nodelay">#</a></span></h3>
+<!--
+Once a socket is assigned to this request and is connected
+[socket.setNoDelay()][] will be called.
+-->
+
+<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x3066;&#x63A5;&#x7D9A;&#x3057;&#x305F;&#x969B;&#x306B;&#x3001;
+<a href="net.html#net_socket_setnodelay_nodelay">socket.setNoDelay()</a> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h3>request.setSocketKeepAlive([enable], [initialDelay])<span><a class="mark" href="#http_request_setsocketkeepalive_enable_initialdelay" id="http_request_setsocketkeepalive_enable_initialdelay">#</a></span></h3>
+<!--
+Once a socket is assigned to this request and is connected
+[socket.setKeepAlive()][] will be called.
+-->
+
+<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x3066;&#x63A5;&#x7D9A;&#x3057;&#x305F;&#x969B;&#x306B;&#x3001;
+<a href="net.html#net_socket_setkeepalive_enable_initialdelay">socket.setKeepAlive()</a> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>http.IncomingMessage<span><a class="mark" href="#http_http_incomingmessage" id="http_http_incomingmessage">#</a></span></h2>
+<!--
+An `IncomingMessage` object is created by [http.Server][] or
+[http.ClientRequest][] and passed as the first argument to the `'request'`
+and `'response'` event respectively. It may be used to access response status,
+headers and data.
+-->
+
+<p><code>IncomingMessage</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; <a href="#http_class_http_server">http.Server</a> &#x307E;&#x305F;&#x306F; <a href="#http_class_http_clientrequest">http.ClientRequest</a>
+&#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x3001;<code>&apos;request&apos;</code> &#x304A;&#x3088;&#x3073; <code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;
+&#x6700;&#x521D;&#x306E;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x3001;&#x30D8;&#x30C3;&#x30C0;&#x3001;&#x304A;&#x3088;&#x3073;&#x30C7;&#x30FC;&#x30BF;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+It implements the [Readable Stream][] interface, as well as the
+following additional events, methods, and properties.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; <a href="stream.html#stream_readable_stream">Readable Stream</a> &#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306E;&#x5B9F;&#x88C5;&#x3067;&#x3001;
+&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3001;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3001;&#x304A;&#x3088;&#x3073;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x8FFD;&#x52A0;&#x3067;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;close&apos;<span><a class="mark" href="#http_event_close_2" id="http_event_close_2">#</a></span></h3>
+<p><code>function () { }</code>
+
+</p>
+<!--
+Indicates that the underlaying connection was closed.
+Just like `'end'`, this event occurs only once per response.
+-->
+
+<p>&#x4E0B;&#x5C64;&#x306E;&#x63A5;&#x7D9A;&#x304C;&#x5207;&#x65AD;&#x3055;&#x308C;&#x305F;&#x3053;&#x3068;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>&apos;end&apos;</code> &#x3068;&#x540C;&#x69D8;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x6BCE;&#x306B;&#x4E00;&#x5EA6;&#x3060;&#x3051;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Just like `'end'`, this event occurs only once per response. See
+[http.ServerResponse][]'s `'close'` event for more information.
+-->
+
+<p><code>&apos;end&apos;</code> &#x306E;&#x3088;&#x3046;&#x306B;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x6BCE;&#x306B;&#x4E00;&#x56DE;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<a href="#http_class_http_serverresponse">http.ServerResponse</a> &#x306E; <code>&apos;close&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x60C5;&#x5831;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>message.httpVersion<span><a class="mark" href="#http_message_httpversion" id="http_message_httpversion">#</a></span></h3>
+<!--
+In case of server request, the HTTP version sent by the client. In the case of
+client response, the HTTP version of the connected-to server.
+Probably either `'1.1'` or `'1.0'`.
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x5834;&#x5408;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x9001;&#x4FE1;&#x3057;&#x305F; HTTP &#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x3059;&#x3002;
+&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306E;&#x5834;&#x5408;&#x3001;&#x63A5;&#x7D9A;&#x3057;&#x305F;&#x30B5;&#x30FC;&#x30D0;&#x306E; HTTP &#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x3059;&#x3002;
+&#x3044;&#x305A;&#x308C;&#x306E;&#x5834;&#x5408;&#x3082; <code>&apos;1.1&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;1.0&apos;</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Also `response.httpVersionMajor` is the first integer and
+`response.httpVersionMinor` is the second.
+-->
+
+<p>&#x540C;&#x69D8;&#x306B; <code>response.httpVersionMajor</code> &#x306F;&#x6700;&#x521D;&#x306E;&#x6574;&#x6570;&#x3001;
+<code>response.httpVersionMinor</code> &#x306F; 2 &#x756A;&#x76EE;&#x306E;&#x6574;&#x6570;&#x3067;&#x3059;&#x3002;
+
+
+</p>
+<h3>message.headers<span><a class="mark" href="#http_message_headers" id="http_message_headers">#</a></span></h3>
+<!--
+The request/response headers object.
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#xFF0F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Read only map of header names and values. Header names are lower-cased.
+Example:
+-->
+
+<p>&#x30D8;&#x30C3;&#x30C0;&#x540D;&#x3068;&#x5024;&#x306E;&#x30EA;&#x30FC;&#x30C9;&#x30AA;&#x30F3;&#x30EA;&#x30FC;&#x306A;&#x30DE;&#x30C3;&#x30D7;&#x3067;&#x3059;&#x3002;&#x30D8;&#x30C3;&#x30C0;&#x540D;&#x306F;&#x5C0F;&#x6587;&#x5B57;&#x3067;&#x3059;&#x3002;
+&#x4F8B;:
+
+</p>
+<pre><code>// Prints something like:
+//
+// { &apos;user-agent&apos;: &apos;curl/7.22.0&apos;,
+//   host: &apos;127.0.0.1:8000&apos;,
+//   accept: &apos;*/*&apos; }
+console.log(request.headers);</code></pre>
+<h3>message.trailers<span><a class="mark" href="#http_message_trailers" id="http_message_trailers">#</a></span></h3>
+<!--
+The request/response trailers object. Only populated after the 'end' event.
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#xFF0F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306E;&#x30C8;&#x30EC;&#x30FC;&#x30E9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+<code>&apos;end&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x5F8C;&#x306B;&#x3060;&#x3051;&#x767A;&#x751F;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>message.setTimeout(msecs, callback)<span><a class="mark" href="#http_message_settimeout_msecs_callback" id="http_message_settimeout_msecs_callback">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>msecs</code> <span class="type">Number</span></li>
+<li><code>callback</code> <span class="type">Function</span></li>
+</ul></div>
+<!--
+Calls `message.connection.setTimeout(msecs, callback)`.
+-->
+
+<p><code>message.connection.setTimeout(msecs, callback)</code> &#x3092;&#x547C;&#x3073;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>message.method<span><a class="mark" href="#http_message_method" id="http_message_method">#</a></span></h3>
+<!--
+**Only valid for request obtained from [http.Server][].**
+-->
+
+<p><strong> <a href="#http_class_http_server">http.Server</a> &#x304B;&#x3089;&#x5F97;&#x305F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x306E;&#x307F;&#x6709;&#x52B9;&#x3067;&#x3059; </strong>
+
+</p>
+<!--
+The request method as a string. Read only. Example:
+`'GET'`, `'DELETE'`.
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x8868;&#x3059;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;&#x53C2;&#x7167;&#x306E;&#x307F;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+&#x4F8B;: <code>&apos;GET&apos;</code>&#x3001;<code>&apos;DELETE&apos;</code>
+
+</p>
+<h3>message.url<span><a class="mark" href="#http_message_url" id="http_message_url">#</a></span></h3>
+<!--
+**Only valid for request obtained from [http.Server][].**
+-->
+
+<p><strong> <a href="#http_class_http_server">http.Server</a> &#x304B;&#x3089;&#x5F97;&#x305F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x306E;&#x307F;&#x6709;&#x52B9;&#x3067;&#x3059; </strong>
+
+</p>
+<!--
+Request URL string. This contains only the URL that is
+present in the actual HTTP request. If the request is:
+-->
+
+<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8; URL &#x3092;&#x8868;&#x3059;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x5B9F;&#x969B;&#x306E; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x5B58;&#x5728;&#x3059;&#x308B; URL &#x3060;&#x3051;&#x3092;&#x542B;&#x307F;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;:
+
+</p>
+<pre><code>GET /status?name=ryan HTTP/1.1\r\n
+Accept: text/plain\r\n
+\r\n</code></pre>
+<!--
+Then `request.url` will be:
+-->
+
+<p>&#x3053;&#x306E;&#x5834;&#x5408;&#x306E; <code>request.url</code> &#x306F;&#x3053;&#x3046;&#x306A;&#x308A;&#x307E;&#x3059;:
+
+</p>
+<pre><code>&apos;/status?name=ryan&apos;</code></pre>
+<!--
+If you would like to parse the URL into its parts, you can use
+`require('url').parse(request.url)`.  Example:
+-->
+
+<p>URL &#x306E;&#x8981;&#x7D20;&#x3092;&#x89E3;&#x6790;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;
+<code>require(&apos;url&apos;).parse(request.url)</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;&#x4F8B;:
+
+</p>
+<pre><code>node&gt; require(&apos;url&apos;).parse(&apos;/status?name=ryan&apos;)
+{ href: &apos;/status?name=ryan&apos;,
+  search: &apos;?name=ryan&apos;,
+  query: &apos;name=ryan&apos;,
+  pathname: &apos;/status&apos; }</code></pre>
+<!--
+If you would like to extract the params from the query string,
+you can use the `require('querystring').parse` function, or pass
+`true` as the second argument to `require('url').parse`.  Example:
+-->
+
+<p>&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x6587;&#x5B57;&#x5217;&#x304B;&#x3089;&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x3092;&#x53D6;&#x308A;&#x51FA;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;
+<code>require(&apos;querystring&apos;).parse</code> &#x95A2;&#x6570;&#x3092;&#x53C2;&#x7167;&#x3059;&#x308B;&#x304B;&#x3001;
+<code>require(&apos;url&apos;).parse</code> &#x306E;&#x7B2C; 2 &#x5F15;&#x6570;&#x306B; <code>true</code> &#x3092;&#x6E21;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;&#x4F8B;:
+
+</p>
+<pre><code>node&gt; require(&apos;url&apos;).parse(&apos;/status?name=ryan&apos;, true)
+{ href: &apos;/status?name=ryan&apos;,
+  search: &apos;?name=ryan&apos;,
+  query: { name: &apos;ryan&apos; },
+  pathname: &apos;/status&apos; }</code></pre>
+<h3>message.statusCode<span><a class="mark" href="#http_message_statuscode" id="http_message_statuscode">#</a></span></h3>
+<!--
+**Only valid for response obtained from `http.ClientRequest`.**
+-->
+
+<p><strong> <code>http.ClientRequest</code> &#x304B;&#x3089;&#x5F97;&#x305F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3067;&#x306E;&#x307F;&#x6709;&#x52B9;&#x3067;&#x3059; </strong>
+
+</p>
+<!--
+The 3-digit HTTP response status code. E.G. `404`.
+-->
+
+<p>3 &#x6841;&#x306E;&#x6570;&#x5B57;&#x306B;&#x3088;&#x308B;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306E;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x3059;&#x3002;&#x4F8B;&#x3048;&#x3070; <code>404</code>&#x3002;
+
+</p>
+<h3>message.socket<span><a class="mark" href="#http_message_socket" id="http_message_socket">#</a></span></h3>
+<!--
+The `net.Socket` object associated with the connection.
+-->
+
+<p>&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x95A2;&#x9023;&#x3065;&#x3051;&#x3089;&#x308C;&#x305F; <code>net.Socket</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+With HTTPS support, use request.connection.verifyPeer() and
+request.connection.getPeerCertificate() to obtain the client's
+authentication details.
+-->
+
+<p>HTTPS &#x3067;&#x306F; <code>request.connection.verifyPeer()</code> &#x3068;
+<code>request.connection.getPeerCertificate()</code> &#x3067;
+&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x8A8D;&#x8A3C;&#x306E;&#x8A73;&#x7D30;&#x3092;&#x53D6;&#x5F97;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

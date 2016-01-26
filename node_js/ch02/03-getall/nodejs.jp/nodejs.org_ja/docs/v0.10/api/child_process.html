@@ -1,0 +1,1305 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Child Process Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/child_process.html">
+</head>
+<body class="alt apidoc" id="api-section-child_process">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="child_process.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#child_process_child_process">Child Process</a><ul>
+<li><a href="#child_process_class_childprocess">Class: ChildProcess</a><ul>
+<li><a href="#child_process_event_error">Event:  &apos;error&apos;</a></li>
+<li><a href="#child_process_event_exit">Event:  &apos;exit&apos;</a></li>
+<li><a href="#child_process_event_close">Event: &apos;close&apos;</a></li>
+<li><a href="#child_process_event_disconnect">Event: &apos;disconnect&apos;</a></li>
+<li><a href="#child_process_event_message">Event: &apos;message&apos;</a></li>
+<li><a href="#child_process_child_stdin">child.stdin</a></li>
+<li><a href="#child_process_child_stdout">child.stdout</a></li>
+<li><a href="#child_process_child_stderr">child.stderr</a></li>
+<li><a href="#child_process_child_pid">child.pid</a></li>
+<li><a href="#child_process_child_connected">child.connected</a></li>
+<li><a href="#child_process_child_kill_signal">child.kill([signal])</a></li>
+<li><a href="#child_process_child_send_message_sendhandle">child.send(message, [sendHandle])</a><ul>
+<li><a href="#child_process_example_sending_server_object">Example: sending server object</a></li>
+<li><a href="#child_process_example_sending_socket_object">Example: sending socket object</a></li>
+</ul>
+</li>
+<li><a href="#child_process_child_disconnect">child.disconnect()</a></li>
+</ul>
+</li>
+<li><a href="#child_process_child_process_spawn_command_args_options">child_process.spawn(command, [args], [options])</a></li>
+<li><a href="#child_process_child_process_exec_command_options_callback">child_process.exec(command, [options], callback)</a></li>
+<li><a href="#child_process_child_process_execfile_file_args_options_callback">child_process.execFile(file, [args], [options], [callback])</a></li>
+<li><a href="#child_process_child_process_fork_modulepath_args_options">child_process.fork(modulePath, [args], [options])</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Child Process<span><a class="mark" href="#child_process_child_process" id="child_process_child_process">#</a></span></h1>
+<pre class="api_stability_3">Stability: 3 - Stable</pre><!--
+Node provides a tri-directional `popen(3)` facility through the
+`child_process` module.
+-->
+
+<p>Node&#x306F; <code>child_process</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x901A;&#x3058;&#x3066;&#x3001;3 &#x65B9;&#x5411;&#x306E; <code>popen(3)</code>
+&#x6A5F;&#x80FD;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+It is possible to stream data through a child's `stdin`, `stdout`, and
+`stderr` in a fully non-blocking way.  (Note that some programs use
+line-buffered I/O internally.  That doesn't affect node.js but it means
+data you send to the child process is not immediately consumed.)
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x5B8C;&#x5168;&#x306B;&#x30CE;&#x30F3;&#x30D6;&#x30ED;&#x30C3;&#x30AD;&#x30F3;&#x30B0;&#x306A;&#x65B9;&#x6CD5;&#x3067;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; <code>stdin</code>&#x3001;<code>stdout</code>&#x3001;
+&#x305D;&#x3057;&#x3066; <code>stderr</code> &#x3092;&#x901A;&#x3058;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5B9F;&#x73FE;&#x3057;&#x307E;&#x3059;&#x3002;
+(&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x5185;&#x90E8;&#x7684;&#x306B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x305F; I/O &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306B;
+&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;&#x305D;&#x308C;&#x306F; node.js &#x306B;&#x306F;&#x5F71;&#x97FF;&#x3057;&#x307E;&#x305B;&#x3093;&#x304C;&#x3001;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x3063;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x3059;&#x3050;&#x306B;&#x6D88;&#x8CBB;&#x3055;&#x308C;&#x308B;&#x3068;&#x306F;&#x9650;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;)&#x3002;
+
+</p>
+<!--
+To create a child process use `require('child_process').spawn()`.
+To create a child process use `require('child_process').spawn()` or
+`require('child_process').fork()`.  The semantics of each are slightly
+different, and explained below.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x751F;&#x6210;&#x306F; <code>require(&apos;child_process&apos;).spawn()</code> &#x307E;&#x305F;&#x306F;
+<code>require(&apos;child_process&apos;).fork()</code> &#x3092;&#x4F7F;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x610F;&#x5473;&#x8AD6;&#x306F;&#x4EE5;&#x4E0B;&#x3067;&#x8AAC;&#x660E;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x308F;&#x305A;&#x304B;&#x306B;&#x7570;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Class: ChildProcess<span><a class="mark" href="#child_process_class_childprocess" id="child_process_class_childprocess">#</a></span></h2>
+<!--
+`ChildProcess` is an [EventEmitter][].
+-->
+
+<p><code>ChildProcess</code> &#x306F; <a href="events.html#events_class_events_eventemitter">EventEmitter</a> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Child processes always have three streams associated with them. `child.stdin`,
+`child.stdout`, and `child.stderr`.  These may be shared with the stdio
+streams of the parent process, or they may be separate stream objects
+which can be piped to and from.
+
+The ChildProcess class is not intended to be used directly.  Use the
+`spawn()` or `fork()` methods to create a Child Process instance.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x5E38;&#x306B; 3 &#x672C;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;&#x95A2;&#x9023;&#x3065;&#x3051;&#x3089;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+<code>child.stdin</code>&#x3001;<code>child.stdout</code>&#x3001;&#x305D;&#x3057;&#x3066; <code>child.stderr</code> &#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x3089;&#x306F;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5171;&#x6709;&#x3059;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3057;&#x3001;
+&#x72EC;&#x7ACB;&#x3057;&#x305F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x30D1;&#x30A4;&#x30D7;&#x3067;&#x3064;&#x306A;&#x304C;&#x308C;&#x3066;&#x3044;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>Event:  &apos;error&apos;<span><a class="mark" href="#child_process_event_error" id="child_process_event_error">#</a></span></h3>
+<!--
+* `err` {Error Object} the error.
+-->
+
+<ul>
+<li><code>err</code> {Error Object} &#x30A8;&#x30E9;&#x30FC;&#x3002;</li>
+</ul>
+<!--
+Emitted when:
+-->
+
+<p>&#x6B21;&#x306E;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;:
+
+</p>
+<!--
+1. The process could not be spawned, or
+2. The process could not be killed, or
+3. Sending a message to the child process failed for whatever reason.
+-->
+
+<ol>
+<li>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x8D77;&#x52D5;&#x3067;&#x304D;&#x306A;&#x304B;&#x3063;&#x305F;&#x3001;&#x307E;&#x305F;&#x306F;</li>
+<li>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x6BBA;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x306A;&#x304B;&#x3063;&#x305F;&#x3001;&#x307E;&#x305F;&#x306F;</li>
+<li>&#x4F55;&#x3089;&#x304B;&#x306E;&#x7406;&#x7531;&#x3067;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x5931;&#x6557;&#x3057;&#x305F;&#x3002;</li>
+</ol>
+<!--
+Note that the `exit`-event may or may not fire after an error has occured. If
+you are listening on both events to fire a function, remember to guard against
+calling your function twice.
+-->
+
+<p><code>exit</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F;&#x5F8C;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3057;&#x3001;
+&#x3055;&#x308C;&#x306A;&#x3044;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3082;&#x3057;&#x4E21;&#x65B9;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x540C;&#x3058;&#x95A2;&#x6570;&#x3067;&#x76E3;&#x8996;&#x3057;&#x305F;&#x5834;&#x5408;&#x3001;&#x305D;&#x306E;&#x95A2;&#x6570;&#x306F;2&#x56DE;&#x306E;&#x547C;&#x3073;&#x51FA;&#x3057;&#x306B;
+&#x5BFE;&#x51E6;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x5FD8;&#x308C;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+See also [`ChildProcess#kill()`](#child_process_child_kill_signal) and
+[`ChildProcess#send()`](#child_process_child_send_message_sendhandle).
+-->
+
+<p><a href="#child_process_child_kill_signal"><code>ChildProcess#kill()</code></a> &#x304A;&#x3088;&#x3073;
+<a href="#child_process_child_send_message_sendhandle"><code>ChildProcess#send()</code></a>
+&#x3082;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>Event:  &apos;exit&apos;<span><a class="mark" href="#child_process_event_exit" id="child_process_event_exit">#</a></span></h3>
+<!--
+* `code` {Number} the exit code, if it exited normally.
+* `signal` {String} the signal passed to kill the child process, if it
+  was killed by the parent.
+-->
+
+<ul>
+<li><code>code</code> {Number} &#x901A;&#x5E38;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x7D42;&#x4E86;&#x30B3;&#x30FC;&#x30C9;&#x3002;</li>
+<li><code>signal</code> {String} &#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x3088;&#x3063;&#x3066;&#x7D42;&#x4E86;&#x3055;&#x305B;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x9001;&#x3089;&#x308C;&#x305F;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3002;</li>
+</ul>
+<!--
+This event is emitted after the child process ends. If the process terminated
+normally, `code` is the final exit code of the process, otherwise `null`. If
+the process terminated due to receipt of a signal, `signal` is the string name
+of the signal, otherwise `null`.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5F8C;&#x3067;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x666E;&#x901A;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x3001;<code>code</code> &#x306F;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x7D42;&#x4E86;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306E;&#x5834;&#x5408;&#x306F; <code>null</code> &#x3067;&#x3059;&#x3002;
+&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x3066;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x3001;<code>signal</code> &#x306F;&#x6587;&#x5B57;&#x5217;&#x306B;&#x3088;&#x308B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306E;&#x540D;&#x524D;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306E;&#x5834;&#x5408;&#x306F; <code>null</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that the child process stdio streams might still be open.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x305F;&#x307E;&#x307E;&#x306B;&#x306A;&#x3063;&#x3066;&#x3044;&#x308B;&#x304B;&#x3082;
+&#x3057;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Also, note that node establishes signal handlers for `'SIGINT'` and `'SIGTERM`',
+so it will not terminate due to receipt of those signals, it will exit.
+-->
+
+<p>&#x307E;&#x305F;&#x3001;Node &#x304C; &apos;SIGINT&apos;<code> &#x304A;&#x3088;&#x3073; </code>&apos;SIGTERM<code>&apos; &#x306B;&#x5BFE;&#x3059;&#x308B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x3092;
+&#x78BA;&#x7ACB;&#x3059;&#x308B;&#x305F;&#x3081;&#x3001;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x305D;&#x308C;&#x3089;&#x306E;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x53D7;&#x3051;&#x3068;&#x3063;&#x3066;&#x7D42;&#x4E86;&#x3057;&#x3066;&#x3082;&#x3001;
+</code>signal` &#x306B;&#x306F;&#x305D;&#x308C;&#x3089;&#x306E;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306E;&#x540D;&#x524D;&#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+See `waitpid(2)`.
+-->
+
+<p><code>waitpid(2)</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>Event: &apos;close&apos;<span><a class="mark" href="#child_process_event_close" id="child_process_event_close">#</a></span></h3>
+<!--
+* `code` {Number} the exit code, if it exited normally.
+* `signal` {String} the signal passed to kill the child process, if it
+  was killed by the parent.
+-->
+
+<ul>
+<li><code>code</code> {Number} &#x666E;&#x901A;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x305D;&#x306E;&#x7D42;&#x4E86;&#x30B3;&#x30FC;&#x30C9;&#x3002;</li>
+<li><code>signal</code> {String} &#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x3088;&#x3063;&#x3066;&#x6BBA;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x6BBA;&#x3059;&#x305F;&#x3081;&#x306B;&#x6E21;&#x3055;&#x308C;&#x305F;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3002;</li>
+</ul>
+<!--
+This event is emitted when the stdio streams of a child process have all
+terminated.  This is distinct from 'exit', since multiple processes
+might share the same stdio streams.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x3001;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x5168;&#x3066;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;
+&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x8907;&#x6570;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x540C;&#x3058;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5171;&#x6709;&#x3059;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x306E;&#x3067;&#x3001;
+&#x3053;&#x308C;&#x306F; <code>&apos;exit&apos;</code> &#x3068;&#x306F;&#x660E;&#x78BA;&#x306B;&#x7570;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;disconnect&apos;<span><a class="mark" href="#child_process_event_disconnect" id="child_process_event_disconnect">#</a></span></h3>
+<!--
+This event is emitted after calling the `.disconnect()` method in the parent
+or in the child. After disconnecting it is no longer possible to send messages,
+and the `.connected` property is false.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x3001;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x307E;&#x305F;&#x306F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067; <code>.disconnect()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;
+&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x5207;&#x65AD;&#x306E;&#x5F8C;&#x3067;&#x306F;&#x3001;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x9593;&#x3067;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x305A;&#x3001;
+<code>.connected</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F; <code>false</code> &#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;message&apos;<span><a class="mark" href="#child_process_event_message" id="child_process_event_message">#</a></span></h3>
+<!--
+* `message` {Object} a parsed JSON object or primitive value
+* `sendHandle` {Handle object} a Socket or Server object
+-->
+
+<ul>
+<li><code>message</code> {Object} &#x89E3;&#x6790;&#x6E08;&#x307F;&#x306E; JSON &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x307E;&#x305F;&#x306F;&#x30D7;&#x30EA;&#x30DF;&#x30C6;&#x30A3;&#x30D6;&#x5024;</li>
+<li><code>sendHandle</code> {Handle object} &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x307E;&#x305F;&#x306F;&#x30B5;&#x30FC;&#x30D0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;</li>
+</ul>
+<!--
+Messages send by `.send(message, [sendHandle])` are obtained using the
+`message` event.
+-->
+
+<p><code>.send(message, [sendHandle])</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x305F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306F; <code>&apos;message&apos;</code>
+&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x3063;&#x3066;&#x53D6;&#x5F97;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>child.stdin<span><a class="mark" href="#child_process_child_stdin" id="child_process_child_stdin">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">Stream object</span></li>
+</ul></div>
+<!--
+A `Writable Stream` that represents the child process's `stdin`.
+Closing this stream via `end()` often causes the child process to terminate.
+
+If the child stdio streams are shared with the parent, then this will
+not be set.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; <code>stdin</code> &#x3092;&#x8868;&#x73FE;&#x3059;&#x308B; <code>Writable Stream</code> &#x3067;&#x3059;&#x3002;
+&#x591A;&#x304F;&#x306E;&#x5834;&#x5408;&#x3001;<code>end()</code> &#x3092;&#x901A;&#x3058;&#x3066;&#x3053;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x9589;&#x3058;&#x308B;&#x3068;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x539F;&#x56E0;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x304C;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x5171;&#x6709;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>child.stdout<span><a class="mark" href="#child_process_child_stdout" id="child_process_child_stdout">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">Stream object</span></li>
+</ul></div>
+<!--
+A `Readable Stream` that represents the child process's `stdout`.
+
+If the child stdio streams are shared with the parent, then this will
+not be set.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; <code>stdout</code> &#x3092;&#x8868;&#x73FE;&#x3059;&#x308B; <code>Readable Stream</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x304C;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x5171;&#x6709;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>child.stderr<span><a class="mark" href="#child_process_child_stderr" id="child_process_child_stderr">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">Stream object</span></li>
+</ul></div>
+<!--
+A `Readable Stream` that represents the child process's `stderr`.
+
+If the child stdio streams are shared with the parent, then this will
+not be set.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; <code>stderr</code> &#x3092;&#x8868;&#x73FE;&#x3059;&#x308B; <code>Readable Stream</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x304C;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x5171;&#x6709;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>child.pid<span><a class="mark" href="#child_process_child_pid" id="child_process_child_pid">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">Integer</span></li>
+</ul></div>
+<!--
+The PID of the child process.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; PID &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var spawn = require(&apos;child_process&apos;).spawn,
+    grep  = spawn(&apos;grep&apos;, [&apos;ssh&apos;]);
+
+console.log(&apos;Spawned child pid: &apos; + grep.pid);
+grep.stdin.end();</code></pre>
+<h3>child.connected<span><a class="mark" href="#child_process_child_connected" id="child_process_child_connected">#</a></span></h3>
+<!--
+* {Boolean} Set to false after `.disconnect' is called
+-->
+
+<ul>
+<li>{Boolean} <code>.disconnect&apos; &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3068; </code>false` &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;</li>
+</ul>
+<!--
+If `.connected` is false, it is no longer possible to send messages.
+-->
+
+<p><code>.connected</code> &#x304C; <code>false</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>child.kill([signal])<span><a class="mark" href="#child_process_child_kill_signal" id="child_process_child_kill_signal">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>signal</code> <span class="type">String</span></li>
+</ul></div>
+<!--
+Send a signal to the child process. If no argument is given, the process will
+be sent `'SIGTERM'`. See `signal(7)` for a list of available signals.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x9001;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x5F15;&#x6570;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x306F; <code>&apos;SIGTERM&apos;</code> &#x304C;&#x9001;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306E;&#x4E00;&#x89A7;&#x306F; <code>signal(7)</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+
+</p>
+<pre><code>var spawn = require(&apos;child_process&apos;).spawn,
+    grep  = spawn(&apos;grep&apos;, [&apos;ssh&apos;]);
+
+grep.on(&apos;close&apos;, function (code, signal) {
+  console.log(&apos;child process terminated due to receipt of signal &apos;+signal);
+});
+
+// send SIGHUP to process
+grep.kill(&apos;SIGHUP&apos;);</code></pre>
+<!--
+May emit an `'error'` event when the signal cannot be delivered. Sending a
+signal to a child process that has already exited is not an error but may
+have unforeseen consequences: if the PID (the process ID) has been reassigned
+to another process, the signal will be delivered to that process instead.
+What happens next is anyone's guess.
+-->
+
+<p>&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x9001;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F; <code>&apos;error&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;
+&#x751F;&#x6210;&#x3055;&#x308C;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x65E2;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3078;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x3066;&#x3082;&#x30A8;&#x30E9;&#x30FC;&#x306B;&#x306F;&#x306A;&#x3089;&#x305A;&#x3001;
+&#x4E88;&#x60F3;&#x3057;&#x306A;&#x3044;&#x7D50;&#x679C;&#x306B;&#x306A;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;:
+PID (&#x30D7;&#x30ED;&#x30BB;&#x30B9; ID) &#x304C;&#x4ED6;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x518D;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;
+&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306F;&#x305D;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x3066;&#x3057;&#x307E;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x3067;&#x4F55;&#x304C;&#x8D77;&#x3053;&#x308B;&#x304B;&#x306F;&#x8AB0;&#x306B;&#x3082;&#x4E88;&#x60F3;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Note that while the function is called `kill`, the signal delivered to the
+child process may not actually kill it.  `kill` really just sends a signal
+to a process.
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; <code>kill</code> &#x3068;&#x547C;&#x3070;&#x308C;&#x308B;&#x3082;&#x306E;&#x306E;&#x3001;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x5C4A;&#x3051;&#x3089;&#x308C;&#x308B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x304C;&#x5B9F;&#x969B;&#x306B;&#x306F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x6BBA;&#x3055;&#x306A;&#x3044;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+<code>kill</code> &#x306F;&#x305F;&#x3060;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x9001;&#x308B;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+See `kill(2)`
+-->
+
+<p><code>kill(2)</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>child.send(message, [sendHandle])<span><a class="mark" href="#child_process_child_send_message_sendhandle" id="child_process_child_send_message_sendhandle">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>message</code> <span class="type">Object</span></li>
+<li><code>sendHandle</code> <span class="type">Handle object</span></li>
+</ul></div>
+<!--
+When using `child_process.fork()` you can write to the child using
+`child.send(message, [sendHandle])` and messages are received by
+a `'message'` event on the child.
+-->
+
+<p><code>child_process.fork()</code> &#x3092;&#x4F7F;&#x3046;&#x3068;&#x3001;<code>child.send(message, [sendHandle])</code> &#x3092;
+&#x4F7F;&#x3063;&#x3066;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x3001;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067;&#x306F;&#x305D;&#x308C;&#x3092; <code>&apos;message&apos;</code>
+&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x3063;&#x3066;&#x53D7;&#x3051;&#x53D6;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+For example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var cp = require(&apos;child_process&apos;);
+
+var n = cp.fork(__dirname + &apos;/sub.js&apos;);
+
+n.on(&apos;message&apos;, function(m) {
+  console.log(&apos;PARENT got message:&apos;, m);
+});
+
+n.send({ hello: &apos;world&apos; });</code></pre>
+<!--
+And then the child script, `'sub.js'` might look like this:
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; <code>&apos;sub.js&apos;</code> &#x306F;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;:
+
+</p>
+<pre><code>process.on(&apos;message&apos;, function(m) {
+  console.log(&apos;CHILD got message:&apos;, m);
+});
+
+process.send({ foo: &apos;bar&apos; });</code></pre>
+<!--
+In the child the `process` object will have a `send()` method, and `process`
+will emit objects each time it receives a message on its channel.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067;&#x306F; <code>process</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; <code>send()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x6301;&#x3061;&#x3001;
+&#x305D;&#x306E;&#x30C1;&#x30E3;&#x30CD;&#x30EB;&#x4E0A;&#x3067;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x305F;&#x3073;&#x306B;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Please note that the `send()` method on both the parent and child are
+synchronous - sending large chunks of data is not advised (pipes can be used
+instead, see
+[`child_process.spawn`](#child_process_child_process_spawn_command_args_options)).
+-->
+
+<p>&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x3044;&#x305A;&#x308C;&#x306B;&#x304A;&#x3044;&#x3066;&#x3082;&#x3001;<code>send()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x540C;&#x671F;&#x7684;&#x3067;&#x3059; -
+&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x5927;&#x304D;&#x306A;&#x584A;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x63A8;&#x5968;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;
+(&#x4EE3;&#x308F;&#x308A;&#x306B;&#x30D1;&#x30A4;&#x30D7;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x51FA;&#x6765;&#x307E;&#x3059;&#x3001;
+<a href="#child_process_child_process_spawn_command_args_options"><code>child_process.spawn</code></a>
+&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;)&#x3002;
+
+</p>
+<!--
+There is a special case when sending a `{cmd: 'NODE_foo'}` message. All messages
+containing a `NODE_` prefix in its `cmd` property will not be emitted in
+the `message` event, since they are internal messages used by node core.
+Messages containing the prefix are emitted in the `internalMessage` event, you
+should by all means avoid using this feature, it is subject to change without notice.
+-->
+
+<p>&#x7279;&#x5225;&#x306A;&#x30B1;&#x30FC;&#x30B9;&#x3068;&#x3057;&#x3066;&#x3001;<code>{cmd: &apos;NODE_foo&apos;}</code> &#x306E;&#x3088;&#x3046;&#x306A;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;
+&#x9001;&#x4FE1;&#x3059;&#x308B;&#x5834;&#x5408;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+<code>cmd</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x304C;&#x63A5;&#x982D;&#x8F9E; <code>NODE_</code> &#x3092;&#x542B;&#x3080;&#x5168;&#x3066;&#x306E;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306F; node &#x306E;&#x30B3;&#x30A2;&#x3067;
+&#x4F7F;&#x308F;&#x308C;&#x308B;&#x5185;&#x90E8;&#x7684;&#x306A;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3067;&#x3042;&#x308B;&#x305F;&#x3081;&#x3001;<code>&apos;message&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x306E;&#x63A5;&#x982D;&#x8F9E;&#x3092;&#x542B;&#x3080;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306F; <code>&apos;internalMessage&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x305D;&#x308C;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;&#x305D;&#x308C;&#x306F;&#x4FDD;&#x8A3C;&#x306A;&#x3057;&#x306B;&#x5909;&#x66F4;&#x3055;&#x308C;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The `sendHandle` option to `child.send()` is for sending a TCP server or
+socket object to another process. The child will receive the object as its
+second argument to the `message` event.
+-->
+
+<p><code>child.send()</code> &#x306E; <code>sendHandle</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306F; TCP &#x30B5;&#x30FC;&#x30D0;&#x307E;&#x305F;&#x306F;
+&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4ED6;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x3082;&#x306E;&#x3067;&#x3059;&#x3002;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x305D;&#x308C;&#x3092; <code>&apos;message&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x7B2C; 2 &#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x53D7;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Emits an `'error'` event if the message cannot be sent, for example because
+the child process has already exited.
+-->
+
+<p>&#x305F;&#x3068;&#x3048;&#x3070;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x65E2;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x306A;&#x3069;&#x3001;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x9001;&#x4FE1;&#x3067;&#x304D;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;
+<code>&apos;error&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h4>Example: sending server object<span><a class="mark" href="#child_process_example_sending_server_object" id="child_process_example_sending_server_object">#</a></span></h4>
+<!--
+Here is an example of sending a server:
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>var child = require(&apos;child_process&apos;).fork(&apos;child.js&apos;);
+
+// Open up the server object and send the handle.
+var server = require(&apos;net&apos;).createServer();
+server.on(&apos;connection&apos;, function (socket) {
+  socket.end(&apos;handled by parent&apos;);
+});
+server.listen(1337, function() {
+  child.send(&apos;server&apos;, server);
+});</code></pre>
+<!--
+And the child would the receive the server object as:
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;:
+
+</p>
+<pre><code>process.on(&apos;message&apos;, function(m, server) {
+  if (m === &apos;server&apos;) {
+    server.on(&apos;connection&apos;, function (socket) {
+      socket.end(&apos;handled by child&apos;);
+    });
+  }
+});</code></pre>
+<!--
+Note that the server is now shared between the parent and child, this means
+that some connections will be handled by the parent and some by the child.
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067;&#x5171;&#x6709;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x6642;&#x306B;&#x306F;&#x89AA;&#x3042;&#x308B;&#x3044;&#x306F;&#x5B50;&#x3067;&#x51E6;&#x7406;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+For `dgram` servers the workflow is exactly the same.  Here you listen on
+a `message` event instead of `connection` and use `server.bind` instead of
+`server.listen`.  (Currently only supported on UNIX platforms.)
+-->
+
+<p><code>dgram</code> &#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30EF;&#x30FC;&#x30AF;&#x30D5;&#x30ED;&#x30FC;&#x3082;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+<code>connection</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x4EE3;&#x308F;&#x308A;&#x306B; <code>message</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x76E3;&#x8996;&#x3057;&#x3001;
+<code>server.listen</code> &#x306E;&#x4EE3;&#x308F;&#x308A;&#x306B; <code>server.bind</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;
+(&#x73FE;&#x6642;&#x70B9;&#x3067;&#x306F; UNIX &#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x3067;&#x306E;&#x307F;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;)&#x3002;
+
+</p>
+<h4>Example: sending socket object<span><a class="mark" href="#child_process_example_sending_socket_object" id="child_process_example_sending_socket_object">#</a></span></h4>
+<!--
+Here is an example of sending a socket. It will spawn two children and handle
+connections with the remote address `74.125.127.100` as VIP by sending the
+socket to a "special" child process. Other sockets will go to a "normal" process.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x4F8B;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x4E8C;&#x3064;&#x306E;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x8D77;&#x52D5;&#x3057;&#x3001;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x304C; VIP
+(<code>74.125.127.100</code>) &#x306A;&#x3089;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092; &quot;special&quot; &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x4ED6;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F; &quot;normal&quot; &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var normal = require(&apos;child_process&apos;).fork(&apos;child.js&apos;, [&apos;normal&apos;]);
+var special = require(&apos;child_process&apos;).fork(&apos;child.js&apos;, [&apos;special&apos;]);
+
+// Open up the server and send sockets to child
+var server = require(&apos;net&apos;).createServer();
+server.on(&apos;connection&apos;, function (socket) {
+
+  // if this is a VIP
+  if (socket.remoteAddress === &apos;74.125.127.100&apos;) {
+    special.send(&apos;socket&apos;, socket);
+    return;
+  }
+  // just the usual dudes
+  normal.send(&apos;socket&apos;, socket);
+});
+server.listen(1337);</code></pre>
+<!--
+The `child.js` could look like this:
+-->
+
+<p><code>chold.js</code> &#x306F;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;:
+
+</p>
+<pre><code>process.on(&apos;message&apos;, function(m, socket) {
+  if (m === &apos;socket&apos;) {
+    socket.end(&apos;You were handled as a &apos; + process.argv[2] + &apos; person&apos;);
+  }
+});</code></pre>
+<!--
+Note that once a single socket has been sent to a child the parent can no
+longer keep track of when the socket is destroyed. To indicate this condition
+the `.connections` property becomes `null`.
+It is also recommended not to use `.maxConnections` in this condition.
+-->
+
+<p>&#x4E00;&#x5EA6;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x3082;&#x3046;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x3044;&#x3064;
+&#x7834;&#x68C4;&#x3055;&#x308C;&#x308B;&#x304B;&#x77E5;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x306E;&#x72B6;&#x614B;&#x3092;&#x793A;&#x3059;&#x305F;&#x3081;&#x306B;&#xFF0C;<code>.connections</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F; <code>null</code> &#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x72B6;&#x614B;&#x3067;&#x306F;&#x3001;<code>.maxConnections</code> &#x3082;&#x4F7F;&#x308F;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x63A8;&#x5968;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>child.disconnect()<span><a class="mark" href="#child_process_child_disconnect" id="child_process_child_disconnect">#</a></span></h3>
+<!--
+Close the IPC channel between parent and child, allowing the child to exit
+gracefully once there are no other connections keeping it alive. After calling
+this method the `.connected` flag will be set to `false` in both the parent and
+child, and it is no longer possible to send messages.
+-->
+
+<p>&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x9593;&#x306E; IPC &#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x3001;
+&#x4ED6;&#x306E;&#x63A5;&#x7D9A;&#x3092;&#x6301;&#x305F;&#x306A;&#x3044;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x81EA;&#x7136;&#x306B;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x53EF;&#x80FD;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3068;&#x3001;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x4E21;&#x65B9;&#x3067; <code>.connected</code> &#x306F;
+<code>false</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x3001;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The 'disconnect' event will be emitted when there are no messages in the process
+of being received, most likely immediately.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x304A;&#x305D;&#x3089;&#x304F;&#x306F;&#x3059;&#x3050;&#x306B; <code>&apos;disconnect&apos;</code>
+&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that you can also call `process.disconnect()` in the child process.
+-->
+
+<p>&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067;&#x3082; <code>process.disconnect()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x305B;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>child_process.spawn(command, [args], [options])<span><a class="mark" href="#child_process_child_process_spawn_command_args_options" id="child_process_child_process_spawn_command_args_options">#</a></span></h2>
+<!--
+* `command` {String} The command to run
+* `args` {Array} List of string arguments
+* `options` {Object}
+  * `cwd` {String} Current working directory of the child process
+  * `stdio` {Array|String} Child's stdio configuration. (See below)
+  * `customFds` {Array} **Deprecated** File descriptors for the child to use
+    for stdio.  (See below)
+  * `env` {Object} Environment key-value pairs
+  * `detached` {Boolean} The child will be a process group leader.  (See below)
+  * `uid` {Number} Sets the user identity of the process. (See setuid(2).)
+  * `gid` {Number} Sets the group identity of the process. (See setgid(2).)
+* return: {ChildProcess object}
+-->
+
+<ul>
+<li><code>command</code> {String} &#x5B9F;&#x884C;&#x3059;&#x308B;&#x30B3;&#x30DE;&#x30F3;&#x30C9;</li>
+<li><code>args</code> {Array} &#x6587;&#x5B57;&#x5217;&#x306B;&#x3088;&#x308B;&#x5F15;&#x6570;&#x306E;&#x914D;&#x5217;</li>
+<li><code>options</code> {Object}<ul>
+<li><code>cwd</code> {String} &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30AB;&#x30EC;&#x30F3;&#x30C8;&#x30EF;&#x30FC;&#x30AD;&#x30F3;&#x30B0;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;</li>
+<li><code>stdio</code> {Array|String} &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x306E;&#x8A2D;&#x5B9A; (&#x5F8C;&#x8FF0;)&#x3002;</li>
+<li><code>customFds</code> {Array} <strong>Deprecated</strong> &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x7528;&#x3059;&#x308B;
+&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x306E;&#x914D;&#x5217; (&#x5F8C;&#x8FF0;)</li>
+<li><code>env</code> {Object} &#x74B0;&#x5883;&#x5909;&#x6570;&#x3068;&#x3057;&#x3066;&#x4E0E;&#x3048;&#x308B;&#x30AD;&#x30FC;&#x30FB;&#x5024;&#x306E;&#x30DA;&#x30A2;</li>
+<li><code>detached</code> {Boolean} &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x306E;&#x30EA;&#x30FC;&#x30C0;&#x306B;&#x306A;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;
+(&#x5F8C;&#x8FF0;)&#x3002;</li>
+<li><code>uid</code> {Number} &#x3053;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30E6;&#x30FC;&#x30B6;&#x8B58;&#x5225;&#x5B50;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;
+ (setuid(2) &#x3092;&#x53C2;&#x7167;)&#x3002;</li>
+<li><code>gid</code> {Number} &#x3053;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x8B58;&#x5225;&#x5B50;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;
+(setgid(2) &#x3092;&#x53C2;&#x7167;)&#x3002;</li>
+</ul>
+</li>
+<li>return: {ChildProcess object}</li>
+</ul>
+<!--
+Launches a new process with the given `command`, with  command line arguments in `args`.
+If omitted, `args` defaults to an empty Array.
+-->
+
+<p><code>args</code> &#x3092;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x3001;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; <code>command</code> &#x3067;&#x65B0;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x8D77;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>args</code> &#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;&#x7A7A;&#x306E;&#x914D;&#x5217;&#x304C;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The third argument is used to specify additional options, which defaults to:
+-->
+
+<p>&#x7B2C; 3 &#x5F15;&#x6570;&#x306F;&#x8FFD;&#x52A0;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x3001;&#x305D;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F;:
+
+</p>
+<pre><code>{ cwd: undefined,
+  env: process.env
+}</code></pre>
+<!--
+`cwd` allows you to specify the working directory from which the process is spawned.
+Use `env` to specify environment variables that will be visible to the new process.
+-->
+
+<p><code>cwd</code> &#x3067;&#x8D77;&#x52D5;&#x3055;&#x308C;&#x305F;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30EF;&#x30FC;&#x30AD;&#x30F3;&#x30B0;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+<code>env</code> &#x306F;&#x65B0;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x898B;&#x3048;&#x308B;&#x74B0;&#x5883;&#x5909;&#x6570;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example of running `ls -lh /usr`, capturing `stdout`, `stderr`, and the exit code:
+-->
+
+<p>ls -lh /usr<code> &#x3092;&#x5B9F;&#x884C;&#x3057;&#x3066; </code>stdout<code>&#x3001;</code>stderr`&#x3001;&#x304A;&#x3088;&#x3073;&#x7D42;&#x4E86;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>var spawn = require(&apos;child_process&apos;).spawn,
+    ls    = spawn(&apos;ls&apos;, [&apos;-lh&apos;, &apos;/usr&apos;]);
+
+ls.stdout.on(&apos;data&apos;, function (data) {
+  console.log(&apos;stdout: &apos; + data);
+});
+
+ls.stderr.on(&apos;data&apos;, function (data) {
+  console.log(&apos;stderr: &apos; + data);
+});
+
+ls.on(&apos;close&apos;, function (code) {
+  console.log(&apos;child process exited with code &apos; + code);
+});</code></pre>
+<!--
+Example: A very elaborate way to run 'ps ax | grep ssh'
+-->
+
+<p>&#x3068;&#x3066;&#x3082;&#x624B;&#x306E;&#x8FBC;&#x3093;&#x3060;&#x65B9;&#x6CD5;&#x3067;&#x5B9F;&#x884C;&#x3059;&#x308B; &apos;ps ax | grep ssh&apos; &#x306E;&#x4F8B;:
+
+</p>
+<pre><code>var spawn = require(&apos;child_process&apos;).spawn,
+    ps    = spawn(&apos;ps&apos;, [&apos;ax&apos;]),
+    grep  = spawn(&apos;grep&apos;, [&apos;ssh&apos;]);
+
+ps.stdout.on(&apos;data&apos;, function (data) {
+  grep.stdin.write(data);
+});
+
+ps.stderr.on(&apos;data&apos;, function (data) {
+  console.log(&apos;ps stderr: &apos; + data);
+});
+
+ps.on(&apos;close&apos;, function (code) {
+  if (code !== 0) {
+    console.log(&apos;ps process exited with code &apos; + code);
+  }
+  grep.stdin.end();
+});
+
+grep.stdout.on(&apos;data&apos;, function (data) {
+  console.log(&apos;&apos; + data);
+});
+
+grep.stderr.on(&apos;data&apos;, function (data) {
+  console.log(&apos;grep stderr: &apos; + data);
+});
+
+grep.on(&apos;close&apos;, function (code) {
+  if (code !== 0) {
+    console.log(&apos;grep process exited with code &apos; + code);
+  }
+});</code></pre>
+<!--
+Example of checking for failed exec:
+-->
+
+<p>exec &#x306E;&#x5931;&#x6557;&#x3092;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code>var spawn = require(&apos;child_process&apos;).spawn,
+    child = spawn(&apos;bad_command&apos;);
+
+child.stderr.setEncoding(&apos;utf8&apos;);
+child.stderr.on(&apos;data&apos;, function (data) {
+  if (/^execvp\(\)/.test(data)) {
+    console.log(&apos;Failed to start child process.&apos;);
+  }
+});</code></pre>
+<!--
+Note that if spawn receives an empty options object, it will result in
+spawning the process with an empty environment rather than using
+`process.env`. This due to backwards compatibility issues with a deprecated
+API.
+-->
+
+<p><code>spawn()</code> &#x306F;&#x7A7A;&#x306E; <code>options</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B;&#x3068;&#x3001;
+<code>process.env</code> &#x3092;&#x4F7F;&#x3046;&#x306E;&#x3067;&#x306F;&#x306A;&#x304F;&#xFF0C;&#x7A7A;&#x306E;&#x74B0;&#x5883;&#x5909;&#x6570;&#x3067;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x8D77;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x5EC3;&#x6B62;&#x3055;&#x308C;&#x305F; API &#x3068;&#x306E;&#x4E92;&#x63DB;&#x6027;&#x306E;&#x305F;&#x3081;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+The 'stdio' option to `child_process.spawn()` is an array where each
+index corresponds to a fd in the child.  The value is one of the following:
+-->
+
+<p><code>child_process.spawn()</code> &#x306E; <code>stdio</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x914D;&#x5217;&#x3067;&#x3001;
+&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x30A4;&#x30F3;&#x30C7;&#x30C3;&#x30AF;&#x30B9;&#x306F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; fd &#x306B;&#x5BFE;&#x5FDC;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x8981;&#x7D20;&#x306E;&#x5024;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;:
+
+</p>
+<!--
+1. `'pipe'` - Create a pipe between the child process and the parent process.
+   The parent end of the pipe is exposed to the parent as a property on the
+   `child_process` object as `ChildProcess.stdio[fd]`. Pipes created for
+   fds 0 - 2 are also available as ChildProcess.stdin, ChildProcess.stdout
+   and ChildProcess.stderr, respectively.
+2. `'ipc'` - Create an IPC channel for passing messages/file descriptors
+   between parent and child. A ChildProcess may have at most *one* IPC stdio
+   file descriptor. Setting this option enables the ChildProcess.send() method.
+   If the child writes JSON messages to this file descriptor, then this will
+   trigger ChildProcess.on('message').  If the child is a Node.js program, then
+   the presence of an IPC channel will enable process.send() and
+   process.on('message').
+3. `'ignore'` - Do not set this file descriptor in the child. Note that Node
+   will always open fd 0 - 2 for the processes it spawns. When any of these is
+   ignored node will open `/dev/null` and attach it to the child's fd.
+4. `Stream` object - Share a readable or writable stream that refers to a tty,
+   file, socket, or a pipe with the child process. The stream's underlying
+   file descriptor is duplicated in the child process to the fd that 
+   corresponds to the index in the `stdio` array. Note that the stream must
+   have an underlying descriptor (file streams do not until the `'open'`
+   event has occurred).
+5. Positive integer - The integer value is interpreted as a file descriptor 
+   that is is currently open in the parent process. It is shared with the child
+   process, similar to how `Stream` objects can be shared.
+6. `null`, `undefined` - Use default value. For stdio fds 0, 1 and 2 (in other
+   words, stdin, stdout, and stderr) a pipe is created. For fd 3 and up, the
+   default is `'ignore'`.
+-->
+
+<ol>
+<li><code>&apos;pipe&apos;</code> - &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x9593;&#x3067;&#x30D1;&#x30A4;&#x30D7;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30D1;&#x30A4;&#x30D7;&#x306E;&#x89AA;&#x5074;&#x306E;&#x7AEF;&#x70B9;&#x306F; <code>child_process</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;
+<code>ChildProcess.stdio[fd]</code> &#x3068;&#x3057;&#x3066;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x516C;&#x958B;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+fd 0&#xFF5E;2 &#x306F;&#x305D;&#x308C;&#x305E;&#x308C;&#x3001;<code>ChildProcess.stdin</code>&#x3001;<code>ChildProcess.stdout</code>&#x3001;
+<code>ChildProcess.stderr</code> &#x3068;&#x3057;&#x3066;&#x3082;&#x53C2;&#x7167;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;</li>
+<li><code>&apos;ipc&apos;</code> - &#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x9593;&#x3067;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x30D1;&#x30C3;&#x30B7;&#x30F3;&#x30B0;&#x306E;&#x305F;&#x3081;&#x306E;
+IPC &#x30C1;&#x30E3;&#x30CD;&#x30EB;&#xFF0F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>ChildProcess</code> &#x306F;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x306B;&#x9AD8;&#x3005;&#x4E00;&#x3064;&#x306E; IPC &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3001;<code>ChildProcess.send()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x6709;&#x52B9;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x3053;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x306B; JSON &#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x3068;&#x3001;
+&#x305D;&#x308C;&#x306F; <code>ChildProcess.on(&apos;message&apos;)</code> &#x3092;&#x5F15;&#x304D;&#x8D77;&#x3053;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C; Node.js &#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306A;&#x3089;&#x3001;IPC &#x30C1;&#x30E3;&#x30CD;&#x30EB;&#x306E;&#x5B58;&#x5728;&#x306F; <code>process.send()</code>
+&#x304A;&#x3088;&#x3073; <code>process.on(&apos;message&apos;)</code> &#x3092;&#x6709;&#x52B9;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>&apos;ignore&apos;</code> - &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+Node &#x306F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x8D77;&#x52D5;&#x3059;&#x308B;&#x969B;&#x3001;&#x5E38;&#x306B; fd 0&#xFF5E;2 &#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;
+&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;&#x3053;&#x308C;&#x3089;&#x306E;&#x3046;&#x3061;&#x306E;&#x3069;&#x308C;&#x304B;&#x304C; <code>&apos;ignore&apos;</code> &#x306E;&#x5834;&#x5408;&#x3001;node &#x306F;
+<code>/dev/null</code> &#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x3066;&#x3001;&#x305D;&#x308C;&#x3092;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; fd &#x306B;&#x5272;&#x308A;&#x5F53;&#x3066;&#x307E;&#x3059;&#x3002;</li>
+<li><code>Stream</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8; - tty&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3001;&#x307E;&#x305F;&#x306F;&#x30D1;&#x30A4;&#x30D7;&#x3092;&#x53C2;&#x7167;&#x3059;&#x308B;
+&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x307E;&#x305F;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306A;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068;&#x5171;&#x6709;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x4E0B;&#x5C64;&#x306B;&#x3042;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x306F;&#x3001;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; <code>stdio</code> &#x914D;&#x5217;&#x306E;
+&#x5BFE;&#x5FDC;&#x3059;&#x308B;&#x4F4D;&#x7F6E;&#x306B;&#x30B3;&#x30D4;&#x30FC;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x4E0B;&#x5C64;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x3092;&#x6301;&#x3063;&#x3066;&#x3044;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;
+&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044; (&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F; <code>&apos;open&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x307E;&#x3067;
+&#x305D;&#x308C;&#x3092;&#x6301;&#x3061;&#x307E;&#x305B;&#x3093;)&#x3002;</li>
+<li>&#x975E;&#x8CA0;&#x6574;&#x6570; - &#x6574;&#x6570;&#x306E;&#x5024;&#x3092;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x73FE;&#x5728;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x3066;&#x3044;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3068;&#x3057;&#x3066;
+&#x89E3;&#x91C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F; <code>Stream</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x5834;&#x5408;&#x3068;&#x540C;&#x69D8;&#x306B;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x5171;&#x6709;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>null</code>&#x3001;<code>undefined</code> - &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>stdio</code> &#x306E; <code>fd</code> &#x304C; 0&#x3001;1&#x3001;&#x307E;&#x305F;&#x306F; 2 (&#x8A00;&#x3044;&#x63DB;&#x3048;&#x308B;&#x3068; stdin&#x3001;stdout&#x3001;&#x307E;&#x305F;&#x306F;
+stderr) &#x306E;&#x5834;&#x5408;&#x306F;&#x30D1;&#x30A4;&#x30D7;&#x304C;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;fd &#x304C; 3 &#x4EE5;&#x4E0A;&#x306E;&#x5834;&#x5408;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F;
+<code>&apos;ignore&apos;</code> &#x3067;&#x3059;&#x3002;</li>
+</ol>
+<!--
+As a shorthand, the `stdio` argument may also be one of the following
+strings, rather than an array:
+-->
+
+<p>&#x7C21;&#x6613;&#x306A;&#x8A18;&#x6CD5;&#x3068;&#x3057;&#x3066;&#x3001;<code>stdio</code> &#x306B;&#x914D;&#x5217;&#x3067;&#x306F;&#x306A;&#x304F;&#x4EE5;&#x4E0B;&#x306E;&#x6587;&#x5B57;&#x5217;&#x306E;&#x4E00;&#x3064;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;
+&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+* `ignore` - `['ignore', 'ignore', 'ignore']`
+* `pipe` - `['pipe', 'pipe', 'pipe']`
+* `inherit` - `[process.stdin, process.stdout, process.stderr]` or `[0,1,2]`
+-->
+
+<ul>
+<li><code>ignore</code> - <code>[&apos;ignore&apos;, &apos;ignore&apos;, &apos;ignore&apos;]</code></li>
+<li><code>pipe</code> - <code>[&apos;pipe&apos;, &apos;pipe&apos;, &apos;pipe&apos;]</code></li>
+<li><code>inherit</code> - <code>[process.stdin, process.stdout, process.stderr]</code> &#x307E;&#x305F;&#x306F; <code>[0,1,2]</code></li>
+</ul>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var spawn = require(&apos;child_process&apos;).spawn;
+
+// Child will use parent&apos;s stdios
+spawn(&apos;prg&apos;, [], { stdio: &apos;inherit&apos; });
+
+// Spawn child sharing only stderr
+spawn(&apos;prg&apos;, [], { stdio: [&apos;pipe&apos;, &apos;pipe&apos;, process.stderr] });
+
+// Open an extra fd=4, to interact with programs present a
+// startd-style interface.
+spawn(&apos;prg&apos;, [], { stdio: [&apos;pipe&apos;, null, null, null, &apos;pipe&apos;] });</code></pre>
+<!--
+If the `detached` option is set, the child process will be made the leader of a
+new process group.  This makes it possible for the child to continue running 
+after the parent exits.
+-->
+
+<p><code>detached</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x306E;
+&#x30EA;&#x30FC;&#x30C0;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x3066;&#x3082;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x5B9F;&#x884C;&#x304C;&#x7D99;&#x7D9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x53EF;&#x80FD;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+By default, the parent will wait for the detached child to exit.  To prevent
+the parent from waiting for a given `child`, use the `child.unref()` method,
+and the parent's event loop will not include the child in its reference count.
+-->
+
+<p>&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F;&#x3001;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x5207;&#x308A;&#x96E2;&#x3055;&#x308C;&#x305F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x7D42;&#x4E86;&#x3092;&#x5F85;&#x6A5F;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C; <code>child</code> &#x3092;&#x5F85;&#x6A5F;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x9632;&#x3050;&#x306B;&#x306F;&#x3001;<code>child.unref()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;
+&#x4F7F;&#x7528;&#x3057;&#x3001;&#x89AA;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x306B;&#x5B50;&#x306E;&#x30EA;&#x30D5;&#x30A1;&#x30EC;&#x30F3;&#x30B9;&#x30AB;&#x30A6;&#x30F3;&#x30C8;&#x304C;&#x542B;&#x307E;&#x308C;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example of detaching a long-running process and redirecting its output to a
+file:
+-->
+
+<p>&#x9577;&#x6642;&#x9593;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x5207;&#x308A;&#x96E2;&#x3057;&#x3001;&#x51FA;&#x529B;&#x3092;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x30EA;&#x30C0;&#x30A4;&#x30EC;&#x30AF;&#x30C8;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code> var fs = require(&apos;fs&apos;),
+     spawn = require(&apos;child_process&apos;).spawn,
+     out = fs.openSync(&apos;./out.log&apos;, &apos;a&apos;),
+     err = fs.openSync(&apos;./out.log&apos;, &apos;a&apos;);
+
+ var child = spawn(&apos;prg&apos;, [], {
+   detached: true,
+   stdio: [ &apos;ignore&apos;, out, err ]
+ });
+
+ child.unref();</code></pre>
+<!--
+When using the `detached` option to start a long-running process, the process
+will not stay running in the background unless it is provided with a `stdio`
+configuration that is not connected to the parent.  If the parent's `stdio` is
+inherited, the child will remain attached to the controlling terminal.
+-->
+
+<p>&#x9577;&#x6642;&#x9593;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x308B;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x958B;&#x59CB;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B; <code>detached</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5834;&#x5408;&#x3001;
+&#x305D;&#x306E; <code>stdio</code> &#x304C;&#x89AA;&#x3068;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x3088;&#x3046;&#x306A;&#x69CB;&#x6210;&#x3092;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;&#x305D;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;
+&#x30D0;&#x30C3;&#x30AF;&#x30B0;&#x30E9;&#x30A6;&#x30F3;&#x30C9;&#x306B;&#x3068;&#x3069;&#x307E;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x89AA;&#x306E; <code>stdio</code> &#x304C;&#x7D99;&#x627F;&#x3055;&#x308C;&#x308B;&#x306A;&#x3089;&#x3001;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x5236;&#x5FA1;&#x3057;&#x3066;&#x3044;&#x308B;&#x30BF;&#x30FC;&#x30DF;&#x30CA;&#x30EB;&#x306B;
+&#x63A5;&#x7D9A;&#x3055;&#x308C;&#x305F;&#x307E;&#x307E;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+There is a deprecated option called `customFds` which allows one to specify
+specific file descriptors for the stdio of the child process. This API was
+not portable to all platforms and therefore removed.
+With `customFds` it was possible to hook up the new process' `[stdin, stdout,
+stderr]` to existing streams; `-1` meant that a new stream should be created.
+Use at your own risk.
+
+See also: `child_process.exec()` and `child_process.fork()`
+-->
+
+<p>&#x6307;&#x5B9A;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3092;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x6A19;&#x6E96;&#x5165;&#x51FA;&#x529B;&#x306B;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x53EF;&#x80FD;&#x306B;&#x3059;&#x308B;&#x3001;
+<code>customFds</code> &#x3068;&#x547C;&#x3070;&#x308C;&#x308B;&#x5EC3;&#x6B62;&#x3055;&#x308C;&#x305F;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x3042;&#x308A;&#x307E;&#x3057;&#x305F;&#x3002;
+&#x3053;&#x306E; API &#x306F;&#x5168;&#x3066;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x306B;&#x79FB;&#x690D;&#x53EF;&#x80FD;&#x3067;&#x306F;&#x306A;&#x3044;&#x305F;&#x3081;&#x306B;&#x524A;&#x9664;&#x3055;&#x308C;&#x307E;&#x3057;&#x305F;&#x3002;
+<code>customFds</code> &#x306F;&#x65B0;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E; <code>[stdin, stdout, stderr]</code> &#x3092;&#x65E2;&#x5B58;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x53EF;&#x80FD;&#x306B;&#x3057;&#x307E;&#x3057;&#x305F;;
+<code>-1</code> &#x306F;&#x65B0;&#x3057;&#x3044;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x4F5C;&#x3089;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x3002;
+&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F;&#x81EA;&#x5DF1;&#x8CAC;&#x4EFB;&#x3067;&#x3002;
+
+</p>
+<p>&#x95A2;&#x9023;&#x9805;&#x76EE;: <code>child_process.exec()</code> &#x304A;&#x3088;&#x3073; <code>child_process.fork()</code>
+
+</p>
+<h2>child_process.exec(command, [options], callback)<span><a class="mark" href="#child_process_child_process_exec_command_options_callback" id="child_process_child_process_exec_command_options_callback">#</a></span></h2>
+<!--
+* `command` {String} The command to run, with space-separated arguments
+* `options` {Object}
+  * `cwd` {String} Current working directory of the child process
+  * `env` {Object} Environment key-value pairs
+  * `encoding` {String} (Default: 'utf8')
+  * `timeout` {Number} (Default: 0)
+  * `maxBuffer` {Number} (Default: `200*1024`)
+  * `killSignal` {String} (Default: 'SIGTERM')
+* `callback` {Function} called with the output when process terminates
+  * `error` {Error}
+  * `stdout` {Buffer}
+  * `stderr` {Buffer}
+* Return: ChildProcess object
+-->
+
+<ul>
+<li><code>command</code> {String} &#x5B9F;&#x884C;&#x3059;&#x308B;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3001;&#x7A7A;&#x767D;&#x3067;&#x533A;&#x5207;&#x3089;&#x308C;&#x305F;&#x5F15;&#x6570;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;</li>
+<li><code>options</code> {Object}<ul>
+<li><code>cwd</code> {String} &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30AB;&#x30EC;&#x30F3;&#x30C8;&#x30EF;&#x30FC;&#x30AD;&#x30F3;&#x30B0;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;</li>
+<li><code>env</code> {Object} &#x74B0;&#x5883;&#x5909;&#x6570;&#x3068;&#x3057;&#x3066;&#x4E0E;&#x3048;&#x308B;&#x30AD;&#x30FC;&#x30FB;&#x5024;&#x306E;&#x30DA;&#x30A2;</li>
+<li><code>encoding</code> {String} (Default: &apos;utf8&apos;)</li>
+<li><code>timeout</code> {Number} (Default: 0)</li>
+<li><code>maxBuffer</code> {Number} (Default: 200*1024)</li>
+<li><code>killSignal</code> {String} (Default: &apos;SIGTERM&apos;)</li>
+</ul>
+</li>
+<li><code>callback</code> {Function} &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3068;&#x305D;&#x306E;&#x51FA;&#x529B;&#x3092;&#x4F34;&#x3063;&#x3066;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;<ul>
+<li><code>error</code> {Error}</li>
+<li><code>stdout</code> {Buffer}</li>
+<li><code>stderr</code> {Buffer}</li>
+</ul>
+</li>
+<li>Return: <code>ChildProcess</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;</li>
+</ul>
+<!--
+Runs a command in a shell and buffers the output.
+-->
+
+<p>&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3092;&#x30B7;&#x30A7;&#x30EB;&#x3067;&#x5B9F;&#x884C;&#x3057;&#x3001;&#x305D;&#x306E;&#x51FA;&#x529B;&#x3092;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x683C;&#x7D0D;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var exec = require(&apos;child_process&apos;).exec,
+    child;
+
+child = exec(&apos;cat *.js bad_file | wc -l&apos;,
+  function (error, stdout, stderr) {
+    console.log(&apos;stdout: &apos; + stdout);
+    console.log(&apos;stderr: &apos; + stderr);
+    if (error !== null) {
+      console.log(&apos;exec error: &apos; + error);
+    }
+});</code></pre>
+<!--
+The callback gets the arguments `(error, stdout, stderr)`. On success, `error`
+will be `null`.  On error, `error` will be an instance of `Error` and `error.code`
+will be the exit code of the child process, and `error.signal` will be set to the
+signal that terminated the process.
+-->
+
+<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x5F15;&#x6570; <code>(error, stdout, stderr)</code> &#x3092;&#x5F97;&#x307E;&#x3059;&#x3002;
+&#x6210;&#x529F;&#x3059;&#x308B;&#x3068;&#x3001;<code>error</code> &#x306F; <code>null</code> &#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30E9;&#x30FC;&#x3060;&#x3068;&#x3001;<code>error</code> &#x306F; <code>Error</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3068;&#x306A;&#x308A;&#x3001;
+<code>error.code</code> &#x306F;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x7D42;&#x4E86;&#x30B3;&#x30FC;&#x30C9;&#x3001;
+<code>error.signal</code> &#x306F;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x7D42;&#x4E86;&#x3055;&#x305B;&#x305F;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+There is a second optional argument to specify several options. The
+default options are
+-->
+
+<p>&#x4EFB;&#x610F;&#x306E;&#x7B2C; 2 &#x5F15;&#x6570;&#x3067;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F;
+
+</p>
+<pre><code>{ encoding: &apos;utf8&apos;,
+  timeout: 0,
+  maxBuffer: 200*1024,
+  killSignal: &apos;SIGTERM&apos;,
+  cwd: null,
+  env: null }</code></pre>
+<!--
+If `timeout` is greater than 0, then it will kill the child process
+if it runs longer than `timeout` milliseconds. The child process is killed with
+`killSignal` (default: `'SIGTERM'`). `maxBuffer` specifies the largest
+amount of data allowed on stdout or stderr - if this value is exceeded then
+the child process is killed.
+-->
+
+<p>&#x3082;&#x3057; <code>timeout</code> &#x304C; 0 &#x3088;&#x308A;&#x5927;&#x304D;&#x3044;&#x3068;&#x3001;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x5B9F;&#x884C;&#x6642;&#x9593;&#x304C; <code>timeout</code> &#x30DF;&#x30EA;&#x79D2;&#x3088;&#x308A;&#x3082;&#x9577;&#x304F;&#x306A;&#x308B;&#x3068; kill &#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F; <code>killSignal</code> &#x3067; kill &#x3055;&#x308C;&#x307E;&#x3059; (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;: <code>&apos;SIGTERM&apos;</code>)&#x3002;
+<code>maxBuffer</code> &#x306F;&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x3068;&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x306E;&#x6700;&#x5927;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x91CF;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x307E;&#x3059; &#xFF0D; &#x3053;&#x306E;&#x5024;&#x3092;&#x8D85;&#x3048;&#x308B;&#x3068;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F; kill &#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>child_process.execFile(file, [args], [options], [callback])<span><a class="mark" href="#child_process_child_process_execfile_file_args_options_callback" id="child_process_child_process_execfile_file_args_options_callback">#</a></span></h2>
+<!--
+* `file` {String} The filename of the program to run
+* `args` {Array} List of string arguments
+* `options` {Object}
+  * `cwd` {String} Current working directory of the child process
+  * `env` {Object} Environment key-value pairs
+  * `encoding` {String} (Default: 'utf8')
+  * `timeout` {Number} (Default: 0)
+  * `maxBuffer` {Number} (Default: 200\*1024)
+  * `killSignal` {String} (Default: 'SIGTERM')
+* `callback` {Function} called with the output when process terminates
+  * `error` {Error}
+  * `stdout` {Buffer}
+  * `stderr` {Buffer}
+* Return: ChildProcess object
+-->
+
+<ul>
+<li><code>file</code> {String} &#x5B9F;&#x884C;&#x3059;&#x308B;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;</li>
+<li><code>args</code> {Array} &#x6587;&#x5B57;&#x5217;&#x306B;&#x3088;&#x308B;&#x5F15;&#x6570;&#x306E;&#x914D;&#x5217;</li>
+<li><code>options</code> {Object}<ul>
+<li><code>cwd</code> {String} &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30AB;&#x30EC;&#x30F3;&#x30C8;&#x30EF;&#x30FC;&#x30AD;&#x30F3;&#x30B0;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;</li>
+<li><code>env</code> {Object} &#x74B0;&#x5883;&#x5909;&#x6570;&#x3068;&#x3057;&#x3066;&#x4E0E;&#x3048;&#x308B;&#x30AD;&#x30FC;&#x30FB;&#x5024;&#x306E;&#x30DA;&#x30A2;</li>
+<li><code>encoding</code> {String} (Default: &apos;utf8&apos;)</li>
+<li><code>timeout</code> {Number} (Default: 0)</li>
+<li><code>maxBuffer</code> {Number} (Default: 200*1024)</li>
+<li><code>killSignal</code> {String} (Default: &apos;SIGTERM&apos;)</li>
+</ul>
+</li>
+<li><code>callback</code> {Function} &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3068;&#x305D;&#x306E;&#x51FA;&#x529B;&#x3092;&#x4F34;&#x3063;&#x3066;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;<ul>
+<li><code>error</code> {Error}</li>
+<li><code>stdout</code> {Buffer}</li>
+<li><code>stderr</code> {Buffer}</li>
+</ul>
+</li>
+<li>Return: <code>ChildProcess</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;</li>
+</ul>
+<!--
+This is similar to `child_process.exec()` except it does not execute a
+subshell but rather the specified file directly. This makes it slightly
+leaner than `child_process.exec`. It has the same options.
+-->
+
+<p>&#x5B50;&#x30B7;&#x30A7;&#x30EB;&#x3067;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x4EE3;&#x308F;&#x308A;&#x306B;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x76F4;&#x63A5;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x9664;&#x3044;&#x3066;
+<code>child_process.exec()</code> &#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>child_process.exec</code> &#x3088;&#x308A;&#x82E5;&#x5E72;&#x52B9;&#x7387;&#x7684;&#x3067;&#x3001;&#x540C;&#x3058;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>child_process.fork(modulePath, [args], [options])<span><a class="mark" href="#child_process_child_process_fork_modulepath_args_options" id="child_process_child_process_fork_modulepath_args_options">#</a></span></h2>
+<!--
+* `modulePath` {String} The module to run in the child
+* `args` {Array} List of string arguments
+* `options` {Object}
+  * `cwd` {String} Current working directory of the child process
+  * `env` {Object} Environment key-value pairs
+  * `encoding` {String} (Default: 'utf8')
+  * `execPath` {String} Executable used to create the child process
+  * `execArgv` {Array} List of string arguments passed to the executable
+    (Default: `process.execArgv`)
+  * `silent` {Boolean} If true, stdin, stdout, and stderr of the child will be
+    piped to the parent, otherwise they will be inherited from the parent, see
+    the "pipe" and "inherit" options for `spawn()`'s `stdio` for more details
+    (default is false)
+* Return: ChildProcess object
+-->
+
+<ul>
+<li><code>modulePath</code> {String} &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;</li>
+<li><code>args</code> {Array} &#x6587;&#x5B57;&#x5217;&#x306B;&#x3088;&#x308B;&#x5F15;&#x6570;&#x306E;&#x914D;&#x5217;</li>
+<li><code>options</code> {Object}<ul>
+<li><code>cwd</code> {String} &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30AB;&#x30EC;&#x30F3;&#x30C8;&#x30EF;&#x30FC;&#x30AD;&#x30F3;&#x30B0;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;</li>
+<li><code>env</code> {Object} &#x74B0;&#x5883;&#x5909;&#x6570;&#x3068;&#x3057;&#x3066;&#x4E0E;&#x3048;&#x308B;&#x30AD;&#x30FC;&#x30FB;&#x5024;&#x306E;&#x30DA;&#x30A2;</li>
+<li><code>encoding</code> {String} (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;: &apos;utf8&apos;)</li>
+<li><code>execPath</code> {String} &#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x4F5C;&#x6210;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x5B9F;&#x884C;&#x30D5;&#x30A1;&#x30A4;&#x30EB;</li>
+<li><code>execArgv</code> {Array} node &#x5B9F;&#x884C;&#x53EF;&#x80FD;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x6E21;&#x3055;&#x308C;&#x308B;&#x6587;&#x5B57;&#x5217;&#x5F15;&#x6570;&#x306E;&#x914D;&#x5217;&#x3002;
+(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>process.execArgv</code>)</li>
+<li><code>silent</code> {Boolean} <code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x6A19;&#x6E96;&#x5165;&#x529B;&#x3001;&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x3001;
+&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x51FA;&#x529B;&#x306F;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x30D1;&#x30A4;&#x30D7;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x3046;&#x3067;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304B;&#x3089;&#x7D99;&#x627F;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3088;&#x308A;&#x8A73;&#x7D30;&#x306F; <code>spawn()</code> &#x306E; <code>pipe</code> &#x304A;&#x3088;&#x3073; <code>inherit</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;
+(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code>)&#x3002;</li>
+</ul>
+</li>
+<li>Return: <code>ChildProcess</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;</li>
+</ul>
+<!--
+This is a special case of the `spawn()` functionality for spawning Node
+processes. In addition to having all the methods in a normal ChildProcess
+instance, the returned object has a communication channel built-in. See
+`child.send(message, [sendHandle])` for details.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; <code>spawn()</code> &#x306E;&#x7279;&#x5225;&#x7248;&#x3067;&#x3001;Node &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x8D77;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x8FD4;&#x3055;&#x308C;&#x308B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x901A;&#x5E38;&#x306E; ChildProcess &#x306E;&#x5168;&#x3066;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306B;&#x52A0;&#x3048;&#x3066;&#x3001;
+&#x7D44;&#x307F;&#x8FBC;&#x307F;&#x306E;&#x901A;&#x4FE1;&#x30C1;&#x30E3;&#x30CD;&#x30EB;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x8A73;&#x7D30;&#x306F; <code>child.send(message, [sendHandle])</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+These child Nodes are still whole new instances of V8. Assume at least 30ms
+startup and 10mb memory for each new Node. That is, you cannot create many
+thousands of them.
+-->
+
+<p>&#x3053;&#x308C;&#x3089;&#x306E;&#x5B50; Node &#x306F;&#x3001;&#x3084;&#x306F;&#x308A; V8 &#x306E;&#x65B0;&#x3057;&#x3044;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;
+&#x65B0;&#x3057;&#x3044; Node &#x3054;&#x3068;&#x306B;&#x5C11;&#x306A;&#x304F;&#x3068;&#x3082; 30 &#x30DF;&#x30EA;&#x79D2;&#x306E;&#x8D77;&#x52D5;&#x6642;&#x9593;&#x3068; 
+10MB &#x306E;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x524D;&#x63D0;&#x3068;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3064;&#x307E;&#x308A;&#x3001;&#x6570;&#x5343;&#x306E;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x4F5C;&#x308B;&#x3053;&#x3068;&#x306F;&#x51FA;&#x6765;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+The `execPath` property in the `options` object allows for a process to be
+created for the child rather than the current `node` executable. This should be
+done with care and by default will talk over the fd represented an
+environmental variable `NODE_CHANNEL_FD` on the child process. The input and
+output on this fd is expected to be line delimited JSON objects.
+-->
+
+<p><code>options</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x4E2D;&#x306E; <code>execPath</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F;&#x3001;
+&#x73FE;&#x5728;&#x306E; <code>node</code> &#x5B9F;&#x884C;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3067;&#x306F;&#x306A;&#x3044;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x4F5C;&#x6210;&#x3092;&#x53EF;&#x80FD;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F;&#x3001;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x74B0;&#x5883;&#x5909;&#x6570; <code>NODE_CHANNEL_FD</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x793A;&#x3055;&#x308C;&#x308B;
+&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3092;&#x901A;&#x3058;&#x3066;&#x5BFE;&#x8A71;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x306B;&#x304A;&#x3051;&#x308B;&#x5165;&#x529B;&#x3068;&#x51FA;&#x529B;&#x306F;&#x3001;&#x6539;&#x884C;&#x3067;&#x533A;&#x5207;&#x3089;&#x308C;&#x305F; JSON &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

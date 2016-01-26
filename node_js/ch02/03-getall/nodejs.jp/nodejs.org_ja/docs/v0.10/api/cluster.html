@@ -1,0 +1,1223 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Cluster Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/cluster.html">
+</head>
+<body class="alt apidoc" id="api-section-cluster">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="cluster.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#cluster_cluster">Cluster</a><ul>
+<li><a href="#cluster_how_it_works">How It Works</a></li>
+<li><a href="#cluster_cluster_settings">cluster.settings</a></li>
+<li><a href="#cluster_cluster_ismaster">cluster.isMaster</a></li>
+<li><a href="#cluster_cluster_isworker">cluster.isWorker</a></li>
+<li><a href="#cluster_event_fork">Event: &apos;fork&apos;</a></li>
+<li><a href="#cluster_event_online">Event: &apos;online&apos;</a></li>
+<li><a href="#cluster_event_listening">Event: &apos;listening&apos;</a></li>
+<li><a href="#cluster_event_disconnect">Event: &apos;disconnect&apos;</a></li>
+<li><a href="#cluster_event_exit">Event: &apos;exit&apos;</a></li>
+<li><a href="#cluster_event_setup">Event: &apos;setup&apos;</a></li>
+<li><a href="#cluster_cluster_setupmaster_settings">cluster.setupMaster([settings])</a></li>
+<li><a href="#cluster_cluster_fork_env">cluster.fork([env])</a></li>
+<li><a href="#cluster_cluster_disconnect_callback">cluster.disconnect([callback])</a></li>
+<li><a href="#cluster_cluster_worker">cluster.worker</a></li>
+<li><a href="#cluster_cluster_workers">cluster.workers</a></li>
+<li><a href="#cluster_class_worker">Class: Worker</a><ul>
+<li><a href="#cluster_worker_id">worker.id</a></li>
+<li><a href="#cluster_worker_process">worker.process</a></li>
+<li><a href="#cluster_worker_suicide">worker.suicide</a></li>
+<li><a href="#cluster_worker_send_message_sendhandle">worker.send(message, [sendHandle])</a></li>
+<li><a href="#cluster_worker_kill_signal_sigterm">worker.kill([signal=&apos;SIGTERM&apos;])</a></li>
+<li><a href="#cluster_worker_disconnect">worker.disconnect()</a></li>
+<li><a href="#cluster_event_message">Event: &apos;message&apos;</a></li>
+<li><a href="#cluster_event_online_1">Event: &apos;online&apos;</a></li>
+<li><a href="#cluster_event_listening_1">Event: &apos;listening&apos;</a></li>
+<li><a href="#cluster_event_disconnect_1">Event: &apos;disconnect&apos;</a></li>
+<li><a href="#cluster_event_exit_1">Event: &apos;exit&apos;</a></li>
+<li><a href="#cluster_event_error">Event: &apos;error&apos;</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Cluster<span><a class="mark" href="#cluster_cluster" id="cluster_cluster">#</a></span></h1>
+<pre class="api_stability_1">Stability: 1 - Experimental</pre><!--
+A single instance of Node runs in a single thread. To take advantage of
+multi-core systems the user will sometimes want to launch a cluster of Node
+processes to handle the load.
+-->
+
+<p>&#x4E00;&#x3064;&#x306E; Node &#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306F;&#x4E00;&#x3064;&#x306E;&#x30B9;&#x30EC;&#x30C3;&#x30C9;&#x3067;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30DE;&#x30EB;&#x30C1;&#x30B3;&#x30A2;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306E;&#x30E1;&#x30EA;&#x30C3;&#x30C8;&#x3092;&#x751F;&#x304B;&#x3059;&#x305F;&#x3081;&#x306B;&#x3001;
+&#x30E6;&#x30FC;&#x30B6;&#x306F;&#x6642;&#x3005; Node &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x8D77;&#x52D5;&#x3057;&#x3066;&#x8CA0;&#x8377;&#x3092;&#x5206;&#x6563;&#x3057;&#x305F;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The cluster module allows you to easily create child processes that
+all share server ports.
+-->
+
+<p>&#x30AF;&#x30E9;&#x30B9;&#x30BF;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x30DD;&#x30FC;&#x30C8;&#x3092;&#x5171;&#x6709;&#x3059;&#x308B;&#x8907;&#x6570;&#x306E;&#x5B50;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x7C21;&#x5358;&#x306B;
+&#x69CB;&#x7BC9;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x53EF;&#x80FD;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var cluster = require(&apos;cluster&apos;);
+var http = require(&apos;http&apos;);
+var numCPUs = require(&apos;os&apos;).cpus().length;
+
+if (cluster.isMaster) {
+  // Fork workers.
+  for (var i = 0; i &lt; numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on(&apos;exit&apos;, function(worker, code, signal) {
+    console.log(&apos;worker &apos; + worker.process.pid + &apos; died&apos;);
+  });
+} else {
+  // Workers can share any TCP connection
+  // In this case its a HTTP server
+  http.createServer(function(req, res) {
+    res.writeHead(200);
+    res.end(&quot;hello world\n&quot;);
+  }).listen(8000);
+}</code></pre>
+<!--
+Running node will now share port 8000 between the workers:
+-->
+
+<p>node &#x306F; 8000 &#x756A;&#x30DD;&#x30FC;&#x30C8;&#x3092;&#x30EF;&#x30FC;&#x30AB;&#x9593;&#x3067;&#x5171;&#x6709;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>% NODE_DEBUG=cluster node server.js
+23521,Master Worker 23524 online
+23521,Master Worker 23526 online
+23521,Master Worker 23523 online
+23521,Master Worker 23528 online</code></pre>
+<!--
+This feature was introduced recently, and may change in future versions.
+Please try it out and provide feedback.
+-->
+
+<p>&#x3053;&#x306E;&#x6A5F;&#x80FD;&#x306F;&#x6700;&#x8FD1;&#x5C0E;&#x5165;&#x3055;&#x308C;&#x305F;&#x3070;&#x304B;&#x308A;&#x3067;&#x3042;&#x308A;&#x3001;
+&#x5C06;&#x6765;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x5909;&#x66F4;&#x3055;&#x308C;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x3092;&#x8A66;&#x3057;&#x3066;&#x3001;&#x30D5;&#x30A3;&#x30FC;&#x30C9;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x884C;&#x3063;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Also note that, on Windows, it is not yet possible to set up a named pipe
+server in a worker.
+-->
+
+<p>Windows &#x3067;&#x306F;&#x3001;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x540D;&#x524D;&#x4ED8;&#x304D;&#x30D1;&#x30A4;&#x30D7;&#x306B;&#x3088;&#x308B;&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x30BB;&#x30C3;&#x30C8;&#x30A2;&#x30C3;&#x30D7;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;
+&#x307E;&#x3060;&#x3067;&#x304D;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x3082;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>How It Works<span><a class="mark" href="#cluster_how_it_works" id="cluster_how_it_works">#</a></span></h2>
+<!--type=misc-->
+
+<!--
+The worker processes are spawned using the `child_process.fork` method,
+so that they can communicate with the parent via IPC and pass server
+handles back and forth.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F; <code>child_process.fork</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x8D77;&#x52D5;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;&#x3001;
+&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3068; IPC &#x3067;&#x901A;&#x4FE1;&#x3057;&#x305F;&#x308A;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x3092;&#x3084;&#x308A;&#x53D6;&#x308A;&#x3057;&#x305F;&#x308A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;
+&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+When you call `server.listen(...)` in a worker, it serializes the
+arguments and passes the request to the master process.  If the master
+process already has a listening server matching the worker's
+requirements, then it passes the handle to the worker.  If it does not
+already have a listening server matching that requirement, then it will
+create one, and pass the handle to the worker.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x304C; <code>server.listen(...)</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3068;&#x3001;&#x5F15;&#x6570;&#x304C;&#x30B7;&#x30EA;&#x30A2;&#x30E9;&#x30A4;&#x30BA;&#x3055;&#x308C;&#x3066;
+&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x3001;&#x30EF;&#x30FC;&#x30AB;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30DE;&#x30C3;&#x30C1;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CB;&#x30F3;&#x30B0;&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x65E2;&#x306B;
+&#x5B58;&#x5728;&#x3059;&#x308C;&#x3070;&#x305D;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x3092;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x6E21;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30DE;&#x30C3;&#x30C1;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CB;&#x30F3;&#x30B0;&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x305D;&#x308C;&#x304C;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x3066;
+&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This causes potentially surprising behavior in three edge cases:
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x4E09;&#x3064;&#x306E;&#x6975;&#x7AEF;&#x306A;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x9A5A;&#x304F;&#x3088;&#x3046;&#x306A;&#x632F;&#x308B;&#x821E;&#x3044;&#x3092;&#x5F15;&#x304D;&#x8D77;&#x3053;&#x3059;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+1. `server.listen({fd: 7})` Because the message is passed to the master,
+   file descriptor 7 **in the parent** will be listened on, and the
+   handle passed to the worker, rather than listening to the worker's
+   idea of what the number 7 file descriptor references.
+2. `server.listen(handle)` Listening on handles explicitly will cause
+   the worker to use the supplied handle, rather than talk to the master
+   process.  If the worker already has the handle, then it's presumed
+   that you know what you are doing.
+3. `server.listen(0)` Normally, this will cause servers to listen on a
+   random port.  However, in a cluster, each worker will receive the
+   same "random" port each time they do `listen(0)`.  In essence, the
+   port is random the first time, but predictable thereafter.  If you
+   want to listen on a unique port, generate a port number based on the
+   cluster worker ID.
+-->
+
+<ol>
+<li><code>server.listen({fd: 7})</code> &#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306F;&#x30DE;&#x30B9;&#x30BF;&#x306B;&#x6E21;&#x3055;&#x308C;&#x3066;&#x308B;&#x305F;&#x3081;&#x3001;
+&#x30EF;&#x30FC;&#x30AB;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50; 7 &#x304C;&#x53C2;&#x7167;&#x3059;&#x308B;&#x3082;&#x306E;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;
+<strong>&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;</strong> &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50; 7 &#x304C;&#x30EA;&#x30B9;&#x30CB;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x3066;&#x305D;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x304C;&#x30EF;&#x30FC;&#x30AB;&#x306B;
+&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>server.listen(handle)</code> &#x660E;&#x793A;&#x7684;&#x306A;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x3092;&#x30EA;&#x30B9;&#x30CB;&#x30F3;&#x30B0;&#x3059;&#x308B;&#x3068;&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;
+&#x95A2;&#x4E0E;&#x3059;&#x308B;&#x3053;&#x3068;&#x306A;&#x304F;&#x3001;&#x30EF;&#x30FC;&#x30AB;&#x306F;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x3059;&#x3067;&#x306B;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x3092;&#x6301;&#x3063;&#x3066;&#x3044;&#x308B;&#x306A;&#x3089;&#x3001;&#x4F55;&#x3092;&#x3057;&#x3088;&#x3046;&#x3068;&#x3057;&#x3066;&#x3044;&#x308B;&#x304B;
+&#x3042;&#x306A;&#x305F;&#x306F;&#x5206;&#x304B;&#x3063;&#x3066;&#x3044;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;</li>
+<li><code>&apos;server.listen(0)</code> &#x901A;&#x5E38;&#x3001;&#x3053;&#x308C;&#x306F;&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&#x30DD;&#x30FC;&#x30C8;&#x3092;&#x30EA;&#x30C3;&#x30B9;&#x30F3;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;
+&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x30AF;&#x30E9;&#x30B9;&#x30BF;&#x3067;&#x306F;&#x3001;&#x5404;&#x30EF;&#x30FC;&#x30AB;&#x306F; <code>listen(0)</code> &#x306B;&#x3088;&#x3063;&#x3066;
+&#x540C;&#x3058; &quot;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&quot; &#x30DD;&#x30FC;&#x30C8;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;&#x521D;&#x56DE;&#x306F;&#x30DD;&#x30FC;&#x30C8;&#x306F;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x304C;&#x3001;&#x305D;&#x306E;&#x5F8C;&#x306F;&#x305D;&#x3046;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3082;&#x3057;&#x30E6;&#x30CB;&#x30FC;&#x30AF;&#x306A;&#x30DD;&#x30FC;&#x30C8;&#x3092;&#x30EA;&#x30C3;&#x30B9;&#x30F3;&#x3057;&#x305F;&#x3051;&#x308C;&#x3070;&#x3001;&#x30AF;&#x30E9;&#x30B9;&#x30BF;&#x306E;&#x30EF;&#x30FC;&#x30AB; ID &#x306B;&#x57FA;&#x3065;&#x3044;&#x3066;
+&#x30DD;&#x30FC;&#x30C8;&#x756A;&#x53F7;&#x3092;&#x751F;&#x6210;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</li>
+</ol>
+<!--
+When multiple processes are all `accept()`ing on the same underlying
+resource, the operating system load-balances across them very
+efficiently.  There is no routing logic in Node.js, or in your program,
+and no shared state between the workers.  Therefore, it is important to
+design your program such that it does not rely too heavily on in-memory
+data objects for things like sessions and login.
+-->
+
+<p>&#x8907;&#x6570;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x540C;&#x3058;&#x30EA;&#x30BD;&#x30FC;&#x30B9;&#x3092; <code>accept()</code> &#x3059;&#x308B;&#x6642;&#x3001;&#x30AA;&#x30DA;&#x30EC;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306F;
+&#x3068;&#x3066;&#x3082;&#x52B9;&#x7387;&#x7684;&#x306B;&#x305D;&#x308C;&#x3089;&#x5168;&#x4F53;&#x3092;&#x30ED;&#x30FC;&#x30C9;&#x30D0;&#x30E9;&#x30F3;&#x30B9;&#x3057;&#x307E;&#x3059;&#x3002;
+Node.js &#x306B;&#x3082;&#x3042;&#x306A;&#x305F;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306B;&#x3082;&#x3001;&#x30EB;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;&#x306E;&#x305F;&#x3081;&#x306E;&#x30ED;&#x30B8;&#x30C3;&#x30AF;&#x3084;
+&#x30EF;&#x30FC;&#x30AB;&#x9593;&#x3067;&#x5171;&#x6709;&#x3055;&#x308C;&#x308B;&#x72B6;&#x614B;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3057;&#x305F;&#x304C;&#x3063;&#x3066;&#x3001;&#x3042;&#x306A;&#x305F;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304C;&#x30BB;&#x30C3;&#x30B7;&#x30E7;&#x30F3;&#x3084;&#x30ED;&#x30B0;&#x30A4;&#x30F3;&#x306E;&#x305F;&#x3081;&#x306B;&#x30E1;&#x30E2;&#x30EA;&#x5185;&#x306E;
+&#x30C7;&#x30FC;&#x30BF;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x904E;&#x5EA6;&#x306B;&#x983C;&#x3089;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x8A2D;&#x8A08;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x91CD;&#x8981;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Because workers are all separate processes, they can be killed or
+re-spawned depending on your program's needs, without affecting other
+workers.  As long as there are some workers still alive, the server will
+continue to accept connections.  Node does not automatically manage the
+number of workers for you, however.  It is your responsibility to manage
+the worker pool for your application's needs.
+-->
+
+<p>&#x5168;&#x3066;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306F;&#x72EC;&#x7ACB;&#x3057;&#x305F;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306A;&#x306E;&#x3067;&#x3001;&#x4ED6;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x5F71;&#x97FF;&#x3092;&#x4E0E;&#x3048;&#x308B;&#x3053;&#x3068;&#x306A;&#x304F;
+&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x30CB;&#x30FC;&#x30BA;&#x306B;&#x5FDC;&#x3058;&#x3066;&#x305D;&#x308C;&#x3089;&#x3092;&#x6BBA;&#x3057;&#x305F;&#x308A;&#x518D;&#x8D77;&#x52D5;&#x3057;&#x305F;&#x308A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x751F;&#x304D;&#x3066;&#x3044;&#x308B;&#x9650;&#x308A;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x63A5;&#x7D9A;&#x3092;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x7D9A;&#x3051;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;Node &#x306F;&#x30EF;&#x30FC;&#x30AB;&#x306E;&#x6570;&#x3092;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x7BA1;&#x7406;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x30CB;&#x30FC;&#x30BA;&#x306B;&#x5FDC;&#x3058;&#x3066;&#x30EF;&#x30FC;&#x30AB;&#x306E;&#x30D7;&#x30FC;&#x30EB;&#x3092;&#x7BA1;&#x7406;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3001;
+&#x3042;&#x306A;&#x305F;&#x306E;&#x8CAC;&#x52D9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>cluster.settings<span><a class="mark" href="#cluster_cluster_settings" id="cluster_cluster_settings">#</a></span></h2>
+<!--
+* {Object}
+  * `execArgv` {Array} list of string arguments passed to the node executable. 
+    (Default=`process.execArgv`)
+  * `exec` {String} file path to worker file.  (Default=`process.argv[1]`)
+  * `args` {Array} string arguments passed to worker.
+    (Default=`process.argv.slice(2)`)
+  * `silent` {Boolean} whether or not to send output to parent's stdio.
+    (Default=`false`)
+-->
+
+<ul>
+<li>{Object}<ul>
+<li><code>execArgv</code> {Array} node &#x5B9F;&#x884C;&#x53EF;&#x80FD;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x6E21;&#x3055;&#x308C;&#x308B;&#x6587;&#x5B57;&#x5217;&#x5F15;&#x6570;&#x306E;&#x914D;&#x5217;&#x3002;
+(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>process.execArgv</code>)</li>
+<li><code>exec</code> {String} &#x30EF;&#x30FC;&#x30AB;&#x3067;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3078;&#x306E;&#x30D1;&#x30B9;&#x3002;
+(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>process.argv[1]</code>)</li>
+<li><code>args</code> {Array} &#x30EF;&#x30FC;&#x30AB;&#x306B;&#x6E21;&#x3055;&#x308C;&#x308B;&#x5F15;&#x6570;&#x3068;&#x306A;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3002;
+(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>process.argv.slice(2)</code>)</li>
+<li><code>silent</code> {Boolean} &#x51FA;&#x529B;&#x3092;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3002;
+(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code>)</li>
+</ul>
+</li>
+</ul>
+<!--
+After calling `.setupMaster()` (or `.fork()`) this settings object will contain
+the settings, including the default values.
+-->
+
+<p><code>.setupMaster()</code> (&#x307E;&#x305F;&#x306F; <code>.fork()</code>) &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3001;&#x3053;&#x306E; <code>settings</code>
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x542B;&#x3080;&#x8A2D;&#x5B9A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+It is effectively frozen after being set, because `.setupMaster()` can
+only be called once.
+-->
+
+<p><code>.setupMaster()</code> &#x306F;&#x4E00;&#x5EA6;&#x3057;&#x304B;&#x547C;&#x3073;&#x51FA;&#x305B;&#x306A;&#x3044;&#x305F;&#x3081;&#x3001;&#x305D;&#x308C;&#x306F;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067;&#x4E8B;&#x5B9F;&#x4E0A;
+&#x51CD;&#x7D50;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This object is not supposed to be changed or set manually, by you.
+-->
+
+<p>&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3042;&#x306A;&#x305F;&#x306B;&#x3088;&#x3063;&#x3066;&#x5909;&#x66F4;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x60F3;&#x5B9A;&#x3057;&#x3066;&#x3044;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h2>cluster.isMaster<span><a class="mark" href="#cluster_cluster_ismaster" id="cluster_cluster_ismaster">#</a></span></h2>
+<div class="signature"><ul>
+<li><span class="type">Boolean</span></li>
+</ul></div>
+<!--
+True if the process is a master. This is determined
+by the `process.env.NODE_UNIQUE_ID`. If `process.env.NODE_UNIQUE_ID` is
+undefined, then `isMaster` is `true`.
+-->
+
+<p>&#x73FE;&#x5728;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x30DE;&#x30B9;&#x30BF;&#x306E;&#x5834;&#x5408;&#x306F; <code>true</code> &#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>process.env.NODE_UNIQUE_ID</code> &#x304B;&#x3089;&#x6C7A;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>process.env.NODE_UNIQUE_ID</code> &#x304C;&#x672A;&#x5B9A;&#x7FA9;&#x3060;&#x3068; <code>isMaster</code> &#x306F; <code>true</code> &#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>cluster.isWorker<span><a class="mark" href="#cluster_cluster_isworker" id="cluster_cluster_isworker">#</a></span></h2>
+<div class="signature"><ul>
+<li><span class="type">Boolean</span></li>
+</ul></div>
+<!--
+True if the process is not a master (it is the negation of `cluster.isMaster`).
+-->
+
+<p>&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x30DE;&#x30B9;&#x30BF;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070; <code>true</code> (&#x3053;&#x308C;&#x306F; <code>cluster.isMaster</code> &#x306E;&#x5426;&#x5B9A;&#x3067;&#x3059;)&#x3002;
+
+</p>
+<h2>Event: &apos;fork&apos;<span><a class="mark" href="#cluster_event_fork" id="cluster_event_fork">#</a></span></h2>
+<div class="signature"><ul>
+<li><code>worker</code> <span class="type">Worker object</span></li>
+</ul></div>
+<!--
+When a new worker is forked the cluster module will emit a 'fork' event.
+This can be used to log worker activity, and create your own timeout.
+-->
+
+<p>&#x65B0;&#x3057;&#x3044;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x30D5;&#x30A9;&#x30FC;&#x30AF;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x30AF;&#x30E9;&#x30B9;&#x30BF;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F; <code>&apos;fork&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;
+&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30EF;&#x30FC;&#x30AB;&#x306E;&#x6D3B;&#x52D5;&#x3092;&#x30ED;&#x30AE;&#x30F3;&#x30B0;&#x3057;&#x305F;&#x308A;&#x3001;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x306E;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var timeouts = [];
+function errorMsg() {
+  console.error(&quot;Something must be wrong with the connection ...&quot;);
+}
+
+cluster.on(&apos;fork&apos;, function(worker) {
+  timeouts[worker.id] = setTimeout(errorMsg, 2000);
+});
+cluster.on(&apos;listening&apos;, function(worker, address) {
+  clearTimeout(timeouts[worker.id]);
+});
+cluster.on(&apos;exit&apos;, function(worker, code, signal) {
+  clearTimeout(timeouts[worker.id]);
+  errorMsg();
+});</code></pre>
+<h2>Event: &apos;online&apos;<span><a class="mark" href="#cluster_event_online" id="cluster_event_online">#</a></span></h2>
+<div class="signature"><ul>
+<li><code>worker</code> <span class="type">Worker object</span></li>
+</ul></div>
+<!--
+After forking a new worker, the worker should respond with an online message.
+When the master receives an online message it will emit this event.
+The difference between 'fork' and 'online' is that fork is emitted when the
+master forks a worker, and 'online' is emitted when the worker is running.
+-->
+
+<p>&#x65B0;&#x3057;&#x3044;&#x30EF;&#x30FC;&#x30AB;&#x3092;&#x30D5;&#x30A9;&#x30FC;&#x30AF;&#x3057;&#x305F;&#x5F8C;&#x3001;&#x30EF;&#x30FC;&#x30AB;&#x306F;&#x30AA;&#x30F3;&#x30E9;&#x30A4;&#x30F3;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x5FDC;&#x7B54;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30DE;&#x30B9;&#x30BF;&#x304C;&#x30AA;&#x30F3;&#x30E9;&#x30A4;&#x30F3;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x3068;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>&apos;fork&apos;</code> &#x3068; <code>&apos;online&apos;</code> &#x306E;&#x9055;&#x3044;&#x306F;&#x3001;<code>&apos;fork&apos;</code> &#x306F;&#x30DE;&#x30B9;&#x30BF;&#x304C;&#x30EF;&#x30FC;&#x30AB;&#x3092;&#x30D5;&#x30A9;&#x30FC;&#x30AF;&#x3057;&#x305F;&#x6642;&#x70B9;&#x3067;
+&#x751F;&#x6210;&#x3055;&#x308C;&#x308B;&#x306E;&#x306B;&#x5BFE;&#x3057;&#x3001;<code>&apos;online&apos;</code> &#x306F;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x3066;&#x304B;&#x3089;&#x751F;&#x6210;&#x3055;&#x308C;&#x308B;&#x70B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code>cluster.on(&apos;online&apos;, function(worker) {
+  console.log(&quot;Yay, the worker responded after it was forked&quot;);
+});</code></pre>
+<h2>Event: &apos;listening&apos;<span><a class="mark" href="#cluster_event_listening" id="cluster_event_listening">#</a></span></h2>
+<div class="signature"><ul>
+<li><code>worker</code> <span class="type">Worker object</span></li>
+<li><code>address</code> <span class="type">Object</span></li>
+</ul></div>
+<!--
+After calling `listen()` from a worker, when the 'listening' event is emitted on
+the server, a listening event will also be emitted on `cluster` in the master.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x304C; <code>net.Server.listen()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x5F8C;&#x3001;(net &#x3084; http &#x306A;&#x3069;&#x306E;) &#x30B5;&#x30FC;&#x30D0;&#x3067;&#x306F;
+<code>&apos;listening&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x3001;&#x30DE;&#x30B9;&#x30BF;&#x306E; <code>cluster</code> &#x3067;&#x3082; <code>&apos;listening&apos;</code>
+&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The event handler is executed with two arguments, the `worker` contains the worker
+object and the `address` object contains the following connection properties:
+`address`, `port` and `addressType`. This is very useful if the worker is listening
+on more than one address.
+-->
+
+<p>&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x306F;&#x4E8C;&#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x4F34;&#x3063;&#x3066;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>worker</code> &#x306F;&#x30EF;&#x30FC;&#x30AB;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x3001;<code>address</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;
+&#x4EE5;&#x4E0B;&#x306E;&#x63A5;&#x7D9A;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x542B;&#x307F;&#x307E;&#x3059;:
+<code>address</code>&#x3001;<code>prot</code>&#x3001;&#x305D;&#x3057;&#x3066; <code>addressType</code> &#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x8907;&#x6570;&#x306E;&#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3092;&#x30EA;&#x30C3;&#x30B9;&#x30F3;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306B;&#x3068;&#x3066;&#x3082;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code>cluster.on(&apos;listening&apos;, function(worker, address) {
+  console.log(&quot;A worker is now connected to &quot; + address.address + &quot;:&quot; + address.port);
+});</code></pre>
+<!--
+The `addressType` is one of:
+-->
+
+<p><code>addressType</code> &#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;:
+
+</p>
+<!--
+* `4` (TCPv4)
+* `6` (TCPv6)
+* `-1` (unix domain socket)
+* `"udp4"` or `"udp6"` (UDP v4 or v6)
+-->
+
+<ul>
+<li><code>4</code> (TCPv4)</li>
+<li><code>6</code> (TCPv6)</li>
+<li><code>-1</code> (unix &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;)</li>
+<li><code>&quot;udp4&quot;</code> &#x307E;&#x305F;&#x306F; <code>&quot;udp6&quot;</code> (UDP v4 &#x307E;&#x305F;&#x306F; v6)</li>
+</ul>
+<h2>Event: &apos;disconnect&apos;<span><a class="mark" href="#cluster_event_disconnect" id="cluster_event_disconnect">#</a></span></h2>
+<div class="signature"><ul>
+<li><code>worker</code> <span class="type">Worker object</span></li>
+</ul></div>
+<!--
+Emitted after the worker IPC channel has disconnected. This can occur when a
+worker exits gracefully, is killed, or is disconnected manually (such as with
+worker.disconnect()).
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x3068;&#x306E; IPC &#x30C1;&#x30E3;&#x30CD;&#x30EB;&#x304C;&#x5207;&#x65AD;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x81EA;&#x7136;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x308A;&#x3001;&#x6BBA;&#x3055;&#x308C;&#x305F;&#x308A;&#x3001;&#x3042;&#x308B;&#x3044;&#x306F; (<code>worker.disconnect()</code>
+&#x306B;&#x3088;&#x308A;) &#x624B;&#x52D5;&#x3067;&#x5207;&#x65AD;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;&#x767A;&#x751F;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+There may be a delay between the `disconnect` and `exit` events.  These events
+can be used to detect if the process is stuck in a cleanup or if there are
+long-living connections.
+-->
+
+<p><code>&apos;disconnect&apos;</code> &#x3068; <code>&apos;exit&apos;</code> &#x306E;&#x9593;&#x306B;&#x306F;&#x9045;&#x5EF6;&#x304C;&#x3042;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x30AF;&#x30EA;&#x30FC;&#x30F3;&#x30CA;&#x30C3;&#x30D7;&#x3067;&#x884C;&#x304D;&#x8A70;&#x307E;&#x3063;&#x305F;&#x308A;&#x3001;&#x9577;&#x6642;&#x9593;&#x751F;&#x304D;&#x3066;&#x3044;&#x308B;&#x63A5;&#x7D9A;&#x304C;
+&#x306A;&#x3044;&#x304B;&#x3092;&#x691C;&#x51FA;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x4F7F;&#x7528;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>cluster.on(&apos;disconnect&apos;, function(worker) {
+  console.log(&apos;The worker #&apos; + worker.id + &apos; has disconnected&apos;);
+});</code></pre>
+<h2>Event: &apos;exit&apos;<span><a class="mark" href="#cluster_event_exit" id="cluster_event_exit">#</a></span></h2>
+<!--
+* `worker` {Worker object}
+* `code` {Number} the exit code, if it exited normally.
+* `signal` {String} the name of the signal (eg. `'SIGHUP'`) that caused
+  the process to be killed.
+-->
+
+<ul>
+<li><code>worker</code> {Worker object}</li>
+<li><code>code</code> {Number} &#x6B63;&#x5E38;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x7D42;&#x4E86;&#x30B3;&#x30FC;&#x30C9;&#x3002;</li>
+<li><code>signal</code> {String} &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x6BBA;&#x3055;&#x308C;&#x308B;&#x539F;&#x56E0;&#x3068;&#x306A;&#x3063;&#x305F;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306E;&#x540D;&#x524D;
+(&#x4F8B;: <code>&apos;SIGHUP&apos;</code>)&#x3002;</li>
+</ul>
+<!--
+When any of the workers die the cluster module will emit the 'exit' event.
+-->
+
+<p>&#x3069;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x6B7B;&#x3093;&#x3060;&#x5834;&#x5408;&#x3067;&#x3082;&#x3001;&#x30AF;&#x30E9;&#x30B9;&#x30BF;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F; <code>&apos;exit&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;
+&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This can be used to restart the worker by calling `.fork()` again.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; <code>.fork()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x30EF;&#x30FC;&#x30AB;&#x3092;&#x518D;&#x958B;&#x3059;&#x308B;&#x5834;&#x5408;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>cluster.on(&apos;exit&apos;, function(worker, code, signal) {
+  console.log(&apos;worker %d died (%s). restarting...&apos;,
+    worker.process.pid, signal || code);
+  cluster.fork();
+});</code></pre>
+<p>See <a href="child_process.html#child_process_event_exit">child_process event: &apos;exit&apos;</a>.
+
+</p>
+<h2>Event: &apos;setup&apos;<span><a class="mark" href="#cluster_event_setup" id="cluster_event_setup">#</a></span></h2>
+<!--
+Emitted the first time that `.setupMaster()` is called.
+-->
+
+<p><code>setupMaster()</code> &#x304C;&#x6700;&#x521D;&#x306B;&#x547C;&#x3070;&#x308C;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>cluster.setupMaster([settings])<span><a class="mark" href="#cluster_cluster_setupmaster_settings" id="cluster_cluster_setupmaster_settings">#</a></span></h2>
+<!--
+* `settings` {Object}
+  * `exec` {String} file path to worker file.  (Default=`process.argv[1]`)
+  * `args` {Array} string arguments passed to worker.
+    (Default=`process.argv.slice(2)`)
+  * `silent` {Boolean} whether or not to send output to parent's stdio.
+    (Default=`false`)
+-->
+
+<ul>
+<li><code>settings</code> {Object}<ul>
+<li><code>exec</code> {String} &#x30EF;&#x30FC;&#x30AB;&#x3067;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3078;&#x306E;&#x30D1;&#x30B9;.
+(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>process.argv[1]</code>)</li>
+<li><code>args</code> {Array} &#x30EF;&#x30FC;&#x30AB;&#x306B;&#x6E21;&#x3055;&#x308C;&#x308B;&#x5F15;&#x6570;&#x3068;&#x306A;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3002;
+(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>process.argv.slice(2)</code>)</li>
+<li><code>silent</code> {Boolean} &#x51FA;&#x529B;&#x3092;&#x89AA;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3002;
+(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code>)</li>
+</ul>
+</li>
+</ul>
+<!--
+`setupMaster` is used to change the default 'fork' behavior. Once called,
+the settings will be present in `cluster.settings`.
+-->
+
+<p><code>setupMaster()</code> &#x306F; &apos;fork&apos; &#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x52D5;&#x4F5C;&#x3092;&#x5909;&#x66F4;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x4E00;&#x5EA6;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x305D;&#x306E;&#x8A2D;&#x5B9A;&#x306F; <code>cluster.settings</code> &#x306B;&#x53CD;&#x6620;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that:
+-->
+
+<p>&#x6CE8;&#x610F;&#x4E8B;&#x9805;:
+
+</p>
+<!--
+* Only the first call to `.setupMaster()` has any effect, subsequent calls are
+  ignored
+* That because of the above, the *only* attribute of a worker that may be
+  customized per-worker is the `env` passed to `.fork()`
+* `.fork()` calls `.setupMaster()` internally to establish the defaults, so to
+  have any effect, `.setupMaster()` must be called *before* any calls to
+  `.fork()`
+-->
+
+<ul>
+<li><code>.setupMaster()</code> &#x306E;&#x6700;&#x521D;&#x306E;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3060;&#x3051;&#x52B9;&#x679C;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x5F8C;&#x306E;&#x547C;&#x3073;&#x51FA;&#x3057;&#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li>&#x4E0A;&#x8A18;&#x306E;&#x305F;&#x3081;&#x3001;&#x30EF;&#x30FC;&#x30AB;&#x3054;&#x3068;&#x306B;&#x30AB;&#x30B9;&#x30BF;&#x30DE;&#x30A4;&#x30BA;&#x3067;&#x304D;&#x308B;&#x5C5E;&#x6027;&#x306F; <code>.fork()</code> &#x306B;&#x6E21;&#x3059;&#x3053;&#x3068;&#x306E;&#x3067;&#x304D;&#x308B;
+<code>env</code> <em>&#x3060;&#x3051;</em> &#x3067;&#x3059;&#x3002;</li>
+<li><code>.fork()</code> &#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x53CD;&#x6620;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x5185;&#x90E8;&#x3067; <code>.setupMaster()</code>
+&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x305F;&#x3081;&#x3001;<code>.setupMaster()</code> &#x304C;&#x52B9;&#x679C;&#x3092;&#x6301;&#x3064;&#x306B;&#x306F; <code>.fork()</code> &#x3088;&#x308A;&#x3082;&#x524D;&#x306B;
+&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var cluster = require(&quot;cluster&quot;);
+cluster.setupMaster({
+  exec : &quot;worker.js&quot;,
+  args : [&quot;--use&quot;, &quot;https&quot;],
+  silent : true
+});
+cluster.fork();</code></pre>
+<!--
+This can only be called from the master process.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304B;&#x3089;&#x306E;&#x307F;&#x3001;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>cluster.fork([env])<span><a class="mark" href="#cluster_cluster_fork_env" id="cluster_cluster_fork_env">#</a></span></h2>
+<!--
+* `env` {Object} Key/value pairs to add to worker process environment.
+* return {Worker object}
+-->
+
+<ul>
+<li><code>env</code> {Object} &#x30EF;&#x30FC;&#x30AB;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306E;&#x74B0;&#x5883;&#x306B;&#x52A0;&#x3048;&#x3089;&#x308C;&#x308B;&#x30AD;&#x30FC;&#x3068;&#x5024;&#x306E;&#x30DA;&#x30A2;&#x3002;</li>
+<li>return {Worker object}</li>
+</ul>
+<!--
+Spawn a new worker process.
+-->
+
+<p>&#x65B0;&#x3057;&#x3044;&#x30EF;&#x30FC;&#x30AB;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x8D77;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This can only be called from the master process.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304B;&#x3089;&#x306E;&#x307F;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>cluster.disconnect([callback])<span><a class="mark" href="#cluster_cluster_disconnect_callback" id="cluster_cluster_disconnect_callback">#</a></span></h2>
+<!--
+* `callback` {Function} called when all workers are disconnected and handles are
+  closed
+-->
+
+<ul>
+<li><code>callback</code> {Function} &#x5168;&#x3066;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x5207;&#x65AD;&#x3057;&#x3001;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x308B;&#x3068;
+&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+Calls `.disconnect()` on each worker in `cluster.workers`.
+-->
+
+<p><code>cluster.workers</code> &#x5185;&#x306E;&#x5404;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x5BFE;&#x3057;&#x3066; <code>.disconnect()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+When they are disconnected all internal handles will be closed, allowing the
+master process to die gracefully if no other event is waiting.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x3068;&#x306E;&#x63A5;&#x7D9A;&#x304C;&#x5207;&#x65AD;&#x3057;&#x3066;&#x5185;&#x90E8;&#x7684;&#x306A;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x304C;&#x5168;&#x3066;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;
+&#x4ED6;&#x306B;&#x5F85;&#x6A5F;&#x3057;&#x3066;&#x3044;&#x308B;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x81EA;&#x7136;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The method takes an optional callback argument which will be called when finished.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This can only be called from the master process.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304B;&#x3089;&#x306E;&#x307F;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>cluster.worker<span><a class="mark" href="#cluster_cluster_worker" id="cluster_cluster_worker">#</a></span></h2>
+<div class="signature"><ul>
+<li><span class="type">Object</span></li>
+</ul></div>
+<!--
+A reference to the current worker object. Not available in the master process.
+-->
+
+<p>&#x73FE;&#x5728;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3078;&#x306E;&#x53C2;&#x7167;&#x3067;&#x3059;&#x3002;
+&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067;&#x306F;&#x5229;&#x7528;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<pre><code>var cluster = require(&apos;cluster&apos;);
+
+if (cluster.isMaster) {
+  console.log(&apos;I am master&apos;);
+  cluster.fork();
+  cluster.fork();
+} else if (cluster.isWorker) {
+  console.log(&apos;I am worker #&apos; + cluster.worker.id);
+}</code></pre>
+<h2>cluster.workers<span><a class="mark" href="#cluster_cluster_workers" id="cluster_cluster_workers">#</a></span></h2>
+<div class="signature"><ul>
+<li><span class="type">Object</span></li>
+</ul></div>
+<!--
+A hash that stores the active worker objects, keyed by `id` field. Makes it
+easy to loop through all the workers. It is only available in the master
+process.
+-->
+
+<p><code>id</code> &#x3092;&#x30AD;&#x30FC;&#x3068;&#x3057;&#x3066;&#x30A2;&#x30AF;&#x30C6;&#x30A3;&#x30D6;&#x306A;&#x30EF;&#x30FC;&#x30AB;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4FDD;&#x5B58;&#x3057;&#x3066;&#x3044;&#x308B;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x5168;&#x3066;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x3092;&#x884C;&#x3046;&#x3053;&#x3068;&#x3092;&#x5BB9;&#x6613;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067;&#x306E;&#x307F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+A worker is removed from cluster.workers just before the `'disconnect'` or
+`'exit'` event is emitted.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x306F; <code>&apos;disconnect&apos;</code> &#x3084; <code>&apos;exit&apos;</code> &#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x308B;&#x524D;&#x306B; <code>cluster.worker</code> &#x304B;&#x3089;
+&#x524A;&#x9664;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>// Go through all workers
+function eachWorker(callback) {
+  for (var id in cluster.workers) {
+    callback(cluster.workers[id]);
+  }
+}
+eachWorker(function(worker) {
+  worker.send(&apos;big announcement to all workers&apos;);
+});</code></pre>
+<!--
+Should you wish to reference a worker over a communication channel, using
+the worker's unique id is the easiest way to find the worker.
+-->
+
+<p>&#x901A;&#x4FE1;&#x30C1;&#x30E3;&#x30CD;&#x30EB;&#x3092;&#x8D8A;&#x3048;&#x3066;&#x30EF;&#x30FC;&#x30AB;&#x306E;&#x53C2;&#x7167;&#x3092;&#x6E21;&#x3059;&#x5834;&#x5408;&#x306F;&#x3001;
+&#x30EF;&#x30FC;&#x30AB;&#x306E;&#x30E6;&#x30CB;&#x30FC;&#x30AF;&#x306A; ID &#x3092;&#x4F7F;&#x3063;&#x3066;&#x30EF;&#x30FC;&#x30AB;&#x3092;&#x63A2;&#x3059;&#x306E;&#x304C;&#x7C21;&#x5358;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code>socket.on(&apos;data&apos;, function(id) {
+  var worker = cluster.workers[id];
+});</code></pre>
+<h2>Class: Worker<span><a class="mark" href="#cluster_class_worker" id="cluster_class_worker">#</a></span></h2>
+<!--
+A Worker object contains all public information and method about a worker.
+In the master it can be obtained using `cluster.workers`. In a worker
+it can be obtained using `cluster.worker`.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x95A2;&#x3059;&#x308B;&#x5168;&#x3066;&#x306E;&#x516C;&#x958B;&#x3055;&#x308C;&#x305F;&#x60C5;&#x5831;&#x3084;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x6301;&#x3064;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+&#x30DE;&#x30B9;&#x30BF;&#x3067;&#x306F; <code>cluster.wrokers</code> &#x304B;&#x3089;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F; <code>cluster.worker</code> &#x304B;&#x3089;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>worker.id<span><a class="mark" href="#cluster_worker_id" id="cluster_worker_id">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">String</span></li>
+</ul></div>
+<!--
+Each new worker is given its own unique id, this id is stored in the
+`id`.
+
+While a worker is alive, this is the key that indexes it in
+cluster.workers
+-->
+
+<p>&#x65B0;&#x3057;&#x3044;&#x30EF;&#x30FC;&#x30AB;&#x306F;&#x3044;&#x305A;&#x308C;&#x3082;&#x30E6;&#x30CB;&#x30FC;&#x30AF;&#x306A; ID &#x3092;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E; ID &#x306F; <code>id</code> &#x306B;&#x4FDD;&#x5B58;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x751F;&#x304D;&#x3066;&#x3044;&#x308B;&#x9593;&#x3001;&#x3053;&#x308C;&#x306F; <code>cluseter.workers</code> &#x306E;&#x30AD;&#x30FC;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>worker.process<span><a class="mark" href="#cluster_worker_process" id="cluster_worker_process">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">ChildProcess object</span></li>
+</ul></div>
+<!--
+All workers are created using `child_process.fork()`, the returned object
+from this function is stored as `.process`. In a worker, the global `process`
+is stored.
+-->
+
+<p>&#x5168;&#x3066;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306F; <code>child_process.fork()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x623B;&#x308A;&#x5024;&#x306F; <code>.process</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F;&#x3001;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x306E; <code>process</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+See: [Child Process module](
+child_process.html#child_process_child_process_fork_modulepath_args_options)
+-->
+
+<p>&#x53C2;&#x7167;: <a href="child_process.html#child_process_child_process_fork_modulepath_args_options">Child Process module</a>
+
+</p>
+<!--
+Note that workers will call `process.exit(0)` if the `'disconnect'` event occurs
+on `process` and `.suicide` is not `true`. This protects against accidental
+disconnection.
+-->
+
+<p><code>process</code> &#x3067; <code>&apos;disconnect&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x308B;&#x3068;&#x30EF;&#x30FC;&#x30AB;&#x304C; <code>process.exit(0)</code>
+&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3001;<code>.suicide</code> &#x304C; <code>true</code> &#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x5076;&#x767A;&#x7684;&#x306A;&#x5207;&#x65AD;&#x3092;&#x9632;&#x304E;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>worker.suicide<span><a class="mark" href="#cluster_worker_suicide" id="cluster_worker_suicide">#</a></span></h3>
+<div class="signature"><ul>
+<li><span class="type">Boolean</span></li>
+</ul></div>
+<!--
+Set by calling `.kill()` or `.disconnect()`, until then it is `undefined`.
+-->
+
+<p><code>.kill()</code> &#x307E;&#x305F;&#x306F; <code>.disconnect()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x307E;&#x3067;&#x306F; <code>undefined</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+The boolean `worker.suicide` lets you distinguish between voluntary and accidental
+exit, the master may choose not to respawn a worker based on this value.
+-->
+
+<p>&#x771F;&#x507D;&#x5024;&#x306E; <code>worker.suicide</code> &#x306F;&#x3001;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x81EA;&#x767A;&#x7684;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x306E;&#x304B;&#x5076;&#x767A;&#x7684;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x306E;&#x304B;&#x3092;
+&#x533A;&#x5225;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30DE;&#x30B9;&#x30BF;&#x306F;&#x3053;&#x306E;&#x5024;&#x306B;&#x57FA;&#x3065;&#x3044;&#x3066;&#x3001;&#x30EF;&#x30FC;&#x30AB;&#x3092;&#x518D;&#x8D77;&#x52D5;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x9078;&#x3076;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>cluster.on(&apos;exit&apos;, function(worker, code, signal) {
+  if (worker.suicide === true) {
+    console.log(&apos;Oh, it was just suicide\&apos; &#x2013; no need to worry&apos;).
+  }
+});
+
+// kill worker
+worker.kill();</code></pre>
+<h3>worker.send(message, [sendHandle])<span><a class="mark" href="#cluster_worker_send_message_sendhandle" id="cluster_worker_send_message_sendhandle">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>message</code> <span class="type">Object</span></li>
+<li><code>sendHandle</code> <span class="type">Handle object</span></li>
+</ul></div>
+<!--
+This function is equal to the send methods provided by
+`child_process.fork()`.  In the master you should use this function to
+send a message to a specific worker.
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; <code>child_process.fork()</code> &#x304C;&#x8FD4;&#x3059;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E; <code>send()</code>
+&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+&#x30DE;&#x30B9;&#x30BF;&#x306F;&#x7279;&#x5B9A;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3053;&#x306E;&#x95A2;&#x6570;&#x3092;
+&#x4F7F;&#x7528;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+In a worker you can also use `process.send(message)`, it is the same function.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F; <code>process.send(message)</code> &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x540C;&#x3058;&#x95A2;&#x6570;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+This example will echo back all messages from the master:
+-->
+
+<p>&#x3053;&#x306E;&#x4F8B;&#x306F;&#x30DE;&#x30B9;&#x30BF;&#x304B;&#x3089;&#x306E;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x30A8;&#x30B3;&#x30FC;&#x30D0;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>if (cluster.isMaster) {
+  var worker = cluster.fork();
+  worker.send(&apos;hi there&apos;);
+
+} else if (cluster.isWorker) {
+  process.on(&apos;message&apos;, function(msg) {
+    process.send(msg);
+  });
+}</code></pre>
+<h3>worker.kill([signal=&apos;SIGTERM&apos;])<span><a class="mark" href="#cluster_worker_kill_signal_sigterm" id="cluster_worker_kill_signal_sigterm">#</a></span></h3>
+<!--
+* `signal` {String} Name of the kill signal to send to the worker
+  process.
+-->
+
+<ul>
+<li><code>signal</code> {String} &#x30EF;&#x30FC;&#x30AB;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x9001;&#x3089;&#x308C;&#x308B;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306E;&#x540D;&#x524D;&#x3067;&#x3059;&#x3002;</li>
+</ul>
+<!--
+This function will kill the worker. In the master, it does this by disconnecting
+the `worker.process`, and once disconnected, killing with `signal`. In the
+worker, it does it by disconnecting the channel, and then exiting with code `0`.
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x30EF;&#x30FC;&#x30AB;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30DE;&#x30B9;&#x30BF;&#x3067;&#x306F;&#x3001;&#x3053;&#x308C;&#x306F; <code>worker.process</code> &#x3068;&#x5207;&#x65AD;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x3088;&#x3063;&#x3066;&#x884C;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x3057;&#x3066;&#x5207;&#x65AD;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;<code>signal</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x30EF;&#x30FC;&#x30AB;&#x3092;&#x6BBA;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F;&#x3001;&#x3053;&#x308C;&#x306F;&#x30C1;&#x30E3;&#x30CD;&#x30EB;&#x306E;&#x5207;&#x65AD;&#x306B;&#x3088;&#x3063;&#x3066;&#x884C;&#x308F;&#x308C;&#x3001;&#x30B3;&#x30FC;&#x30C9; <code>0</code> &#x3067;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Causes `.suicide` to be set.
+-->
+
+<p><code>.suicide</code> &#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x539F;&#x56E0;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This method is aliased as `worker.destroy()` for backwards compatibility.
+-->
+
+<p>&#x5F8C;&#x65B9;&#x4E92;&#x63DB;&#x6027;&#x306E;&#x305F;&#x3081;&#x3001;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306B;&#x306F; <code>worker.destroy()</code> &#x3068;&#x3044;&#x3046;&#x5225;&#x540D;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that in a worker, `process.kill()` exists, but it is not this function,
+it is [kill](process.html#process_process_kill_pid_signal).
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F;&#x3001;<code>process.kill()</code> &#x306F;&#x5B58;&#x5728;&#x3059;&#x308B;&#x3082;&#x306E;&#x306E;&#x3001;&#x305D;&#x308C;&#x306F;&#x95A2;&#x6570;&#x3067;&#x306F;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;
+&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+<a href="process.html#process_process_kill_pid_signal">kill</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>worker.disconnect()<span><a class="mark" href="#cluster_worker_disconnect" id="cluster_worker_disconnect">#</a></span></h3>
+<!--
+In a worker, this function will close all servers, wait for the 'close' event on
+those servers, and then disconnect the IPC channel.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F;&#x3001;&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x5168;&#x3066;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x3001;&#x305D;&#x308C;&#x3089;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x306E; <code>&apos;close&apos;</code>
+&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x5F85;&#x6A5F;&#x3057;&#x3001;&#x305D;&#x3057;&#x3066; IPC &#x30C1;&#x30E3;&#x30CD;&#x30EB;&#x3092;&#x5207;&#x65AD;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+In the master, an internal message is sent to the worker causing it to call
+`.disconnect()` on itself.
+-->
+
+<p>&#x30DE;&#x30B9;&#x30BF;&#x3067;&#x306F;&#x3001;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x81EA;&#x5206;&#x306E; <code>.disconnect()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x306B;&#x306A;&#x308B;&#x5185;&#x90E8;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;
+&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x9001;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Causes `.suicide` to be set.
+-->
+
+<p><code>.suicide</code> &#x304C;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x539F;&#x56E0;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that after a server is closed, it will no longer accept new connections,
+but connections may be accepted by any other listening worker. Existing
+connections will be allowed to close as usual. When no more connections exist,
+see [server.close()](net.html#net_event_close), the IPC channel to the worker
+will close allowing it to die gracefully.
+-->
+
+<p>&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x305F;&#x5F8C;&#x3001;&#x305D;&#x308C;&#x306F;&#x3082;&#x3046;&#x65B0;&#x305F;&#x306A;&#x63A5;&#x7D9A;&#x3092;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x4ED6;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x3088;&#x3063;&#x3066;&#x63A5;&#x7D9A;&#x306F;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x65E2;&#x5B58;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x901A;&#x5E38;&#x901A;&#x308A;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x7121;&#x304F;&#x306A;&#x308B;&#x3068; (<a href="net.html#net_event_close">server.close()</a> &#x53C2;&#x7167;)&#x3001;
+&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x81EA;&#x7136;&#x306B;&#x7D42;&#x4E86;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B; IPC &#x30C1;&#x30E3;&#x30CD;&#x30EB;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The above applies *only* to server connections, client connections are not
+automatically closed by workers, and disconnect does not wait for them to close
+before exiting.
+-->
+
+<p>&#x4E0A;&#x8A18;&#x306F;&#x30B5;&#x30FC;&#x30D0;&#x5074;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x306E;&#x307F;&#x9069;&#x7528;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x5074;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x3088;&#x3063;&#x3066;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x306A;&#x304F;&#x3001;
+&#x7D42;&#x4E86;&#x3059;&#x308B;&#x524D;&#x306B;&#x305D;&#x308C;&#x3089;&#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x5F85;&#x3064;&#x3053;&#x3068;&#x3082;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Note that in a worker, `process.disconnect` exists, but it is not this function,
+it is [disconnect](child_process.html#child_process_child_disconnect).
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F;&#x3001;<code>process.disconnect</code> &#x306F;&#x5B58;&#x5728;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;&#x305D;&#x308C;&#x306F;&#x3053;&#x3053;&#x3067;&#x8AAC;&#x660E;&#x3057;&#x305F;&#x95A2;&#x6570;&#x3067;&#x306F;
+&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;&#x305D;&#x308C;&#x306F;
+<a href="child_process.html#child_process_child_disconnect">disconnect</a> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Because long living server connections may block workers from disconnecting, it
+may be useful to send a message, so application specific actions may be taken to
+close them. It also may be useful to implement a timeout, killing a worker if
+the `disconnect` event has not been emitted after some time.
+-->
+
+<p>&#x9577;&#x6642;&#x9593;&#x751F;&#x304D;&#x3066;&#x3044;&#x308B;&#x30B5;&#x30FC;&#x30D0;&#x5074;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30EF;&#x30FC;&#x30AB;&#x304C;&#x5207;&#x65AD;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x59A8;&#x3052;&#x308B;&#x305F;&#x3081;&#x3001;
+&#x305D;&#x308C;&#x3089;&#x3092;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x56FA;&#x6709;&#x306E;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x9001;&#x308B;&#x3053;&#x3068;&#x306F;&#x6709;&#x7528;&#x3067;&#x3059;&#x3002;
+&#x52A0;&#x3048;&#x3066;&#x3001;&#x4E00;&#x5B9A;&#x306E;&#x6642;&#x9593;&#x304C;&#x7D4C;&#x904E;&#x3057;&#x3066;&#x3082; <code>&apos;disconnect&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x767A;&#x751F;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;
+&#x30EF;&#x30FC;&#x30AB;&#x3092;&#x5F37;&#x5236;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x5B9F;&#x88C5;&#x3082;&#x6709;&#x7528;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code>if (cluster.isMaster) {
+  var worker = cluster.fork();
+  var timeout;
+
+  worker.on(&apos;listening&apos;, function(address) {
+    worker.send(&apos;shutdown&apos;);
+    worker.disconnect();
+    timeout = setTimeout(function() {
+      worker.kill();
+    }, 2000);
+  });
+
+  worker.on(&apos;disconnect&apos;, function() {
+    clearTimeout(timeout);
+  });
+
+} else if (cluster.isWorker) {
+  var net = require(&apos;net&apos;);
+  var server = net.createServer(function(socket) {
+    // connections never end
+  });
+
+  server.listen(8000);
+
+  process.on(&apos;message&apos;, function(msg) {
+    if(msg === &apos;shutdown&apos;) {
+      // initiate graceful close of any connections to server
+    }
+  });
+}</code></pre>
+<h3>Event: &apos;message&apos;<span><a class="mark" href="#cluster_event_message" id="cluster_event_message">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>message</code> <span class="type">Object</span></li>
+</ul></div>
+<!--
+This event is the same as the one provided by `child_process.fork()`.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F; <code>child_process.fork()</code> &#x304C;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x3082;&#x306E;&#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+In a worker you can also use `process.on('message')`.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F;&#x3001;<code>process.on(&apos;message&apos;)</code> &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+As an example, here is a cluster that keeps count of the number of requests
+in the master process using the message system:
+-->
+
+<p>&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x30AF;&#x30E9;&#x30B9;&#x30BF;&#x5168;&#x4F53;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x6570;&#x3092;
+&#x30DE;&#x30B9;&#x30BF;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3067;&#x4FDD;&#x6301;&#x3059;&#x308B;&#x4F8B;&#x3067;&#x3059;:
+
+</p>
+<pre><code>var cluster = require(&apos;cluster&apos;);
+var http = require(&apos;http&apos;);
+
+if (cluster.isMaster) {
+
+  // Keep track of http requests
+  var numReqs = 0;
+  setInterval(function() {
+    console.log(&quot;numReqs =&quot;, numReqs);
+  }, 1000);
+
+  // Count requestes
+  function messageHandler(msg) {
+    if (msg.cmd &amp;&amp; msg.cmd == &apos;notifyRequest&apos;) {
+      numReqs += 1;
+    }
+  }
+
+  // Start workers and listen for messages containing notifyRequest
+  var numCPUs = require(&apos;os&apos;).cpus().length;
+  for (var i = 0; i &lt; numCPUs; i++) {
+    cluster.fork();
+  }
+
+  Object.keys(cluster.workers).forEach(function(id) {
+    cluster.workers[id].on(&apos;message&apos;, messageHandler);
+  });
+
+} else {
+
+  // Worker processes have a http server.
+  http.Server(function(req, res) {
+    res.writeHead(200);
+    res.end(&quot;hello world\n&quot;);
+
+    // notify master about the request
+    process.send({ cmd: &apos;notifyRequest&apos; });
+  }).listen(8000);
+}</code></pre>
+<h3>Event: &apos;online&apos;<span><a class="mark" href="#cluster_event_online_1" id="cluster_event_online_1">#</a></span></h3>
+<!--
+Similar to the `cluster.on('online')` event, but specific to this worker.
+-->
+
+<p><code>cluster.on(&apos;online&apos;)</code> &#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x304C;&#x3001;&#x3053;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x7279;&#x5316;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>cluster.fork().on(&apos;online&apos;, function() {
+  // Worker is online
+});</code></pre>
+<!--
+It is not emitted in the worker.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>Event: &apos;listening&apos;<span><a class="mark" href="#cluster_event_listening_1" id="cluster_event_listening_1">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>address</code> <span class="type">Object</span></li>
+</ul></div>
+<!--
+Similar to the `cluster.on('listening')` event, but specific to this worker.
+-->
+
+<p><code>cluster.on(&apos;listening&apos;)</code> &#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x304C;&#x3001;&#x3053;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x7279;&#x5316;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>cluster.fork().on(&apos;listening&apos;, function(address) {
+  // Worker is listening
+});</code></pre>
+<!--
+It is not emitted in the worker.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>Event: &apos;disconnect&apos;<span><a class="mark" href="#cluster_event_disconnect_1" id="cluster_event_disconnect_1">#</a></span></h3>
+<!--
+Similar to the `cluster.on('disconnect')` event, but specfic to this worker.
+-->
+
+<p><code>cluster.on(&apos;disconnect&apos;)</code> &#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x304C;&#x3001;&#x3053;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x7279;&#x5316;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>cluster.fork().on(&apos;disconnect&apos;, function() {
+  // Worker has disconnected
+});</code></pre>
+<h3>Event: &apos;exit&apos;<span><a class="mark" href="#cluster_event_exit_1" id="cluster_event_exit_1">#</a></span></h3>
+<!--
+* `code` {Number} the exit code, if it exited normally.
+* `signal` {String} the name of the signal (eg. `'SIGHUP'`) that caused
+  the process to be killed.
+-->
+
+<ul>
+<li><code>code</code> {Number} &#x6B63;&#x5E38;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x7D42;&#x4E86;&#x30B3;&#x30FC;&#x30C9;&#x3002;</li>
+<li><code>signal</code> {String} &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x6BBA;&#x3055;&#x308C;&#x308B;&#x539F;&#x56E0;&#x3068;&#x306A;&#x3063;&#x305F;&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x306E;&#x540D;&#x524D;
+(&#x4F8B;: <code>&apos;SIGHUP&apos;</code>)&#x3002;</li>
+</ul>
+<!--
+Similar to the `cluster.on('exit')` event, but specific to this worker.
+-->
+
+<p><code>cluster.on(&apos;exit&apos;)</code> &#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x304C;&#x3001;&#x3053;&#x306E;&#x30EF;&#x30FC;&#x30AB;&#x306B;&#x7279;&#x5316;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var worker = cluster.fork();
+worker.on(&apos;exit&apos;, function(code, signal) {
+  if( signal ) {
+    console.log(&quot;worker was killed by signal: &quot;+signal);
+  } else if( code !== 0 ) {
+    console.log(&quot;worker exited with error code: &quot;+code);
+  } else {
+    console.log(&quot;worker success!&quot;);
+  }
+});</code></pre>
+<h3>Event: &apos;error&apos;<span><a class="mark" href="#cluster_event_error" id="cluster_event_error">#</a></span></h3>
+<!--
+This event is the same as the one provided by `child_process.fork()`.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F; <code>child_process.fork()</code> &#x304C;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x3082;&#x306E;&#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+In a worker you can also use `process.on('error')`.
+-->
+
+<p>&#x30EF;&#x30FC;&#x30AB;&#x3067;&#x306F; <code>process.on(&apos;error&apos;)</code> &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

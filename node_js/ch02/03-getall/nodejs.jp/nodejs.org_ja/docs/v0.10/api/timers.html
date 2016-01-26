@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Timers Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/timers.html">
+</head>
+<body class="alt apidoc" id="api-section-timers">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="timers.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#timers_timers">Timers</a><ul>
+<li><a href="#timers_settimeout_callback_delay_arg">setTimeout(callback, delay, [arg], [...])</a></li>
+<li><a href="#timers_cleartimeout_timeoutobject">clearTimeout(timeoutObject)</a></li>
+<li><a href="#timers_setinterval_callback_delay_arg">setInterval(callback, delay, [arg], [...])</a></li>
+<li><a href="#timers_clearinterval_intervalobject">clearInterval(intervalObject)</a></li>
+<li><a href="#timers_unref">unref()</a></li>
+<li><a href="#timers_ref">ref()</a></li>
+<li><a href="#timers_setimmediate_callback_arg">setImmediate(callback, [arg], [...])</a></li>
+<li><a href="#timers_clearimmediate_immediateobject">clearImmediate(immediateObject)</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Timers<span><a class="mark" href="#timers_timers" id="timers_timers">#</a></span></h1>
+<pre class="api_stability_5">Stability: 5 - Locked</pre><!--
+All of the timer functions are globals.  You do not need to `require()`
+this module in order to use them.
+-->
+
+<p>&#x5168;&#x3066;&#x306E;&#x30BF;&#x30A4;&#x30DE;&#x95A2;&#x6570;&#x306F;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x4F7F;&#x3046;&#x305F;&#x3081;&#x306B; <code>require()</code> &#x3092;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h2>setTimeout(callback, delay, [arg], [...])<span><a class="mark" href="#timers_settimeout_callback_delay_arg" id="timers_settimeout_callback_delay_arg">#</a></span></h2>
+<!--
+To schedule execution of a one-time `callback` after `delay` milliseconds. Returns a
+`timeoutObject` for possible use with `clearTimeout()`. Optionally you can
+also pass arguments to the callback.
+-->
+
+<p><code>delay</code> &#x30DF;&#x30EA;&#x79D2;&#x304C;&#x7D4C;&#x904E;&#x3057;&#x305F;&#x5F8C;&#x3067;&#x3001;
+<code>callback</code> &#x304C;&#x4E00;&#x5EA6;&#x3060;&#x3051;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x308B;&#x3088;&#x3046;&#x306B;&#x30B9;&#x30B1;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>clearTimeout()</code> &#x3067;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B; <code>timeoutObject</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3068;&#x3057;&#x3066;&#x3001;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3078;&#x306E;&#x5F15;&#x6570;&#x3092;&#x6E21;&#x3059;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+It is important to note that your callback will probably not be called in exactly
+`delay` milliseconds - Node.js makes no guarantees about the exact timing of when
+the callback will fire, nor of the ordering things will fire in. The callback will
+be called as close as possible to the time specified.
+-->
+
+<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;&#x6B63;&#x78BA;&#x306B; <code>delay</code> &#x30DF;&#x30EA;&#x79D2;&#x5F8C;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3068;&#x306F;&#x9650;&#x3089;&#x306A;&#x3044;&#x70B9;&#x306B;
+&#x6CE8;&#x76EE;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x91CD;&#x8981;&#x3067;&#x3059; - 
+Node.js &#x306F;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x6B63;&#x78BA;&#x306A;&#x30BF;&#x30A4;&#x30DF;&#x30F3;&#x30B0;&#x3082;&#x3001;
+&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x9806;&#x756A;&#x3082;&#x4FDD;&#x8A3C;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x3067;&#x304D;&#x308B;&#x3060;&#x3051;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x6642;&#x9593;&#x306B;&#x8FD1;&#x3044;&#x30BF;&#x30A4;&#x30DF;&#x30F3;&#x30B0;&#x3067;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>clearTimeout(timeoutObject)<span><a class="mark" href="#timers_cleartimeout_timeoutobject" id="timers_cleartimeout_timeoutobject">#</a></span></h2>
+<!--
+Prevents a timeout from triggering.
+-->
+
+<p>&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x304C;&#x30C8;&#x30EA;&#x30AC;&#x30FC;&#x3055;&#x308C;&#x308B;&#x306E;&#x3092;&#x6B62;&#x3081;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>setInterval(callback, delay, [arg], [...])<span><a class="mark" href="#timers_setinterval_callback_delay_arg" id="timers_setinterval_callback_delay_arg">#</a></span></h2>
+<!--
+To schedule the repeated execution of `callback` every `delay` milliseconds.
+Returns a `intervalObject` for possible use with `clearInterval()`. Optionally
+you can also pass arguments to the callback.
+-->
+
+<p><code>delay</code> &#x30DF;&#x30EA;&#x79D2;&#x304C;&#x7D4C;&#x904E;&#x3059;&#x308B;&#x3054;&#x3068;&#x306B;&#x7E70;&#x308A;&#x8FD4;&#x3057; <code>callback</code> &#x304C;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x308B;&#x3088;&#x3046;&#x306B;&#x30B9;&#x30B1;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>clearInterval()</code> &#x3067;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B; <code>intervalObject</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3068;&#x3057;&#x3066;&#x3001;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3078;&#x306E;&#x5F15;&#x6570;&#x3092;&#x6E21;&#x3059;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>clearInterval(intervalObject)<span><a class="mark" href="#timers_clearinterval_intervalobject" id="timers_clearinterval_intervalobject">#</a></span></h2>
+<!--
+Stops a interval from triggering.
+-->
+
+<p>&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D0;&#x30EB;&#x304C;&#x30C8;&#x30EA;&#x30AC;&#x30FC;&#x3055;&#x308C;&#x308B;&#x306E;&#x3092;&#x6B62;&#x3081;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>unref()<span><a class="mark" href="#timers_unref" id="timers_unref">#</a></span></h2>
+<!--
+The opaque value returned by `setTimeout` and `setInterval` also has the method
+`timer.unref()` which will allow you to create a timer that is active but if
+it is the only item left in the event loop won't keep the program running.
+If the timer is already `unref`d calling `unref` again will have no effect.
+-->
+
+<p><code>setTimeout()</code> &#x3042;&#x308B;&#x3044;&#x306F; <code>setInterval()</code> &#x304C;&#x8FD4;&#x3059;&#x4E0D;&#x900F;&#x660E;&#x306A;&#x5024;&#x306F;&#x3001;
+&#x30A2;&#x30AF;&#x30C6;&#x30A3;&#x30D6;&#x3067;&#x3042;&#x308B;&#x306B;&#x3082;&#x304B;&#x304B;&#x308F;&#x3089;&#x305A;&#x3001;&#x305D;&#x308C;&#x304C;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x306E;&#x6700;&#x5F8C;&#x306E;&#x4E00;&#x3064;&#x306B;&#x306A;&#x3063;&#x3066;&#x3082;
+&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x5B9F;&#x884C;&#x3092;&#x7D99;&#x7D9A;&#x3057;&#x306A;&#x3044;&#x30BF;&#x30A4;&#x30DE;&#x3092;&#x4F5C;&#x308B;&#x3053;&#x3068;&#x3092;&#x53EF;&#x80FD;&#x306B;&#x3059;&#x308B;&#x3001;
+<code>timer.unref()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x6301;&#x3063;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x65E2;&#x306B; <code>unref</code> &#x3055;&#x308C;&#x305F;&#x30BF;&#x30A4;&#x30DE;&#x3067;&#x518D;&#x3073; <code>unref</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3082;&#x5F71;&#x97FF;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+In the case of `setTimeout` when you `unref` you create a separate timer that
+will wakeup the event loop, creating too many of these may adversely effect
+event loop performance -- use wisely.
+-->
+
+<p><code>setTimeout()</code> &#x304C; <code>unref</code> &#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x3092;&#x8D77;&#x3053;&#x3059;&#x305F;&#x3081;&#x306B;&#x72EC;&#x7ACB;&#x3057;&#x305F;
+&#x30BF;&#x30A4;&#x30DE;&#x304C;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;&#x3001;&#x305D;&#x308C;&#x3089;&#x304C;&#x3042;&#x307E;&#x308A;&#x306B;&#x591A;&#x304F;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x308B;&#x3068;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x306E;
+&#x30D1;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30F3;&#x30B9;&#x306B;&#x60AA;&#x5F71;&#x97FF;&#x3092;&#x4E0E;&#x3048;&#x307E;&#x3059; -- &#x8CE2;&#x660E;&#x306B;&#x4F7F;&#x3063;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>ref()<span><a class="mark" href="#timers_ref" id="timers_ref">#</a></span></h2>
+<!--
+If you had previously `unref()`d a timer you can call `ref()` to explicitly
+request the timer hold the program open. If the timer is already `ref`d calling
+`ref` again will have no effect.
+-->
+
+<p>&#x4EE5;&#x524D;&#x306B; <code>unref</code> &#x3055;&#x308C;&#x305F;&#x30BF;&#x30A4;&#x30DE;&#x306F;&#x3001;&#x660E;&#x793A;&#x7684;&#x306B; <code>ref()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x3067;
+&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x5B9F;&#x884C;&#x3057;&#x305F;&#x307E;&#x307E;&#x306B;&#x3059;&#x308B;&#x3088;&#x3046;&#x8981;&#x6C42;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x65E2;&#x306B; <code>ref</code> &#x3055;&#x308C;&#x305F;&#x30BF;&#x30A4;&#x30DE;&#x3067;&#x518D;&#x3073; <code>ref</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3082;&#x5F71;&#x97FF;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h2>setImmediate(callback, [arg], [...])<span><a class="mark" href="#timers_setimmediate_callback_arg" id="timers_setimmediate_callback_arg">#</a></span></h2>
+<!--
+To schedule the "immediate" execution of `callback` after I/O events
+callbacks and before `setTimeout` and `setInterval` . Returns an
+`immediateObject` for possible use with `clearImmediate()`. Optionally you
+can also pass arguments to the callback.
+-->
+
+<p><code>callback</code> &#x3092;&#x300C;&#x5373;&#x6642;&#x300D; (I/O &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3088;&#x308A;&#x5F8C;&#x3001;<code>setTimeout</code> &#x304A;&#x3088;&#x3073;
+<code>setInterval</code> &#x3088;&#x308A;&#x3082;&#x524D;) &#x306B;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x3088;&#x3046;&#x30B9;&#x30B1;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>clearImmediate()</code> &#x306B;&#x6E21;&#x3059;&#x3053;&#x3068;&#x306E;&#x3067;&#x304D;&#x308B; <code>immediateObject</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3068;&#x3057;&#x3066;&#x3001;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3078;&#x306E;&#x5F15;&#x6570;&#x3092;&#x6E21;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Immediates are queued in the order created, and are popped off the queue once
+per loop iteration. This is different from `process.nextTick` which will
+execute `process.maxTickDepth` queued callbacks per iteration. `setImmediate`
+will yield to the event loop after firing a queued callback to make sure I/O is
+not being starved. While order is preserved for execution, other I/O events may
+fire between any two scheduled immediate callbacks.
+-->
+
+<p><code>setImmediate()</code> &#x306F;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x305F;&#x9806;&#x3067;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x3001;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x306E;
+&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x6BCE;&#x306B;&#x4E00;&#x5EA6;&#x3001;&#x30AD;&#x30E5;&#x30FC;&#x304B;&#x3089;&#x53D6;&#x308A;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x6BCE;&#x306B; <code>process.maxTickDepth</code> &#x3067;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x56DE;&#x6570;&#x307E;&#x3067;&#x30AD;&#x30E5;&#x30FC;&#x306B;
+&#x5165;&#x308C;&#x3089;&#x308C;&#x305F;&#x95A2;&#x6570;&#x304C;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x308B; <code>process.nextTick()</code> &#x3068;&#x306F;&#x7570;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+<code>setImmediate()</code> &#x306F; I/O &#x304C;&#x6C88;&#x307F;&#x8FBC;&#x307E;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3001;&#x30AD;&#x30E5;&#x30FC;&#x30A4;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x305F;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;
+&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x306B;&#x5236;&#x5FA1;&#x3092;&#x8B72;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x4E8C;&#x3064;&#x306E; <code>setImmediate()</code> &#x306E;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x308B;&#x9806;&#x5E8F;&#x306F;&#x7DAD;&#x6301;&#x3055;&#x308C;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x4ED6;&#x306E; I/O &#x304C;&#x9593;&#x306B;&#x631F;&#x307E;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h2>clearImmediate(immediateObject)<span><a class="mark" href="#timers_clearimmediate_immediateobject" id="timers_clearimmediate_immediateobject">#</a></span></h2>
+<!--
+Stops an immediate from triggering.
+-->
+
+<p><code>setImmediate()</code> &#x306B;&#x6E21;&#x3057;&#x305F;&#x95A2;&#x6570;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x4E2D;&#x6B62;&#x3057;&#x307E;&#x3059;&#x3002;
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

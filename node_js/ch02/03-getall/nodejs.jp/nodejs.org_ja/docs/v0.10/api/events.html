@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Events Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/events.html">
+</head>
+<body class="alt apidoc" id="api-section-events">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="events.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#events_events">Events</a><ul>
+<li><a href="#events_class_events_eventemitter">Class: events.EventEmitter</a><ul>
+<li><a href="#events_emitter_addlistener_event_listener">emitter.addListener(event, listener)</a></li>
+<li><a href="#events_emitter_on_event_listener">emitter.on(event, listener)</a></li>
+<li><a href="#events_emitter_once_event_listener">emitter.once(event, listener)</a></li>
+<li><a href="#events_emitter_removelistener_event_listener">emitter.removeListener(event, listener)</a></li>
+<li><a href="#events_emitter_removealllisteners_event">emitter.removeAllListeners([event])</a></li>
+<li><a href="#events_emitter_setmaxlisteners_n">emitter.setMaxListeners(n)</a></li>
+<li><a href="#events_emitter_listeners_event">emitter.listeners(event)</a></li>
+<li><a href="#events_emitter_emit_event_arg1_arg2">emitter.emit(event, [arg1], [arg2], [...])</a></li>
+<li><a href="#events_class_method_eventemitter_listenercount_emitter_event">Class Method: EventEmitter.listenerCount(emitter, event)</a></li>
+<li><a href="#events_event_newlistener">Event: &apos;newListener&apos;</a></li>
+<li><a href="#events_event_removelistener">Event: &apos;removeListener&apos;</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Events<span><a class="mark" href="#events_events" id="events_events">#</a></span></h1>
+<pre class="api_stability_4">Stability: 4 - API Frozen</pre><!--type=module-->
+
+<!--
+Many objects in Node emit events: a `net.Server` emits an event each time
+a peer connects to it, a `fs.readStream` emits an event when the file is
+opened. All objects which emit events are instances of `events.EventEmitter`.
+You can access this module by doing: `require("events");`
+-->
+
+<p>Node &#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x591A;&#x304F;&#x306F;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;:
+<code>net.Server</code>&#x306F;&#x76F8;&#x624B;&#x304B;&#x3089;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x305F;&#x3073;&#x306B;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x3001;
+<code>fs.readStream</code>&#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3055;&#x308C;&#x308B;&#x305F;&#x3073;&#x306B;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x5168;&#x3066;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; <code>events.EventEmitter</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;
+&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3067;&#x304D;&#x307E;&#x3059;: <code>require(&quot;events&quot;);</code>
+
+</p>
+<!--
+Typically, event names are represented by a camel-cased string, however,
+there aren't any strict restrictions on that, as any string will be accepted.
+-->
+
+<p>&#x901A;&#x5E38;&#x3001;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x540D;&#x306F;&#x30AD;&#x30E3;&#x30E1;&#x30EB;&#x8A18;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3067;&#x8868;&#x73FE;&#x3055;&#x308C;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x53B3;&#x683C;&#x306A;&#x5236;&#x9650;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x3069;&#x3093;&#x306A;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3082;&#x53D7;&#x3051;&#x5165;&#x308C;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Functions can then be attached to objects, to be executed when an event
+is emitted. These functions are called _listeners_. Inside a listener
+function, `this` refers to the `EventEmitter` that the listener was
+attached to.
+-->
+
+<p>&#x95A2;&#x6570;&#x3092;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x30A2;&#x30BF;&#x30C3;&#x30C1;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x3001;&#x305D;&#x308C;&#x306F;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x3089;&#x306E;&#x95A2;&#x6570;&#x306F;<em>&#x30EA;&#x30B9;&#x30CA;&#x30FC;</em>&#x3068;&#x547C;&#x3070;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30EA;&#x30B9;&#x30CA;&#x95A2;&#x6570;&#x306E;&#x4E2D;&#x3067;&#x306F;&#x3001;<code>this</code> &#x306F;&#x305D;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x30A2;&#x30BF;&#x30C3;&#x30C1;&#x3055;&#x308C;&#x305F; <code>EventEmitter</code>
+&#x3092;&#x53C2;&#x7167;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>Class: events.EventEmitter<span><a class="mark" href="#events_class_events_eventemitter" id="events_class_events_eventemitter">#</a></span></h2>
+<!--
+To access the EventEmitter class, `require('events').EventEmitter`.
+-->
+
+<p>EventEmitter&#x30AF;&#x30E9;&#x30B9;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;<code>require(&apos;events&apos;).EventEmitter</code> &#x3092;&#x4F7F;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+When an `EventEmitter` instance experiences an error, the typical action is
+to emit an `'error'` event.  Error events are treated as a special case in node.
+If there is no listener for it, then the default action is to print a stack
+trace and exit the program.
+-->
+
+<p><code>EventEmitter</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x304C;&#x30A8;&#x30E9;&#x30FC;&#x306B;&#x906D;&#x9047;&#x3057;&#x305F;&#x6642;&#x3001;
+&#x5178;&#x578B;&#x7684;&#x306A;&#x52D5;&#x4F5C;&#x306F; <code>&apos;error&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;
+node &#x3067;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x7279;&#x5225;&#x306B;&#x6271;&#x308F;&#x308C;&#x307E;&#x3059;&#xFF0E;
+&#x3082;&#x3057;&#x305D;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x52D5;&#x4F5C;&#x306F;&#x30B9;&#x30BF;&#x30C3;&#x30AF;&#x30C8;&#x30EC;&#x30FC;&#x30B9;&#x3092;&#x51FA;&#x529B;&#x3057;&#x3066;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3092;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+All EventEmitters emit the event `'newListener'` when new listeners are
+added and `'removeListener'` when a listener is removed.
+-->
+
+<p>&#x5168;&#x3066;&#x306E; EventEmitter &#x306F;&#x3001;&#x65B0;&#x3057;&#x3044;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x304C;&#x52A0;&#x3048;&#x3089;&#x308C;&#x308B;&#x3068;&#x30A4;&#x30D9;&#x30F3;&#x30C8; <code>&apos;newListener&apos;</code> &#x3092;&#x751F;&#x6210;&#x3057;&#x3001;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x304C;&#x524A;&#x9664;&#x3055;&#x308C;&#x308B;&#x3068; <code>&apos;removeListener&apos;</code> &#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>emitter.addListener(event, listener)<span><a class="mark" href="#events_emitter_addlistener_event_listener" id="events_emitter_addlistener_event_listener">#</a></span></h3>
+<h3>emitter.on(event, listener)<span><a class="mark" href="#events_emitter_on_event_listener" id="events_emitter_on_event_listener">#</a></span></h3>
+<!--
+Adds a listener to the end of the listeners array for the specified event.
+-->
+
+<p>&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x914D;&#x5217;&#x306E;&#x6700;&#x5F8C;&#x306B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x8FFD;&#x52A0;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>server.on(&apos;connection&apos;, function (stream) {
+  console.log(&apos;someone connected!&apos;);
+});</code></pre>
+<!--
+Returns emitter, so calls can be chained.
+-->
+
+<p>EventEmitter &#x81EA;&#x8EAB;&#x3092;&#x8FD4;&#x3059;&#x306E;&#x3067;&#x3001;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3092;&#x30C1;&#x30A7;&#x30FC;&#x30F3;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>emitter.once(event, listener)<span><a class="mark" href="#events_emitter_once_event_listener" id="events_emitter_once_event_listener">#</a></span></h3>
+<!--
+Adds a **one time** listener for the event. This listener is
+invoked only the next time the event is fired, after which
+it is removed.
+-->
+
+<p><strong>&#x4E00;&#x56DE;&#x9650;&#x308A;</strong>&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x8FFD;&#x52A0;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x306F;&#x6B21;&#x306B;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F;&#x6642;&#x306B;&#x9650;&#x308A;&#x8D77;&#x52D5;&#x3055;&#x308C;&#x3001;&#x305D;&#x306E;&#x5F8C;&#x3067;&#x524A;&#x9664;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>server.once(&apos;connection&apos;, function (stream) {
+  console.log(&apos;Ah, we have our first user!&apos;);
+});</code></pre>
+<!--
+Returns emitter, so calls can be chained.
+-->
+
+<p>EventEmitter &#x81EA;&#x8EAB;&#x3092;&#x8FD4;&#x3059;&#x306E;&#x3067;&#x3001;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3092;&#x30C1;&#x30A7;&#x30FC;&#x30F3;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>emitter.removeListener(event, listener)<span><a class="mark" href="#events_emitter_removelistener_event_listener" id="events_emitter_removelistener_event_listener">#</a></span></h3>
+<!--
+Remove a listener from the listener array for the specified event.
+**Caution**: changes array indices in the listener array behind the listener.
+-->
+
+<p>&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x914D;&#x5217;&#x304B;&#x3089;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x524A;&#x9664;&#x3057;&#x307E;&#x3059;&#x3002;
+<strong>&#x6CE8;&#x610F;</strong>: &#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x306E;&#x80CC;&#x5F8C;&#x306B;&#x3042;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x914D;&#x5217;&#x306E;&#x30A4;&#x30F3;&#x30C7;&#x30C3;&#x30AF;&#x30B9;&#x304C;&#x5909;&#x5316;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var callback = function(stream) {
+  console.log(&apos;someone connected!&apos;);
+};
+server.on(&apos;connection&apos;, callback);
+// ...
+server.removeListener(&apos;connection&apos;, callback);</code></pre>
+<!--
+Returns emitter, so calls can be chained.
+-->
+
+<p>EventEmitter &#x81EA;&#x8EAB;&#x3092;&#x8FD4;&#x3059;&#x306E;&#x3067;&#x3001;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3092;&#x30C1;&#x30A7;&#x30FC;&#x30F3;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>emitter.removeAllListeners([event])<span><a class="mark" href="#events_emitter_removealllisteners_event" id="events_emitter_removealllisteners_event">#</a></span></h3>
+<!--
+Removes all listeners, or those of the specified event.
+-->
+
+<p>&#x5168;&#x3066;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x307E;&#x305F;&#x306F;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x524A;&#x9664;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Returns emitter, so calls can be chained.
+-->
+
+<p>EventEmitter &#x81EA;&#x8EAB;&#x3092;&#x8FD4;&#x3059;&#x306E;&#x3067;&#x3001;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3092;&#x30C1;&#x30A7;&#x30FC;&#x30F3;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>emitter.setMaxListeners(n)<span><a class="mark" href="#events_emitter_setmaxlisteners_n" id="events_emitter_setmaxlisteners_n">#</a></span></h3>
+<!--
+By default EventEmitters will print a warning if more than 10 listeners are
+added for a particular event. This is a useful default which helps finding memory leaks.
+Obviously not all Emitters should be limited to 10. This function allows
+that to be increased. Set to zero for unlimited.
+-->
+
+<p>&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F;&#x3001;EventEmitter &#x306F; 10 &#x3092;&#x8D8A;&#x3048;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x7279;&#x5B9A;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x308B;&#x3068;&#x8B66;&#x544A;&#x3092;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30E1;&#x30E2;&#x30EA;&#x30EA;&#x30FC;&#x30AF;&#x3092;&#x898B;&#x3064;&#x3051;&#x308B;&#x305F;&#x3081;&#x306B;&#x5F79;&#x306B;&#x7ACB;&#x3064;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3067;&#x3059;&#x3002;
+&#x5168;&#x3066;&#x306E; EventEmitter &#x304C; 10 &#x306B;&#x5236;&#x9650;&#x3055;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x308F;&#x3051;&#x3067;&#x306F;&#x306A;&#x3044;&#x3053;&#x3068;&#x306F;&#x660E;&#x3089;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x5236;&#x9650;&#x3092;&#x5897;&#x3084;&#x3059;&#x3053;&#x3068;&#x3092;&#x8A31;&#x53EF;&#x3057;&#x307E;&#x3059;&#x3002;
+0 &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x7121;&#x5236;&#x9650;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>emitter.listeners(event)<span><a class="mark" href="#events_emitter_listeners_event" id="events_emitter_listeners_event">#</a></span></h3>
+<!--
+Returns an array of listeners for the specified event.
+-->
+
+<p>&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>server.on(&apos;connection&apos;, function (stream) {
+  console.log(&apos;someone connected!&apos;);
+});
+console.log(util.inspect(server.listeners(&apos;connection&apos;))); // [ [Function] ]</code></pre>
+<h3>emitter.emit(event, [arg1], [arg2], [...])<span><a class="mark" href="#events_emitter_emit_event_arg1_arg2" id="events_emitter_emit_event_arg1_arg2">#</a></span></h3>
+<!--
+Execute each of the listeners in order with the supplied arguments.
+-->
+
+<p>&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x305F;&#x5F15;&#x6570;&#x306E;&#x4E26;&#x3073;&#x3067;&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x5B9F;&#x884C;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Returns `true` if event had listeners, `false` otherwise.
+-->
+
+<p>&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x5BFE;&#x5FDC;&#x3059;&#x308B;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x3042;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F; <code>true</code>&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306F; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h3>Class Method: EventEmitter.listenerCount(emitter, event)<span><a class="mark" href="#events_class_method_eventemitter_listenercount_emitter_event" id="events_class_method_eventemitter_listenercount_emitter_event">#</a></span></h3>
+<!--
+Return the number of listeners for a given event.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x6570;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h3>Event: &apos;newListener&apos;<span><a class="mark" href="#events_event_newlistener" id="events_event_newlistener">#</a></span></h3>
+<div class="signature"><ul>
+<li><code>event</code> <span class="type">String</span> The event name</li>
+<li><code>listener</code> <span class="type">Function</span> The event handler function</li>
+</ul></div>
+<!--
+This event is emitted any time someone adds a new listener.  It is unspecified
+if `listener` is in the list returned by `emitter.listeners(event)`.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x304C;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x308B;&#x305F;&#x3073;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>emitter.listeners(event)</code> &#x304C;&#x8FD4;&#x3059;&#x30EA;&#x30B9;&#x30C8;&#x306B; <code>listener</code> &#x304C;&#x542B;&#x307E;&#x308C;&#x3066;&#x3044;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x306F;
+&#x672A;&#x5B9A;&#x7FA9;&#x3067;&#x3059;&#x3002;
+
+
+
+</p>
+<h3>Event: &apos;removeListener&apos;<span><a class="mark" href="#events_event_removelistener" id="events_event_removelistener">#</a></span></h3>
+<!--
+* `event` {String} The event name
+* `listener` {Function} The event handler function
+-->
+
+<ul>
+<li><code>event</code> {String} &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x540D;</li>
+<li><code>listener</code> {Function} &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x95A2;&#x6570;</li>
+</ul>
+<!--
+This event is emitted any time someone removes a listener.  It is unspecified
+if `listener` is in the list returned by `emitter.listeners(event)`.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x53D6;&#x308A;&#x9664;&#x304B;&#x308C;&#x308B;&#x305F;&#x3073;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>emitter.listeners(event)</code> &#x304C;&#x8FD4;&#x3059;&#x30EA;&#x30B9;&#x30C8;&#x304B;&#x3089; <code>listener</code> &#x304C;&#x9664;&#x304B;&#x308C;&#x3066;&#x3044;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x306F;
+&#x672A;&#x5B9A;&#x7FA9;&#x3067;&#x3059;&#x3002;
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,379 @@
+{
+  &quot;source&quot;: &quot;doc/api/index.markdown&quot;,
+  &quot;desc&quot;: [
+    {
+      &quot;type&quot;: &quot;html&quot;,
+      &quot;text&quot;: &quot;<!--\n* [About these Docs](documentation.html)\n* [Synopsis](synopsis.html)\n-->\n\n&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_start&quot;,
+      &quot;ordered&quot;: false
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[&#x3053;&#x306E;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;&#x306B;&#x3064;&#x3044;&#x3066;](documentation.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[&#x6982;&#x8981;](synopsis.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Assertion Testing](assert.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Buffer](buffer.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[C/C++ Addons](addons.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Child Processes](child_process.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Cluster](cluster.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Console](console.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Crypto](crypto.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Debugger](debugger.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[DNS](dns.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Domain](domain.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Events](events.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[File System](fs.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Globals](globals.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[HTTP](http.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[HTTPS](https.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Modules](modules.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Net](net.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[OS](os.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Path](path.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Process](process.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Punycode](punycode.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Query Strings](querystring.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Readline](readline.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[REPL](repl.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Stream](stream.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[String Decoder](string_decoder.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Timers](timers.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[TLS/SSL](tls.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[TTY](tty.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[UDP/Datagram](dgram.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[URL](url.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[Utilities](util.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[VM](vm.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_start&quot;
+    },
+    {
+      &quot;type&quot;: &quot;text&quot;,
+      &quot;text&quot;: &quot;[ZLIB](zlib.html)&quot;
+    },
+    {
+      &quot;type&quot;: &quot;space&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_item_end&quot;
+    },
+    {
+      &quot;type&quot;: &quot;list_end&quot;
+    }
+  ]
+}

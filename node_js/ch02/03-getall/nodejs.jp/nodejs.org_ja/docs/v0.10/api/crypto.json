@@ -1,0 +1,792 @@
+{
+  &quot;source&quot;: &quot;doc/api/crypto.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;Crypto&quot;,
+      &quot;name&quot;: &quot;crypto&quot;,
+      &quot;desc&quot;: &quot;<!--\n    Stability: 2 - Unstable; API changes are being discussed for\n    future versions.  Breaking changes will be minimized.  See below.\n-->\n\n<pre><code>Stability: 2 - Unstable; &#x5C06;&#x6765;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x306B;&#x304A;&#x3044;&#x3066; API &#x306E;&#x5909;&#x66F4;&#x304C;\n&#x8B70;&#x8AD6;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;&#x4E92;&#x63DB;&#x6027;&#x3092;&#x640D;&#x306A;&#x3046;&#x5909;&#x66F4;&#x306F;&#x6700;&#x5C0F;&#x9650;&#x306B;&#x306A;&#x308B;&#x4E88;&#x5B9A;&#x3067;&#x3059;&#x3002;\n&#x5F8C;&#x8FF0;&#x3057;&#x307E;&#x3059;&#x3002;</code></pre>\n<!--\nUse `require('crypto')` to access this module.\n-->\n\n<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x306B;&#x306F; <code>require(&apos;crypto&apos;)</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe crypto module offers a way of encapsulating secure credentials to be\nused as part of a secure HTTPS net or http connection.\n-->\n\n<p>&#x6697;&#x53F7;&#x5316;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x5B89;&#x5168;&#x306A; HTTPS &#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x3084; http\n&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x4E00;&#x90E8;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x3001;\n&#x5B89;&#x5168;&#x306A;&#x8A8D;&#x8A3C;&#x60C5;&#x5831;&#x3092;&#x30AB;&#x30D7;&#x30BB;&#x30EB;&#x5316;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIt also offers a set of wrappers for OpenSSL's hash, hmac, cipher,\ndecipher, sign and verify methods.\n-->\n\n<p>&#x540C;&#x6642;&#x306B; OpenSSL &#x306E;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x3001;HMAC&#x3001;&#x6697;&#x53F7;&#x3001;&#x5FA9;&#x53F7;&#x3001;&#x7F72;&#x540D;&#x3001;&#x305D;&#x3057;&#x3066;&#x691C;&#x8A3C;&#x3078;&#x306E;&#x30E9;&#x30C3;&#x30D1;&#x30FC;&#x3092;&#x4E00;&#x5F0F;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;crypto.getCiphers()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;getCiphers&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns an array with the names of the supported ciphers.\n-->\n\n<p>&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x6697;&#x53F7;&#x306E;&#x540D;&#x524D;&#x304B;&#x3089;&#x306A;&#x308B;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>var ciphers = crypto.getCiphers();\nconsole.log(ciphers); // [&apos;AES-128-CBC&apos;, &apos;AES-128-CBC-HMAC-SHA1&apos;, ...]</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.getHashes()&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;getHashes&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns an array with the names of the supported hash algorithms.\n-->\n\n<p>&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306E;&#x540D;&#x524D;&#x304B;&#x3089;&#x306A;&#x308B;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<pre><code>var hashes = crypto.getHashes();\nconsole.log(hashes); // [&apos;sha&apos;, &apos;sha1&apos;, &apos;sha1WithRSAEncryption&apos;, ...]</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: []
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createCredentials(details)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createCredentials&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates a credentials object, with the optional details being a\ndictionary with keys:\n-->\n\n<p>&#x8A8D;&#x8A3C;&#x60C5;&#x5831;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>details</code>\n&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30AD;&#x30FC;&#x3092;&#x6301;&#x3064;&#x8F9E;&#x66F8;&#x3067;&#x3059;:\n\n</p>\n<!--\n* `pfx` : A string or buffer holding the PFX or PKCS12 encoded private\n  key, certificate and CA certificates\n* `key` : A string holding the PEM encoded private key\n* `passphrase` : A string of passphrase for the private key or pfx\n* `cert` : A string holding the PEM encoded certificate\n* `ca` : Either a string or list of strings of PEM encoded CA\n  certificates to trust.\n* `crl` : Either a string or list of strings of PEM encoded CRLs\n  (Certificate Revocation List)\n* `ciphers`: A string describing the ciphers to use or exclude.\n  Consult\n  <http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT>\n  for details on the format.\n-->\n\n<ul>\n<li><code>pfx</code> : PFX &#x307E;&#x305F;&#x306F; PKCS12 &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x79D8;&#x5BC6;&#x9375;&#x3001;&#x8A3C;&#x660E;&#x66F8;&#x3001;&#x304A;&#x3088;&#x3073; CA &#x306E;\n&#x8A3C;&#x660E;&#x66F8;&#x3092;&#x542B;&#x3080;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3002;</li>\n<li><code>key</code> : PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x4FDD;&#x6301;&#x3059;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3002;</li>\n<li><code>passphrase</code>: &#x79D8;&#x5BC6;&#x9375;&#x307E;&#x305F;&#x306F; pfx &#x306E;&#x30D1;&#x30B9;&#x30D5;&#x30EC;&#x30FC;&#x30BA;&#x3002;</li>\n<li><code>cert</code> : PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x8A3C;&#x660E;&#x66F8;&#x3092;&#x4FDD;&#x6301;&#x3059;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3002;</li>\n<li><code>ca</code> : &#x4FE1;&#x983C;&#x3067;&#x304D;&#x308B;&#x8A8D;&#x8A3C;&#x5C40;&#x306E;&#x8A3C;&#x660E;&#x66F8;&#x304C; PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;\n&#x6587;&#x5B57;&#x5217;&#x306E;&#x914D;&#x5217;&#x3002;</li>\n<li><code>crl</code> : PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F; CRL (Certificate Revocation List&#x3001;\n&#x5931;&#x52B9;&#x3057;&#x305F;&#x8A3C;&#x660E;&#x66F8;&#x306E;&#x4E00;&#x89A7;) &#x306E;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x6587;&#x5B57;&#x5217;&#x306E;&#x914D;&#x5217;&#x3002;</li>\n<li><code>ciphers</code>: &#x4F7F;&#x7528;&#x307E;&#x305F;&#x306F;&#x9664;&#x5916;&#x3059;&#x308B;&#x6697;&#x53F7;&#x3092;&#x8A18;&#x8FF0;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3002;\n&#x8A73;&#x7D30;&#x306F; <a href="\&quot;http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT\&quot;">http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT</a>\n&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</li>\n</ul>\n<!--\nIf no 'ca' details are given, then node.js will use the default\npublicly trusted list of CAs as given in\n<http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt>.\n-->\n\n<p>&apos;ca&apos; &#x306E;&#x8A73;&#x7D30;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x3001;node.js &#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3068;&#x3057;&#x3066;\n</p>\n<p><a href="\&quot;http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt\&quot;">http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt</a>\n&#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B;&#x3001;&#x4FE1;&#x983C;&#x3067;&#x304D;&#x308B;&#x8A8D;&#x8A3C;&#x5C40;&#x306E;&#x516C;&#x958B;&#x3055;&#x308C;&#x305F;&#x30EA;&#x30B9;&#x30C8;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;details&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createHash(algorithm)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createHash&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates and returns a hash object, a cryptographic hash with the given\nalgorithm which can be used to generate hash digests.\n-->\n\n<p>&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306B;&#x3088;&#x308B;&#x6697;&#x53F7;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x95A2;&#x6570;&#x306F;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x306E;&#x751F;&#x6210;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`algorithm` is dependent on the available algorithms supported by the\nversion of OpenSSL on the platform. Examples are `'sha1'`, `'md5'`,\n`'sha256'`, `'sha512'`, etc.  On recent releases, `openssl\nlist-message-digest-algorithms` will display the available digest\nalgorithms.\n-->\n\n<p><code>algorithm</code> &#x306F;&#x3001;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x4E0A;&#x306E; OpenSSL \n&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x4F8B;&#x3048;&#x3070; <code>&apos;sha1&apos;</code>&#x3001;<code>&apos;md5&apos;</code>&#x3001;<code>&apos;sha256&apos;</code>&#x3001;<code>&apos;sha512&apos;</code>&#x3001;&#x306A;&#x3069;&#x3067;&#x3059;&#x3002;\n&#x6700;&#x8FD1;&#x306E;&#x30EA;&#x30EA;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;<code>openssl list-message-digest-algorithms</code>\n&#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x304C;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample: this program that takes the sha1 sum of a file\n-->\n\n<p>&#x4F8B;: &#x3053;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;sha1&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x5024;&#x3092;&#x6C42;&#x3081;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var filename = process.argv[2];\nvar crypto = require(&apos;crypto&apos;);\nvar fs = require(&apos;fs&apos;);\n\nvar shasum = crypto.createHash(&apos;sha1&apos;);\n\nvar s = fs.ReadStream(filename);\ns.on(&apos;data&apos;, function(d) {\n  shasum.update(d);\n});\n\ns.on(&apos;end&apos;, function() {\n  var d = shasum.digest(&apos;hex&apos;);\n  console.log(d + &apos;  &apos; + filename);\n});</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;algorithm&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createHmac(algorithm, key)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createHmac&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates and returns a hmac object, a cryptographic hmac with the given\nalgorithm and key.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30AD;&#x30FC;&#x3067; HMAC &#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x3001;HMAC &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIt is a [stream](stream.html) that is both readable and writable.  The\nwritten data is used to compute the hmac.  Once the writable side of\nthe stream is ended, use the `read()` method to get the computed\ndigest.  The legacy `update` and `digest` methods are also supported.\n-->\n\n<p>&#x3053;&#x308C;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A; <a href="\&quot;stream.html\&quot;">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;\n&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x4E00;&#x5EA6;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5074;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x3068;&#x3001;&#x8A08;&#x7B97;&#x3055;&#x308C;&#x305F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;\n&#x8AAD;&#x307F;&#x51FA;&#x3059;&#x305F;&#x3081;&#x306B; <code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`algorithm` is dependent on the available algorithms supported by\nOpenSSL - see createHash above.  `key` is the hmac key to be used.\n-->\n\n<p><code>algorithm</code> &#x306F; OpenSSL &#x3067;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059; &#xFF0D; \n&#x524D;&#x8FF0;&#x306E; <code>createHash</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;algorithm&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;key&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createCipher(algorithm, password)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createCipher&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates and returns a cipher object, with the given algorithm and\npassword.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30D1;&#x30B9;&#x30EF;&#x30FC;&#x30C9;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x6697;&#x53F7;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n<!--\n`algorithm` is dependent on OpenSSL, examples are `'aes192'`, etc.  On\nrecent releases, `openssl list-cipher-algorithms` will display the\navailable cipher algorithms.  `password` is used to derive key and IV,\nwhich must be a `'binary'` encoded string or a [buffer](buffer.html).\n-->\n\n</p>\n<p><code>algorithm</code> &#x306F;&#x3001;OpenSSL &#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;&#x4F8B;&#x3048;&#x3070; <code>&apos;aes192&apos;</code> &#x306A;&#x3069;&#x3067;&#x3059;&#x3002;\n&#x6700;&#x8FD1;&#x306E;&#x30EA;&#x30EA;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;<code>openssl list-cipher-algorithms</code>\n&#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x6697;&#x53F7;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x304C;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>password</code> &#x306F;&#x30AD;&#x30FC;&#x3068; IV &#x306E;&#x751F;&#x6210;&#x306B;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F; <code>&apos;binary&apos;</code> &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F; <a href="\&quot;buffer.html\&quot;">buffer</a>\n&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;\n\n</p>\n<!--\nIt is a [stream](stream.html) that is both readable and writable.  The\nwritten data is used to compute the hash.  Once the writable side of\nthe stream is ended, use the `read()` method to get the computed hash\ndigest.  The legacy `update` and `digest` methods are also supported.\n-->\n\n<p>&#x3053;&#x308C;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A; <a href="\&quot;stream.html\&quot;">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;\n&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x4E00;&#x5EA6;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5074;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x3068;&#x3001;&#x8A08;&#x7B97;&#x3055;&#x308C;&#x305F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;\n&#x8AAD;&#x307F;&#x51FA;&#x3059;&#x305F;&#x3081;&#x306B; <code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;algorithm&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;password&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createCipheriv(algorithm, key, iv)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createCipheriv&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates and returns a cipher object, with the given algorithm, key and\niv.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30AD;&#x30FC;&#x304A;&#x3088;&#x3073; IV &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x6697;&#x53F7;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;\n&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`algorithm` is the same as the argument to `createCipher()`.  `key` is\nthe raw key used by the algorithm.  `iv` is an [initialization\nvector](http://en.wikipedia.org/wiki/Initialization_vector).\n-->\n\n<p><code>algorithm</code> &#x306F; <code>createCipher()</code> &#x306E;&#x5F15;&#x6570;&#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;\n<code>key</code> &#x306F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x751F;&#x306E;&#x30AD;&#x30FC;&#x3067;&#x3059;&#x3002;\n<code>iv</code> &#x306F;<a href="\&quot;http://en.wikipedia.org/wiki/Initialization_vector\&quot;">initialization\nvector</a> &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n`key` and `iv` must be `'binary'` encoded strings or\n[buffers](buffer.html).\n-->\n\n<p><code>key</code> &#x3068; <code>iv</code> &#x306F; <code>&apos;binary&apos;</code> &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;\n<a href="\&quot;buffer.html\&quot;">buffers</a> &#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;algorithm&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;key&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;iv&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createDecipher(algorithm, password)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createDecipher&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates and returns a decipher object, with the given algorithm and\nkey.  This is the mirror of the [createCipher()][] above.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30D1;&#x30B9;&#x30EF;&#x30FC;&#x30C9;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5FA9;&#x53F7;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x524D;&#x8FF0;&#x306E; [createCipher()][] &#x306E;&#x93E1;&#x5199;&#x3057;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;algorithm&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;password&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createDecipheriv(algorithm, key, iv)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createDecipheriv&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates and returns a decipher object, with the given algorithm, key\nand iv.  This is the mirror of the [createCipheriv()][] above.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30AD;&#x30FC;&#x3001;IV &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5FA9;&#x53F7;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x524D;&#x8FF0;&#x306E; [createCipheriv()][] &#x306E;&#x93E1;&#x5199;&#x3057;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;algorithm&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;key&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;iv&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createSign(algorithm)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createSign&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates and returns a signing object, with the given algorithm.  On\nrecent OpenSSL releases, `openssl list-public-key-algorithms` will\ndisplay the available signing algorithms. Examples are `'RSA-SHA256'`.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3067;&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x6700;&#x8FD1;&#x306E;OpenSSL&#x306E;&#x30EA;&#x30EA;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;<code>openssl list-public-key-algorithms</code>\n&#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x7F72;&#x540D;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306E;&#x4E00;&#x89A7;&#x304C;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x4F8B;&#x3048;&#x3070; &apos;RSA-SHA256&apos;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;algorithm&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createVerify(algorithm)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createVerify&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates and returns a verification object, with the given algorithm.\nThis is the mirror of the signing object above.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3067;&#x691C;&#x8A3C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;&#x3053;&#x308C;&#x306F;&#x524D;&#x8FF0;&#x306E;&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3068;&#x93E1;&#x5199;&#x3057;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;algorithm&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createDiffieHellman(prime_length)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createDiffieHellman&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates a Diffie-Hellman key exchange object and generates a prime of\nthe given bit length. The generator used is `2`.\n-->\n\n<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x9375;&#x5171;&#x6709;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3001;\n&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x9577;&#x3055;&#x306E;&#x7D20;&#x6570;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;&#x751F;&#x6210;&#x5143;&#x306F; <code>2</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;prime_length&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.createDiffieHellman(prime, [encoding])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createDiffieHellman&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates a Diffie-Hellman key exchange object using the supplied prime.\nThe generator used is `2`. Encoding can be `'binary'`, `'hex'`, or\n`'base64'`.  If no encoding is specified, then a buffer is expected.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x7D20;&#x6570;&#x304B;&#x3089;&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x9375;&#x5171;&#x6709;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x751F;&#x6210;&#x5143;&#x306F; <code>2</code> &#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;prime&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;encoding&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.getDiffieHellman(group_name)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;getDiffieHellman&quot;,
+          &quot;desc&quot;: &quot;<!--\nCreates a predefined Diffie-Hellman key exchange object.  The\nsupported groups are: `'modp1'`, `'modp2'`, `'modp5'` (defined in [RFC\n2412][]) and `'modp14'`, `'modp15'`, `'modp16'`, `'modp17'`,\n`'modp18'` (defined in [RFC 3526][]).  The returned object mimics the\ninterface of objects created by [crypto.createDiffieHellman()][]\nabove, but will not allow to change the keys (with\n[diffieHellman.setPublicKey()][] for example).  The advantage of using\nthis routine is that the parties don't have to generate nor exchange\ngroup modulus beforehand, saving both processor and communication\ntime.\n-->\n\n<p>&#x4E8B;&#x524D;&#x306B;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F; Diffie-Hellman &#x9375;&#x4EA4;&#x63DB;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x308B;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x306F;&#x3001;<code>&apos;modp1&apos;</code>, <code>&apos;modp2&apos;</code>, <code>&apos;modp5&apos;</code>\n([RFC 2412][] &#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x308B;)&#x3001;\n&#x304A;&#x3088;&#x3073; <code>&apos;modp14&apos;</code>, <code>&apos;modp15&apos;</code>, <code>&apos;modp16&apos;</code>, <code>&apos;modp17&apos;</code>, <code>&apos;modp18&apos;</code>\n([RFC 3526][] &#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x308B;) &#x3067;&#x3059;&#x3002;\n&#x8FD4;&#x3055;&#x308C;&#x308B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3001;&#x524D;&#x8FF0;&#x306E;\n[crypto.createDiffieHellman()][]\n&#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x6A21;&#x5023;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3057;&#x304B;&#x3057;&#x3001;\n(&#x305F;&#x3068;&#x3048;&#x3070; [diffieHellman.setPublicKey()][] &#x3067;)\n&#x9375;&#x3092;&#x4EA4;&#x63DB;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3053;&#x306E;&#x30EB;&#x30FC;&#x30C1;&#x30F3;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306B;&#x3088;&#x308B;&#x30A2;&#x30C9;&#x30D0;&#x30F3;&#x30C6;&#x30FC;&#x30B8;&#x306F;&#x3001;\n&#x4E8B;&#x524D;&#x306B;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x4FC2;&#x6570;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x4EA4;&#x63DB;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x3082;&#x306A;&#x3044;&#x305F;&#x3081;&#x3001;\n&#x51E6;&#x7406;&#x3068;&#x901A;&#x4FE1;&#x306E;&#x6642;&#x9593;&#x3092;&#x5171;&#x306B;&#x7BC0;&#x7D04;&#x3067;&#x304D;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nExample (obtaining a shared secret):\n-->\n\n<p>&#x4F8B; (&#x5171;&#x6709;&#x9375;&#x3092;&#x53D6;&#x5F97;):\n\n</p>\n<pre><code>var crypto = require(&apos;crypto&apos;);\nvar alice = crypto.getDiffieHellman(&apos;modp5&apos;);\nvar bob = crypto.getDiffieHellman(&apos;modp5&apos;);\n\nalice.generateKeys();\nbob.generateKeys();\n\nvar alice_secret = alice.computeSecret(bob.getPublicKey(), null, &apos;hex&apos;);\nvar bob_secret = bob.computeSecret(alice.getPublicKey(), null, &apos;hex&apos;);\n\n/* alice_secret and bob_secret should be the same */\nconsole.log(alice_secret == bob_secret);</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;group_name&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.pbkdf2(password, salt, iterations, keylen, callback)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;pbkdf2&quot;,
+          &quot;desc&quot;: &quot;<!--\nAsynchronous PBKDF2 applies pseudorandom function HMAC-SHA1 to derive\na key of given length from the given password, salt and iterations.\nThe callback gets two arguments `(err, derivedKey)`.\n-->\n\n<p>&#x7591;&#x4F3C;&#x4E71;&#x6570;&#x3092; HMAC-SHA1 &#x95A2;&#x6570;&#x306B;&#x9069;&#x7528;&#x3057;&#x3066;&#x3001;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30D1;&#x30B9;&#x30EF;&#x30FC;&#x30C9;&#x3068; salt \n(&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&#x30D0;&#x30A4;&#x30C8;&#x5024;)&#x3001;&#x304A;&#x3088;&#x3073;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x304B;&#x3089;&#x3001;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x9577;&#x3055;&#x306E;&#x9375;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x3001;\n&#x975E;&#x540C;&#x671F;&#x306E; PBKDF2 &#x3067;&#x3059;&#x3002;\n&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x95A2;&#x6570;&#x306F;&#x4E8C;&#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>(err, derivedKey)</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;password&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;salt&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;iterations&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;keylen&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.pbkdf2Sync(password, salt, iterations, keylen)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;pbkdf2Sync&quot;,
+          &quot;desc&quot;: &quot;<!--\nSynchronous PBKDF2 function.  Returns derivedKey or throws error.\n-->\n\n<p>&#x540C;&#x671F;&#x7248;&#x306E; PBKDF2 &#x95A2;&#x6570;&#x3002;\n&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x9375;&#x3092;&#x8FD4;&#x3059;&#x304B;&#x3001;&#x4F8B;&#x5916;&#x3092;&#x30B9;&#x30ED;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;password&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;salt&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;iterations&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;keylen&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.randomBytes(size, [callback])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;randomBytes&quot;,
+          &quot;desc&quot;: &quot;<!--\nGenerates cryptographically strong pseudo-random data. Usage:\n-->\n\n<p>&#x6697;&#x53F7;&#x5B66;&#x7684;&#x3067;&#x3001;&#x5F37;&#x3044;&#x7591;&#x4F3C;&#x4E71;&#x6570;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;&#x4F7F;&#x7528;&#x6CD5;:\n\n</p>\n<pre><code>// async\ncrypto.randomBytes(256, function(ex, buf) {\n  if (ex) throw ex;\n  console.log(&apos;Have %d bytes of random data: %s&apos;, buf.length, buf);\n});\n\n// sync\ntry {\n  var buf = crypto.randomBytes(256);\n  console.log(&apos;Have %d bytes of random data: %s&apos;, buf.length, buf);\n} catch (ex) {\n  // handle error\n  // most likely, entropy sources are drained\n}</code></pre>\n<!--\nNOTE: Will throw error or invoke callback with error, if there is not enough\naccumulated entropy to generate cryptographically strong data. In other words,\n`crypto.randomBytes` without callback will not block even if all entropy sources\nare drained.\n-->\n\n<p>&#x6CE8;&#x610F;: &#x3082;&#x3057;&#x6697;&#x53F7;&#x7406;&#x8AD6;&#x7684;&#x306B;&#x5F37;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x5341;&#x5206;&#x306A;&#x7D2F;&#x7A4D;&#x30A8;&#x30F3;&#x30C8;&#x30ED;&#x30D4;&#x30FC;&#x304C;\n&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x30B9;&#x30ED;&#x30FC;&#x3055;&#x308C;&#x308B;&#x304B;&#x3001;&#x30A8;&#x30E9;&#x30FC;&#x3068;&#x5171;&#x306B;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;&#x547C;&#x3070;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x8A00;&#x3044;&#x63DB;&#x3048;&#x308B;&#x3068;&#x3001;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x6E21;&#x3055;&#x305A;&#x306B; <code>crypto.randomBytes()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x3082;&#x3001;\n&#x5168;&#x3066;&#x306E;&#x30A8;&#x30F3;&#x30C8;&#x30ED;&#x30D4;&#x30FC;&#x6E90;&#x304C;&#x67AF;&#x6E07;&#x3059;&#x308B;&#x307E;&#x3067;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3059;&#x308B;&#x308F;&#x3051;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;size&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;crypto.pseudoRandomBytes(size, [callback])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;pseudoRandomBytes&quot;,
+          &quot;desc&quot;: &quot;<!--\nGenerates *non*-cryptographically strong pseudo-random data. The data\nreturned will be unique if it is sufficiently long, but is not\nnecessarily unpredictable. For this reason, the output of this\nfunction should never be used where unpredictability is important,\nsuch as in the generation of encryption keys.\n-->\n\n<p>&#x6697;&#x53F7;&#x5B66;&#x7684;&#x3067;&#x306F; <em>&#x306A;&#x3044;</em>&#x3001;&#x5F37;&#x3044;&#x7591;&#x4F3C;&#x4E71;&#x6570;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x8FD4;&#x3055;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x5341;&#x5206;&#x306B;&#x9577;&#x3051;&#x308C;&#x3070;&#x30E6;&#x30CB;&#x30FC;&#x30AF;&#x3067;&#x3059;&#x304C;&#x3001;\n&#x5FC5;&#x305A;&#x3057;&#x3082;&#x4E88;&#x6E2C;&#x4E0D;&#x53EF;&#x80FD;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3053;&#x306E;&#x7406;&#x7531;&#x306E;&#x305F;&#x3081;&#x3001;&#x3053;&#x306E;&#x95A2;&#x6570;&#x306E;&#x51FA;&#x529B;&#x3092;&#x6697;&#x53F7;&#x5316;&#x30AD;&#x30FC;&#x306E;&#x751F;&#x6210;&#x306A;&#x3069;&#x3001;&#x4E88;&#x6E2C;&#x4E0D;&#x53EF;&#x80FD;&#x3067;&#x3042;&#x308B;&#x3053;&#x3068;&#x304C;\n&#x91CD;&#x8981;&#x306A;&#x3068;&#x3053;&#x308D;&#x3067;&#x306F;&#x6C7A;&#x3057;&#x3066;&#x4F7F;&#x7528;&#x3057;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nUsage is otherwise identical to `crypto.randomBytes`.\n-->\n\n<p>&#x4ED6;&#x306E;&#x4F7F;&#x3044;&#x65B9;&#x306F; <code>crypto.randomBytes</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;size&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;classes&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Class: Hash&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;Hash&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe class for creating hash digests of data.\n-->\n\n<p>&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nIt is a [stream](stream.html) that is both readable and writable.  The\nwritten data is used to compute the hash.  Once the writable side of\nthe stream is ended, use the `read()` method to get the computed hash\ndigest.  The legacy `update` and `digest` methods are also supported.\n-->\n\n<p>&#x3053;&#x308C;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A; <a href="\&quot;stream.html\&quot;">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;\n&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x4E00;&#x5EA6;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5074;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x3068;&#x3001;&#x8A08;&#x7B97;&#x3055;&#x308C;&#x305F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;\n&#x8AAD;&#x307F;&#x51FA;&#x3059;&#x305F;&#x3081;&#x306B; <code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nReturned by `crypto.createHash`.\n-->\n\n<p><code>crypto.createHash()</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;hash.update(data, [input_encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;update&quot;,
+              &quot;desc&quot;: &quot;<!--\nUpdates the hash content with the given `data`, the encoding of which\nis given in `input_encoding` and can be `'utf8'`, `'ascii'` or\n`'binary'`.  If no encoding is provided and the input is a string an\nencoding of `'binary'` is enforced. If `data` is a `Buffer` then\n`input_encoding` is ignored.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; <code>data</code> &#x3067;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x306E;&#x5185;&#x5BB9;&#x3092;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>input_encoding</code> &#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x3001;<code>&apos;utf8&apos;</code>&#x3001;<code>&apos;ascii&apos;</code>&#x3001;\n&#x307E;&#x305F;&#x306F; <code>&apos;binary&apos;</code> &#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n<code>data</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F;\n<code>&apos;binary&apos;</code> &#x304C;&#x5F37;&#x5236;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3082;&#x3057; <code>data</code> &#x304C; <code>Buffer</code> &#x306A;&#x3089;&#x3001;<code>input_encoding</code> &#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThis can be called many times with new data as it is streamed.\n-->\n\n<p>&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;input_encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;hash.digest([encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;digest&quot;,
+              &quot;desc&quot;: &quot;<!--\nCalculates the digest of all of the passed data to be hashed.  The\n`encoding` can be `'hex'`, `'binary'` or `'base64'`.  If no encoding\nis provided, then a buffer is returned.\n-->\n\n<p>&#x6E21;&#x3055;&#x308C;&#x305F;&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x5316;&#x3055;&#x308C;&#x305F;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>encoding</code> &#x306F; <code>&apos;hex&apos;</code>&#x3001;<code>&apos;binary&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote: `hash` object can not be used after `digest()` method has been\ncalled.\n-->\n\n<p>&#x6CE8;&#x610F;: <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>hash</code> \n&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: Hmac&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;Hmac&quot;,
+          &quot;desc&quot;: &quot;<!--\nClass for creating cryptographic hmac content.\n\nReturned by `crypto.createHmac`.\n-->\n\n<p>hmac &#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<p><code>crypto.createHamc</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;hmac.update(data)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;update&quot;,
+              &quot;desc&quot;: &quot;<!--\nUpdate the hmac content with the given `data`.  This can be called\nmany times with new data as it is streamed.\n-->\n\n<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; <code>data</code> &#x3067; HMAC &#x306E;&#x5185;&#x5BB9;&#x3092;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;hmac.digest([encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;digest&quot;,
+              &quot;desc&quot;: &quot;<!--\nCalculates the digest of all of the passed data to the hmac.  The\n`encoding` can be `'hex'`, `'binary'` or `'base64'`.  If no encoding\nis provided, then a buffer is returned.\n-->\n\n<p>&#x6E21;&#x3055;&#x308C;&#x305F;&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C; HMAC &#x5316;&#x3055;&#x308C;&#x305F;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>encoding</code> &#x306F; <code>&apos;hex&apos;</code>&#x3001;<code>&apos;binary&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote: `hmac` object can not be used after `digest()` method has been\ncalled.\n-->\n\n<p>&#x6CE8;&#x610F;: <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>hmac</code> \n&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: Cipher&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;Cipher&quot;,
+          &quot;desc&quot;: &quot;<!--\nClass for encrypting data.\n-->\n\n<p>&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6697;&#x53F7;&#x5316;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nReturned by `crypto.createCipher` and `crypto.createCipheriv`.\n-->\n\n<p><code>crypto.createCipher</code> &#x304A;&#x3088;&#x3073; <code>crypto.createCipheriv</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nCipher objects are [streams](stream.html) that are both readable and\nwritable.  The written plain text data is used to produce the\nencrypted data on the readable side.  The legacy `update` and `final`\nmethods are also supported.\n-->\n\n<p>&#x6697;&#x53F7;&#x5316;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A;\n<a href="\&quot;stream.html\&quot;">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;\n&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30D7;&#x30EC;&#x30FC;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x3001;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5074;&#x306B;&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;\n&#x751F;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>final()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;cipher.update(data, [input_encoding], [output_encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;update&quot;,
+              &quot;desc&quot;: &quot;<!--\nUpdates the cipher with `data`, the encoding of which is given in\n`input_encoding` and can be `'utf8'`, `'ascii'` or `'binary'`.  If no\nencoding is provided, then a buffer is expected.\nIf `data` is a `Buffer` then `input_encoding` is ignored.\n-->\n\n<p><code>data</code> &#x3067;&#x6697;&#x53F7;&#x3092;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>input_encoding</code> &#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;utf8&apos;</code>&#x3001;<code>&apos;ascii&apos;</code>&#x3001;<code>&apos;binary&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3082;&#x3057; <code>data</code> &#x304C; <code>Buffer</code> &#x306A;&#x3089;&#x3001;<code>input_encoding</code> &#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe `output_encoding` specifies the output format of the enciphered\ndata, and can be `'binary'`, `'base64'` or `'hex'`.  If no encoding is\nprovided, then a buffer is returned.\n-->\n\n<p><code>output_encoding</code> &#x306F;&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x51FA;&#x529B;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3082;&#x306E;&#x3067;&#x3001;\n<code>&apos;utf8&apos;</code>&#x3001;<code>&apos;ascii&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;binary&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nReturns the enciphered contents, and can be called many times with new\ndata as it is streamed.\n-->\n\n<p>&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30B3;&#x30F3;&#x30C6;&#x30F3;&#x30C4;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;input_encoding&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;output_encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;cipher.final([output_encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;final&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns any remaining enciphered contents, with `output_encoding`\nbeing one of: `'binary'`, `'base64'` or `'hex'`.  If no encoding is\nprovided, then a buffer is returned.\n-->\n\n<p>&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30B3;&#x30F3;&#x30C6;&#x30F3;&#x30C4;&#x306E;&#x6B8B;&#x308A;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>output_encoding</code> &#x306F;&#x6B21;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;: <code>&apos;binary&apos;</code>&#x3001;<code>&apos;base64&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;hex&apos;</code>&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote: `cipher` object can not be used after `final()` method has been\ncalled.\n-->\n\n<p>&#x6CE8;&#x610F;: <code>final()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>cipher</code> \n&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;output_encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;cipher.setAutoPadding(auto_padding=true)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setAutoPadding&quot;,
+              &quot;desc&quot;: &quot;<!--\nYou can disable automatic padding of the input data to block size. If\n`auto_padding` is false, the length of the entire input data must be a\nmultiple of the cipher's block size or `final` will fail.  Useful for\nnon-standard padding, e.g. using `0x0` instead of PKCS padding. You\nmust call this before `cipher.final`.\n-->\n\n<p>&#x5165;&#x529B;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x30B5;&#x30A4;&#x30BA;&#x306B;&#x30D1;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;\n&#x6291;&#x6B62;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n<code>auto_padding</code> &#x304C; <code>false</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x5165;&#x529B;&#x30C7;&#x30FC;&#x30BF;&#x5168;&#x4F53;&#x306E;&#x9577;&#x3055;&#x306F;\n&#x6697;&#x53F7;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x30B5;&#x30A4;&#x30BA;&#x306E;&#x500D;&#x6570;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;<code>final()</code> &#x306F;&#x5931;&#x6557;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x975E;&#x6A19;&#x6E96;&#x306E;&#x30D1;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3001;&#x305F;&#x3068;&#x3048;&#x3070; PKCS &#x30D1;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306E;&#x4EE3;&#x308F;&#x308A;&#x306B;\n<code>0x0</code> &#x3092;&#x4F7F;&#x3046;&#x5834;&#x5408;&#x306B;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;\n<code>cipher.final()</code> &#x306E;&#x524D;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;auto_padding&quot;,
+                      &quot;default&quot;: &quot;true&quot;
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: Decipher&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;Decipher&quot;,
+          &quot;desc&quot;: &quot;<!--\nClass for decrypting data.\n\nReturned by `crypto.createDecipher` and `crypto.createDecipheriv`.\n-->\n\n<p>&#x5FA9;&#x53F7;&#x5316;&#x306E;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<p><code>crypto.createDecipher</code> &#x304A;&#x3088;&#x3073; <code>crypto.createDecipheriv</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nDecipher objects are [streams](stream.html) that are both readable and\nwritable.  The written enciphered data is used to produce the\nplain-text data on the the readable side.  The legacy `update` and\n`final` methods are also supported.\n-->\n\n<p>&#x5FA9;&#x53F7;&#x5316;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A;\n<a href="\&quot;stream.html\&quot;">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;\n&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x6697;&#x53F7;&#x5316;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x3001;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5074;&#x306B;&#x30D7;&#x30EC;&#x30FC;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x30C7;&#x30FC;&#x30BF;&#x3092;\n&#x751F;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>final()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;decipher.update(data, [input_encoding], [output_encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;update&quot;,
+              &quot;desc&quot;: &quot;<!--\nUpdates the decipher with `data`, which is encoded in `'binary'`,\n`'base64'` or `'hex'`.  If no encoding is provided, then a buffer is\nexpected.\nIf `data` is a `Buffer` then `input_encoding` is ignored.\n-->\n\n<p><code>&apos;binary&apos;</code>&#x3001;<code>&apos;base64&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;hex&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x5FA9;&#x53F7;&#x3092;\n<code>data</code> &#x3067;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3082;&#x3057; <code>data</code> &#x304C; <code>Buffer</code> &#x306A;&#x3089;&#x3001;<code>input_encoding</code> &#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe `output_decoding` specifies in what format to return the\ndeciphered plaintext: `'binary'`, `'ascii'` or `'utf8'`.  If no\nencoding is provided, then a buffer is returned.\n-->\n\n<p><code>output_decoding</code> &#x306F;&#x5FA9;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30D7;&#x30EC;&#x30FC;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x306E;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3082;&#x306E;&#x3067;&#x3001;\n<code>&apos;binary&apos;</code>&#x3001;<code>&apos;ascii&apos;</code> &#x3042;&#x308B;&#x3044;&#x306F; <code>&apos;utf8&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;input_encoding&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;output_encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;decipher.final([output_encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;final&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns any remaining plaintext which is deciphered, with\n`output_encoding` being one of: `'binary'`, `'ascii'` or `'utf8'`.  If\nno encoding is provided, then a buffer is returned.\n-->\n\n<p>&#x5FA9;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30D7;&#x30EC;&#x30FC;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x306E;&#x6B8B;&#x308A;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>output_decoding</code> &#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;ascii&apos;</code> &#x3042;&#x308B;&#x3044;&#x306F; <code>&apos;utf8&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote: `decipher` object can not be used after `final()` method has been\ncalled.\n-->\n\n<p>&#x6CE8;&#x610F;: <code>final()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>decipher</code> \n&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;output_encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;decipher.setAutoPadding(auto_padding=true)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setAutoPadding&quot;,
+              &quot;desc&quot;: &quot;<!--\nYou can disable auto padding if the data has been encrypted without\nstandard block padding to prevent `decipher.final` from checking and\nremoving it. Can only work if the input data's length is a multiple of\nthe ciphers block size. You must call this before streaming data to\n`decipher.update`.\n-->\n\n<p>&#x30C7;&#x30FC;&#x30BF;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x304C;&#x975E;&#x6A19;&#x6E96;&#x306E;&#x30D1;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;\n<code>decipher.final()</code> &#x306B;&#x3088;&#x308B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3092;&#x7121;&#x52B9;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n&#x5165;&#x529B;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x9577;&#x3055;&#x304C;&#x6697;&#x53F7;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x30B5;&#x30A4;&#x30BA;&#x306E;&#x500D;&#x6570;&#x306E;&#x5834;&#x5408;&#x306E;&#x307F;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>decipher.update()</code> &#x306E;&#x524D;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;auto_padding&quot;,
+                      &quot;default&quot;: &quot;true&quot;
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: Sign&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;Sign&quot;,
+          &quot;desc&quot;: &quot;<!--\nClass for generating signatures.\n\nReturned by `crypto.createSign`.\n-->\n\n<p>&#x7F72;&#x540D;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<p><code>crypto.createSign</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nSign objects are writable [streams](stream.html).  The written data is\nused to generate the signature.  Once all of the data has been\nwritten, the `sign` method will return the signature.  The legacy\n`update` method is also supported.\n-->\n\n<p>&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306A; <a href="\&quot;stream.html\&quot;">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;\n&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x7F72;&#x540D;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x3068;&#x3001;<code>sign()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x305D;&#x306E;&#x7F72;&#x540D;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;sign.update(data)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;update&quot;,
+              &quot;desc&quot;: &quot;<!--\nUpdates the sign object with data.  This can be called many times\nwith new data as it is streamed.\n-->\n\n<p>&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;sign.sign(private_key, [output_format])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;sign&quot;,
+              &quot;desc&quot;: &quot;<!--\nCalculates the signature on all the updated data passed through the\nsign.  `private_key` is a string containing the PEM encoded private\nkey for signing.\n-->\n\n<p>&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x6E21;&#x3055;&#x308C;&#x305F;&#x5168;&#x3066;&#x306E;&#x66F4;&#x65B0;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x7F72;&#x540D;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>private_key</code> &#x306F; PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x5185;&#x5BB9;&#x3068;&#x3059;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nReturns the signature in `output_format` which can be `'binary'`,\n`'hex'` or `'base64'`. If no encoding is provided, then a buffer is\nreturned.\n-->\n\n<p><code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x3042;&#x308B;&#x3044;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x305F; <code>output_format</code>\n&#x306B;&#x3088;&#x308B;&#x7F72;&#x540D;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote: `sign` object can not be used after `sign()` method has been\ncalled.\n-->\n\n<p>&#x6CE8;&#x610F;: <code>sign()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>sign</code> \n&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;private_key&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;output_format&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: Verify&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;Verify&quot;,
+          &quot;desc&quot;: &quot;<!--\nClass for verifying signatures.\n\nReturned by `crypto.createVerify`.\n-->\n\n<p>&#x7F72;&#x540D;&#x3092;&#x691C;&#x8A3C;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<p><code>crypto.createVerify</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nVerify objects are writable [streams](stream.html).  The written data\nis used to validate against the supplied signature.  Once all of the\ndata has been written, the `verify` method will return true if the\nsupplied signature is valid.  The legacy `update` method is also\nsupported.\n-->\n\n<p>&#x691C;&#x8A3C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306A; <a href="\&quot;stream.html\&quot;">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;\n&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x7F72;&#x540D;&#x3092;&#x691C;&#x8A3C;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x3068;&#x3001;<code>verify()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x7F72;&#x540D;&#x304C;&#x6B63;&#x3057;&#x3051;&#x308C;&#x3070;\n<code>true</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;verifier.update(data)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;update&quot;,
+              &quot;desc&quot;: &quot;<!--\nUpdates the verifier object with data.  This can be called many times\nwith new data as it is streamed.\n-->\n\n<p>&#x691C;&#x8A3C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;verifier.verify(object, signature, [signature_format])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;verify&quot;,
+              &quot;desc&quot;: &quot;<!--\nVerifies the signed data by using the `object` and `signature`.\n`object` is  a string containing a PEM encoded object, which can be\none of RSA public key, DSA public key, or X.509 certificate.\n`signature` is the previously calculated signature for the data, in\nthe `signature_format` which can be `'binary'`, `'hex'` or `'base64'`.\nIf no encoding is specified, then a buffer is expected.\n-->\n\n<p>&#x7F72;&#x540D;&#x3055;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092; <code>object</code> &#x3068; <code>signature</code> &#x3067;&#x691C;&#x8A3C;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>object</code> &#x306F; RSA &#x516C;&#x958B;&#x9375;&#x3001;DSA &#x516C;&#x958B;&#x9375;&#x3001;X.509&#x8A3C;&#x660E;&#x66F8;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3092;\nPEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3057;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n<code>signature</code> &#x306F;&#x5148;&#x306B;&#x8A08;&#x7B97;&#x3057;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x7F72;&#x540D;&#x3067;&#x3001;\n&#x305D;&#x306E; <code>signature_format</code> &#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code>\n&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nReturns true or false depending on the validity of the signature for\nthe data and public key.\n-->\n\n<p>&#x7F72;&#x540D;&#x3055;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3068;&#x516C;&#x958B;&#x9375;&#x306B;&#x3088;&#x308B;&#x691C;&#x8A3C;&#x306E;&#x7D50;&#x679C;&#x306B;&#x3088;&#x3063;&#x3066; true &#x307E;&#x305F;&#x306F; false &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote: `verifier` object can not be used after `verify()` method has been\ncalled.\n-->\n\n<p>&#x6CE8;&#x610F;: <code>verify()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x5F8C;&#x3067; <code>verifier</code> \n&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;object&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;signature&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;signature_format&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: DiffieHellman&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;DiffieHellman&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe class for creating Diffie-Hellman key exchanges.\n\nReturned by `crypto.createDiffieHellman`.\n-->\n\n<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x9375;&#x5171;&#x6709;&#x306E;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<p><code>crypto.creaateDiffieHellman</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;diffieHellman.generateKeys([encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;generateKeys&quot;,
+              &quot;desc&quot;: &quot;<!--\nGenerates private and public Diffie-Hellman key values, and returns\nthe public key in the specified encoding. This key should be\ntransferred to the other party. Encoding can be `'binary'`, `'hex'`,\nor `'base64'`.  If no encoding is provided, then a buffer is returned.\n-->\n\n<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x3067;&#x79D8;&#x5BC6;&#x304A;&#x3088;&#x3073;&#x516C;&#x958B;&#x9375;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3001;\n&#x6307;&#x5B9A;&#x306E;&#x65B9;&#x6CD5;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x305F;&#x516C;&#x958B;&#x9375;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x9375;&#x306F;&#x76F8;&#x624B;&#x5074;&#x306B;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3082;&#x306E;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;diffieHellman.computeSecret(other_public_key, [input_encoding], [output_encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;computeSecret&quot;,
+              &quot;desc&quot;: &quot;<!--\nComputes the shared secret using `other_public_key` as the other\nparty's public key and returns the computed shared secret. Supplied\nkey is interpreted using specified `input_encoding`, and secret is\nencoded using specified `output_encoding`. Encodings can be\n`'binary'`, `'hex'`, or `'base64'`. If the input encoding is not\nprovided, then a buffer is expected.\n-->\n\n<p><code>other_public_key</code> &#x3092;&#x76F8;&#x624B;&#x5074;&#x306E;&#x516C;&#x958B;&#x9375;&#x3068;&#x3057;&#x3066;&#x5171;&#x6709;&#x306E;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x516C;&#x958B;&#x9375;&#x306F;&#x6307;&#x5B9A;&#x306E; <code>input_encoding</code> &#x3092;&#x4F7F;&#x3063;&#x3066;&#x89E3;&#x91C8;&#x3055;&#x308C;&#x3001;\n&#x79D8;&#x5BC6;&#x9375;&#x306F; <code>output_encoding</code> &#x3067;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x65B9;&#x6CD5;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x5165;&#x529B;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIf no output encoding is given, then a buffer is returned.\n-->\n\n<p>&#x51FA;&#x529B;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;other_public_key&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;input_encoding&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;output_encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;diffieHellman.getPrime([encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;getPrime&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns the Diffie-Hellman prime in the specified encoding, which can\nbe `'binary'`, `'hex'`, or `'base64'`. If no encoding is provided,\nthen a buffer is returned.\n-->\n\n<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306E;&#x7D20;&#x6570;&#x3092;&#x6307;&#x5B9A;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;diffieHellman.getGenerator([encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;getGenerator&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns the Diffie-Hellman generator in the specified encoding, which can\nbe `'binary'`, `'hex'`, or `'base64'`. If no encoding is provided,\nthen a buffer is returned.\n-->\n\n<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306E;&#x751F;&#x6210;&#x5143;&#x3092;&#x6307;&#x5B9A;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;diffieHellman.getPublicKey([encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;getPublicKey&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns the Diffie-Hellman public key in the specified encoding, which\ncan be `'binary'`, `'hex'`, or `'base64'`. If no encoding is provided,\nthen a buffer is returned.\n-->\n\n<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x516C;&#x958B;&#x9375;&#x3092;&#x6307;&#x5B9A;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;diffieHellman.getPrivateKey([encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;getPrivateKey&quot;,
+              &quot;desc&quot;: &quot;<!--\nReturns the Diffie-Hellman private key in the specified encoding,\nwhich can be `'binary'`, `'hex'`, or `'base64'`. If no encoding is\nprovided, then a buffer is returned.\n-->\n\n<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x6307;&#x5B9A;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;diffieHellman.setPublicKey(public_key, [encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setPublicKey&quot;,
+              &quot;desc&quot;: &quot;<!--\nSets the Diffie-Hellman public key. Key encoding can be `'binary'`,\n`'hex'` or `'base64'`. If no encoding is provided, then a buffer is\nexpected.\n-->\n\n<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x516C;&#x958B;&#x9375;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x9375;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;public_key&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;diffieHellman.setPrivateKey(private_key, [encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setPrivateKey&quot;,
+              &quot;desc&quot;: &quot;<!--\nSets the Diffie-Hellman private key. Key encoding can be `'binary'`,\n`'hex'` or `'base64'`. If no encoding is provided, then a buffer is\nexpected.\n-->\n\n<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x9375;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;private_key&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;properties&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;crypto.DEFAULT_ENCODING&quot;,
+          &quot;name&quot;: &quot;DEFAULT_ENCODING&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe default encoding to use for functions that can take either strings\nor buffers.  The default value is `'buffer'`, which makes it default\nto using Buffer objects.  This is here to make the crypto module more\neasily compatible with legacy programs that expected `'binary'` to be\nthe default encoding.\n-->\n\n<p>&#x95A2;&#x6570;&#x304C;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F;&#x3001;&#x6587;&#x5B57;&#x5217;&#x304B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;\n&#x3044;&#x305A;&#x308C;&#x304B;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote that new programs will probably expect buffers, so only use this\nas a temporary measure.\n-->\n\n<p>&#x65B0;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x304A;&#x305D;&#x3089;&#x304F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x671F;&#x5F85;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x4E00;&#x6642;&#x7684;&#x306A;&#x624B;&#x6BB5;&#x3068;&#x3057;&#x3066;&#x306E;&#x307F;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+        }
+      ],
+      &quot;modules&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Recent API Changes&quot;,
+          &quot;name&quot;: &quot;recent_api_changes&quot;,
+          &quot;desc&quot;: &quot;<!--\nThe Crypto module was added to Node before there was the concept of a\nunified Stream API, and before there were Buffer objects for handling\nbinary data.\n-->\n\n<p>Crypto &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x3001;&#x7D71;&#x5408;&#x3055;&#x308C;&#x305F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0; API &#x3084;&#x30D0;&#x30A4;&#x30C8;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6271;&#x3046; Buffer\n&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3088;&#x308A;&#x3082;&#x5148;&#x306B; Node &#x306B;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3057;&#x305F;&#x3002;\n\n</p>\n<!--\nAs such, the streaming classes don't have the typical methods found on\nother Node classes, and many methods accepted and returned\nBinary-encoded strings by default rather than Buffers.  This was\nchanged to use Buffers by default instead.\n-->\n\n<p>&#x305D;&#x306E;&#x305F;&#x3081;&#x3001;&#x3053;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30DF;&#x30F3;&#x30B0;&#x306A;&#x30AF;&#x30E9;&#x30B9;&#x306F;&#x4ED6;&#x306E; Node &#x306E;&#x30AF;&#x30E9;&#x30B9;&#x306B;&#x898B;&#x3089;&#x308C;&#x308B;\n&#x5178;&#x578B;&#x7684;&#x306A;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x6301;&#x305F;&#x305A;&#x3001;&#x591A;&#x304F;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5F15;&#x6570;&#x3084;&#x623B;&#x308A;&#x5024;&#x306B;\nBuffer &#x3067;&#x306F;&#x306A;&#x304F;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F7F;&#x3044;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThis is a breaking change for some use cases, but not all.\n-->\n\n<p>&#x3053;&#x308C;&#x306F;&#x3042;&#x308B;&#x30E6;&#x30FC;&#x30B9;&#x30B1;&#x30FC;&#x30B9;&#x306B;&#x304A;&#x3044;&#x3066;&#x306F;&#x4E92;&#x63DB;&#x6027;&#x3092;&#x640D;&#x306A;&#x3044;&#x307E;&#x3059;&#x304C;&#x3001;\n&#x5168;&#x3066;&#x306E;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nFor example, if you currently use the default arguments to the Sign\nclass, and then pass the results to the Verify class, without ever\ninspecting the data, then it will continue to work as before.  Where\nyou once got a binary string and then presented the binary string to\nthe Verify object, you'll now get a Buffer, and present the Buffer to\nthe Verify object.\n-->\n\n<p>&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;Sign &#x30AF;&#x30E9;&#x30B9;&#x3092;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5F15;&#x6570;&#x3067;&#x4F7F;&#x3063;&#x3066;&#x3044;&#x3066;&#x3001;\n&#x305D;&#x306E;&#x7D50;&#x679C;&#x3092;&#x5168;&#x304F;&#x8ABF;&#x3079;&#x305A;&#x306B; Verify &#x30AF;&#x30E9;&#x30B9;&#x306B;&#x6E21;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;\n&#x305D;&#x308C;&#x306F;&#x4EE5;&#x524D;&#x3068;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x52D5;&#x304F;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;\n&#x305D;&#x308C;&#x306F;&#x3001;&#x73FE;&#x6642;&#x70B9;&#x3067;&#x306F;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x3066;&#x305D;&#x306E;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092;\nVeriy &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x6E21;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;&#x5C06;&#x6765;&#x306F; Buffer &#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x3066;&#x305D;&#x306E;\nBuffer &#x3092; Verify &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x6E21;&#x3059;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nHowever, if you were doing things with the string data that will not\nwork properly on Buffers (such as, concatenating them, storing in\ndatabases, etc.), or you are passing binary strings to the crypto\nfunctions without an encoding argument, then you will need to start\nproviding encoding arguments to specify which encoding you'd like to\nuse.  To switch to the previous style of using binary strings by\ndefault, set the `crypto.DEFAULT_ENCODING` field to 'binary'.  Note\nthat new programs will probably expect buffers, so only use this as a\ntemporary measure.\n-->\n\n<p>&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;Buffer &#x304C;&#x6587;&#x5B57;&#x5217;&#x3068;&#x6B63;&#x78BA;&#x306B;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x306F;&#x52D5;&#x304B;&#x306A;&#x3044;&#x4F55;&#x304B;&#x3092;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;\n(&#x4F8B;&#x3048;&#x3070;&#x3001;&#x305D;&#x308C;&#x3089;&#x3092;&#x9023;&#x7D50;&#x3057;&#x305F;&#x308A;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x30D9;&#x30FC;&#x30B9;&#x306B;&#x4FDD;&#x5B58;&#x3057;&#x305F;&#x308A;&#x3059;&#x308B;&#x306A;&#x3069;)&#x3001;\n&#x3042;&#x308B;&#x3044;&#x306F;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092; Crypto &#x306E;&#x95A2;&#x6570;&#x306B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x5F15;&#x6570;&#x7121;&#x3057;&#x3067;\n&#x6E21;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x5F15;&#x6570;&#x3092;&#x4E0E;&#x3048;&#x3066;&#x3069;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3092;\n&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3044;&#x308B;&#x304B;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x4EE5;&#x524D;&#x306E;&#x3088;&#x3046;&#x306B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F7F;&#x3046;&#x3088;&#x3046;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;&#x306B;&#x306F;&#x3001;\n<code>crypto.DEFAULT_ENCODING</code> &#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x306B; <code>binary</code> &#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x65B0;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x304A;&#x305D;&#x3089;&#x304F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x671F;&#x5F85;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x4E00;&#x6642;&#x7684;&#x306A;&#x624B;&#x6BB5;&#x3068;&#x3057;&#x3066;&#x306E;&#x307F;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n\n</p>\n&quot;,
+          &quot;type&quot;: &quot;module&quot;,
+          &quot;displayName&quot;: &quot;Recent API Changes&quot;
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;Crypto&quot;
+    }
+  ]
+}

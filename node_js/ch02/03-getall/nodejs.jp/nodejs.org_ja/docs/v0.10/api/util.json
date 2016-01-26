@@ -1,0 +1,241 @@
+{
+  &quot;source&quot;: &quot;doc/api/util.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;util&quot;,
+      &quot;name&quot;: &quot;util&quot;,
+      &quot;stability&quot;: 4,
+      &quot;stabilityText&quot;: &quot;API Frozen&quot;,
+      &quot;desc&quot;: &quot;<!--\nThese functions are in the module `'util'`. Use `require('util')` to access\nthem.\n-->\n\n<p>&#x3053;&#x308C;&#x3089;&#x306E;&#x95A2;&#x6570;&#x306F;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB; <code>&apos;util&apos;</code> &#x5185;&#x306B;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n<code>require(&apos;util&apos;)</code> &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3067;&#x3053;&#x308C;&#x3089;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3057;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;util.format(format, [...])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;format&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a formatted string using the first argument as a `printf`-like format.\n-->\n\n<p>&#x6700;&#x521D;&#x306E;&#x5F15;&#x6570;&#x3092; <code>printf</code> &#x306E;&#x3088;&#x3046;&#x306A;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3001;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x5316;&#x3055;&#x308C;&#x305F;\n&#x6587;&#x5B57;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe first argument is a string that contains zero or more *placeholders*.\nEach placeholder is replaced with the converted value from its corresponding\nargument. Supported placeholders are:\n-->\n\n<p>&#x7B2C;&#x4E00;&#x5F15;&#x6570;&#x306F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3001;0 &#x500B;&#x4EE5;&#x4E0A;&#x306E; <em>&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;</em> &#x3092;&#x542B;&#x307F;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x306F;&#x5BFE;&#x5FDC;&#x3059;&#x308B;&#x5F15;&#x6570;&#x3092;&#x5909;&#x63DB;&#x3057;&#x305F;&#x5024;&#x3067;&#x7F6E;&#x63DB;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3059;&#x308B;&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x306F;:\n\n</p>\n<!--\n* `%s` - String.\n* `%d` - Number (both integer and float).\n* `%j` - JSON.\n* `%` - single percent sign (`'%'`). This does not consume an argument.\n-->\n\n<ul>\n<li><code>%s</code> - &#x6587;&#x5B57;&#x5217;&#x3002;</li>\n<li><code>%d</code> - &#x6570;&#x5024; (&#x6574;&#x6570;&#x3068;&#x6D6E;&#x52D5;&#x5C0F;&#x6570;&#x70B9;&#x6570;&#x306E;&#x4E21;&#x65B9;)&#x3002;</li>\n<li><code>%j</code> - JSON&#x3002;</li>\n<li><code>%</code> - &#x4E00;&#x3064;&#x306E;&#x30D1;&#x30FC;&#x30BB;&#x30F3;&#x30C8;&#x8A18;&#x53F7; (<code>&apos;%&apos;</code>)&#x3002;&#x3053;&#x308C;&#x306F;&#x5F15;&#x6570;&#x3092;&#x6D88;&#x8CBB;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;</li>\n</ul>\n<!--\nIf the placeholder does not have a corresponding argument, the placeholder is\nnot replaced.\n-->\n\n<p>&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x306B;&#x5BFE;&#x5FDC;&#x3059;&#x308B;&#x5F15;&#x6570;&#x304C;&#x7121;&#x3044;&#x5834;&#x5408;&#x3001;&#x305D;&#x306E;&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x306F;&#x7F6E;&#x63DB;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<pre><code>util.format(&apos;%s:%s&apos;, &apos;foo&apos;); // &apos;foo:%s&apos;</code></pre>\n<!--\nIf there are more arguments than placeholders, the extra arguments are\nconverted to strings with `util.inspect()` and these strings are concatenated,\ndelimited by a space.\n-->\n\n<p>&#x30D7;&#x30EC;&#x30FC;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x5F15;&#x6570;&#x304C;&#x3042;&#x308B;&#x5834;&#x5408;&#x3001;&#x4F59;&#x3063;&#x305F;&#x5F15;&#x6570;&#x306F; <code>util.inspect()</code> &#x306B;&#x3088;&#x3063;&#x3066;\n&#x6587;&#x5B57;&#x5217;&#x5316;&#x3055;&#x308C;&#x3001;&#x305D;&#x308C;&#x3089;&#x306F;&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x533A;&#x5207;&#x308A;&#x3067;&#x9023;&#x7D50;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>util.format(&apos;%s:%s&apos;, &apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;); // &apos;foo:bar baz&apos;</code></pre>\n<!--\nIf the first argument is not a format string then `util.format()` returns\na string that is the concatenation of all its arguments separated by spaces.\nEach argument is converted to a string with `util.inspect()`.\n-->\n\n<p>&#x7B2C;&#x4E00;&#x5F15;&#x6570;&#x304C;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x6587;&#x5B57;&#x5217;&#x3067;&#x306F;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;<code>util.format()</code> &#x306F;&#x5168;&#x3066;&#x306E;&#x5F15;&#x6570;&#x3092;\n&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x533A;&#x5207;&#x308A;&#x3067;&#x9023;&#x7D50;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x3053;&#x306E;&#x5F15;&#x6570;&#x306F; <code>util.inspect()</code> &#x3067;&#x6587;&#x5B57;&#x5217;&#x306B;&#x5909;&#x63DB;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>util.format(1, 2, 3); // &apos;1 2 3&apos;</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;format&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;...&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.debug(string)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;debug&quot;,
+          &quot;desc&quot;: &quot;<!--\nA synchronous output function. Will block the process and\noutput `string` immediately to `stderr`.\n-->\n\n<p>&#x540C;&#x671F;&#x7684;&#x306A;&#x51FA;&#x529B;&#x95A2;&#x6570;&#x3067;&#x3059;&#x3002;\n&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x3066;&#x5373;&#x5EA7;&#x306B; <code>string</code> &#x3092; <code>stderr</code> &#x306B;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>require(&apos;util&apos;).debug(&apos;message on stderr&apos;);</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;string&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.error([...])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;error&quot;,
+          &quot;desc&quot;: &quot;<!--\nSame as `util.debug()` except this will output all arguments immediately to\n`stderr`.\n-->\n\n<p>&#x5168;&#x3066;&#x306E;&#x5F15;&#x6570;&#x3092;&#x3059;&#x3050;&#x306B; <code>stderr</code> &#x306B;&#x51FA;&#x529B;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x9664;&#x3044;&#x3066; <code>util.debug()</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;...&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.puts([...])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;puts&quot;,
+          &quot;desc&quot;: &quot;<!--\nA synchronous output function. Will block the process and output all arguments\nto `stdout` with newlines after each argument.\n-->\n\n<p>&#x540C;&#x671F;&#x7684;&#x306A;&#x51FA;&#x529B;&#x95A2;&#x6570;&#x3067;&#x3059;&#x3002;\n&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x3066;&#x5373;&#x5EA7;&#x306B; <code>stdout</code> &#x306B;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x5404;&#x5F15;&#x6570;&#x306F;&#x6539;&#x884C;&#x304C;&#x4ED8;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;...&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.print([...])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;print&quot;,
+          &quot;desc&quot;: &quot;<!--\nA synchronous output function. Will block the process, cast each argument to a\nstring then output to `stdout`. Does not place newlines after each argument.\n-->\n\n<p>&#x540C;&#x671F;&#x7684;&#x306A;&#x51FA;&#x529B;&#x95A2;&#x6570;&#x3067;&#x3059;&#x3002;\n&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3057;&#x3066;&#x3001;&#x5F15;&#x6570;&#x3092;&#x6587;&#x5B57;&#x5217;&#x306B;&#x5909;&#x63DB;&#x3057;&#x3066; <code>stdout</code> &#x306B;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x5404;&#x5F15;&#x6570;&#x306B;&#x6539;&#x884C;&#x306F;&#x4ED8;&#x52A0;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;...&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.log(string)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;log&quot;,
+          &quot;desc&quot;: &quot;<!--\nOutput with timestamp on `stdout`.\n-->\n\n<p>&#x30BF;&#x30A4;&#x30E0;&#x30B9;&#x30BF;&#x30F3;&#x30D7;&#x3068;&#x3068;&#x3082;&#x306B; <code>stdout</code> &#x3078;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>require(&apos;util&apos;).log(&apos;Timestamped message.&apos;);</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;string&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.inspect(object, [options])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;inspect&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturn a string representation of `object`, which is useful for debugging.\n-->\n\n<p>&#x30C7;&#x30D0;&#x30C3;&#x30B0;&#x3067;&#x6709;&#x7528;&#x306A;&#x3001;<code>object</code> &#x306E;&#x6587;&#x5B57;&#x5217;&#x8868;&#x73FE;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nAn optional *options* object may be passed that alters certain aspects of the\nformatted string:\n-->\n\n<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <em>options</em> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3001;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x5316;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x306E;\n&#x7279;&#x5B9A;&#x306E;&#x5074;&#x9762;&#x3092;&#x5909;&#x66F4;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x6E21;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n - `showHidden` - if `true` then the object's non-enumerable properties will be\n   shown too. Defaults to `false`.\n-->\n\n<ul>\n<li><code>showHidden</code> - <code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;\n&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E; Enumerable &#x3067;&#x306A;&#x3044;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3082;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;</li>\n</ul>\n<!--\n - `depth` - tells `inspect` how many times to recurse while formatting the\n   object. This is useful for inspecting large complicated objects. Defaults to\n   `2`. To make it recurse indefinitely pass `null`.\n-->\n\n<ul>\n<li><code>depth</code> - &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F55;&#x56DE;&#x518D;&#x5E30;&#x3059;&#x308B;&#x304B;&#x3092;\n<code>inspect</code> &#x306B;&#x4F1D;&#x3048;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x5DE8;&#x5927;&#x3067;&#x8907;&#x96D1;&#x306A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8ABF;&#x67FB;&#x3059;&#x308B;&#x5834;&#x5408;&#x306B;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>2</code> &#x3067;&#x3059;&#x3002;\n&#x7121;&#x9650;&#x306B;&#x518D;&#x5E30;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;<code>null</code> &#x3092;&#x6E21;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\n - `colors` - if `true`, then the output will be styled with ANSI color codes.\n   Defaults to `false`. Colors are customizable, see below.\n-->\n\n<ul>\n<li><code>colors</code> - <code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x51FA;&#x529B;&#x306F; ANSI &#x30AB;&#x30E9;&#x30FC;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x8272;&#x3065;&#x3051;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;\n&#x5F8C;&#x8FF0;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;&#x8272;&#x306F;&#x30AB;&#x30B9;&#x30BF;&#x30DE;&#x30A4;&#x30BA;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;</li>\n</ul>\n<!--\n - `customInspect` - if `false`, then custom `inspect()` functions defined on the\n   objects being inspected won't be called. Defaults to `true`.\n-->\n\n<ul>\n<li><code>customInspect</code> - <code>false</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x72EC;&#x81EA;&#x306E; <code>inspect()</code> &#x95A2;&#x6570;&#x306F;\n&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;</li>\n</ul>\n<!--\nExample of inspecting all properties of the `util` object:\n-->\n\n<p><code>util</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x5168;&#x3066;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x8ABF;&#x67FB;&#x3059;&#x308B;&#x4F8B;:\n\n</p>\n<pre><code>var util = require(&apos;util&apos;);\n\nconsole.log(util.inspect(util, { showHidden: true, depth: null }));</code></pre>\n&quot;,
+          &quot;modules&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Customizing `util.inspect` colors&quot;,
+              &quot;name&quot;: &quot;customizing_`util.inspect`_colors&quot;,
+              &quot;desc&quot;: &quot;<!--\nColor output (if enabled) of `util.inspect` is customizable globally\nvia `util.inspect.styles` and `util.inspect.colors` objects.\n-->\n\n<p><code>util.inspect</code> &#x304C;&#x51FA;&#x529B;&#x3059;&#x308B;&#x8272;&#x306F;&#x3001;(&#x6709;&#x52B9;&#x3067;&#x3042;&#x308C;&#x3070;) <code>util.inspect.styles</code> &#x304A;&#x3088;&#x3073;\n<code>util.inspect.colors</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x901A;&#x3058;&#x3066;&#x30B0;&#x30ED;&#x30FC;&#x30D0;&#x30EB;&#x306B;&#x30AB;&#x30B9;&#x30BF;&#x30DE;&#x30A4;&#x30BA;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;\n&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n`util.inspect.styles` is a map assigning each style a color\nfrom `util.inspect.colors`.\nHighlighted styles and their default values are:\n-->\n\n<p><code>util.inspect.styles</code> &#x306F;&#x5404;&#x30B9;&#x30BF;&#x30A4;&#x30EB;&#x3068; <code>util.inspect.colors</code> &#x306B;\n&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x8272;&#x3092;&#x5272;&#x308A;&#x5F53;&#x3066;&#x305F;&#x30DE;&#x30C3;&#x30D4;&#x30F3;&#x30B0;&#x3067;&#x3059;&#x3002;\n&#x5F37;&#x8ABF;&#x3055;&#x308C;&#x308B;&#x30B9;&#x30BF;&#x30A4;&#x30EB;&#x3068;&#x305D;&#x308C;&#x3089;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x306F;:\n\n</p>\n<!--\n * `number` (yellow)\n * `boolean` (yellow)\n * `string` (green)\n * `date` (magenta)\n * `regexp` (red)\n * `null` (bold)\n * `undefined` (grey)\n * `special` - only function at this time (cyan)\n * `name` (intentionally no styling)\n-->\n\n<ul>\n<li><code>number</code> (&#x9EC4;)</li>\n<li><code>boolean</code> (&#x9EC4;)</li>\n<li><code>string</code> (&#x7DD1;)</li>\n<li><code>date</code> (&#x7D2B;)</li>\n<li><code>regexp</code> (&#x8D64;)</li>\n<li><code>null</code> (&#x592A;&#x5B57;)</li>\n<li><code>undefined</code> (&#x7070;)</li>\n<li><code>special</code> - only function at this time (&#x6C34;&#x8272;)</li>\n<li><code>name</code> (&#x610F;&#x56F3;&#x7684;&#x306B;&#x30B9;&#x30BF;&#x30A4;&#x30EB;&#x7121;&#x3057;)</li>\n</ul>\n<!--\nPredefined color codes are: `white`, `grey`, `black`, `blue`, `cyan`, \n`green`, `magenta`, `red` and `yellow`.\nThere are also `bold`, `italic`, `underline` and `inverse` codes.\n-->\n\n<p>&#x4E8B;&#x524D;&#x306B;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x8272;&#x306F;: <code>white</code>&#x3001;<code>grey</code>&#x3001;<code>black</code>&#x3001;<code>blue</code>&#x3001;<code>cyan</code>&#x3001;\n<code>green</code>&#x3001;<code>magenta</code>&#x3001;<code>red</code>&#x3001;&#x304A;&#x3088;&#x3073; <code>yellow</code> &#x3067;&#x3059;&#x3002;\n<code>bold</code>&#x3001;<code>italic</code>&#x3001;<code>underline</code>&#x3001;&#x304A;&#x3088;&#x3073; <code>inverse</code> &#x30B3;&#x30FC;&#x30C9;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nObjects also may define their own `inspect(depth)` function which `util.inspect()`\nwill invoke and use the result of when inspecting the object:\n-->\n\n<p>&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; <code>util.inspect()</code> &#x304B;&#x3089;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x81EA;&#x524D;&#x306E; <code>inspect(depth)</code>\n&#x95A2;&#x6570;&#x3092;&#x6301;&#x3064;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x3001;&#x305D;&#x306E;&#x7D50;&#x679C;&#x306F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8ABF;&#x67FB;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var util = require(&apos;util&apos;);\n\nvar obj = { name: &apos;nate&apos; };\nobj.inspect = function(depth) {\n  return &apos;{&apos; + this.name + &apos;}&apos;;\n};\n\nutil.inspect(obj);\n  // &quot;{nate}&quot;</code></pre>\n&quot;,
+              &quot;type&quot;: &quot;module&quot;,
+              &quot;displayName&quot;: &quot;Customizing `util.inspect` colors&quot;
+            }
+          ],
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;object&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;options&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.isArray(object)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;isArray&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns `true` if the given \"object\" is an `Array`. `false` otherwise.\n-->\n\n<p><code>object</code> &#x304C;&#x914D;&#x5217;&#x306A;&#x3089; <code>true</code> &#x3092;&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306F; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var util = require(&apos;util&apos;);\n\nutil.isArray([])\n  // true\nutil.isArray(new Array)\n  // true\nutil.isArray({})\n  // false</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;object&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.isRegExp(object)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;isRegExp&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns `true` if the given \"object\" is a `RegExp`. `false` otherwise.\n-->\n\n<p><code>object</code> &#x304C; <code>RegExp</code> &#x306A;&#x3089; <code>true</code> &#x3092;&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306A;&#x3089; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var util = require(&apos;util&apos;);\n\nutil.isRegExp(/some regexp/)\n  // true\nutil.isRegExp(new RegExp(&apos;another regexp&apos;))\n  // true\nutil.isRegExp({})\n  // false</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;object&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.isDate(object)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;isDate&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns `true` if the given \"object\" is a `Date`. `false` otherwise.\n-->\n\n<p><code>object</code> &#x304C; <code>Date</code> &#x306A;&#x3089; <code>true</code> &#x3092;&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306A;&#x3089; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var util = require(&apos;util&apos;);\n\nutil.isDate(new Date())\n  // true\nutil.isDate(Date())\n  // false (without &apos;new&apos; returns a String)\nutil.isDate({})\n  // false</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;object&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.isError(object)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;isError&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns `true` if the given \"object\" is an `Error`. `false` otherwise.\n-->\n\n<p><code>object</code> &#x304C; <code>Error</code> &#x306A;&#x3089; <code>true</code> &#x3092;&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306A;&#x3089; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var util = require(&apos;util&apos;);\n\nutil.isError(new Error())\n  // true\nutil.isError(new TypeError())\n  // true\nutil.isError({ name: &apos;Error&apos;, message: &apos;an error occurred&apos; })\n  // false</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;object&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.pump(readableStream, writableStream, [callback])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;pump&quot;,
+          &quot;desc&quot;: &quot;<!--\n    Stability: 0 - Deprecated: Use readableStream.pipe(writableStream)\n-->\n\n<pre><code>Stability: 0 - Deprecated: `readableStream.pipe(writableStream)` &#x3092;&#x4F7F;&#x3063;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</code></pre>\n<!--\nRead the data from `readableStream` and send it to the `writableStream`.\nWhen `writableStream.write(data)` returns `false` `readableStream` will be\npaused until the `drain` event occurs on the `writableStream`. `callback` gets\nan error as its only argument and is called when `writableStream` is closed or\nwhen an error occurs.\n-->\n\n<p><code>readableStream</code> &#x304B;&#x3089;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x8AAD;&#x307F;&#x3001;&#x305D;&#x308C; &#x3092;<code>writableStream</code> &#x306B;&#x9001;&#x308A;&#x307E;&#x3059;&#x3002;\n<code>writableStream.write(data)</code> &#x304C; <code>false</code> &#x3092;&#x8FD4;&#x3059;&#x5834;&#x5408;&#x3001;\n<code>writableStream</code> &#x304C; <code>drain</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x307E;&#x3067;&#x3001;\n<code>readableStream</code> &#x306F;&#x4E2D;&#x65AD;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>writableStream</code> &#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x308B;&#x304B;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3068;&#x3001;<code>callback</code> &#x306F; error &#x3092;&#x552F;&#x4E00;&#x306E;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;readableStream&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;writableStream&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;util.inherits(constructor, superConstructor)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;inherits&quot;,
+          &quot;desc&quot;: &quot;<!--\nInherit the prototype methods from one\n[constructor](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor)\ninto another.  The prototype of `constructor` will be set to a new\nobject created from `superConstructor`.\n-->\n\n<p>&#x3042;&#x308B;\n<a href="\&quot;https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object/constructor\&quot;">&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;</a>\n&#x304B;&#x3089;&#x30D7;&#x30ED;&#x30C8;&#x30BF;&#x30A4;&#x30D7;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x7D99;&#x627F;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>constructor</code> &#x306E;&#x30D7;&#x30ED;&#x30C8;&#x30BF;&#x30A4;&#x30D7;&#x306F; <code>superConstructor</code> &#x304B;&#x3089;&#x4F5C;&#x3089;&#x308C;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nAs an additional convenience, `superConstructor` will be accessible\nthrough the `constructor.super_` property.\n-->\n\n<p>&#x3055;&#x3089;&#x306A;&#x308B;&#x5229;&#x4FBF;&#x6027;&#x306E;&#x305F;&#x3081;&#x306B;&#x3001;<code>superConstructor</code> &#x306F; <code>constructor.super_</code>\n&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x901A;&#x3058;&#x3066;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<pre><code>var util = require(&quot;util&quot;);\nvar events = require(&quot;events&quot;);\n\nfunction MyStream() {\n    events.EventEmitter.call(this);\n}\n\nutil.inherits(MyStream, events.EventEmitter);\n\nMyStream.prototype.write = function(data) {\n    this.emit(&quot;data&quot;, data);\n}\n\nvar stream = new MyStream();\n\nconsole.log(stream instanceof events.EventEmitter); // true\nconsole.log(MyStream.super_ === events.EventEmitter); // true\n\nstream.on(&quot;data&quot;, function(data) {\n    console.log(&apos;Received data: &quot;&apos; + data + &apos;&quot;&apos;);\n})\nstream.write(&quot;It works!&quot;); // Received data: &quot;It works!&quot;</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;constructor&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;superConstructor&quot;
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;util&quot;
+    }
+  ]
+}

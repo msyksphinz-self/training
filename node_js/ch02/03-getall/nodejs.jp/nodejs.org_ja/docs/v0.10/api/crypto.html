@@ -1,0 +1,1304 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Crypto Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/crypto.html">
+</head>
+<body class="alt apidoc" id="api-section-crypto">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="crypto.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#crypto_crypto">Crypto</a><ul>
+<li><a href="#crypto_crypto_getciphers">crypto.getCiphers()</a></li>
+<li><a href="#crypto_crypto_gethashes">crypto.getHashes()</a></li>
+<li><a href="#crypto_crypto_createcredentials_details">crypto.createCredentials(details)</a></li>
+<li><a href="#crypto_crypto_createhash_algorithm">crypto.createHash(algorithm)</a></li>
+<li><a href="#crypto_class_hash">Class: Hash</a><ul>
+<li><a href="#crypto_hash_update_data_input_encoding">hash.update(data, [input_encoding])</a></li>
+<li><a href="#crypto_hash_digest_encoding">hash.digest([encoding])</a></li>
+</ul>
+</li>
+<li><a href="#crypto_crypto_createhmac_algorithm_key">crypto.createHmac(algorithm, key)</a></li>
+<li><a href="#crypto_class_hmac">Class: Hmac</a><ul>
+<li><a href="#crypto_hmac_update_data">hmac.update(data)</a></li>
+<li><a href="#crypto_hmac_digest_encoding">hmac.digest([encoding])</a></li>
+</ul>
+</li>
+<li><a href="#crypto_crypto_createcipher_algorithm_password">crypto.createCipher(algorithm, password)</a></li>
+<li><a href="#crypto_crypto_createcipheriv_algorithm_key_iv">crypto.createCipheriv(algorithm, key, iv)</a></li>
+<li><a href="#crypto_class_cipher">Class: Cipher</a><ul>
+<li><a href="#crypto_cipher_update_data_input_encoding_output_encoding">cipher.update(data, [input_encoding], [output_encoding])</a></li>
+<li><a href="#crypto_cipher_final_output_encoding">cipher.final([output_encoding])</a></li>
+<li><a href="#crypto_cipher_setautopadding_auto_padding_true">cipher.setAutoPadding(auto_padding=true)</a></li>
+</ul>
+</li>
+<li><a href="#crypto_crypto_createdecipher_algorithm_password">crypto.createDecipher(algorithm, password)</a></li>
+<li><a href="#crypto_crypto_createdecipheriv_algorithm_key_iv">crypto.createDecipheriv(algorithm, key, iv)</a></li>
+<li><a href="#crypto_class_decipher">Class: Decipher</a><ul>
+<li><a href="#crypto_decipher_update_data_input_encoding_output_encoding">decipher.update(data, [input_encoding], [output_encoding])</a></li>
+<li><a href="#crypto_decipher_final_output_encoding">decipher.final([output_encoding])</a></li>
+<li><a href="#crypto_decipher_setautopadding_auto_padding_true">decipher.setAutoPadding(auto_padding=true)</a></li>
+</ul>
+</li>
+<li><a href="#crypto_crypto_createsign_algorithm">crypto.createSign(algorithm)</a></li>
+<li><a href="#crypto_class_sign">Class: Sign</a><ul>
+<li><a href="#crypto_sign_update_data">sign.update(data)</a></li>
+<li><a href="#crypto_sign_sign_private_key_output_format">sign.sign(private_key, [output_format])</a></li>
+</ul>
+</li>
+<li><a href="#crypto_crypto_createverify_algorithm">crypto.createVerify(algorithm)</a></li>
+<li><a href="#crypto_class_verify">Class: Verify</a><ul>
+<li><a href="#crypto_verifier_update_data">verifier.update(data)</a></li>
+<li><a href="#crypto_verifier_verify_object_signature_signature_format">verifier.verify(object, signature, [signature_format])</a></li>
+</ul>
+</li>
+<li><a href="#crypto_crypto_creatediffiehellman_prime_length">crypto.createDiffieHellman(prime_length)</a></li>
+<li><a href="#crypto_crypto_creatediffiehellman_prime_encoding">crypto.createDiffieHellman(prime, [encoding])</a></li>
+<li><a href="#crypto_class_diffiehellman">Class: DiffieHellman</a><ul>
+<li><a href="#crypto_diffiehellman_generatekeys_encoding">diffieHellman.generateKeys([encoding])</a></li>
+<li><a href="#crypto_diffiehellman_computesecret_other_public_key_input_encoding_output_encoding">diffieHellman.computeSecret(other_public_key, [input_encoding], [output_encoding])</a></li>
+<li><a href="#crypto_diffiehellman_getprime_encoding">diffieHellman.getPrime([encoding])</a></li>
+<li><a href="#crypto_diffiehellman_getgenerator_encoding">diffieHellman.getGenerator([encoding])</a></li>
+<li><a href="#crypto_diffiehellman_getpublickey_encoding">diffieHellman.getPublicKey([encoding])</a></li>
+<li><a href="#crypto_diffiehellman_getprivatekey_encoding">diffieHellman.getPrivateKey([encoding])</a></li>
+<li><a href="#crypto_diffiehellman_setpublickey_public_key_encoding">diffieHellman.setPublicKey(public_key, [encoding])</a></li>
+<li><a href="#crypto_diffiehellman_setprivatekey_private_key_encoding">diffieHellman.setPrivateKey(private_key, [encoding])</a></li>
+</ul>
+</li>
+<li><a href="#crypto_crypto_getdiffiehellman_group_name">crypto.getDiffieHellman(group_name)</a></li>
+<li><a href="#crypto_crypto_pbkdf2_password_salt_iterations_keylen_callback">crypto.pbkdf2(password, salt, iterations, keylen, callback)</a></li>
+<li><a href="#crypto_crypto_pbkdf2sync_password_salt_iterations_keylen">crypto.pbkdf2Sync(password, salt, iterations, keylen)</a></li>
+<li><a href="#crypto_crypto_randombytes_size_callback">crypto.randomBytes(size, [callback])</a></li>
+<li><a href="#crypto_crypto_pseudorandombytes_size_callback">crypto.pseudoRandomBytes(size, [callback])</a></li>
+<li><a href="#crypto_crypto_default_encoding">crypto.DEFAULT_ENCODING</a></li>
+<li><a href="#crypto_recent_api_changes">Recent API Changes</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Crypto<span><a class="mark" href="#crypto_crypto" id="crypto_crypto">#</a></span></h1>
+<!--
+    Stability: 2 - Unstable; API changes are being discussed for
+    future versions.  Breaking changes will be minimized.  See below.
+-->
+
+<pre class="api_stability_2">Stability: 2 - Unstable; &#x5C06;&#x6765;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x306B;&#x304A;&#x3044;&#x3066; API &#x306E;&#x5909;&#x66F4;&#x304C;
+&#x8B70;&#x8AD6;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;&#x4E92;&#x63DB;&#x6027;&#x3092;&#x640D;&#x306A;&#x3046;&#x5909;&#x66F4;&#x306F;&#x6700;&#x5C0F;&#x9650;&#x306B;&#x306A;&#x308B;&#x4E88;&#x5B9A;&#x3067;&#x3059;&#x3002;
+&#x5F8C;&#x8FF0;&#x3057;&#x307E;&#x3059;&#x3002;</pre><!--
+Use `require('crypto')` to access this module.
+-->
+
+<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x306B;&#x306F; <code>require(&apos;crypto&apos;)</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The crypto module offers a way of encapsulating secure credentials to be
+used as part of a secure HTTPS net or http connection.
+-->
+
+<p>&#x6697;&#x53F7;&#x5316;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x5B89;&#x5168;&#x306A; HTTPS &#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x3084; http
+&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x4E00;&#x90E8;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x3001;
+&#x5B89;&#x5168;&#x306A;&#x8A8D;&#x8A3C;&#x60C5;&#x5831;&#x3092;&#x30AB;&#x30D7;&#x30BB;&#x30EB;&#x5316;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+It also offers a set of wrappers for OpenSSL's hash, hmac, cipher,
+decipher, sign and verify methods.
+-->
+
+<p>&#x540C;&#x6642;&#x306B; OpenSSL &#x306E;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x3001;HMAC&#x3001;&#x6697;&#x53F7;&#x3001;&#x5FA9;&#x53F7;&#x3001;&#x7F72;&#x540D;&#x3001;&#x305D;&#x3057;&#x3066;&#x691C;&#x8A3C;&#x3078;&#x306E;&#x30E9;&#x30C3;&#x30D1;&#x30FC;&#x3092;&#x4E00;&#x5F0F;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>crypto.getCiphers()<span><a class="mark" href="#crypto_crypto_getciphers" id="crypto_crypto_getciphers">#</a></span></h2>
+<!--
+Returns an array with the names of the supported ciphers.
+-->
+
+<p>&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x6697;&#x53F7;&#x306E;&#x540D;&#x524D;&#x304B;&#x3089;&#x306A;&#x308B;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>var ciphers = crypto.getCiphers();
+console.log(ciphers); // [&apos;AES-128-CBC&apos;, &apos;AES-128-CBC-HMAC-SHA1&apos;, ...]</code></pre>
+<h2>crypto.getHashes()<span><a class="mark" href="#crypto_crypto_gethashes" id="crypto_crypto_gethashes">#</a></span></h2>
+<!--
+Returns an array with the names of the supported hash algorithms.
+-->
+
+<p>&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306E;&#x540D;&#x524D;&#x304B;&#x3089;&#x306A;&#x308B;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<pre><code>var hashes = crypto.getHashes();
+console.log(hashes); // [&apos;sha&apos;, &apos;sha1&apos;, &apos;sha1WithRSAEncryption&apos;, ...]</code></pre>
+<h2>crypto.createCredentials(details)<span><a class="mark" href="#crypto_crypto_createcredentials_details" id="crypto_crypto_createcredentials_details">#</a></span></h2>
+<!--
+Creates a credentials object, with the optional details being a
+dictionary with keys:
+-->
+
+<p>&#x8A8D;&#x8A3C;&#x60C5;&#x5831;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>details</code>
+&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30AD;&#x30FC;&#x3092;&#x6301;&#x3064;&#x8F9E;&#x66F8;&#x3067;&#x3059;:
+
+</p>
+<!--
+* `pfx` : A string or buffer holding the PFX or PKCS12 encoded private
+  key, certificate and CA certificates
+* `key` : A string holding the PEM encoded private key
+* `passphrase` : A string of passphrase for the private key or pfx
+* `cert` : A string holding the PEM encoded certificate
+* `ca` : Either a string or list of strings of PEM encoded CA
+  certificates to trust.
+* `crl` : Either a string or list of strings of PEM encoded CRLs
+  (Certificate Revocation List)
+* `ciphers`: A string describing the ciphers to use or exclude.
+  Consult
+  <http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT>
+  for details on the format.
+-->
+
+<ul>
+<li><code>pfx</code> : PFX &#x307E;&#x305F;&#x306F; PKCS12 &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x79D8;&#x5BC6;&#x9375;&#x3001;&#x8A3C;&#x660E;&#x66F8;&#x3001;&#x304A;&#x3088;&#x3073; CA &#x306E;
+&#x8A3C;&#x660E;&#x66F8;&#x3092;&#x542B;&#x3080;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3002;</li>
+<li><code>key</code> : PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x4FDD;&#x6301;&#x3059;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3002;</li>
+<li><code>passphrase</code>: &#x79D8;&#x5BC6;&#x9375;&#x307E;&#x305F;&#x306F; pfx &#x306E;&#x30D1;&#x30B9;&#x30D5;&#x30EC;&#x30FC;&#x30BA;&#x3002;</li>
+<li><code>cert</code> : PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x8A3C;&#x660E;&#x66F8;&#x3092;&#x4FDD;&#x6301;&#x3059;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3002;</li>
+<li><code>ca</code> : &#x4FE1;&#x983C;&#x3067;&#x304D;&#x308B;&#x8A8D;&#x8A3C;&#x5C40;&#x306E;&#x8A3C;&#x660E;&#x66F8;&#x304C; PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;
+&#x6587;&#x5B57;&#x5217;&#x306E;&#x914D;&#x5217;&#x3002;</li>
+<li><code>crl</code> : PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F; CRL (Certificate Revocation List&#x3001;
+&#x5931;&#x52B9;&#x3057;&#x305F;&#x8A3C;&#x660E;&#x66F8;&#x306E;&#x4E00;&#x89A7;) &#x306E;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x6587;&#x5B57;&#x5217;&#x306E;&#x914D;&#x5217;&#x3002;</li>
+<li><code>ciphers</code>: &#x4F7F;&#x7528;&#x307E;&#x305F;&#x306F;&#x9664;&#x5916;&#x3059;&#x308B;&#x6697;&#x53F7;&#x3092;&#x8A18;&#x8FF0;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3002;
+&#x8A73;&#x7D30;&#x306F; <a href="http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT">http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT</a>
+&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</li>
+</ul>
+<!--
+If no 'ca' details are given, then node.js will use the default
+publicly trusted list of CAs as given in
+<http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt>.
+-->
+
+<p>&apos;ca&apos; &#x306E;&#x8A73;&#x7D30;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x3001;node.js &#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3068;&#x3057;&#x3066;
+</p>
+<p><a href="http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt">http://mxr.mozilla.org/mozilla/source/security/nss/lib/ckfw/builtins/certdata.txt</a>
+&#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B;&#x3001;&#x4FE1;&#x983C;&#x3067;&#x304D;&#x308B;&#x8A8D;&#x8A3C;&#x5C40;&#x306E;&#x516C;&#x958B;&#x3055;&#x308C;&#x305F;&#x30EA;&#x30B9;&#x30C8;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>crypto.createHash(algorithm)<span><a class="mark" href="#crypto_crypto_createhash_algorithm" id="crypto_crypto_createhash_algorithm">#</a></span></h2>
+<!--
+Creates and returns a hash object, a cryptographic hash with the given
+algorithm which can be used to generate hash digests.
+-->
+
+<p>&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306B;&#x3088;&#x308B;&#x6697;&#x53F7;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x95A2;&#x6570;&#x306F;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x306E;&#x751F;&#x6210;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+`algorithm` is dependent on the available algorithms supported by the
+version of OpenSSL on the platform. Examples are `'sha1'`, `'md5'`,
+`'sha256'`, `'sha512'`, etc.  On recent releases, `openssl
+list-message-digest-algorithms` will display the available digest
+algorithms.
+-->
+
+<p><code>algorithm</code> &#x306F;&#x3001;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x4E0A;&#x306E; OpenSSL 
+&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4F8B;&#x3048;&#x3070; <code>&apos;sha1&apos;</code>&#x3001;<code>&apos;md5&apos;</code>&#x3001;<code>&apos;sha256&apos;</code>&#x3001;<code>&apos;sha512&apos;</code>&#x3001;&#x306A;&#x3069;&#x3067;&#x3059;&#x3002;
+&#x6700;&#x8FD1;&#x306E;&#x30EA;&#x30EA;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;<code>openssl list-message-digest-algorithms</code>
+&#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x304C;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example: this program that takes the sha1 sum of a file
+-->
+
+<p>&#x4F8B;: &#x3053;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;sha1&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x5024;&#x3092;&#x6C42;&#x3081;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var filename = process.argv[2];
+var crypto = require(&apos;crypto&apos;);
+var fs = require(&apos;fs&apos;);
+
+var shasum = crypto.createHash(&apos;sha1&apos;);
+
+var s = fs.ReadStream(filename);
+s.on(&apos;data&apos;, function(d) {
+  shasum.update(d);
+});
+
+s.on(&apos;end&apos;, function() {
+  var d = shasum.digest(&apos;hex&apos;);
+  console.log(d + &apos;  &apos; + filename);
+});</code></pre>
+<h2>Class: Hash<span><a class="mark" href="#crypto_class_hash" id="crypto_class_hash">#</a></span></h2>
+<!--
+The class for creating hash digests of data.
+-->
+
+<p>&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+It is a [stream](stream.html) that is both readable and writable.  The
+written data is used to compute the hash.  Once the writable side of
+the stream is ended, use the `read()` method to get the computed hash
+digest.  The legacy `update` and `digest` methods are also supported.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A; <a href="stream.html">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;
+&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x4E00;&#x5EA6;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5074;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x3068;&#x3001;&#x8A08;&#x7B97;&#x3055;&#x308C;&#x305F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;
+&#x8AAD;&#x307F;&#x51FA;&#x3059;&#x305F;&#x3081;&#x306B; <code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Returned by `crypto.createHash`.
+-->
+
+<p><code>crypto.createHash()</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>hash.update(data, [input_encoding])<span><a class="mark" href="#crypto_hash_update_data_input_encoding" id="crypto_hash_update_data_input_encoding">#</a></span></h3>
+<!--
+Updates the hash content with the given `data`, the encoding of which
+is given in `input_encoding` and can be `'utf8'`, `'ascii'` or
+`'binary'`.  If no encoding is provided and the input is a string an
+encoding of `'binary'` is enforced. If `data` is a `Buffer` then
+`input_encoding` is ignored.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; <code>data</code> &#x3067;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x306E;&#x5185;&#x5BB9;&#x3092;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>input_encoding</code> &#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x3001;<code>&apos;utf8&apos;</code>&#x3001;<code>&apos;ascii&apos;</code>&#x3001;
+&#x307E;&#x305F;&#x306F; <code>&apos;binary&apos;</code> &#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+<code>data</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F;
+<code>&apos;binary&apos;</code> &#x304C;&#x5F37;&#x5236;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057; <code>data</code> &#x304C; <code>Buffer</code> &#x306A;&#x3089;&#x3001;<code>input_encoding</code> &#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This can be called many times with new data as it is streamed.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>hash.digest([encoding])<span><a class="mark" href="#crypto_hash_digest_encoding" id="crypto_hash_digest_encoding">#</a></span></h3>
+<!--
+Calculates the digest of all of the passed data to be hashed.  The
+`encoding` can be `'hex'`, `'binary'` or `'base64'`.  If no encoding
+is provided, then a buffer is returned.
+-->
+
+<p>&#x6E21;&#x3055;&#x308C;&#x305F;&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x5316;&#x3055;&#x308C;&#x305F;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>encoding</code> &#x306F; <code>&apos;hex&apos;</code>&#x3001;<code>&apos;binary&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note: `hash` object can not be used after `digest()` method has been
+called.
+-->
+
+<p>&#x6CE8;&#x610F;: <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>hash</code> 
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+
+</p>
+<h2>crypto.createHmac(algorithm, key)<span><a class="mark" href="#crypto_crypto_createhmac_algorithm_key" id="crypto_crypto_createhmac_algorithm_key">#</a></span></h2>
+<!--
+Creates and returns a hmac object, a cryptographic hmac with the given
+algorithm and key.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30AD;&#x30FC;&#x3067; HMAC &#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x3001;HMAC &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+It is a [stream](stream.html) that is both readable and writable.  The
+written data is used to compute the hmac.  Once the writable side of
+the stream is ended, use the `read()` method to get the computed
+digest.  The legacy `update` and `digest` methods are also supported.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A; <a href="stream.html">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;
+&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x4E00;&#x5EA6;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5074;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x3068;&#x3001;&#x8A08;&#x7B97;&#x3055;&#x308C;&#x305F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;
+&#x8AAD;&#x307F;&#x51FA;&#x3059;&#x305F;&#x3081;&#x306B; <code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+`algorithm` is dependent on the available algorithms supported by
+OpenSSL - see createHash above.  `key` is the hmac key to be used.
+-->
+
+<p><code>algorithm</code> &#x306F; OpenSSL &#x3067;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059; &#xFF0D; 
+&#x524D;&#x8FF0;&#x306E; <code>createHash</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>Class: Hmac<span><a class="mark" href="#crypto_class_hmac" id="crypto_class_hmac">#</a></span></h2>
+<!--
+Class for creating cryptographic hmac content.
+
+Returned by `crypto.createHmac`.
+-->
+
+<p>hmac &#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>crypto.createHamc</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>hmac.update(data)<span><a class="mark" href="#crypto_hmac_update_data" id="crypto_hmac_update_data">#</a></span></h3>
+<!--
+Update the hmac content with the given `data`.  This can be called
+many times with new data as it is streamed.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F; <code>data</code> &#x3067; HMAC &#x306E;&#x5185;&#x5BB9;&#x3092;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>hmac.digest([encoding])<span><a class="mark" href="#crypto_hmac_digest_encoding" id="crypto_hmac_digest_encoding">#</a></span></h3>
+<!--
+Calculates the digest of all of the passed data to the hmac.  The
+`encoding` can be `'hex'`, `'binary'` or `'base64'`.  If no encoding
+is provided, then a buffer is returned.
+-->
+
+<p>&#x6E21;&#x3055;&#x308C;&#x305F;&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C; HMAC &#x5316;&#x3055;&#x308C;&#x305F;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>encoding</code> &#x306F; <code>&apos;hex&apos;</code>&#x3001;<code>&apos;binary&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note: `hmac` object can not be used after `digest()` method has been
+called.
+-->
+
+<p>&#x6CE8;&#x610F;: <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>hmac</code> 
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+
+</p>
+<h2>crypto.createCipher(algorithm, password)<span><a class="mark" href="#crypto_crypto_createcipher_algorithm_password" id="crypto_crypto_createcipher_algorithm_password">#</a></span></h2>
+<!--
+Creates and returns a cipher object, with the given algorithm and
+password.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30D1;&#x30B9;&#x30EF;&#x30FC;&#x30C9;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x6697;&#x53F7;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+<!--
+`algorithm` is dependent on OpenSSL, examples are `'aes192'`, etc.  On
+recent releases, `openssl list-cipher-algorithms` will display the
+available cipher algorithms.  `password` is used to derive key and IV,
+which must be a `'binary'` encoded string or a [buffer](buffer.html).
+-->
+
+</p>
+<p><code>algorithm</code> &#x306F;&#x3001;OpenSSL &#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;&#x4F8B;&#x3048;&#x3070; <code>&apos;aes192&apos;</code> &#x306A;&#x3069;&#x3067;&#x3059;&#x3002;
+&#x6700;&#x8FD1;&#x306E;&#x30EA;&#x30EA;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;<code>openssl list-cipher-algorithms</code>
+&#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x6697;&#x53F7;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x304C;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>password</code> &#x306F;&#x30AD;&#x30FC;&#x3068; IV &#x306E;&#x751F;&#x6210;&#x306B;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>&apos;binary&apos;</code> &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F; <a href="buffer.html">buffer</a>
+&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;
+
+</p>
+<!--
+It is a [stream](stream.html) that is both readable and writable.  The
+written data is used to compute the hash.  Once the writable side of
+the stream is ended, use the `read()` method to get the computed hash
+digest.  The legacy `update` and `digest` methods are also supported.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A; <a href="stream.html">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;
+&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x4E00;&#x5EA6;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5074;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x3068;&#x3001;&#x8A08;&#x7B97;&#x3055;&#x308C;&#x305F;&#x30CF;&#x30C3;&#x30B7;&#x30E5;&#x30C0;&#x30A4;&#x30B8;&#x30A7;&#x30B9;&#x30C8;&#x3092;
+&#x8AAD;&#x307F;&#x51FA;&#x3059;&#x305F;&#x3081;&#x306B; <code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>digest()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>crypto.createCipheriv(algorithm, key, iv)<span><a class="mark" href="#crypto_crypto_createcipheriv_algorithm_key_iv" id="crypto_crypto_createcipheriv_algorithm_key_iv">#</a></span></h2>
+<!--
+Creates and returns a cipher object, with the given algorithm, key and
+iv.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30AD;&#x30FC;&#x304A;&#x3088;&#x3073; IV &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x6697;&#x53F7;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;
+&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+`algorithm` is the same as the argument to `createCipher()`.  `key` is
+the raw key used by the algorithm.  `iv` is an [initialization
+vector](http://en.wikipedia.org/wiki/Initialization_vector).
+-->
+
+<p><code>algorithm</code> &#x306F; <code>createCipher()</code> &#x306E;&#x5F15;&#x6570;&#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+<code>key</code> &#x306F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x751F;&#x306E;&#x30AD;&#x30FC;&#x3067;&#x3059;&#x3002;
+<code>iv</code> &#x306F;<a href="http://en.wikipedia.org/wiki/Initialization_vector">initialization
+vector</a> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+`key` and `iv` must be `'binary'` encoded strings or
+[buffers](buffer.html).
+-->
+
+<p><code>key</code> &#x3068; <code>iv</code> &#x306F; <code>&apos;binary&apos;</code> &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;
+<a href="buffer.html">buffers</a> &#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;
+
+</p>
+<h2>Class: Cipher<span><a class="mark" href="#crypto_class_cipher" id="crypto_class_cipher">#</a></span></h2>
+<!--
+Class for encrypting data.
+-->
+
+<p>&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6697;&#x53F7;&#x5316;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Returned by `crypto.createCipher` and `crypto.createCipheriv`.
+-->
+
+<p><code>crypto.createCipher</code> &#x304A;&#x3088;&#x3073; <code>crypto.createCipheriv</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Cipher objects are [streams](stream.html) that are both readable and
+writable.  The written plain text data is used to produce the
+encrypted data on the readable side.  The legacy `update` and `final`
+methods are also supported.
+-->
+
+<p>&#x6697;&#x53F7;&#x5316;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A;
+<a href="stream.html">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;
+&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30D7;&#x30EC;&#x30FC;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x3001;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5074;&#x306B;&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;
+&#x751F;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>final()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>cipher.update(data, [input_encoding], [output_encoding])<span><a class="mark" href="#crypto_cipher_update_data_input_encoding_output_encoding" id="crypto_cipher_update_data_input_encoding_output_encoding">#</a></span></h3>
+<!--
+Updates the cipher with `data`, the encoding of which is given in
+`input_encoding` and can be `'utf8'`, `'ascii'` or `'binary'`.  If no
+encoding is provided, then a buffer is expected.
+If `data` is a `Buffer` then `input_encoding` is ignored.
+-->
+
+<p><code>data</code> &#x3067;&#x6697;&#x53F7;&#x3092;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>input_encoding</code> &#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;utf8&apos;</code>&#x3001;<code>&apos;ascii&apos;</code>&#x3001;<code>&apos;binary&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057; <code>data</code> &#x304C; <code>Buffer</code> &#x306A;&#x3089;&#x3001;<code>input_encoding</code> &#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The `output_encoding` specifies the output format of the enciphered
+data, and can be `'binary'`, `'base64'` or `'hex'`.  If no encoding is
+provided, then a buffer is returned.
+-->
+
+<p><code>output_encoding</code> &#x306F;&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x51FA;&#x529B;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3082;&#x306E;&#x3067;&#x3001;
+<code>&apos;utf8&apos;</code>&#x3001;<code>&apos;ascii&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;binary&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Returns the enciphered contents, and can be called many times with new
+data as it is streamed.
+-->
+
+<p>&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30B3;&#x30F3;&#x30C6;&#x30F3;&#x30C4;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>cipher.final([output_encoding])<span><a class="mark" href="#crypto_cipher_final_output_encoding" id="crypto_cipher_final_output_encoding">#</a></span></h3>
+<!--
+Returns any remaining enciphered contents, with `output_encoding`
+being one of: `'binary'`, `'base64'` or `'hex'`.  If no encoding is
+provided, then a buffer is returned.
+-->
+
+<p>&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30B3;&#x30F3;&#x30C6;&#x30F3;&#x30C4;&#x306E;&#x6B8B;&#x308A;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>output_encoding</code> &#x306F;&#x6B21;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;: <code>&apos;binary&apos;</code>&#x3001;<code>&apos;base64&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;hex&apos;</code>&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note: `cipher` object can not be used after `final()` method has been
+called.
+-->
+
+<p>&#x6CE8;&#x610F;: <code>final()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>cipher</code> 
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>cipher.setAutoPadding(auto_padding=true)<span><a class="mark" href="#crypto_cipher_setautopadding_auto_padding_true" id="crypto_cipher_setautopadding_auto_padding_true">#</a></span></h3>
+<!--
+You can disable automatic padding of the input data to block size. If
+`auto_padding` is false, the length of the entire input data must be a
+multiple of the cipher's block size or `final` will fail.  Useful for
+non-standard padding, e.g. using `0x0` instead of PKCS padding. You
+must call this before `cipher.final`.
+-->
+
+<p>&#x5165;&#x529B;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x30B5;&#x30A4;&#x30BA;&#x306B;&#x30D1;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;
+&#x6291;&#x6B62;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+<code>auto_padding</code> &#x304C; <code>false</code> &#x306E;&#x5834;&#x5408;&#x3001;&#x5165;&#x529B;&#x30C7;&#x30FC;&#x30BF;&#x5168;&#x4F53;&#x306E;&#x9577;&#x3055;&#x306F;
+&#x6697;&#x53F7;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x30B5;&#x30A4;&#x30BA;&#x306E;&#x500D;&#x6570;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;<code>final()</code> &#x306F;&#x5931;&#x6557;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x975E;&#x6A19;&#x6E96;&#x306E;&#x30D1;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3001;&#x305F;&#x3068;&#x3048;&#x3070; PKCS &#x30D1;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306E;&#x4EE3;&#x308F;&#x308A;&#x306B;
+<code>0x0</code> &#x3092;&#x4F7F;&#x3046;&#x5834;&#x5408;&#x306B;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;
+<code>cipher.final()</code> &#x306E;&#x524D;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>crypto.createDecipher(algorithm, password)<span><a class="mark" href="#crypto_crypto_createdecipher_algorithm_password" id="crypto_crypto_createdecipher_algorithm_password">#</a></span></h2>
+<!--
+Creates and returns a decipher object, with the given algorithm and
+key.  This is the mirror of the [createCipher()][] above.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30D1;&#x30B9;&#x30EF;&#x30FC;&#x30C9;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5FA9;&#x53F7;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x524D;&#x8FF0;&#x306E; <a href="#crypto_crypto_createcipher_algorithm_password">createCipher()</a> &#x306E;&#x93E1;&#x5199;&#x3057;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>crypto.createDecipheriv(algorithm, key, iv)<span><a class="mark" href="#crypto_crypto_createdecipheriv_algorithm_key_iv" id="crypto_crypto_createdecipheriv_algorithm_key_iv">#</a></span></h2>
+<!--
+Creates and returns a decipher object, with the given algorithm, key
+and iv.  This is the mirror of the [createCipheriv()][] above.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3068;&#x30AD;&#x30FC;&#x3001;IV &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5FA9;&#x53F7;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x524D;&#x8FF0;&#x306E; <a href="#crypto_crypto_createcipheriv_algorithm_key_iv">createCipheriv()</a> &#x306E;&#x93E1;&#x5199;&#x3057;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>Class: Decipher<span><a class="mark" href="#crypto_class_decipher" id="crypto_class_decipher">#</a></span></h2>
+<!--
+Class for decrypting data.
+
+Returned by `crypto.createDecipher` and `crypto.createDecipheriv`.
+-->
+
+<p>&#x5FA9;&#x53F7;&#x5316;&#x306E;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>crypto.createDecipher</code> &#x304A;&#x3088;&#x3073; <code>crypto.createDecipheriv</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Decipher objects are [streams](stream.html) that are both readable and
+writable.  The written enciphered data is used to produce the
+plain-text data on the the readable side.  The legacy `update` and
+`final` methods are also supported.
+-->
+
+<p>&#x5FA9;&#x53F7;&#x5316;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x4E21;&#x65B9;&#x304C;&#x53EF;&#x80FD;&#x306A;
+<a href="stream.html">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;
+&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x6697;&#x53F7;&#x5316;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x3001;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5074;&#x306B;&#x30D7;&#x30EC;&#x30FC;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x30C7;&#x30FC;&#x30BF;&#x3092;
+&#x751F;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x304A;&#x3088;&#x3073; <code>final()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>decipher.update(data, [input_encoding], [output_encoding])<span><a class="mark" href="#crypto_decipher_update_data_input_encoding_output_encoding" id="crypto_decipher_update_data_input_encoding_output_encoding">#</a></span></h3>
+<!--
+Updates the decipher with `data`, which is encoded in `'binary'`,
+`'base64'` or `'hex'`.  If no encoding is provided, then a buffer is
+expected.
+If `data` is a `Buffer` then `input_encoding` is ignored.
+-->
+
+<p><code>&apos;binary&apos;</code>&#x3001;<code>&apos;base64&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;hex&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x5FA9;&#x53F7;&#x3092;
+<code>data</code> &#x3067;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057; <code>data</code> &#x304C; <code>Buffer</code> &#x306A;&#x3089;&#x3001;<code>input_encoding</code> &#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The `output_decoding` specifies in what format to return the
+deciphered plaintext: `'binary'`, `'ascii'` or `'utf8'`.  If no
+encoding is provided, then a buffer is returned.
+-->
+
+<p><code>output_decoding</code> &#x306F;&#x5FA9;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30D7;&#x30EC;&#x30FC;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x306E;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3082;&#x306E;&#x3067;&#x3001;
+<code>&apos;binary&apos;</code>&#x3001;<code>&apos;ascii&apos;</code> &#x3042;&#x308B;&#x3044;&#x306F; <code>&apos;utf8&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h3>decipher.final([output_encoding])<span><a class="mark" href="#crypto_decipher_final_output_encoding" id="crypto_decipher_final_output_encoding">#</a></span></h3>
+<!--
+Returns any remaining plaintext which is deciphered, with
+`output_encoding` being one of: `'binary'`, `'ascii'` or `'utf8'`.  If
+no encoding is provided, then a buffer is returned.
+-->
+
+<p>&#x5FA9;&#x53F7;&#x5316;&#x3055;&#x308C;&#x305F;&#x30D7;&#x30EC;&#x30FC;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x306E;&#x6B8B;&#x308A;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>output_decoding</code> &#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;ascii&apos;</code> &#x3042;&#x308B;&#x3044;&#x306F; <code>&apos;utf8&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note: `decipher` object can not be used after `final()` method has been
+called.
+-->
+
+<p>&#x6CE8;&#x610F;: <code>final()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>decipher</code> 
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>decipher.setAutoPadding(auto_padding=true)<span><a class="mark" href="#crypto_decipher_setautopadding_auto_padding_true" id="crypto_decipher_setautopadding_auto_padding_true">#</a></span></h3>
+<!--
+You can disable auto padding if the data has been encrypted without
+standard block padding to prevent `decipher.final` from checking and
+removing it. Can only work if the input data's length is a multiple of
+the ciphers block size. You must call this before streaming data to
+`decipher.update`.
+-->
+
+<p>&#x30C7;&#x30FC;&#x30BF;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x304C;&#x975E;&#x6A19;&#x6E96;&#x306E;&#x30D1;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x6697;&#x53F7;&#x5316;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;
+<code>decipher.final()</code> &#x306B;&#x3088;&#x308B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3092;&#x7121;&#x52B9;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x5165;&#x529B;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x9577;&#x3055;&#x304C;&#x6697;&#x53F7;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x30B5;&#x30A4;&#x30BA;&#x306E;&#x500D;&#x6570;&#x306E;&#x5834;&#x5408;&#x306E;&#x307F;&#x52D5;&#x4F5C;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>decipher.update()</code> &#x306E;&#x524D;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>crypto.createSign(algorithm)<span><a class="mark" href="#crypto_crypto_createsign_algorithm" id="crypto_crypto_createsign_algorithm">#</a></span></h2>
+<!--
+Creates and returns a signing object, with the given algorithm.  On
+recent OpenSSL releases, `openssl list-public-key-algorithms` will
+display the available signing algorithms. Examples are `'RSA-SHA256'`.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3067;&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6700;&#x8FD1;&#x306E;OpenSSL&#x306E;&#x30EA;&#x30EA;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;<code>openssl list-public-key-algorithms</code>
+&#x3067;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x7F72;&#x540D;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x306E;&#x4E00;&#x89A7;&#x304C;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x4F8B;&#x3048;&#x3070; &apos;RSA-SHA256&apos;&#x3002;
+
+</p>
+<h2>Class: Sign<span><a class="mark" href="#crypto_class_sign" id="crypto_class_sign">#</a></span></h2>
+<!--
+Class for generating signatures.
+
+Returned by `crypto.createSign`.
+-->
+
+<p>&#x7F72;&#x540D;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>crypto.createSign</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Sign objects are writable [streams](stream.html).  The written data is
+used to generate the signature.  Once all of the data has been
+written, the `sign` method will return the signature.  The legacy
+`update` method is also supported.
+-->
+
+<p>&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306A; <a href="stream.html">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;
+&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x7F72;&#x540D;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x3068;&#x3001;<code>sign()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x305D;&#x306E;&#x7F72;&#x540D;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>sign.update(data)<span><a class="mark" href="#crypto_sign_update_data" id="crypto_sign_update_data">#</a></span></h3>
+<!--
+Updates the sign object with data.  This can be called many times
+with new data as it is streamed.
+-->
+
+<p>&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>sign.sign(private_key, [output_format])<span><a class="mark" href="#crypto_sign_sign_private_key_output_format" id="crypto_sign_sign_private_key_output_format">#</a></span></h3>
+<!--
+Calculates the signature on all the updated data passed through the
+sign.  `private_key` is a string containing the PEM encoded private
+key for signing.
+-->
+
+<p>&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x6E21;&#x3055;&#x308C;&#x305F;&#x5168;&#x3066;&#x306E;&#x66F4;&#x65B0;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x7F72;&#x540D;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>private_key</code> &#x306F; PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x5185;&#x5BB9;&#x3068;&#x3059;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Returns the signature in `output_format` which can be `'binary'`,
+`'hex'` or `'base64'`. If no encoding is provided, then a buffer is
+returned.
+-->
+
+<p><code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x3042;&#x308B;&#x3044;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x305F; <code>output_format</code>
+&#x306B;&#x3088;&#x308B;&#x7F72;&#x540D;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note: `sign` object can not be used after `sign()` method has been
+called.
+-->
+
+<p>&#x6CE8;&#x610F;: <code>sign()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3067; <code>sign</code> 
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h2>crypto.createVerify(algorithm)<span><a class="mark" href="#crypto_crypto_createverify_algorithm" id="crypto_crypto_createverify_algorithm">#</a></span></h2>
+<!--
+Creates and returns a verification object, with the given algorithm.
+This is the mirror of the signing object above.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3067;&#x691C;&#x8A3C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;&#x3053;&#x308C;&#x306F;&#x524D;&#x8FF0;&#x306E;&#x7F72;&#x540D;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3068;&#x93E1;&#x5199;&#x3057;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>Class: Verify<span><a class="mark" href="#crypto_class_verify" id="crypto_class_verify">#</a></span></h2>
+<!--
+Class for verifying signatures.
+
+Returned by `crypto.createVerify`.
+-->
+
+<p>&#x7F72;&#x540D;&#x3092;&#x691C;&#x8A3C;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>crypto.createVerify</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Verify objects are writable [streams](stream.html).  The written data
+is used to validate against the supplied signature.  Once all of the
+data has been written, the `verify` method will return true if the
+supplied signature is valid.  The legacy `update` method is also
+supported.
+-->
+
+<p>&#x691C;&#x8A3C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306A; <a href="stream.html">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a> &#x3067;&#x3059;&#x3002;
+&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x7F72;&#x540D;&#x3092;&#x691C;&#x8A3C;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x3068;&#x3001;<code>verify()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x7F72;&#x540D;&#x304C;&#x6B63;&#x3057;&#x3051;&#x308C;&#x3070;
+<code>true</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30EC;&#x30AC;&#x30B7;&#x30FC;&#x306A; <code>update()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3082;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>verifier.update(data)<span><a class="mark" href="#crypto_verifier_update_data" id="crypto_verifier_update_data">#</a></span></h3>
+<!--
+Updates the verifier object with data.  This can be called many times
+with new data as it is streamed.
+-->
+
+<p>&#x691C;&#x8A3C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x66F4;&#x65B0;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x65B0;&#x3057;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x6D41;&#x3055;&#x308C;&#x308B;&#x969B;&#x306B;&#x4F55;&#x5EA6;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>verifier.verify(object, signature, [signature_format])<span><a class="mark" href="#crypto_verifier_verify_object_signature_signature_format" id="crypto_verifier_verify_object_signature_signature_format">#</a></span></h3>
+<!--
+Verifies the signed data by using the `object` and `signature`.
+`object` is  a string containing a PEM encoded object, which can be
+one of RSA public key, DSA public key, or X.509 certificate.
+`signature` is the previously calculated signature for the data, in
+the `signature_format` which can be `'binary'`, `'hex'` or `'base64'`.
+If no encoding is specified, then a buffer is expected.
+-->
+
+<p>&#x7F72;&#x540D;&#x3055;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092; <code>object</code> &#x3068; <code>signature</code> &#x3067;&#x691C;&#x8A3C;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>object</code> &#x306F; RSA &#x516C;&#x958B;&#x9375;&#x3001;DSA &#x516C;&#x958B;&#x9375;&#x3001;X.509&#x8A3C;&#x660E;&#x66F8;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3092;
+PEM &#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3057;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;
+<code>signature</code> &#x306F;&#x5148;&#x306B;&#x8A08;&#x7B97;&#x3057;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x7F72;&#x540D;&#x3067;&#x3001;
+&#x305D;&#x306E; <code>signature_format</code> &#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code>
+&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Returns true or false depending on the validity of the signature for
+the data and public key.
+-->
+
+<p>&#x7F72;&#x540D;&#x3055;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3068;&#x516C;&#x958B;&#x9375;&#x306B;&#x3088;&#x308B;&#x691C;&#x8A3C;&#x306E;&#x7D50;&#x679C;&#x306B;&#x3088;&#x3063;&#x3066; true &#x307E;&#x305F;&#x306F; false &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note: `verifier` object can not be used after `verify()` method has been
+called.
+-->
+
+<p>&#x6CE8;&#x610F;: <code>verify()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x5F8C;&#x3067; <code>verifier</code> 
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h2>crypto.createDiffieHellman(prime_length)<span><a class="mark" href="#crypto_crypto_creatediffiehellman_prime_length" id="crypto_crypto_creatediffiehellman_prime_length">#</a></span></h2>
+<!--
+Creates a Diffie-Hellman key exchange object and generates a prime of
+the given bit length. The generator used is `2`.
+-->
+
+<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x9375;&#x5171;&#x6709;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3001;
+&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x9577;&#x3055;&#x306E;&#x7D20;&#x6570;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;&#x751F;&#x6210;&#x5143;&#x306F; <code>2</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>crypto.createDiffieHellman(prime, [encoding])<span><a class="mark" href="#crypto_crypto_creatediffiehellman_prime_encoding" id="crypto_crypto_creatediffiehellman_prime_encoding">#</a></span></h2>
+<!--
+Creates a Diffie-Hellman key exchange object using the supplied prime.
+The generator used is `2`. Encoding can be `'binary'`, `'hex'`, or
+`'base64'`.  If no encoding is specified, then a buffer is expected.
+-->
+
+<p>&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x7D20;&#x6570;&#x304B;&#x3089;&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x9375;&#x5171;&#x6709;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x751F;&#x6210;&#x5143;&#x306F; <code>2</code> &#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Class: DiffieHellman<span><a class="mark" href="#crypto_class_diffiehellman" id="crypto_class_diffiehellman">#</a></span></h2>
+<!--
+The class for creating Diffie-Hellman key exchanges.
+
+Returned by `crypto.createDiffieHellman`.
+-->
+
+<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x9375;&#x5171;&#x6709;&#x306E;&#x305F;&#x3081;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>crypto.creaateDiffieHellman</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>diffieHellman.generateKeys([encoding])<span><a class="mark" href="#crypto_diffiehellman_generatekeys_encoding" id="crypto_diffiehellman_generatekeys_encoding">#</a></span></h3>
+<!--
+Generates private and public Diffie-Hellman key values, and returns
+the public key in the specified encoding. This key should be
+transferred to the other party. Encoding can be `'binary'`, `'hex'`,
+or `'base64'`.  If no encoding is provided, then a buffer is returned.
+-->
+
+<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x3067;&#x79D8;&#x5BC6;&#x304A;&#x3088;&#x3073;&#x516C;&#x958B;&#x9375;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3001;
+&#x6307;&#x5B9A;&#x306E;&#x65B9;&#x6CD5;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x305F;&#x516C;&#x958B;&#x9375;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x9375;&#x306F;&#x76F8;&#x624B;&#x5074;&#x306B;&#x6E21;&#x3055;&#x308C;&#x308B;&#x3082;&#x306E;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>diffieHellman.computeSecret(other_public_key, [input_encoding], [output_encoding])<span><a class="mark" href="#crypto_diffiehellman_computesecret_other_public_key_input_encoding_output_encoding" id="crypto_diffiehellman_computesecret_other_public_key_input_encoding_output_encoding">#</a></span></h3>
+<!--
+Computes the shared secret using `other_public_key` as the other
+party's public key and returns the computed shared secret. Supplied
+key is interpreted using specified `input_encoding`, and secret is
+encoded using specified `output_encoding`. Encodings can be
+`'binary'`, `'hex'`, or `'base64'`. If the input encoding is not
+provided, then a buffer is expected.
+-->
+
+<p><code>other_public_key</code> &#x3092;&#x76F8;&#x624B;&#x5074;&#x306E;&#x516C;&#x958B;&#x9375;&#x3068;&#x3057;&#x3066;&#x5171;&#x6709;&#x306E;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x516C;&#x958B;&#x9375;&#x306F;&#x6307;&#x5B9A;&#x306E; <code>input_encoding</code> &#x3092;&#x4F7F;&#x3063;&#x3066;&#x89E3;&#x91C8;&#x3055;&#x308C;&#x3001;
+&#x79D8;&#x5BC6;&#x9375;&#x306F; <code>output_encoding</code> &#x3067;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x65B9;&#x6CD5;&#x3067;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x5165;&#x529B;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If no output encoding is given, then a buffer is returned.
+-->
+
+<p>&#x51FA;&#x529B;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>diffieHellman.getPrime([encoding])<span><a class="mark" href="#crypto_diffiehellman_getprime_encoding" id="crypto_diffiehellman_getprime_encoding">#</a></span></h3>
+<!--
+Returns the Diffie-Hellman prime in the specified encoding, which can
+be `'binary'`, `'hex'`, or `'base64'`. If no encoding is provided,
+then a buffer is returned.
+-->
+
+<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306E;&#x7D20;&#x6570;&#x3092;&#x6307;&#x5B9A;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>diffieHellman.getGenerator([encoding])<span><a class="mark" href="#crypto_diffiehellman_getgenerator_encoding" id="crypto_diffiehellman_getgenerator_encoding">#</a></span></h3>
+<!--
+Returns the Diffie-Hellman generator in the specified encoding, which can
+be `'binary'`, `'hex'`, or `'base64'`. If no encoding is provided,
+then a buffer is returned.
+-->
+
+<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306E;&#x751F;&#x6210;&#x5143;&#x3092;&#x6307;&#x5B9A;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>diffieHellman.getPublicKey([encoding])<span><a class="mark" href="#crypto_diffiehellman_getpublickey_encoding" id="crypto_diffiehellman_getpublickey_encoding">#</a></span></h3>
+<!--
+Returns the Diffie-Hellman public key in the specified encoding, which
+can be `'binary'`, `'hex'`, or `'base64'`. If no encoding is provided,
+then a buffer is returned.
+-->
+
+<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x516C;&#x958B;&#x9375;&#x3092;&#x6307;&#x5B9A;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>diffieHellman.getPrivateKey([encoding])<span><a class="mark" href="#crypto_diffiehellman_getprivatekey_encoding" id="crypto_diffiehellman_getprivatekey_encoding">#</a></span></h3>
+<!--
+Returns the Diffie-Hellman private key in the specified encoding,
+which can be `'binary'`, `'hex'`, or `'base64'`. If no encoding is
+provided, then a buffer is returned.
+-->
+
+<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x6307;&#x5B9A;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>diffieHellman.setPublicKey(public_key, [encoding])<span><a class="mark" href="#crypto_diffiehellman_setpublickey_public_key_encoding" id="crypto_diffiehellman_setpublickey_public_key_encoding">#</a></span></h3>
+<!--
+Sets the Diffie-Hellman public key. Key encoding can be `'binary'`,
+`'hex'` or `'base64'`. If no encoding is provided, then a buffer is
+expected.
+-->
+
+<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x516C;&#x958B;&#x9375;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x9375;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>diffieHellman.setPrivateKey(private_key, [encoding])<span><a class="mark" href="#crypto_diffiehellman_setprivatekey_private_key_encoding" id="crypto_diffiehellman_setprivatekey_private_key_encoding">#</a></span></h3>
+<!--
+Sets the Diffie-Hellman private key. Key encoding can be `'binary'`,
+`'hex'` or `'base64'`. If no encoding is provided, then a buffer is
+expected.
+-->
+
+<p>&#x30C7;&#x30A3;&#x30D5;&#x30A3;&#x30FC;&#x30FB;&#x30D8;&#x30EB;&#x30DE;&#x30F3;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x79D8;&#x5BC6;&#x9375;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x9375;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306F; <code>&apos;binary&apos;</code>&#x3001;<code>&apos;hex&apos;</code>&#x3001;&#x307E;&#x305F;&#x306F; <code>&apos;base64&apos;</code> &#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x671F;&#x5F85;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>crypto.getDiffieHellman(group_name)<span><a class="mark" href="#crypto_crypto_getdiffiehellman_group_name" id="crypto_crypto_getdiffiehellman_group_name">#</a></span></h2>
+<!--
+Creates a predefined Diffie-Hellman key exchange object.  The
+supported groups are: `'modp1'`, `'modp2'`, `'modp5'` (defined in [RFC
+2412][]) and `'modp14'`, `'modp15'`, `'modp16'`, `'modp17'`,
+`'modp18'` (defined in [RFC 3526][]).  The returned object mimics the
+interface of objects created by [crypto.createDiffieHellman()][]
+above, but will not allow to change the keys (with
+[diffieHellman.setPublicKey()][] for example).  The advantage of using
+this routine is that the parties don't have to generate nor exchange
+group modulus beforehand, saving both processor and communication
+time.
+-->
+
+<p>&#x4E8B;&#x524D;&#x306B;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F; Diffie-Hellman &#x9375;&#x4EA4;&#x63DB;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x308B;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x306F;&#x3001;<code>&apos;modp1&apos;</code>, <code>&apos;modp2&apos;</code>, <code>&apos;modp5&apos;</code>
+(<a href="http://www.rfc-editor.org/rfc/rfc2412.txt">RFC 2412</a> &#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x308B;)&#x3001;
+&#x304A;&#x3088;&#x3073; <code>&apos;modp14&apos;</code>, <code>&apos;modp15&apos;</code>, <code>&apos;modp16&apos;</code>, <code>&apos;modp17&apos;</code>, <code>&apos;modp18&apos;</code>
+(<a href="http://www.rfc-editor.org/rfc/rfc3526.txt">RFC 3526</a> &#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x308B;) &#x3067;&#x3059;&#x3002;
+&#x8FD4;&#x3055;&#x308C;&#x308B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3001;&#x524D;&#x8FF0;&#x306E;
+<a href="#crypto_crypto_creatediffiehellman_prime_encoding">crypto.createDiffieHellman()</a>
+&#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x6A21;&#x5023;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x3001;
+(&#x305F;&#x3068;&#x3048;&#x3070; <a href="#crypto_diffiehellman_setpublickey_public_key_encoding">diffieHellman.setPublicKey()</a> &#x3067;)
+&#x9375;&#x3092;&#x4EA4;&#x63DB;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x306E;&#x30EB;&#x30FC;&#x30C1;&#x30F3;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x306B;&#x3088;&#x308B;&#x30A2;&#x30C9;&#x30D0;&#x30F3;&#x30C6;&#x30FC;&#x30B8;&#x306F;&#x3001;
+&#x4E8B;&#x524D;&#x306B;&#x30B0;&#x30EB;&#x30FC;&#x30D7;&#x4FC2;&#x6570;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x4EA4;&#x63DB;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x3082;&#x306A;&#x3044;&#x305F;&#x3081;&#x3001;
+&#x51E6;&#x7406;&#x3068;&#x901A;&#x4FE1;&#x306E;&#x6642;&#x9593;&#x3092;&#x5171;&#x306B;&#x7BC0;&#x7D04;&#x3067;&#x304D;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example (obtaining a shared secret):
+-->
+
+<p>&#x4F8B; (&#x5171;&#x6709;&#x9375;&#x3092;&#x53D6;&#x5F97;):
+
+</p>
+<pre><code>var crypto = require(&apos;crypto&apos;);
+var alice = crypto.getDiffieHellman(&apos;modp5&apos;);
+var bob = crypto.getDiffieHellman(&apos;modp5&apos;);
+
+alice.generateKeys();
+bob.generateKeys();
+
+var alice_secret = alice.computeSecret(bob.getPublicKey(), null, &apos;hex&apos;);
+var bob_secret = bob.computeSecret(alice.getPublicKey(), null, &apos;hex&apos;);
+
+/* alice_secret and bob_secret should be the same */
+console.log(alice_secret == bob_secret);</code></pre>
+<h2>crypto.pbkdf2(password, salt, iterations, keylen, callback)<span><a class="mark" href="#crypto_crypto_pbkdf2_password_salt_iterations_keylen_callback" id="crypto_crypto_pbkdf2_password_salt_iterations_keylen_callback">#</a></span></h2>
+<!--
+Asynchronous PBKDF2 applies pseudorandom function HMAC-SHA1 to derive
+a key of given length from the given password, salt and iterations.
+The callback gets two arguments `(err, derivedKey)`.
+-->
+
+<p>&#x7591;&#x4F3C;&#x4E71;&#x6570;&#x3092; HMAC-SHA1 &#x95A2;&#x6570;&#x306B;&#x9069;&#x7528;&#x3057;&#x3066;&#x3001;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30D1;&#x30B9;&#x30EF;&#x30FC;&#x30C9;&#x3068; salt 
+(&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&#x30D0;&#x30A4;&#x30C8;&#x5024;)&#x3001;&#x304A;&#x3088;&#x3073;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x304B;&#x3089;&#x3001;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x9577;&#x3055;&#x306E;&#x9375;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x3001;
+&#x975E;&#x540C;&#x671F;&#x306E; PBKDF2 &#x3067;&#x3059;&#x3002;
+&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x95A2;&#x6570;&#x306F;&#x4E8C;&#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>(err, derivedKey)</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>crypto.pbkdf2Sync(password, salt, iterations, keylen)<span><a class="mark" href="#crypto_crypto_pbkdf2sync_password_salt_iterations_keylen" id="crypto_crypto_pbkdf2sync_password_salt_iterations_keylen">#</a></span></h2>
+<!--
+Synchronous PBKDF2 function.  Returns derivedKey or throws error.
+-->
+
+<p>&#x540C;&#x671F;&#x7248;&#x306E; PBKDF2 &#x95A2;&#x6570;&#x3002;
+&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x9375;&#x3092;&#x8FD4;&#x3059;&#x304B;&#x3001;&#x4F8B;&#x5916;&#x3092;&#x30B9;&#x30ED;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>crypto.randomBytes(size, [callback])<span><a class="mark" href="#crypto_crypto_randombytes_size_callback" id="crypto_crypto_randombytes_size_callback">#</a></span></h2>
+<!--
+Generates cryptographically strong pseudo-random data. Usage:
+-->
+
+<p>&#x6697;&#x53F7;&#x5B66;&#x7684;&#x3067;&#x3001;&#x5F37;&#x3044;&#x7591;&#x4F3C;&#x4E71;&#x6570;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;&#x4F7F;&#x7528;&#x6CD5;:
+
+</p>
+<pre><code>// async
+crypto.randomBytes(256, function(ex, buf) {
+  if (ex) throw ex;
+  console.log(&apos;Have %d bytes of random data: %s&apos;, buf.length, buf);
+});
+
+// sync
+try {
+  var buf = crypto.randomBytes(256);
+  console.log(&apos;Have %d bytes of random data: %s&apos;, buf.length, buf);
+} catch (ex) {
+  // handle error
+  // most likely, entropy sources are drained
+}</code></pre>
+<!--
+NOTE: Will throw error or invoke callback with error, if there is not enough
+accumulated entropy to generate cryptographically strong data. In other words,
+`crypto.randomBytes` without callback will not block even if all entropy sources
+are drained.
+-->
+
+<p>&#x6CE8;&#x610F;: &#x3082;&#x3057;&#x6697;&#x53F7;&#x7406;&#x8AD6;&#x7684;&#x306B;&#x5F37;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x5341;&#x5206;&#x306A;&#x7D2F;&#x7A4D;&#x30A8;&#x30F3;&#x30C8;&#x30ED;&#x30D4;&#x30FC;&#x304C;
+&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x30B9;&#x30ED;&#x30FC;&#x3055;&#x308C;&#x308B;&#x304B;&#x3001;&#x30A8;&#x30E9;&#x30FC;&#x3068;&#x5171;&#x306B;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;&#x547C;&#x3070;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x8A00;&#x3044;&#x63DB;&#x3048;&#x308B;&#x3068;&#x3001;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x6E21;&#x3055;&#x305A;&#x306B; <code>crypto.randomBytes()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x3082;&#x3001;
+&#x5168;&#x3066;&#x306E;&#x30A8;&#x30F3;&#x30C8;&#x30ED;&#x30D4;&#x30FC;&#x6E90;&#x304C;&#x67AF;&#x6E07;&#x3059;&#x308B;&#x307E;&#x3067;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3059;&#x308B;&#x308F;&#x3051;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h2>crypto.pseudoRandomBytes(size, [callback])<span><a class="mark" href="#crypto_crypto_pseudorandombytes_size_callback" id="crypto_crypto_pseudorandombytes_size_callback">#</a></span></h2>
+<!--
+Generates *non*-cryptographically strong pseudo-random data. The data
+returned will be unique if it is sufficiently long, but is not
+necessarily unpredictable. For this reason, the output of this
+function should never be used where unpredictability is important,
+such as in the generation of encryption keys.
+-->
+
+<p>&#x6697;&#x53F7;&#x5B66;&#x7684;&#x3067;&#x306F; <em>&#x306A;&#x3044;</em>&#x3001;&#x5F37;&#x3044;&#x7591;&#x4F3C;&#x4E71;&#x6570;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x8FD4;&#x3055;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x5341;&#x5206;&#x306B;&#x9577;&#x3051;&#x308C;&#x3070;&#x30E6;&#x30CB;&#x30FC;&#x30AF;&#x3067;&#x3059;&#x304C;&#x3001;
+&#x5FC5;&#x305A;&#x3057;&#x3082;&#x4E88;&#x6E2C;&#x4E0D;&#x53EF;&#x80FD;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x306E;&#x7406;&#x7531;&#x306E;&#x305F;&#x3081;&#x3001;&#x3053;&#x306E;&#x95A2;&#x6570;&#x306E;&#x51FA;&#x529B;&#x3092;&#x6697;&#x53F7;&#x5316;&#x30AD;&#x30FC;&#x306E;&#x751F;&#x6210;&#x306A;&#x3069;&#x3001;&#x4E88;&#x6E2C;&#x4E0D;&#x53EF;&#x80FD;&#x3067;&#x3042;&#x308B;&#x3053;&#x3068;&#x304C;
+&#x91CD;&#x8981;&#x306A;&#x3068;&#x3053;&#x308D;&#x3067;&#x306F;&#x6C7A;&#x3057;&#x3066;&#x4F7F;&#x7528;&#x3057;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Usage is otherwise identical to `crypto.randomBytes`.
+-->
+
+<p>&#x4ED6;&#x306E;&#x4F7F;&#x3044;&#x65B9;&#x306F; <code>crypto.randomBytes</code> &#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>crypto.DEFAULT_ENCODING<span><a class="mark" href="#crypto_crypto_default_encoding" id="crypto_crypto_default_encoding">#</a></span></h2>
+<!--
+The default encoding to use for functions that can take either strings
+or buffers.  The default value is `'buffer'`, which makes it default
+to using Buffer objects.  This is here to make the crypto module more
+easily compatible with legacy programs that expected `'binary'` to be
+the default encoding.
+-->
+
+<p>&#x95A2;&#x6570;&#x304C;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F;&#x3001;&#x6587;&#x5B57;&#x5217;&#x304B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;
+&#x3044;&#x305A;&#x308C;&#x304B;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that new programs will probably expect buffers, so only use this
+as a temporary measure.
+-->
+
+<p>&#x65B0;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x304A;&#x305D;&#x3089;&#x304F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x671F;&#x5F85;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x4E00;&#x6642;&#x7684;&#x306A;&#x624B;&#x6BB5;&#x3068;&#x3057;&#x3066;&#x306E;&#x307F;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>Recent API Changes<span><a class="mark" href="#crypto_recent_api_changes" id="crypto_recent_api_changes">#</a></span></h2>
+<!--
+The Crypto module was added to Node before there was the concept of a
+unified Stream API, and before there were Buffer objects for handling
+binary data.
+-->
+
+<p>Crypto &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x3001;&#x7D71;&#x5408;&#x3055;&#x308C;&#x305F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0; API &#x3084;&#x30D0;&#x30A4;&#x30C8;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6271;&#x3046; Buffer
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3088;&#x308A;&#x3082;&#x5148;&#x306B; Node &#x306B;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3057;&#x305F;&#x3002;
+
+</p>
+<!--
+As such, the streaming classes don't have the typical methods found on
+other Node classes, and many methods accepted and returned
+Binary-encoded strings by default rather than Buffers.  This was
+changed to use Buffers by default instead.
+-->
+
+<p>&#x305D;&#x306E;&#x305F;&#x3081;&#x3001;&#x3053;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30DF;&#x30F3;&#x30B0;&#x306A;&#x30AF;&#x30E9;&#x30B9;&#x306F;&#x4ED6;&#x306E; Node &#x306E;&#x30AF;&#x30E9;&#x30B9;&#x306B;&#x898B;&#x3089;&#x308C;&#x308B;
+&#x5178;&#x578B;&#x7684;&#x306A;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x6301;&#x305F;&#x305A;&#x3001;&#x591A;&#x304F;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5F15;&#x6570;&#x3084;&#x623B;&#x308A;&#x5024;&#x306B;
+Buffer &#x3067;&#x306F;&#x306A;&#x304F;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F7F;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This is a breaking change for some use cases, but not all.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x3042;&#x308B;&#x30E6;&#x30FC;&#x30B9;&#x30B1;&#x30FC;&#x30B9;&#x306B;&#x304A;&#x3044;&#x3066;&#x306F;&#x4E92;&#x63DB;&#x6027;&#x3092;&#x640D;&#x306A;&#x3044;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x5168;&#x3066;&#x306E;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+For example, if you currently use the default arguments to the Sign
+class, and then pass the results to the Verify class, without ever
+inspecting the data, then it will continue to work as before.  Where
+you once got a binary string and then presented the binary string to
+the Verify object, you'll now get a Buffer, and present the Buffer to
+the Verify object.
+-->
+
+<p>&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;Sign &#x30AF;&#x30E9;&#x30B9;&#x3092;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5F15;&#x6570;&#x3067;&#x4F7F;&#x3063;&#x3066;&#x3044;&#x3066;&#x3001;
+&#x305D;&#x306E;&#x7D50;&#x679C;&#x3092;&#x5168;&#x304F;&#x8ABF;&#x3079;&#x305A;&#x306B; Verify &#x30AF;&#x30E9;&#x30B9;&#x306B;&#x6E21;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;
+&#x305D;&#x308C;&#x306F;&#x4EE5;&#x524D;&#x3068;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x52D5;&#x304F;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x3001;&#x73FE;&#x6642;&#x70B9;&#x3067;&#x306F;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x3066;&#x305D;&#x306E;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092;
+Veriy &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x6E21;&#x3057;&#x307E;&#x3059;&#x304C;&#x3001;&#x5C06;&#x6765;&#x306F; Buffer &#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x3066;&#x305D;&#x306E;
+Buffer &#x3092; Verify &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x6E21;&#x3059;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+However, if you were doing things with the string data that will not
+work properly on Buffers (such as, concatenating them, storing in
+databases, etc.), or you are passing binary strings to the crypto
+functions without an encoding argument, then you will need to start
+providing encoding arguments to specify which encoding you'd like to
+use.  To switch to the previous style of using binary strings by
+default, set the `crypto.DEFAULT_ENCODING` field to 'binary'.  Note
+that new programs will probably expect buffers, so only use this as a
+temporary measure.
+-->
+
+<p>&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;Buffer &#x304C;&#x6587;&#x5B57;&#x5217;&#x3068;&#x6B63;&#x78BA;&#x306B;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x306F;&#x52D5;&#x304B;&#x306A;&#x3044;&#x4F55;&#x304B;&#x3092;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;
+(&#x4F8B;&#x3048;&#x3070;&#x3001;&#x305D;&#x308C;&#x3089;&#x3092;&#x9023;&#x7D50;&#x3057;&#x305F;&#x308A;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x30D9;&#x30FC;&#x30B9;&#x306B;&#x4FDD;&#x5B58;&#x3057;&#x305F;&#x308A;&#x3059;&#x308B;&#x306A;&#x3069;)&#x3001;
+&#x3042;&#x308B;&#x3044;&#x306F;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092; Crypto &#x306E;&#x95A2;&#x6570;&#x306B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x5F15;&#x6570;&#x7121;&#x3057;&#x3067;
+&#x6E21;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x5F15;&#x6570;&#x3092;&#x4E0E;&#x3048;&#x3066;&#x3069;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3092;
+&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3044;&#x308B;&#x304B;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x4EE5;&#x524D;&#x306E;&#x3088;&#x3046;&#x306B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F7F;&#x3046;&#x3088;&#x3046;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;&#x306B;&#x306F;&#x3001;
+<code>crypto.DEFAULT_ENCODING</code> &#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x306B; <code>binary</code> &#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x65B0;&#x3057;&#x3044;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x304A;&#x305D;&#x3089;&#x304F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x671F;&#x5F85;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x4E00;&#x6642;&#x7684;&#x306A;&#x624B;&#x6BB5;&#x3068;&#x3057;&#x3066;&#x306E;&#x307F;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+
+</p>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

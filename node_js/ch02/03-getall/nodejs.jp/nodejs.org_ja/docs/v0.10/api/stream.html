@@ -1,0 +1,2769 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Stream Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/stream.html">
+</head>
+<body class="alt apidoc" id="api-section-stream">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="stream.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#stream_stream">Stream</a><ul>
+<li><a href="#stream_api_for_stream_consumers">API for Stream Consumers</a><ul>
+<li><a href="#stream_class_stream_readable">Class: stream.Readable</a><ul>
+<li><a href="#stream_event_readable">Event: &apos;readable&apos;</a></li>
+<li><a href="#stream_event_data">Event: &apos;data&apos;</a></li>
+<li><a href="#stream_event_end">Event: &apos;end&apos;</a></li>
+<li><a href="#stream_event_close">Event: &apos;close&apos;</a></li>
+<li><a href="#stream_event_error">Event: &apos;error&apos;</a></li>
+<li><a href="#stream_readable_read_size">readable.read([size])</a></li>
+<li><a href="#stream_readable_setencoding_encoding">readable.setEncoding(encoding)</a></li>
+<li><a href="#stream_readable_resume">readable.resume()</a></li>
+<li><a href="#stream_readable_pause">readable.pause()</a></li>
+<li><a href="#stream_readable_pipe_destination_options">readable.pipe(destination, [options])</a></li>
+<li><a href="#stream_readable_unpipe_destination">readable.unpipe([destination])</a></li>
+<li><a href="#stream_readable_unshift_chunk">readable.unshift(chunk)</a></li>
+<li><a href="#stream_readable_wrap_stream">readable.wrap(stream)</a></li>
+</ul>
+</li>
+<li><a href="#stream_class_stream_writable">Class: stream.Writable</a><ul>
+<li><a href="#stream_writable_write_chunk_encoding_callback">writable.write(chunk, [encoding], [callback])</a></li>
+<li><a href="#stream_event_drain">Event: &apos;drain&apos;</a></li>
+<li><a href="#stream_writable_end_chunk_encoding_callback">writable.end([chunk], [encoding], [callback])</a></li>
+<li><a href="#stream_event_finish">Event: &apos;finish&apos;</a></li>
+<li><a href="#stream_event_pipe">Event: &apos;pipe&apos;</a></li>
+<li><a href="#stream_event_unpipe">Event: &apos;unpipe&apos;</a></li>
+<li><a href="#stream_event_error_1">Event: &apos;error&apos;</a></li>
+</ul>
+</li>
+<li><a href="#stream_class_stream_duplex">Class: stream.Duplex</a></li>
+<li><a href="#stream_class_stream_transform">Class: stream.Transform</a></li>
+</ul>
+</li>
+<li><a href="#stream_api_for_stream_implementors">API for Stream Implementors</a><ul>
+<li><a href="#stream_class_stream_readable_1">Class: stream.Readable</a><ul>
+<li><a href="#stream_example_a_counting_stream">Example: A Counting Stream</a></li>
+<li><a href="#stream_example_simpleprotocol_v1_sub_optimal">Example: SimpleProtocol v1 (Sub-optimal)</a></li>
+<li><a href="#stream_new_stream_readable_options">new stream.Readable([options])</a></li>
+<li><a href="#stream_readable_read_size_1">readable._read(size)</a></li>
+<li><a href="#stream_readable_push_chunk_encoding">readable.push(chunk, [encoding])</a></li>
+</ul>
+</li>
+<li><a href="#stream_class_stream_writable_1">Class: stream.Writable</a><ul>
+<li><a href="#stream_new_stream_writable_options">new stream.Writable([options])</a></li>
+<li><a href="#stream_writable_write_chunk_encoding_callback_1">writable._write(chunk, encoding, callback)</a></li>
+</ul>
+</li>
+<li><a href="#stream_class_stream_duplex_1">Class: stream.Duplex</a><ul>
+<li><a href="#stream_new_stream_duplex_options">new stream.Duplex(options)</a></li>
+</ul>
+</li>
+<li><a href="#stream_class_stream_transform_1">Class: stream.Transform</a><ul>
+<li><a href="#stream_new_stream_transform_options">new stream.Transform([options])</a></li>
+<li><a href="#stream_transform_transform_chunk_encoding_callback">transform._transform(chunk, encoding, callback)</a></li>
+<li><a href="#stream_transform_flush_callback">transform._flush(callback)</a></li>
+<li><a href="#stream_example_simpleprotocol_parser_v2">Example: <code>SimpleProtocol</code> parser v2</a></li>
+</ul>
+</li>
+<li><a href="#stream_class_stream_passthrough">Class: stream.PassThrough</a></li>
+</ul>
+</li>
+<li><a href="#stream_streams_under_the_hood">Streams: Under the Hood</a><ul>
+<li><a href="#stream_buffering">Buffering</a></li>
+<li><a href="#stream_stream_read_0"><code>stream.read(0)</code></a></li>
+<li><a href="#stream_stream_push"><code>stream.push(&apos;&apos;)</code></a></li>
+<li><a href="#stream_compatibility_with_older_node_versions">Compatibility with Older Node Versions</a></li>
+<li><a href="#stream_object_mode">Object Mode</a></li>
+<li><a href="#stream_state_objects">State Objects</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Stream<span><a class="mark" href="#stream_stream" id="stream_stream">#</a></span></h1>
+<pre class="api_stability_2">Stability: 2 - Unstable</pre><!--
+A stream is an abstract interface implemented by various objects in
+Node.  For example a [request to an HTTP
+server](http.html#http_http_incomingmessage) is a stream, as is
+[stdout][]. Streams are readable, writable, or both. All streams are
+instances of [EventEmitter][]
+-->
+
+<p>&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F; Node &#x306E;&#x69D8;&#x3005;&#x306A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x5B9F;&#x88C5;&#x3055;&#x308C;&#x308B;&#x62BD;&#x8C61;&#x7684;&#x306A;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3067;&#x3059;&#x3002;
+&#x4F8B;&#x3048;&#x3070; <a href="http.html#http_http_incomingmessage">HTTP &#x30B5;&#x30FC;&#x30D0;&#x3078;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;</a>&#x306F;
+<a href="process.html#process_process_stdout">&#x6A19;&#x6E96;&#x51FA;&#x529B;</a>&#x3068;&#x540C;&#x69D8;&#x306B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x3059;&#x3002;
+&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x3001;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x3001;&#x307E;&#x305F;&#x306F;&#x305D;&#x306E;&#x4E21;&#x65B9;&#x3067;&#x3059;&#x3002;
+&#x5168;&#x3066;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F; <a href="events.html#events_class_events_eventemitter">EventEmitter</a> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+You can load the Stream base classes by doing `require('stream')`.
+There are base classes provided for [Readable][] streams, [Writable][]
+streams, [Duplex][] streams, and [Transform][] streams.
+-->
+
+<p>Stream &#x306E;&#x30D9;&#x30FC;&#x30B9;&#x30AF;&#x30E9;&#x30B9;&#x306F; <code>require(&apos;stream&apos;)</code> &#x3067;&#x30ED;&#x30FC;&#x30C9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+<a href="#stream_class_stream_readable">Readable</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3001;<a href="#stream_class_stream_writable">Writable</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3001;<a href="#stream_class_stream_duplex">Duplex</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3001;
+<a href="#stream_class_stream_transform">Transform</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x30D9;&#x30FC;&#x30B9;&#x30AF;&#x30E9;&#x30B9;&#x304C;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This document is split up into 3 sections.  The first explains the
+parts of the API that you need to be aware of to use streams in your
+programs.  If you never implement a streaming API yourself, you can
+stop there.
+-->
+
+<p>&#x3053;&#x306E;&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;&#x306F; 3 &#x3064;&#x306E;&#x30BB;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x5206;&#x304B;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x6700;&#x521D;&#x306B;&#x3001;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5229;&#x7528;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x77E5;&#x3063;&#x3066;&#x304A;&#x304F;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308B;
+API &#x306B;&#x3064;&#x3044;&#x3066;&#x8AAC;&#x660E;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x72EC;&#x81EA;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30DF;&#x30F3;&#x30B0; API &#x3092;&#x5B9F;&#x88C5;&#x3057;&#x306A;&#x3044;&#x306E;&#x3067;&#x3042;&#x308C;&#x3070;&#x3001;
+&#x305D;&#x3053;&#x3067;&#x7D42;&#x308F;&#x308A;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The second section explains the parts of the API that you need to use
+if you implement your own custom streams yourself.  The API is
+designed to make this easy for you to do.
+-->
+
+<p>2&#x756A;&#x76EE;&#x306E;&#x30BB;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x306F;&#x3001;&#x72EC;&#x81EA;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x5834;&#x5408;&#x306B;&#x5FC5;&#x8981;&#x3068;&#x306A;&#x308B;
+API &#x306B;&#x3064;&#x3044;&#x3066;&#x8AAC;&#x660E;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E; API &#x306F;&#x305D;&#x308C;&#x304C;&#x7C21;&#x5358;&#x306B;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x8A2D;&#x8A08;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The third section goes into more depth about how streams work,
+including some of the internal mechanisms and functions that you
+should probably not modify unless you definitely know what you are
+doing.
+-->
+
+<p>3&#x756A;&#x76EE;&#x306E;&#x30BB;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x3001;&#x7406;&#x89E3;&#x3059;&#x308B;&#x3053;&#x3068;&#x306A;&#x304F;&#x5909;&#x66F4;&#x3057;&#x3066;&#x306F;&#x306A;&#x3089;&#x306A;&#x3044;
+&#x5185;&#x90E8;&#x7684;&#x306A;&#x30E1;&#x30AB;&#x30CB;&#x30BA;&#x30E0;&#x3084;&#x95A2;&#x6570;&#x7FA4;&#x3092;&#x542B;&#x3081;&#x3066;&#x3001;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x3069;&#x306E;&#x3088;&#x3046;&#x306B;&#x52D5;&#x4F5C;&#x3059;&#x308B;&#x304B;&#x306B;&#x3064;&#x3044;&#x3066;
+&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x8AAC;&#x660E;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>API for Stream Consumers<span><a class="mark" href="#stream_api_for_stream_consumers" id="stream_api_for_stream_consumers">#</a></span></h2>
+<!--type=misc-->
+
+<!--
+Streams can be either [Readable][], [Writable][], or both ([Duplex][]).
+-->
+
+<p>&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;<a href="#stream_class_stream_readable">Readable</a>&#x3001;<a href="#stream_class_stream_writable">Writable</a>&#x3001;&#x307E;&#x305F;&#x306F;&#x305D;&#x306E;&#x4E21;&#x65B9; (<a href="#stream_class_stream_duplex">Duplex</a>)
+&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x306B;&#x306A;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+All streams are EventEmitters, but they also have other custom methods
+and properties depending on whether they are Readable, Writable, or
+Duplex.
+-->
+
+<p>&#x5168;&#x3066;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F; EventEmitter &#x3067;&#x3059;&#x304C;&#x3001;Readable&#x3001;Writable&#x3001;&#x307E;&#x305F;&#x306F; Duplex
+&#x306E;&#x3044;&#x305A;&#x308C;&#x3067;&#x3042;&#x308B;&#x304B;&#x306B;&#x3088;&#x3063;&#x3066;&#x3001;&#x72EC;&#x81EA;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3084;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If a stream is both Readable and Writable, then it implements all of
+the methods and events below.  So, a [Duplex][] or [Transform][] stream is
+fully described by this API, though their implementation may be
+somewhat different.
+-->
+
+<p>&#x3082;&#x3057;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <a href="#stream_class_stream_readable">Readable</a> &#x3068;<a href="#stream_class_stream_writable">Writable</a> &#x306E;&#x4E21;&#x65B9;&#x3067;&#x3042;&#x308B;&#x306A;&#x3089;&#x3001;
+&#x305D;&#x308C;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x5168;&#x3066;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3068;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x307E;&#x3059;&#x3002;
+<a href="#stream_class_stream_duplex">Duplex</a> &#x307E;&#x305F;&#x306F; <a href="#stream_class_stream_transform">Transform</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x5B9F;&#x88C5;&#x306F;&#x591A;&#x5C11;&#x7570;&#x306A;&#x308B;&#x5834;&#x5408;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x3053;&#x306E; API &#x306B;&#x3088;&#x3063;&#x3066;&#x8A73;&#x7D30;&#x306B;&#x8AAC;&#x660E;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+It is not necessary to implement Stream interfaces in order to consume
+streams in your programs.  If you **are** implementing streaming
+interfaces in your own program, please also refer to
+[API for Stream Implementors][] below.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x4E2D;&#x3067;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304B;&#x3089;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x8CBB;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;
+&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3082;&#x3057;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x4E2D;&#x3067;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30DF;&#x30F3;&#x30B0;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x5B9F;&#x88C5; <strong>&#x3059;&#x308B;</strong> &#x306A;&#x3089;&#x3001;
+&#x4EE5;&#x4E0B;&#x306E; <a href="#stream_api_for_stream_implementors">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x5B9F;&#x88C5;&#x8005;&#x5411;&#x3051;&#x306E; API</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Almost all Node programs, no matter how simple, use Streams in some
+way.  Here is an example of using Streams in a Node program:
+-->
+
+<p>&#x307B;&#x3068;&#x3093;&#x3069;&#x5168;&#x3066;&#x306E; Node &#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x3001;&#x3069;&#x3093;&#x306A;&#x306B;&#x5358;&#x7D14;&#x3067;&#x3042;&#x3063;&#x3066;&#x3082;&#x3001;
+&#x4F55;&#x3089;&#x304B;&#x306E;&#x65B9;&#x6CD5;&#x3067;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5229;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5229;&#x7528;&#x3059;&#x308B; Node &#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x4F8B;&#x3067;&#x3059;:
+
+</p>
+<pre><code class="javascript">var http = require(&apos;http&apos;);
+
+var server = http.createServer(function (req, res) {
+  // req is an http.IncomingMessage, which is a Readable Stream
+  // res is an http.ServerResponse, which is a Writable Stream
+
+  var body = &apos;&apos;;
+  // we want to get the data as utf8 strings
+  // If you don&apos;t set an encoding, then you&apos;ll get Buffer objects
+  req.setEncoding(&apos;utf8&apos;);
+
+  // Readable streams emit &apos;data&apos; events once a listener is added
+  req.on(&apos;data&apos;, function (chunk) {
+    body += chunk;
+  })
+
+  // the end event tells you that you have entire body
+  req.on(&apos;end&apos;, function () {
+    try {
+      var data = JSON.parse(body);
+    } catch (er) {
+      // uh oh!  bad json!
+      res.statusCode = 400;
+      return res.end(&apos;error: &apos; + er.message);
+    }
+
+    // write back something interesting to the user:
+    res.write(typeof data);
+    res.end();
+  })
+})
+
+server.listen(1337);
+
+// $ curl localhost:1337 -d &apos;{}&apos;
+// object
+// $ curl localhost:1337 -d &apos;&quot;foo&quot;&apos;
+// string
+// $ curl localhost:1337 -d &apos;not json&apos;
+// error: Unexpected token o</code></pre>
+<h3>Class: stream.Readable<span><a class="mark" href="#stream_class_stream_readable" id="stream_class_stream_readable">#</a></span></h3>
+<!--type=class-->
+
+<!--
+The Readable stream interface is the abstraction for a *source* of
+data that you are reading from.  In other words, data comes *out* of a
+Readable stream.
+-->
+
+<p>Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306F;&#x3001;&#x3042;&#x306A;&#x305F;&#x304C;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x62BD;&#x8C61;&#x7684;&#x306A;
+<em>&#x767A;&#x751F;&#x6E90;</em> &#x3067;&#x3059;&#x3002;&#x8A00;&#x3044;&#x63DB;&#x3048;&#x308B;&#x3068;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306F; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304B;&#x3089; <em>&#x51FA;&#x3066;</em> &#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+A Readable stream will not start emitting data until you indicate that
+you are ready to receive it.
+-->
+
+<p>Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;&#x3042;&#x306A;&#x305F;&#x304C;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B;&#x6E96;&#x5099;&#x304C;&#x3067;&#x304D;&#x305F;&#x3068;&#x6307;&#x793A;&#x3059;&#x308B;&#x307E;&#x3067;&#x306F;&#x3001;
+&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x751F;&#x6210;&#x3092;&#x958B;&#x59CB;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Readable streams have two "modes": a **flowing mode** and a **non-flowing
+mode**.  When in flowing mode, data is read from the underlying system
+and provided to your program as fast as possible.  In non-flowing
+mode, you must explicitly call `stream.read()` to get chunks of data
+out.
+-->
+
+<p>Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x4E8C;&#x3064;&#x306E; &quot;&#x30E2;&#x30FC;&#x30C9;&quot;: <strong>flowing &#x30E2;&#x30FC;&#x30C9;</strong> &#x3068;
+<strong>non-flowing &#x30E2;&#x30FC;&#x30C9;</strong> &#x3092;&#x6301;&#x3063;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+flowing &#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5165;&#x308B;&#x3068;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x4E0B;&#x5C64;&#x306E;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x304B;&#x3089;&#x8AAD;&#x307F;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x3068;&#x3001;
+&#x53EF;&#x80FD;&#x306A;&#x9650;&#x308A;&#x7D20;&#x65E9;&#x304F;&#x3042;&#x306A;&#x305F;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306B;&#x5C4A;&#x3051;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+non-flowing &#x30E2;&#x30FC;&#x30C9;&#x3067;&#x306F;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x65AD;&#x7247;&#x3092;&#x53D6;&#x308A;&#x51FA;&#x3059;&#x305F;&#x3081;&#x306B;&#x3001;&#x660E;&#x793A;&#x7684;&#x306B;
+<code>stream.read()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Examples of readable streams include:
+-->
+
+<p>Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x542B;&#x3080;&#x4F8B;:
+
+</p>
+<!--
+* [http responses, on the client](http.html#http_http_incomingmessage)
+* [http requests, on the server](http.html#http_http_incomingmessage)
+* [fs read streams](fs.html#fs_class_fs_readstream)
+* [zlib streams][]
+* [crypto streams][]
+* [tcp sockets][]
+* [child process stdout and stderr][]
+* [process.stdin][]
+-->
+
+<ul>
+<li><a href="http.html#http_http_incomingmessage">&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E; http &#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;</a></li>
+<li><a href="http.html#http_http_incomingmessage">&#x30B5;&#x30FC;&#x30D0;&#x306E; http &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;</a></li>
+<li><a href="fs.html#fs_class_fs_readstream">fs &#x306E; ReadStream</a></li>
+<li><a href="zlib.html">zlib &#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a></li>
+<li><a href="crypto.html">crypto &#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a></li>
+<li><a href="net.html#net_class_net_socket">tcp &#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;</a></li>
+<li><a href="child_process.html#child_process_child_stdout">child_process &#x306E;&#x6A19;&#x6E96;&#x51FA;&#x529B;&#x3068;&#x6A19;&#x6E96;&#x30A8;&#x30E9;&#x30FC;&#x51FA;&#x529B;</a></li>
+<li><a href="process.html#process_process_stdin">process.stdin</a></li>
+</ul>
+<h4>Event: &apos;readable&apos;<span><a class="mark" href="#stream_event_readable" id="stream_event_readable">#</a></span></h4>
+<!--
+When a chunk of data can be read from the stream, it will emit a
+`'readable'` event.
+-->
+
+<p>&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304B;&#x3089;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x65AD;&#x7247;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x304C;&#x53EF;&#x80FD;&#x3068;&#x306A;&#x3063;&#x305F;&#x6642;&#x3001;
+<code>&apos;readable&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+In some cases, listening for a `'readable'` event will cause some data
+to be read into the internal buffer from the underlying system, if it
+hadn't already.
+-->
+
+<p>&#x3042;&#x308B;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;<code>&apos;readable&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x4E0B;&#x5C64;&#x306E;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x304B;&#x3089;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5185;&#x90E8;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3078;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x539F;&#x56E0;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059; (&#x305D;&#x308C;&#x304C;&#x307E;&#x3060;&#x884C;&#x308F;&#x308C;&#x3066;&#x3044;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;)&#x3002;
+
+</p>
+<pre><code class="javascript">var readable = getReadableStreamSomehow();
+readable.on(&apos;readable&apos;, function() {
+  // there is some data to read now
+})</code></pre>
+<!--
+Once the internal buffer is drained, a `readable` event will fire
+again when more data is available.
+-->
+
+<p>&#x5185;&#x90E8;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x7A7A;&#x306B;&#x306A;&#x308B;&#x3068;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x3063;&#x305F;&#x6642;&#x306B;
+<code>&apos;readable&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x518D;&#x3073;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h4>Event: &apos;data&apos;<span><a class="mark" href="#stream_event_data" id="stream_event_data">#</a></span></h4>
+<!--
+* `chunk` {Buffer | String} The chunk of data.
+-->
+
+<ul>
+<li><code>chunk</code> {Buffer | String} &#x30C7;&#x30FC;&#x30BF;&#x306E;&#x65AD;&#x7247;&#x3002;</li>
+</ul>
+<!--
+If you attach a `data` event listener, then it will switch the stream
+into flowing mode, and data will be passed to your handler as soon as
+it is available.
+-->
+
+<p><code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3092;&#x8FFD;&#x52A0;&#x3059;&#x308B;&#x3068;&#x3001;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F; flowing &#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5207;&#x308A;&#x66FF;&#x308F;&#x308A;&#x3001;
+&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x308B;&#x3068;&#x3059;&#x3050;&#x306B;&#x3042;&#x306A;&#x305F;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x306B;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If you just want to get all the data out of the stream as fast as
+possible, this is the best way to do so.
+-->
+
+<p>&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304B;&#x3089;&#x51FA;&#x3066;&#x304F;&#x308B;&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x3067;&#x304D;&#x308B;&#x3060;&#x3051;&#x7D20;&#x65E9;&#x304F;&#x6B32;&#x3057;&#x3044;&#x306E;&#x306A;&#x3089;&#x3001;
+&#x3053;&#x308C;&#x304C;&#x6700;&#x5584;&#x306E;&#x65B9;&#x6CD5;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var readable = getReadableStreamSomehow();
+readable.on(&apos;data&apos;, function(chunk) {
+  console.log(&apos;got %d bytes of data&apos;, chunk.length);
+})</code></pre>
+<h4>Event: &apos;end&apos;<span><a class="mark" href="#stream_event_end" id="stream_event_end">#</a></span></h4>
+<!--
+This event fires when no more data will be provided.
+-->
+
+<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x3001;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x3082;&#x3046;&#x7121;&#x304F;&#x306A;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that the `end` event **will not fire** unless the data is
+completely consumed.  This can be done by switching into flowing mode,
+or by calling `read()` repeatedly until you get to the end.
+-->
+
+<p><code>&apos;end&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x5B8C;&#x5168;&#x306B;&#x6D88;&#x8CBB;&#x3055;&#x308C;&#x308B;&#x307E;&#x3067;&#x306F; <strong>&#x751F;&#x6210;&#x3055;&#x308C;&#x306A;&#x3044;</strong>
+&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x305D;&#x308C;&#x306F; flowing &#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;&#x3053;&#x3068;&#x306B;&#x3088;&#x3063;&#x3066;&#x3001;&#x307E;&#x305F;&#x306F;&#x7D42;&#x308F;&#x308A;&#x306B;&#x9054;&#x3059;&#x308B;&#x307E;&#x3067;
+<code>read()</code> &#x3092;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x306B;&#x3088;&#x3063;&#x3066;&#x9054;&#x6210;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var readable = getReadableStreamSomehow();
+readable.on(&apos;data&apos;, function(chunk) {
+  console.log(&apos;got %d bytes of data&apos;, chunk.length);
+})
+readable.on(&apos;end&apos;, function() {
+  console.log(&apos;there will be no more data.&apos;);
+});</code></pre>
+<h4>Event: &apos;close&apos;<span><a class="mark" href="#stream_event_close" id="stream_event_close">#</a></span></h4>
+<!--
+Emitted when the underlying resource (for example, the backing file
+descriptor) has been closed. Not all streams will emit this.
+-->
+
+<p>&#x4E0B;&#x5C64;&#x306E;&#x30EA;&#x30BD;&#x30FC;&#x30B9; (&#x4F8B;&#x3048;&#x3070;&#x80CC;&#x5F8C;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;) &#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x5168;&#x3066;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x767A;&#x751F;&#x3059;&#x308B;&#x308F;&#x3051;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h4>Event: &apos;error&apos;<span><a class="mark" href="#stream_event_error" id="stream_event_error">#</a></span></h4>
+<!--
+Emitted if there was an error receiving data.
+-->
+
+<p>&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x53D7;&#x4FE1;&#x3067;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x3042;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h4>readable.read([size])<span><a class="mark" href="#stream_readable_read_size" id="stream_readable_read_size">#</a></span></h4>
+<!--
+* `size` {Number} Optional argument to specify how much data to read.
+* Return {String | Buffer | null}
+-->
+
+<ul>
+<li><code>size</code> {Number} &#x3069;&#x308C;&#x3060;&#x3051;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x304B;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x5F15;&#x6570;&#x3002;</li>
+<li>Return {String | Buffer | null}</li>
+</ul>
+<!--
+The `read()` method pulls some data out of the internal buffer and
+returns it.  If there is no data available, then it will return
+`null`.
+-->
+
+<p><code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5185;&#x90E8;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304B;&#x3089;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x53D6;&#x308A;&#x51FA;&#x3057;&#x3066;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x7121;&#x3051;&#x308C;&#x3070;&#x3001;<code>null</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If you pass in a `size` argument, then it will return that many
+bytes.  If `size` bytes are not available, then it will return `null`.
+-->
+
+<p><code>size</code> &#x5F15;&#x6570;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3001;&#x305D;&#x306E;&#x9577;&#x3055; (&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x307E;&#x305F;&#x306F;&#x6587;&#x5B57;&#x6570;) &#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057; <code>size</code> &#x3067;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x9577;&#x3055;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x63C3;&#x3063;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F; <code>null</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If you do not specify a `size` argument, then it will return all the
+data in the internal buffer.
+-->
+
+<p><code>size</code> &#x5F15;&#x6570;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x5185;&#x90E8;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x3042;&#x308B;&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This method should only be called in non-flowing mode.  In
+flowing-mode, this method is called automatically until the internal
+buffer is drained.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F; non-flowing &#x30E2;&#x30FC;&#x30C9;&#x306E;&#x5834;&#x5408;&#x306B;&#x9650;&#x3063;&#x3066;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+flowing &#x30E2;&#x30FC;&#x30C9;&#x3067;&#x306F;&#x3001;&#x5185;&#x90E8;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x7A7A;&#x306B;&#x306A;&#x308B;&#x307E;&#x3067;
+&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var readable = getReadableStreamSomehow();
+readable.on(&apos;readable&apos;, function() {
+  var chunk;
+  while (null !== (chunk = readable.read())) {
+    console.log(&apos;got %d bytes of data&apos;, chunk.length);
+  }
+});</code></pre>
+<h4>readable.setEncoding(encoding)<span><a class="mark" href="#stream_readable_setencoding_encoding" id="stream_readable_setencoding_encoding">#</a></span></h4>
+<!--
+* `encoding` {String} The encoding to use.
+-->
+
+<ul>
+<li><code>encoding</code> {String} &#x4F7F;&#x7528;&#x3059;&#x308B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3002;</li>
+</ul>
+<!--
+Call this function to cause the stream to return strings of the
+specified encoding instead of Buffer objects.  For example, if you do
+`readable.setEncoding('utf8')`, then the output data will be
+interpreted as UTF-8 data, and returned as strings.  If you do
+`readable.setEncoding('hex')`, then the data will be encoded in
+hexadecimal string format.
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3068;&#x3001;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F; Buffer &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x4EE3;&#x308F;&#x308A;&#x306B;
+&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306B;&#x3088;&#x308B;&#x6587;&#x5B57;&#x5217;&#x3092;&#x8FD4;&#x3059;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x4F8B;&#x3048;&#x3070;&#x3001;<code>readable.setEncoding(&apos;utf8&apos;)</code> &#x3068;&#x3059;&#x308B;&#x3068;&#x3001;&#x5F97;&#x3089;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x306F;
+UTF-8 &#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3068;&#x3057;&#x3066;&#x89E3;&#x91C8;&#x3055;&#x308C;&#x3001;&#x6587;&#x5B57;&#x5217;&#x304C;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>readable.setEncoding(&apos;hex&apos;)</code> &#x3068;&#x3059;&#x308B;&#x3068;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306F; 16 &#x9032;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x306E;
+&#x6587;&#x5B57;&#x5217;&#x306B;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This properly handles multi-byte characters that would otherwise be
+potentially mangled if you simply pulled the Buffers directly and
+called `buf.toString(encoding)` on them.  If you want to read the data
+as strings, always use this method.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x3001;Buffer &#x3092;&#x76F4;&#x63A5;&#x53D6;&#x5F97;&#x3057;&#x3066;&#x5358;&#x7D14;&#x306B; <code>buf.toString(encoding)</code>
+&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x6F5C;&#x5728;&#x7684;&#x306B;&#x3081;&#x3061;&#x3083;&#x304F;&#x3061;&#x3083;&#x306B;&#x306A;&#x308B;&#x306E;&#x3068;&#x306F;&#x7570;&#x306A;&#x308A;&#x3001;
+&#x30DE;&#x30EB;&#x30C1;&#x30D0;&#x30A4;&#x30C8;&#x6587;&#x5B57;&#x3092;&#x6B63;&#x3057;&#x304F;&#x6271;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6587;&#x5B57;&#x5217;&#x3068;&#x3057;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x305F;&#x3051;&#x308C;&#x3070;&#x3001;&#x5E38;&#x306B;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<pre><code class="javascript">var readable = getReadableStreamSomehow();
+readable.setEncoding(&apos;utf8&apos;);
+readable.on(&apos;data&apos;, function(chunk) {
+  assert.equal(typeof chunk, &apos;string&apos;);
+  console.log(&apos;got %d characters of string data&apos;, chunk.length);
+})</code></pre>
+<h4>readable.resume()<span><a class="mark" href="#stream_readable_resume" id="stream_readable_resume">#</a></span></h4>
+<!--
+This method will cause the readable stream to resume emitting `data`
+events.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C; <code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x751F;&#x6210;&#x3092;
+&#x518D;&#x958B;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This method will switch the stream into flowing-mode.  If you do *not*
+want to consume the data from a stream, but you *do* want to get to
+its `end` event, you can call `readable.resume()` to open the flow of
+data.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092; flowing &#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304B;&#x3089;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x8CBB;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C; <em>&#x306A;&#x304F;</em>&#x3001;&#x3057;&#x304B;&#x3057; <code>&apos;end&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;
+&#x53D7;&#x3051;&#x53D6;&#x308B;&#x5FC5;&#x8981;&#x304C; <em>&#x3042;&#x308B;</em> &#x306A;&#x3089;&#x3001;<code>readable.resume()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x30D5;&#x30ED;&#x30FC;&#x3092;
+&#x958B;&#x304F;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var readable = getReadableStreamSomehow();
+readable.resume();
+readable.on(&apos;end&apos;, function(chunk) {
+  console.log(&apos;got to the end, but did not read anything&apos;);
+})</code></pre>
+<h4>readable.pause()<span><a class="mark" href="#stream_readable_pause" id="stream_readable_pause">#</a></span></h4>
+<!--
+This method will cause a stream in flowing-mode to stop emitting
+`data` events.  Any data that becomes available will remain in the
+internal buffer.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092; flowing &#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x3066;&#x3001;
+<code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x751F;&#x6210;&#x3092;&#x4E2D;&#x65AD;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x3063;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x5185;&#x90E8;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x4E2D;&#x306B;&#x6B8B;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This method is only relevant in flowing mode.  When called on a
+non-flowing stream, it will switch into flowing mode, but remain
+paused.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F; flowing &#x30E2;&#x30FC;&#x30C9;&#x306B;&#x3060;&#x3051;&#x95A2;&#x9023;&#x3057;&#x307E;&#x3059;&#x3002;
+non-flowing &#x30E2;&#x30FC;&#x30C9;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x547C;&#x3070;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;flowing &#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5207;&#x308A;&#x66FF;&#x308F;&#x308A;&#x3001;
+&#x6B8B;&#x308A;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x4F11;&#x6B62;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var readable = getReadableStreamSomehow();
+readable.on(&apos;data&apos;, function(chunk) {
+  console.log(&apos;got %d bytes of data&apos;, chunk.length);
+  readable.pause();
+  console.log(&apos;there will be no more data for 1 second&apos;);
+  setTimeout(function() {
+    console.log(&apos;now data will start flowing again&apos;);
+    readable.resume();
+  }, 1000);
+})</code></pre>
+<h4>readable.pipe(destination, [options])<span><a class="mark" href="#stream_readable_pipe_destination_options" id="stream_readable_pipe_destination_options">#</a></span></h4>
+<!--
+* `destination` {[Writable][] Stream} The destination for writing data
+* `options` {Object} Pipe options
+  * `end` {Boolean} End the writer when the reader ends. Default = `true`
+-->
+
+<ul>
+<li><code>destination</code> {<a href="#stream_class_stream_writable">Writable</a> Stream} &#x30C7;&#x30FC;&#x30BF;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5148;&#x3002;</li>
+<li><code>options</code> {Object} &#x30D1;&#x30A4;&#x30D7;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;<ul>
+<li><code>end</code> {Boolean} &#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5143;&#x304C;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5148;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>true</code></li>
+</ul>
+</li>
+</ul>
+<!--
+This method pulls all the data out of a readable stream, and writes it
+to the supplied destination, automatically managing the flow so that
+the destination is not overwhelmed by a fast readable stream.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304B;&#x3089;&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5F15;&#x304D;&#x51FA;&#x3057;&#x3001;
+&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x884C;&#x304D;&#x5148;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x307E;&#x3059;&#x3002;
+&#x9AD8;&#x901F;&#x306A; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x3088;&#x3063;&#x3066;&#x51FA;&#x529B;&#x5148;&#x304C;&#x5727;&#x8FEB;&#x3055;&#x308C;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3001;
+&#x81EA;&#x52D5;&#x7684;&#x306B;&#x30D5;&#x30ED;&#x30FC;&#x5236;&#x5FA1;&#x3092;&#x884C;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Multiple destinations can be piped to safely.
+-->
+
+<p>&#x8907;&#x6570;&#x306E;&#x51FA;&#x529B;&#x5148;&#x3092;&#x5B89;&#x5168;&#x306B;&#x9023;&#x7D50;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var readable = getReadableStreamSomehow();
+var writable = fs.createWriteStream(&apos;file.txt&apos;);
+// All the data from readable goes into &apos;file.txt&apos;
+readable.pipe(writable);</code></pre>
+<!--
+This function returns the destination stream, so you can set up pipe
+chains like so:
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x51FA;&#x529B;&#x5148;&#x3068;&#x306A;&#x308B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x8FD4;&#x3059;&#x306E;&#x3067;&#x3001;&#x3053;&#x306E;&#x3088;&#x3046;&#x306B;&#x30D1;&#x30A4;&#x30D7;&#x306E;&#x30C1;&#x30A7;&#x30FC;&#x30F3;&#x3092;
+&#x7D44;&#x307F;&#x7ACB;&#x3066;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var r = fs.createReadStream(&apos;file.txt&apos;);
+var z = zlib.createGzip();
+var w = fs.createWriteStream(&apos;file.txt.gz&apos;);
+r.pipe(z).pipe(w);</code></pre>
+<!--
+For example, emulating the Unix `cat` command:
+-->
+
+<p>Unix &#x306E; <code>cat</code> &#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3092;&#x30A8;&#x30DF;&#x30E5;&#x30EC;&#x30FC;&#x30C8;&#x3059;&#x308B;&#x4F8B;:
+
+</p>
+<pre><code class="javascript">process.stdin.pipe(process.stdout);</code></pre>
+<!--
+By default [`end()`][] is called on the destination when the source stream
+emits `end`, so that `destination` is no longer writable. Pass `{ end:
+false }` as `options` to keep the destination stream open.
+-->
+
+<p>&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F;&#x3001;&#x51FA;&#x529B;&#x5148;&#x306E; <a href="#stream_writable_end_chunk_encoding_callback"><code>end()</code></a> &#x306F;&#x5165;&#x529B;&#x5143;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;
+<code>&apos;end&apos;</code> &#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x305D;&#x306E;&#x305F;&#x3081;&#x3001;<code>destination</code>
+&#x306F;&#x3082;&#x3046;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x3067;&#x306F;&#x306A;&#x304F;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+<code>{end: false }</code> &#x3092; <code>options</code> &#x3068;&#x3057;&#x3066;&#x6E21;&#x3059;&#x3053;&#x3068;&#x306B;&#x3088;&#x308A;&#x3001;&#x51FA;&#x529B;&#x5148;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;
+&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x305F;&#x307E;&#x307E;&#x306B;&#x3057;&#x3066;&#x304A;&#x304F;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This keeps `writer` open so that "Goodbye" can be written at the
+end.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; <code>writer</code> &#x3092;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x305F;&#x307E;&#x307E;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x3088;&#x308A;&#x3001;&#x6700;&#x5F8C;&#x306B;
+<code>&quot;Goodbye&quot;</code> &#x3068;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">reader.pipe(writer, { end: false });
+reader.on(&apos;end&apos;, function() {
+  writer.end(&apos;Goodbye\n&apos;);
+});</code></pre>
+<!--
+Note that `process.stderr` and `process.stdout` are never closed until
+the process exits, regardless of the specified options.
+-->
+
+<p><code>process.stderr</code> &#x304A;&#x3088;&#x3073; <code>process.stdout</code> &#x306F;&#x3001;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x6307;&#x5B9A;&#x306B;&#x95A2;&#x4FC2;&#x306A;&#x304F;&#x3001;
+&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304C;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x307E;&#x3067;&#x6C7A;&#x3057;&#x3066;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h4>readable.unpipe([destination])<span><a class="mark" href="#stream_readable_unpipe_destination" id="stream_readable_unpipe_destination">#</a></span></h4>
+<!--
+* `destination` {[Writable][] Stream} Optional specific stream to unpipe
+-->
+
+<ul>
+<li><code>destination</code> {<a href="#stream_class_stream_writable">Writable</a> Stream} &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x30D1;&#x30A4;&#x30D7;&#x3092;&#x89E3;&#x9664;&#x3059;&#x308B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</li>
+</ul>
+<!--
+This method will remove the hooks set up for a previous `pipe()` call.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x4EE5;&#x524D;&#x306E; <code>pipe()</code> &#x547C;&#x3073;&#x51FA;&#x3057;&#x3067;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30D5;&#x30C3;&#x30AF;&#x3092;&#x53D6;&#x308A;&#x9664;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If the destination is not specified, then all pipes are removed.
+-->
+
+<p><code>destination</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x5168;&#x3066;&#x306E;&#x30D1;&#x30A4;&#x30D7;&#x304C;&#x53D6;&#x308A;&#x9664;&#x304B;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If the destination is specified, but no pipe is set up for it, then
+this is a no-op.
+-->
+
+<p><code>destination</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x3082;&#x306E;&#x306E;&#x3001;&#x305D;&#x308C;&#x304C;&#x30D1;&#x30A4;&#x30D7;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x3001;
+&#x3053;&#x308C;&#x306F;&#x4F55;&#x3082;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<pre><code class="javascript">var readable = getReadableStreamSomehow();
+var writable = fs.createWriteStream(&apos;file.txt&apos;);
+// All the data from readable goes into &apos;file.txt&apos;,
+// but only for the first second
+readable.pipe(writable);
+setTimeout(function() {
+  console.log(&apos;stop writing to file.txt&apos;);
+  readable.unpipe(writable);
+  console.log(&apos;manually close the file stream&apos;);
+  writable.end();
+}, 1000);</code></pre>
+<h4>readable.unshift(chunk)<span><a class="mark" href="#stream_readable_unshift_chunk" id="stream_readable_unshift_chunk">#</a></span></h4>
+<!--
+* `chunk` {Buffer | String} Chunk of data to unshift onto the read queue
+-->
+
+<ul>
+<li><code>chunk</code> {Buffer | String} &#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x30AD;&#x30E5;&#x30FC;&#x306E;&#x5148;&#x982D;&#x306B;&#x623B;&#x3055;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x65AD;&#x7247;</li>
+</ul>
+<!--
+This is useful in certain cases where a stream is being consumed by a
+parser, which needs to "un-consume" some data that it has
+optimistically pulled out of the source, so that the stream can be
+passed on to some other party.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x30D1;&#x30FC;&#x30B5;&#x306B;&#x3088;&#x3063;&#x3066;&#x6D88;&#x8CBB;&#x3055;&#x308C;&#x308B;&#x30B1;&#x30FC;&#x30B9;&#x306B;&#x304A;&#x3044;&#x3066;&#x6709;&#x7528;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x30BD;&#x30FC;&#x30B9;&#x304B;&#x3089;&#x697D;&#x89B3;&#x7684;&#x306B;&#x53D6;&#x308A;&#x51FA;&#x3057;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x300C;&#x6D88;&#x8CBB;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x300D;&#x3053;&#x3068;&#x306B;&#x3057;&#x3066;&#x3001;
+&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x4ED6;&#x306E;&#x3068;&#x3053;&#x308D;&#x306B;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6E21;&#x305B;&#x308B;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x5834;&#x5408;&#x306B;&#x5FC5;&#x8981;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+If you find that you must often call `stream.unshift(chunk)` in your
+programs, consider implementing a [Transform][] stream instead.  (See API
+for Stream Implementors, below.)
+-->
+
+<p><code>stream.unshift(chunk)</code> &#x3092;&#x983B;&#x7E41;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x304F;&#x3066;&#x306F;&#x306A;&#x3089;&#x306A;&#x3044;&#x3068;&#x3057;&#x305F;&#x3089;&#x3001;
+&#x4EE3;&#x308F;&#x308A;&#x306B; <a href="#stream_class_stream_transform">Transform</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x691C;&#x8A0E;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;
+(&#x5F8C;&#x8FF0;&#x3059;&#x308B; <a href="#stream_api_for_stream_implementors">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x5B9F;&#x88C5;&#x8005;&#x5411;&#x3051;&#x306E; API</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;)&#x3002;
+
+</p>
+<pre><code class="javascript">// Pull off a header delimited by \n\n
+// use unshift() if we get too much
+// Call the callback with (error, header, stream)
+var StringDecoder = require(&apos;string_decoder&apos;).StringDecoder;
+function parseHeader(stream, callback) {
+  stream.on(&apos;error&apos;, callback);
+  stream.on(&apos;readable&apos;, onReadable);
+  var decoder = new StringDecoder(&apos;utf8&apos;);
+  var header = &apos;&apos;;
+  function onReadable() {
+    var chunk;
+    while (null !== (chunk = stream.read())) {
+      var str = decoder.write(chunk);
+      if (str.match(/\n\n/)) {
+        // found the header boundary
+        var split = str.split(/\n\n/);
+        header += split.shift();
+        var remaining = split.join(&apos;\n\n&apos;);
+        var buf = new Buffer(remaining, &apos;utf8&apos;);
+        if (buf.length)
+          stream.unshift(buf);
+        stream.removeListener(&apos;error&apos;, callback);
+        stream.removeListener(&apos;readable&apos;, onReadable);
+        // now the body of the message can be read from the stream.
+        callback(null, header, stream);
+      } else {
+        // still reading the header.
+        header += str;
+      }
+    }
+  }
+}</code></pre>
+<h4>readable.wrap(stream)<span><a class="mark" href="#stream_readable_wrap_stream" id="stream_readable_wrap_stream">#</a></span></h4>
+<!--
+* `stream` {Stream} An "old style" readable stream
+-->
+
+<ul>
+<li><code>stream</code> {Stream} &#x300C;&#x53E4;&#x3044;&#x30B9;&#x30BF;&#x30A4;&#x30EB;&#x300D;&#x306E; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</li>
+</ul>
+<!--
+Versions of Node prior to v0.10 had streams that did not implement the
+entire Streams API as it is today.  (See "Compatibility" below for
+more information.)
+-->
+
+<p>v0.10 &#x3088;&#x308A;&#x524D;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x306E; Node &#x306B;&#x306F;&#x3001;&#x4ECA;&#x65E5;&#x306E;&#x5168;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0; API &#x3092;&#x5B9F;&#x88C5;&#x3057;&#x3066;&#x3044;&#x306A;&#x3044;
+&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x3042;&#x308A;&#x307E;&#x3057;&#x305F; (&#x3088;&#x308A;&#x8A73;&#x7D30;&#x306F;&#x5F8C;&#x8FF0;&#x3059;&#x308B;&#x300C;<a href="#stream_compatibility_with_older_node_versions">&#x4E92;&#x63DB;&#x6027;</a>&#x300D;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;)&#x3002;
+
+</p>
+<!--
+If you are using an older Node library that emits `'data'` events and
+has a `pause()` method that is advisory only, then you can use the
+`wrap()` method to create a [Readable][] stream that uses the old stream
+as its data source.
+-->
+
+<p>&#x3082;&#x3057;&#x3001;<code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x3001;&#x30A2;&#x30C9;&#x30D0;&#x30A4;&#x30B9;&#x3060;&#x3051;&#x3092;&#x884C;&#x3046; <code>pause()</code>
+&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x6301;&#x3064;&#x3001;&#x53E4;&#x3044; Node &#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x3044;&#x308B;&#x306A;&#x3089;&#x3001;
+<code>wrap()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x53E4;&#x3044;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x30C7;&#x30FC;&#x30BF;&#x30BD;&#x30FC;&#x30B9;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x7528;&#x3059;&#x308B;
+<a href="#stream_class_stream_readable">Readable</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+You will very rarely ever need to call this function, but it exists
+as a convenience for interacting with old Node programs and libraries.
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x306F;&#x6EC5;&#x591A;&#x306B;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x304C;&#x3001;&#x3053;&#x308C;&#x306F;&#x53E4;&#x3044; Node
+&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x53CA;&#x3073;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x3068;&#x76F8;&#x4E92;&#x4F5C;&#x7528;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x5229;&#x4FBF;&#x6027;&#x306E;&#x305F;&#x3081;&#x306B;&#x5B58;&#x5728;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+For example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code class="javascript">var OldReader = require(&apos;./old-api-module.js&apos;).OldReader;
+var oreader = new OldReader;
+var Readable = require(&apos;stream&apos;).Readable;
+var myReader = new Readable().wrap(oreader);
+
+myReader.on(&apos;readable&apos;, function() {
+  myReader.read(); // etc.
+});</code></pre>
+<h3>Class: stream.Writable<span><a class="mark" href="#stream_class_stream_writable" id="stream_class_stream_writable">#</a></span></h3>
+<!--type=class-->
+
+<!--
+The Writable stream interface is an abstraction for a *destination*
+that you are writing data *to*.
+-->
+
+<p>Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306F;&#x3001;&#x3042;&#x306A;&#x305F;&#x304C;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x62BD;&#x8C61;&#x7684;&#x306A;
+<em>&#x884C;&#x304D;&#x5148;</em> &#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Examples of writable streams include:
+-->
+
+<p>Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x542B;&#x3080;&#x4F8B;:
+
+</p>
+<!--
+* [http requests, on the client](http.html#http_class_http_clientrequest)
+* [http responses, on the server](http.html#http_class_http_serverresponse)
+* [fs write streams](fs.html#fs_class_fs_writestream)
+* [zlib streams][]
+* [crypto streams][]
+* [tcp sockets][]
+* [child process stdin](child_process.html#child_process_child_stdin)
+* [process.stdout][], [process.stderr][]
+-->
+
+<ul>
+<li><a href="http.html#http_class_http_clientrequest">&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E; http &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;</a></li>
+<li><a href="http.html#http_class_http_serverresponse">&#x30B5;&#x30FC;&#x30D0;&#x306E; http &#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;</a></li>
+<li><a href="fs.html#fs_class_fs_writestream">fs &#x306E; WriteStream</a></li>
+<li><a href="zlib.html">zlib &#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a></li>
+<li><a href="crypto.html">crypto &#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a></li>
+<li><a href="net.html#net_class_net_socket">tcp &#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;</a></li>
+<li><a href="child_process.html#child_process_child_stdin">child_process &#x306E;&#x6A19;&#x6E96;&#x5165;&#x529B;</a></li>
+<li><a href="process.html#process_process_stdout">process.stdout</a>, <a href="process.html#process_process_stderr">process.stderr</a></li>
+</ul>
+<h4>writable.write(chunk, [encoding], [callback])<span><a class="mark" href="#stream_writable_write_chunk_encoding_callback" id="stream_writable_write_chunk_encoding_callback">#</a></span></h4>
+<!--
+* `chunk` {String | Buffer} The data to write
+* `encoding` {String} The encoding, if `chunk` is a String
+* `callback` {Function} Callback for when this chunk of data is flushed
+* Returns: {Boolean} True if the data was handled completely.
+-->
+
+<ul>
+<li><code>chunk</code> {String | Buffer} &#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;</li>
+<li><code>encoding</code> {String} &#x3082;&#x3057; <code>chunk</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x306A;&#x3089;&#x3001;&#x305D;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;</li>
+<li><code>callback</code> {Function} &#x30C7;&#x30FC;&#x30BF;&#x304C;&#x6383;&#x304D;&#x51FA;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;</li>
+<li>Returns: {Boolean} &#x30C7;&#x30FC;&#x30BF;&#x304C;&#x5B8C;&#x5168;&#x306B;&#x51E6;&#x7406;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F; <code>true</code>&#x3002;</li>
+</ul>
+<!--
+This method writes some data to the underlying system, and calls the
+supplied callback once the data has been fully handled.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4E0B;&#x5C64;&#x306E;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x5B8C;&#x5168;&#x306B;&#x51E6;&#x7406;&#x3055;&#x308C;&#x308B;&#x3068;
+&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x4E00;&#x5EA6;&#x3060;&#x3051;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The return value indicates if you should continue writing right now.
+If the data had to be buffered internally, then it will return
+`false`.  Otherwise, it will return `true`.
+-->
+
+<p>&#x623B;&#x308A;&#x5024;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x3092;&#x3059;&#x3050;&#x306B;&#x7D9A;&#x3051;&#x3066;&#x3044;&#x3044;&#x304B;&#x3069;&#x3046;&#x304B;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x5185;&#x90E8;&#x306B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x306A;&#x3089; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x3046;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070; <code>true</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This return value is strictly advisory.  You MAY continue to write,
+even if it returns `false`.  However, writes will be buffered in
+memory, so it is best not to do this excessively.  Instead, wait for
+the `drain` event before writing more data.
+-->
+
+<p>&#x3053;&#x306E;&#x623B;&#x308A;&#x5024;&#x306F;&#x5B8C;&#x5168;&#x306B;&#x30A2;&#x30C9;&#x30D0;&#x30A4;&#x30B9;&#x7684;&#x3067;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x3053;&#x308C;&#x304C; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x3066;&#x3082;&#x3001;&#x3042;&#x306A;&#x305F;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x3092;&#x7D9A;&#x3051;&#x308B;&#x3053;&#x3068;&#x304C;&#x300C;&#x3067;&#x304D;&#x307E;&#x3059;&#x300D;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x30E1;&#x30E2;&#x30EA;&#x306B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;&#x3001;
+&#x3053;&#x308C;&#x3092;&#x904E;&#x5270;&#x306B;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x304C;&#x6700;&#x5584;&#x3067;&#x3059;&#x3002;
+&#x4EE3;&#x308F;&#x308A;&#x306B;&#x3001;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x66F8;&#x304F;&#x524D;&#x306B; <code>&apos;drain&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x5F85;&#x6A5F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h4>Event: &apos;drain&apos;<span><a class="mark" href="#stream_event_drain" id="stream_event_drain">#</a></span></h4>
+<!--
+If a [`writable.write(chunk)`][] call returns false, then the `drain`
+event will indicate when it is appropriate to begin writing more data
+to the stream.
+-->
+
+<p><a href="#stream_writable_write_chunk_encoding_callback"><code>write(chunk, encoding, callback)</code></a> &#x306E;&#x547C;&#x3073;&#x51FA;&#x3057;&#x304C; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x305F;&#x5834;&#x5408;&#x3001;
+&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x3044;&#x3064;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x66F8;&#x304D;&#x59CB;&#x3081;&#x308B;&#x306E;&#x304C;&#x9069;&#x5207;&#x304B;&#x3092;
+<code>&apos;drain&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x3063;&#x3066;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">// Write the data to the supplied writable stream 1MM times.
+// Be attentive to back-pressure.
+function writeOneMillionTimes(writer, data, encoding, callback) {
+  var i = 1000000;
+  write();
+  function write() {
+    var ok = true;
+    do {
+      i -= 1;
+      if (i === 0) {
+        // last time!
+        writer.write(data, encoding, callback);
+      } else {
+        // see if we should continue, or wait
+        // don&apos;t pass the callback, because we&apos;re not done yet.
+        ok = writer.write(data, encoding);
+      }
+    } while (i &gt; 0 &amp;&amp; ok);
+    if (i &gt; 0) {
+      // had to stop early!
+      // write some more once it drains
+      writer.once(&apos;drain&apos;, write);
+    }
+  }
+}</code></pre>
+<h4>writable.end([chunk], [encoding], [callback])<span><a class="mark" href="#stream_writable_end_chunk_encoding_callback" id="stream_writable_end_chunk_encoding_callback">#</a></span></h4>
+<!--
+* `chunk` {String | Buffer} Optional data to write
+* `encoding` {String} The encoding, if `chunk` is a String
+* `callback` {Function} Optional callback for when the stream is finished
+-->
+
+<ul>
+<li><code>chunk</code> {String | Buffer} &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;</li>
+<li><code>encoding</code> {String} &#x3082;&#x3057; <code>chunk</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x306A;&#x3089;&#x3001;&#x305D;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;</li>
+<li><code>callback</code> {Function} &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x7D42;&#x4E86;&#x6642;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3001;
+&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;</li>
+</ul>
+<!--
+Call this method when no more data will be written to the stream.  If
+supplied, the callback is attached as a listener on the `finish` event.
+-->
+
+<p>&#x3053;&#x308C;&#x4EE5;&#x4E0A;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;&#x305D;&#x308C;&#x306F; <code>&apos;finish&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;
+&#x30A2;&#x30BF;&#x30C3;&#x30C1;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Calling [`write()`][] after calling [`end()`][] will raise an error.
+-->
+
+<p><a href="#stream_writable_end_chunk_encoding_callback"><code>end()</code></a> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x5F8C;&#x3067; <a href="#stream_writable_write_chunk_encoding_callback"><code>write()</code></a> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3068;&#x30A8;&#x30E9;&#x30FC;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">// write &apos;hello, &apos; and then end with &apos;world!&apos;
+http.createServer(function (req, res) {
+  res.write(&apos;hello, &apos;);
+  res.end(&apos;world!&apos;);
+  // writing more now is not allowed!
+});</code></pre>
+<h4>Event: &apos;finish&apos;<span><a class="mark" href="#stream_event_finish" id="stream_event_finish">#</a></span></h4>
+<!--
+When the [`end()`][] method has been called, and all data has been flushed
+to the underlying system, this event is emitted.
+-->
+
+<p><a href="#stream_writable_end_chunk_encoding_callback"><code>end()</code></a> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3001;&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x4E0B;&#x5C64;&#x306E;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;
+&#x6383;&#x304D;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var writer = getWritableStreamSomehow();
+for (var i = 0; i &lt; 100; i ++) {
+  writer.write(&apos;hello, #&apos; + i + &apos;!\n&apos;);
+}
+writer.end(&apos;this is the end\n&apos;);
+writer.on(&apos;finish&apos;, function() {
+  console.error(&apos;all writes are now complete.&apos;);
+});</code></pre>
+<h4>Event: &apos;pipe&apos;<span><a class="mark" href="#stream_event_pipe" id="stream_event_pipe">#</a></span></h4>
+<!--
+* `src` {[Readable][] Stream} source stream that is piping to this writable
+-->
+
+<ul>
+<li><code>src</code> {<a href="#stream_class_stream_readable">Readable</a> Stream} &#x3053;&#x306E; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x3064;&#x306A;&#x304C;&#x308C;&#x305F;
+&#x5165;&#x529B;&#x5143;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</li>
+</ul>
+<!--
+This is emitted whenever the `pipe()` method is called on a readable
+stream, adding this writable to its set of destinations.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x3001;Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E; <code>pipe()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3001;
+&#x3053;&#x306E; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x51FA;&#x529B;&#x5148;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var writer = getWritableStreamSomehow();
+var reader = getReadableStreamSomehow();
+writer.on(&apos;pipe&apos;, function(src) {
+  console.error(&apos;something is piping into the writer&apos;);
+  assert.equal(src, reader);
+});
+reader.pipe(writer);</code></pre>
+<h4>Event: &apos;unpipe&apos;<span><a class="mark" href="#stream_event_unpipe" id="stream_event_unpipe">#</a></span></h4>
+<!--
+* `src` {[Readable][] Stream} The source stream that [unpiped][] this writable
+-->
+
+<ul>
+<li><code>src</code> {<a href="#stream_class_stream_readable">Readable</a> Stream} &#x3053;&#x306E; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;<a href="#stream_readable_unpipe_destination">&#x5207;&#x308A;&#x96E2;&#x3055;&#x308C;&#x305F;</a>
+&#x5165;&#x529B;&#x5143;&#x306E; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</li>
+</ul>
+<!--
+This is emitted whenever the [`unpipe()`][] method is called on a
+readable stream, removing this writable from its set of destinations.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x3001;Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067; <a href="#stream_readable_unpipe_destination"><code>unpipe()</code></a> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3001;
+&#x3053;&#x306E; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x51FA;&#x529B;&#x5148;&#x304B;&#x3089;&#x53D6;&#x308A;&#x9664;&#x304B;&#x308C;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var writer = getWritableStreamSomehow();
+var reader = getReadableStreamSomehow();
+writer.on(&apos;unpipe&apos;, function(src) {
+  console.error(&apos;something has stopped piping into the writer&apos;);
+  assert.equal(src, reader);
+});
+reader.pipe(writer);
+reader.unpipe(writer);</code></pre>
+<h4>Event: &apos;error&apos;<span><a class="mark" href="#stream_event_error_1" id="stream_event_error_1">#</a></span></h4>
+<!--
+Emitted if there was an error when writing or piping data.
+-->
+
+<p>&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x4E2D;&#x307E;&#x305F;&#x306F;&#x30D1;&#x30A4;&#x30D7;&#x4E2D;&#x306B;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Class: stream.Duplex<span><a class="mark" href="#stream_class_stream_duplex" id="stream_class_stream_duplex">#</a></span></h3>
+<!--
+Duplex streams are streams that implement both the [Readable][] and
+[Writable][] interfaces.  See above for usage.
+-->
+
+<p>Duplex &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F; <a href="#stream_class_stream_readable">Readable</a> &#x3068; <a href="#stream_class_stream_writable">Writable</a> &#x4E21;&#x65B9;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;
+&#x5B9F;&#x88C5;&#x3057;&#x305F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x3059;&#x3002;&#x4F7F;&#x3044;&#x65B9;&#x306F;&#x4E0A;&#x8A18;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Examples of Duplex streams include:
+-->
+
+<p>Duplex &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x542B;&#x3080;&#x4F8B;:
+
+</p>
+<!--
+* [tcp sockets][]
+* [zlib streams][]
+* [crypto streams][]
+-->
+
+<ul>
+<li><a href="net.html#net_class_net_socket">tcp &#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;</a></li>
+<li><a href="zlib.html">zlib &#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a></li>
+<li><a href="crypto.html">crypto &#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a></li>
+</ul>
+<h3>Class: stream.Transform<span><a class="mark" href="#stream_class_stream_transform" id="stream_class_stream_transform">#</a></span></h3>
+<!--
+Transform streams are [Duplex][] streams where the output is in some way
+computed from the input.  They implement both the [Readable][] and
+[Writable][] interfaces.  See above for usage.
+-->
+
+<p>Transform &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;&#x5165;&#x529B;&#x304B;&#x3089;&#x4F55;&#x3089;&#x304B;&#x306E;&#x65B9;&#x6CD5;&#x3067;&#x51FA;&#x529B;&#x304C;&#x8A08;&#x7B97;&#x3055;&#x308C;&#x308B; <a href="#stream_class_stream_duplex">Duplex</a>
+&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x3089;&#x306F; <a href="#stream_class_stream_readable">Readable</a> &#x3068; <a href="#stream_class_stream_writable">Writable</a> &#x4E21;&#x65B9;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4F7F;&#x3044;&#x65B9;&#x306F;&#x4E0A;&#x8A18;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Examples of Transform streams include:
+-->
+
+<p>Transform &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x542B;&#x3080;&#x4F8B;:
+
+</p>
+<!--
+* [zlib streams][]
+* [crypto streams][]
+-->
+
+<ul>
+<li><a href="zlib.html">zlib &#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a></li>
+<li><a href="crypto.html">crypto &#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;</a></li>
+</ul>
+<h2>API for Stream Implementors<span><a class="mark" href="#stream_api_for_stream_implementors" id="stream_api_for_stream_implementors">#</a></span></h2>
+<!--type=misc-->
+
+<!--
+To implement any sort of stream, the pattern is the same:
+-->
+
+<p>&#x3069;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x5834;&#x5408;&#x3067;&#x3082;&#x3001;&#x30D1;&#x30BF;&#x30FC;&#x30F3;&#x306F;&#x540C;&#x3058;&#x3067;&#x3059;:
+
+</p>
+<!--
+1. Extend the appropriate parent class in your own subclass.  (The
+   [`util.inherits`][] method is particularly helpful for this.)
+2. Call the appropriate parent class constructor in your constructor,
+   to be sure that the internal mechanisms are set up properly.
+2. Implement one or more specific methods, as detailed below.
+-->
+
+<ol>
+<li>&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x89AA;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x62E1;&#x5F35;&#x3057;&#x3066;&#x3001;&#x72EC;&#x81EA;&#x306E;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+(&#x7279;&#x306B; <a href="util.html#util_util_inherits_constructor_superconstructor"><code>util.inherits</code></a> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x305D;&#x306E;&#x305F;&#x3081;&#x306B;&#x5F79;&#x7ACB;&#x3061;&#x307E;&#x3059;)&#x3002;</li>
+<li>&#x5185;&#x90E8;&#x306E;&#x30E1;&#x30AB;&#x30CB;&#x30BA;&#x30E0;&#x304C;&#x304D;&#x3061;&#x3093;&#x3068;&#x30BB;&#x30C3;&#x30C8;&#x30A2;&#x30C3;&#x30D7;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;&#x78BA;&#x5B9F;&#x306B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;
+&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x306E;&#x4E2D;&#x304B;&#x3089;&#x89AA;&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3002;</li>
+<li>&#x4EE5;&#x4E0B;&#x3067;&#x8A73;&#x8FF0;&#x3055;&#x308C;&#x308B;&#x3001;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x7279;&#x5225;&#x306A;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x3002;</li>
+</ol>
+<!--
+The class to extend and the method(s) to implement depend on the sort
+of stream class you are writing:
+-->
+
+<p>&#x62E1;&#x5F35;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x3068;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x3001;&#x3042;&#x306A;&#x305F;&#x304C;&#x66F8;&#x3053;&#x3046;&#x3068;&#x3057;&#x3066;&#x3044;&#x308B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x7A2E;&#x985E;&#x306B;
+&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+<table>
+  <thead>
+    <tr>
+      <th>
+        <p>Use-case</p>
+      </th>
+      <th>
+        <p>Class</p>
+      </th>
+      <th>
+        <p>Method(s) to implement</p>
+      </th>
+    </tr>
+  </thead>
+  <tr>
+    <td>
+      <p>Reading only</p>
+    </td>
+    <td>
+      <p>[Readable](#stream_class_stream_readable_1)</p>
+    </td>
+    <td>
+      <p><code>[_read][]</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Writing only</p>
+    </td>
+    <td>
+      <p>[Writable](#stream_class_stream_writable_1)</p>
+    </td>
+    <td>
+      <p><code>[_write][]</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Reading and writing</p>
+    </td>
+    <td>
+      <p>[Duplex](#stream_class_stream_duplex_1)</p>
+    </td>
+    <td>
+      <p><code>[_read][]</code>, <code>[_write][]</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>Operate on written data, then read the result</p>
+    </td>
+    <td>
+      <p>[Transform](#stream_class_stream_transform_1)</p>
+    </td>
+    <td>
+      <p><code>_transform</code>, <code>_flush</code></p>
+    </td>
+  </tr>
+</table>
+-->
+
+<table>
+  <thead>
+    <tr>
+      <th>
+        <p>&#x30E6;&#x30FC;&#x30B9;&#x30B1;&#x30FC;&#x30B9;</p>
+      </th>
+      <th>
+        <p>&#x30AF;&#x30E9;&#x30B9;</p>
+      </th>
+      <th>
+        <p>&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x30E1;&#x30BD;&#x30C3;&#x30C9;</p>
+      </th>
+    </tr>
+  </thead>
+  <tr>
+    <td>
+      <p>&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x306E;&#x307F;</p>
+    </td>
+    <td>
+      <p><a href="#stream_class_stream_readable_1">Readable</a></p>
+    </td>
+    <td>
+      <p><code><a href="#stream_readable_read_size_1">_read</a></code></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x306E;&#x307F;</p>
+    </td>
+    <td>
+      <p><a href="#stream_class_stream_writable_1">Writable</a></p>
+    </td>
+    <td>
+      <p><code><a href="#stream_writable_write_chunk_encoding_callback_1">_write</a></code></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3068;&#x66F8;&#x304D;&#x8FBC;&#x307F;</p>
+    </td>
+    <td>
+      <p><a href="#stream_class_stream_duplex_1">Duplex</a></p>
+    </td>
+    <td>
+      <p><code><a href="#stream_readable_read_size_1">_read</a></code>, <code><a href="#stream_writable_write_chunk_encoding_callback_1">_write</a></code></p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p>&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5909;&#x63DB;&#x3057;&#x3001;&#x305D;&#x306E;&#x7D50;&#x679C;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x3080;</p>
+    </td>
+    <td>
+      <p><a href="#stream_class_stream_transform_1">Transform</a></p>
+    </td>
+    <td>
+      <p><code><a href="#stream_transform_transform_chunk_encoding_callback">_transform</a></code>, <code><a href="#stream_transform_flush_callback">_flush</a></code></p>
+    </td>
+  </tr>
+</table>
+
+<!--
+In your implementation code, it is very important to never call the
+methods described in [API for Stream Consumers][] above.  Otherwise, you
+can potentially cause adverse side effects in programs that consume
+your streaming interfaces.
+-->
+
+<p>&#x3042;&#x306A;&#x305F;&#x306E;&#x5B9F;&#x88C5;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x4E2D;&#x3067;&#x306F;&#x3001;&#x6C7A;&#x3057;&#x3066; <a href="#stream_api_for_stream_consumers">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x5229;&#x7528;&#x8005;&#x306E;&#x305F;&#x3081;&#x306E; API</a>
+&#x3067;&#x8AAC;&#x660E;&#x3055;&#x308C;&#x305F;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x3044;&#x3053;&#x3068;&#x304C;&#x3068;&#x3066;&#x3082;&#x91CD;&#x8981;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x3046;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x3042;&#x306A;&#x305F;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30DF;&#x30F3;&#x30B0;&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x5229;&#x7528;&#x3059;&#x308B;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306B;
+&#x6709;&#x5BB3;&#x306A;&#x526F;&#x4F5C;&#x7528;&#x3092;&#x5F15;&#x304D;&#x8D77;&#x3053;&#x3059;&#x539F;&#x56E0;&#x3068;&#x306A;&#x308A;&#x5F97;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Class: stream.Readable<span><a class="mark" href="#stream_class_stream_readable_1" id="stream_class_stream_readable_1">#</a></span></h3>
+<!--type=class-->
+
+<!--
+`stream.Readable` is an abstract class designed to be extended with an
+underlying implementation of the [`_read(size)`][] method.
+-->
+
+<p><code>stream.Readable</code> &#x306F;&#x62BD;&#x8C61;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3001;&#x4E0B;&#x5C64;&#x306E;&#x5B9F;&#x88C5;&#x3068;&#x3057;&#x3066; <a href="#stream_readable_read_size_1"><code>_read(size)</code></a>
+&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x62E1;&#x5F35;&#x3055;&#x308C;&#x308B;&#x3088;&#x3046;&#x306B;&#x8A2D;&#x8A08;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Please see above under [API for Stream Consumers][] for how to consume
+streams in your programs.  What follows is an explanation of how to
+implement Readable streams in your programs.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x4E2D;&#x3067; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5229;&#x7528;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x306B;&#x3064;&#x3044;&#x3066;&#x306F;&#x3001;
+&#x524D;&#x8FF0;&#x306E; <a href="#stream_api_for_stream_consumers">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x5229;&#x7528;&#x8005;&#x306E;&#x305F;&#x3081;&#x306E; API</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x306E;&#x5F8C;&#x306B;&#x7D9A;&#x304F;&#x306E;&#x306F;&#x3001;&#x3042;&#x306A;&#x305F;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x4E2D;&#x3067; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;
+&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x306E;&#x8AAC;&#x660E;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h4>Example: A Counting Stream<span><a class="mark" href="#stream_example_a_counting_stream" id="stream_example_a_counting_stream">#</a></span></h4>
+<!--type=example-->
+
+<!--
+This is a basic example of a Readable stream.  It emits the numerals
+from 1 to 1,000,000 in ascending order, and then ends.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x57FA;&#x672C;&#x7684;&#x306A;&#x4F8B;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F; 1 &#x304B;&#x3089; 1,000,000 &#x307E;&#x3067;&#x306E;&#x6570;&#x3092;&#x6607;&#x9806;&#x3067;&#x751F;&#x6210;&#x3057;&#x3001;&#x305D;&#x3057;&#x3066;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var Readable = require(&apos;stream&apos;).Readable;
+var util = require(&apos;util&apos;);
+util.inherits(Counter, Readable);
+
+function Counter(opt) {
+  Readable.call(this, opt);
+  this._max = 1000000;
+  this._index = 1;
+}
+
+Counter.prototype._read = function() {
+  var i = this._index++;
+  if (i &gt; this._max)
+    this.push(null);
+  else {
+    var str = &apos;&apos; + i;
+    var buf = new Buffer(str, &apos;ascii&apos;);
+    this.push(buf);
+  }
+};</code></pre>
+<h4>Example: SimpleProtocol v1 (Sub-optimal)<span><a class="mark" href="#stream_example_simpleprotocol_v1_sub_optimal" id="stream_example_simpleprotocol_v1_sub_optimal">#</a></span></h4>
+<!--
+This is similar to the `parseHeader` function described above, but
+implemented as a custom stream.  Also, note that this implementation
+does not convert the incoming data to a string.
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x524D;&#x306B;&#x8AAC;&#x660E;&#x3057;&#x305F; <code>parseHeader</code> &#x95A2;&#x6570;&#x3068;&#x3088;&#x304F;&#x4F3C;&#x3066;&#x3044;&#x307E;&#x3059;&#x304C;&#x3001;
+&#x72EC;&#x81EA;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;&#x3057;&#x3066;&#x5B9F;&#x88C5;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x307E;&#x305F;&#x3001;&#x3053;&#x306E;&#x5B9F;&#x88C5;&#x306F;&#x5165;&#x3063;&#x3066;&#x304F;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6587;&#x5B57;&#x5217;&#x306B;&#x5909;&#x63DB;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+However, this would be better implemented as a [Transform][] stream.  See
+below for a better implementation.
+-->
+
+<p>&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x3053;&#x308C;&#x306F; <a href="#stream_class_stream_transform">Transform</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3067;&#x3088;&#x308A;&#x3046;&#x307E;&#x304F;&#x5B9F;&#x88C5;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x5F8C;&#x8FF0;&#x306E;&#x3088;&#x308A;&#x3088;&#x3044;&#x5B9F;&#x88C5;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<pre><code class="javascript">// A parser for a simple data protocol.
+// The &quot;header&quot; is a JSON object, followed by 2 \n characters, and
+// then a message body.
+//
+// NOTE: This can be done more simply as a Transform stream!
+// Using Readable directly for this is sub-optimal.  See the
+// alternative example below under the Transform section.
+
+var Readable = require(&apos;stream&apos;).Readable;
+var util = require(&apos;util&apos;);
+
+util.inherits(SimpleProtocol, Readable);
+
+function SimpleProtocol(source, options) {
+  if (!(this instanceof SimpleProtocol))
+    return new SimpleProtocol(source, options);
+
+  Readable.call(this, options);
+  this._inBody = false;
+  this._sawFirstCr = false;
+
+  // source is a readable stream, such as a socket or file
+  this._source = source;
+
+  var self = this;
+  source.on(&apos;end&apos;, function() {
+    self.push(null);
+  });
+
+  // give it a kick whenever the source is readable
+  // read(0) will not consume any bytes
+  source.on(&apos;readable&apos;, function() {
+    self.read(0);
+  });
+
+  this._rawHeader = [];
+  this.header = null;
+}
+
+SimpleProtocol.prototype._read = function(n) {
+  if (!this._inBody) {
+    var chunk = this._source.read();
+
+    // if the source doesn&apos;t have data, we don&apos;t have data yet.
+    if (chunk === null)
+      return this.push(&apos;&apos;);
+
+    // check if the chunk has a \n\n
+    var split = -1;
+    for (var i = 0; i &lt; chunk.length; i++) {
+      if (chunk[i] === 10) { // &apos;\n&apos;
+        if (this._sawFirstCr) {
+          split = i;
+          break;
+        } else {
+          this._sawFirstCr = true;
+        }
+      } else {
+        this._sawFirstCr = false;
+      }
+    }
+
+    if (split === -1) {
+      // still waiting for the \n\n
+      // stash the chunk, and try again.
+      this._rawHeader.push(chunk);
+      this.push(&apos;&apos;);
+    } else {
+      this._inBody = true;
+      var h = chunk.slice(0, split);
+      this._rawHeader.push(h);
+      var header = Buffer.concat(this._rawHeader).toString();
+      try {
+        this.header = JSON.parse(header);
+      } catch (er) {
+        this.emit(&apos;error&apos;, new Error(&apos;invalid simple protocol data&apos;));
+        return;
+      }
+      // now, because we got some extra data, unshift the rest
+      // back into the read queue so that our consumer will see it.
+      var b = chunk.slice(split);
+      this.unshift(b);
+
+      // and let them know that we are done parsing the header.
+      this.emit(&apos;header&apos;, this.header);
+    }
+  } else {
+    // from there on, just provide the data to our consumer.
+    // careful not to push(null), since that would indicate EOF.
+    var chunk = this._source.read();
+    if (chunk) this.push(chunk);
+  }
+};
+
+// Usage:
+// var parser = new SimpleProtocol(source);
+// Now parser is a readable stream that will emit &apos;header&apos;
+// with the parsed header data.</code></pre>
+<h4>new stream.Readable([options])<span><a class="mark" href="#stream_new_stream_readable_options" id="stream_new_stream_readable_options">#</a></span></h4>
+<!--
+* `options` {Object}
+  * `highWaterMark` {Number} The maximum number of bytes to store in
+    the internal buffer before ceasing to read from the underlying
+    resource.  Default=16kb
+  * `encoding` {String} If specified, then buffers will be decoded to
+    strings using the specified encoding.  Default=null
+  * `objectMode` {Boolean} Whether this stream should behave
+    as a stream of objects. Meaning that stream.read(n) returns
+    a single value instead of a Buffer of size n.  Default=false
+-->
+
+<ul>
+<li><code>options</code> {Object} (&#x4EFB;&#x610F;)<ul>
+<li><code>highWaterMark</code> {Number} &#x4E0B;&#x5C64;&#x306E;&#x30EA;&#x30BD;&#x30FC;&#x30B9;&#x304B;&#x3089;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x306E;&#x3092;&#x4E2D;&#x65AD;&#x3059;&#x308B;&#x307E;&#x3067;
+&#x5185;&#x90E8;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x8CAF;&#x3081;&#x3066;&#x304A;&#x304F;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x306E;&#x6700;&#x5927;&#x5024;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; 16kb&#x3002;</li>
+<li><code>encoding</code> {String} &#x6307;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306F;&#x6307;&#x5B9A;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;
+&#x30C7;&#x30B3;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>null</code>&#x3002;</li>
+<li><code>objectMode</code> {Boolean} &#x3053;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3068;&#x3057;&#x3066;
+&#x632F;&#x308B;&#x821E;&#x3046;&#x3079;&#x304D;&#x304B;&#x3069;&#x3046;&#x304B;&#x3002;&#x3053;&#x308C;&#x306F; <code>stream.read(n)</code> &#x304C;&#x30B5;&#x30A4;&#x30BA; n &#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3067;&#x306F;&#x306A;&#x304F;
+&#x4E00;&#x3064;&#x306E;&#x5024;&#x3092;&#x8FD4;&#x3059;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<!--
+In classes that extend the Readable class, make sure to call the
+Readable constructor so that the buffering settings can be properly
+initialized.
+-->
+
+<p><code>Readable</code> &#x30AF;&#x30E9;&#x30B9;&#x3092;&#x62E1;&#x5F35;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;&#x3001;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x306E;&#x8A2D;&#x5B9A;&#x3092;&#x78BA;&#x5B9F;&#x306B;
+&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;&#x5FC5;&#x305A;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h4>readable._read(size)<span><a class="mark" href="#stream_readable_read_size_1" id="stream_readable_read_size_1">#</a></span></h4>
+<!--
+* `size` {Number} Number of bytes to read asynchronously
+-->
+
+<ul>
+<li><code>size</code> {Number} &#x975E;&#x540C;&#x671F;&#x306B;&#x8AAD;&#x307F;&#x8FBC;&#x3080;&#x30D0;&#x30A4;&#x30C8;&#x6570;</li>
+</ul>
+<!--
+Note: **Implement this function, but do NOT call it directly.**
+-->
+
+<p>&#x6CE8;&#x610F;: <strong>&#x3053;&#x306E;&#x95A2;&#x6570;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3001;&#x3057;&#x304B;&#x3057;&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</strong>
+
+</p>
+<!--
+This function should NOT be called directly.  It should be implemented
+by child classes, and only called by the internal Readable class
+methods.
+-->
+
+<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x5B9F;&#x88C5;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3042;&#x308A;&#x3001;Readable &#x30AF;&#x30E9;&#x30B9;&#x306E;&#x5185;&#x90E8;&#x304B;&#x3089;
+&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+All Readable stream implementations must provide a `_read` method to
+fetch data from the underlying resource.
+-->
+
+<p>&#x5168;&#x3066;&#x306E; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;&#x4E0B;&#x5C64;&#x306E;&#x30EA;&#x30BD;&#x30FC;&#x30B9;&#x304B;&#x3089;&#x30C7;&#x30FC;&#x30BF;&#x3092;
+&#x53D6;&#x5F97;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B; <code>_read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+This method is prefixed with an underscore because it is internal to
+the class that defines it, and should not be called directly by user
+programs.  However, you **are** expected to override this method in
+your own extension classes.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x3053;&#x308C;&#x3092;&#x5B9A;&#x7FA9;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x5185;&#x90E8;&#x306E;&#x3082;&#x306E;&#x3067;&#x3042;&#x308A;&#x3001;&#x30E6;&#x30FC;&#x30B6;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304B;&#x3089;
+&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3082;&#x306E;&#x3067;&#x306F;&#x306A;&#x3044;&#x305F;&#x3081;&#x3001;&#x30A2;&#x30F3;&#x30C0;&#x30FC;&#x30B9;&#x30B3;&#x30A2;&#x306E;&#x63A5;&#x982D;&#x8F9E;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x3042;&#x306A;&#x305F;&#x306E;&#x62E1;&#x5F35;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x30AA;&#x30FC;&#x30D0;&#x30FC;&#x30E9;&#x30A4;&#x30C9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;
+<strong>&#x6C42;&#x3081;&#x3089;&#x308C;&#x3066;</strong>&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+When data is available, put it into the read queue by calling
+`readable.push(chunk)`.  If `push` returns false, then you should stop
+reading.  When `_read` is called again, you should start pushing more
+data.
+-->
+
+<p>&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x308C;&#x3070;&#x3001;<code>readable.push(chunk)</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x3067;
+&#x305D;&#x308C;&#x3092;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x8FFD;&#x52A0;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>push()</code> &#x304C; false &#x3092;&#x8FD4;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x3092;&#x6B62;&#x3081;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+<code>_read()</code> &#x304C;&#x518D;&#x3073;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x6642;&#x304C;&#x3001;&#x3055;&#x3089;&#x306B;&#x591A;&#x304F;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x8FFD;&#x52A0;&#x3092;&#x958B;&#x59CB;&#x3059;&#x3079;&#x304D;&#x6642;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+The `size` argument is advisory.  Implementations where a "read" is a
+single call that returns data can use this to know how much data to
+fetch.  Implementations where that is not relevant, such as TCP or
+TLS, may ignore this argument, and simply provide data whenever it
+becomes available.  There is no need, for example to "wait" until
+`size` bytes are available before calling [`stream.push(chunk)`][].
+-->
+
+<p><code>size</code> &#x5F15;&#x6570;&#x306F;&#x30A2;&#x30C9;&#x30D0;&#x30A4;&#x30B9;&#x7684;&#x3067;&#x3059;&#x3002;
+&quot;read()&quot; &#x304C;&#x4E00;&#x56DE;&#x306E;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3067;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x8FD4;&#x3059;&#x5B9F;&#x88C5;&#x3067;&#x306F;&#x3001;
+&#x3069;&#x308C;&#x3060;&#x3051;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x3079;&#x304D;&#x304B;&#x77E5;&#x308B;&#x305F;&#x3081;&#x306B;&#x3053;&#x308C;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+TCP&#x3084;TLS&#x306A;&#x3069;&#x3001;&#x305D;&#x308C;&#x306B;&#x95A2;&#x9023;&#x3057;&#x306A;&#x3044;&#x5B9F;&#x88C5;&#x3067;&#x306F;&#x3053;&#x306E;&#x5F15;&#x6570;&#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x3001;
+&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x3063;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x30B7;&#x30F3;&#x30D7;&#x30EB;&#x306B;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x305F;&#x3068;&#x3048;&#x3070; <a href="#stream_readable_push_chunk_encoding"><code>stream.push(chunk)</code></a> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3088;&#x308A;&#x524D;&#x306B;&#x3001;
+<code>size</code> &#x30D0;&#x30A4;&#x30C8;&#x304C;&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x308B;&#x307E;&#x3067;&#x300C;&#x5F85;&#x3064;&#x300D;&#x5FC5;&#x8981;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h4>readable.push(chunk, [encoding])<span><a class="mark" href="#stream_readable_push_chunk_encoding" id="stream_readable_push_chunk_encoding">#</a></span></h4>
+<!--
+* `chunk` {Buffer | null | String} Chunk of data to push into the read queue
+* `encoding` {String} Encoding of String chunks.  Must be a valid
+  Buffer encoding, such as `'utf8'` or `'ascii'`
+* return {Boolean} Whether or not more pushes should be performed
+-->
+
+<ul>
+<li><code>chunk</code> {Buffer | null | String} &#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x30D7;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x308B;&#x3001;
+&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;</li>
+<li><code>encoding</code> {String} &#x6587;&#x5B57;&#x5217;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3002;
+<code>&apos;utf8&apos;</code> &#x3084; <code>&apos;ascii&apos;</code> &#x306A;&#x3069;&#x3001;Buffer &#x306E;&#x6B63;&#x3057;&#x3044;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306E;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;</li>
+<li>return {Boolean} &#x3055;&#x3089;&#x306B;&#x30D7;&#x30C3;&#x30B7;&#x30E5;&#x3057;&#x3066;&#x3082;&#x3044;&#x3044;&#x304B;&#x3069;&#x3046;&#x304B;</li>
+</ul>
+<!--
+Note: **This function should be called by Readable implementors, NOT
+by consumers of Readable streams.**
+-->
+
+<p>&#x6CE8;&#x610F;: <strong>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; Readable &#x306E;&#x5B9F;&#x88C5;&#x304B;&#x3089;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3082;&#x306E;&#x3067;&#x3042;&#x308A;&#x3001;
+Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x5229;&#x7528;&#x8005;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;</strong>
+
+</p>
+<!--
+The `_read()` function will not be called again until at least one
+`push(chunk)` call is made.
+-->
+
+<p>&#x5C11;&#x306A;&#x304F;&#x3068;&#x3082;&#x4E00;&#x56DE;&#x306F; <code>push(chunk)</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x306A;&#x3044;&#x3068;&#x3001;<code>_read()</code> &#x95A2;&#x6570;&#x304C;
+&#x518D;&#x3073;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+The `Readable` class works by putting data into a read queue to be
+pulled out later by calling the `read()` method when the `'readable'`
+event fires.
+-->
+
+<p><code>Readable</code> &#x30AF;&#x30E9;&#x30B9;&#x306F;&#x3001;<code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3053;&#x3068;&#x3067;
+&#x5F8C;&#x304B;&#x3089;&#x53D6;&#x308A;&#x51FA;&#x3055;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x3001;<code>&apos;readable&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x751F;&#x6210;&#x6642;&#x306B;
+&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3066;&#x304A;&#x304F;&#x3053;&#x3068;&#x306B;&#x3088;&#x3063;&#x3066;&#x6A5F;&#x80FD;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The `push()` method will explicitly insert some data into the read
+queue.  If it is called with `null` then it will signal the end of the
+data (EOF).
+-->
+
+<p><code>push()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x660E;&#x793A;&#x7684;&#x306B;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x633F;&#x5165;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057; <code>null</code> &#x3068;&#x5171;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x305D;&#x308C;&#x306F;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F; (EOF) &#x3053;&#x3068;&#x3092;&#x4F1D;&#x3048;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This API is designed to be as flexible as possible.  For example,
+you may be wrapping a lower-level source which has some sort of
+pause/resume mechanism, and a data callback.  In those cases, you
+could wrap the low-level source object by doing something like this:
+-->
+
+<p>&#x3053;&#x306E; API &#x306F;&#x53EF;&#x80FD;&#x306A;&#x9650;&#x308A;&#x67D4;&#x8EDF;&#x306B;&#x8A2D;&#x8A08;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x4F8B;&#x3048;&#x3070;&#x3001;&#x3042;&#x308B;&#x7A2E;&#x306E;&#x4E2D;&#x65AD;&#xFF0F;&#x518D;&#x958B;&#x30E1;&#x30AB;&#x30CB;&#x30BA;&#x30E0;&#x3068;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x6301;&#x3064;&#x3001;
+&#x3088;&#x308A;&#x4F4E;&#x6C34;&#x6E96;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x30BD;&#x30FC;&#x30B9;&#x3092;&#x30E9;&#x30C3;&#x30D7;&#x3059;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x305D;&#x308C;&#x3089;&#x306E;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;&#x3053;&#x306E;&#x3088;&#x3046;&#x306B;&#x4F4E;&#x6C34;&#x6E96;&#x306E;&#x30BD;&#x30FC;&#x30B9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;
+&#x30E9;&#x30C3;&#x30D7;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">// source is an object with readStop() and readStart() methods,
+// and an `ondata` member that gets called when it has data, and
+// an `onend` member that gets called when the data is over.
+
+util.inherits(SourceWrapper, Readable);
+
+function SourceWrapper(options) {
+  Readable.call(this, options);
+
+  this._source = getLowlevelSourceObject();
+  var self = this;
+
+  // Every time there&apos;s data, we push it into the internal buffer.
+  this._source.ondata = function(chunk) {
+    // if push() returns false, then we need to stop reading from source
+    if (!self.push(chunk))
+      self._source.readStop();
+  };
+
+  // When the source ends, we push the EOF-signalling `null` chunk
+  this._source.onend = function() {
+    self.push(null);
+  };
+}
+
+// _read will be called when the stream wants to pull more data in
+// the advisory size argument is ignored in this case.
+SourceWrapper.prototype._read = function(size) {
+  this._source.readStart();
+};</code></pre>
+<h3>Class: stream.Writable<span><a class="mark" href="#stream_class_stream_writable_1" id="stream_class_stream_writable_1">#</a></span></h3>
+<!--type=class-->
+
+<!--
+`stream.Writable` is an abstract class designed to be extended with an
+underlying implementation of the [`_write(chunk, encoding, callback)`][] method.
+-->
+
+<p><code>stream.Writable</code> &#x306F;&#x62BD;&#x8C61;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3001;&#x4E0B;&#x5C64;&#x306E;&#x5B9F;&#x88C5;&#x3068;&#x3057;&#x3066;
+<a href="#stream_writable_write_chunk_encoding_callback_1"><code>_write(chunk, encoding, callback)</code></a> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;
+&#x62E1;&#x5F35;&#x3055;&#x308C;&#x308B;&#x3088;&#x3046;&#x306B;&#x8A2D;&#x8A08;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Please see above under [API for Stream Consumers][] for how to consume
+writable streams in your programs.  What follows is an explanation of
+how to implement Writable streams in your programs.
+-->
+
+<p>&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x4E2D;&#x3067; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;&#x5229;&#x7528;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x306B;&#x3064;&#x3044;&#x3066;&#x306F;&#x3001;
+&#x524D;&#x8FF0;&#x306E; <a href="#stream_api_for_stream_consumers">&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x5229;&#x7528;&#x8005;&#x306E;&#x305F;&#x3081;&#x306E; API</a> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x306E;&#x5F8C;&#x306B;&#x7D9A;&#x304F;&#x306E;&#x306F;&#x3001;&#x3042;&#x306A;&#x305F;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306E;&#x4E2D;&#x3067; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;
+&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x306E;&#x8AAC;&#x660E;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h4>new stream.Writable([options])<span><a class="mark" href="#stream_new_stream_writable_options" id="stream_new_stream_writable_options">#</a></span></h4>
+<!--
+* `options` {Object}
+  * `highWaterMark` {Number} Buffer level when [`write()`][] starts
+    returning false. Default=16kb
+  * `decodeStrings` {Boolean} Whether or not to decode strings into
+    Buffers before passing them to [`_write()`][].  Default=true
+  * `objectMode` {Boolean} Whether or not the `write(anyObj)` is
+    a valid operation. If set you can write arbitrary data instead
+    of only `Buffer` / `String` data.  Default=false
+-->
+
+<ul>
+<li><code>options</code> {Object} (&#x4EFB;&#x610F;)<ul>
+<li><code>highWaterMark</code> {Number} <a href="#stream_writable_write_chunk_encoding_callback"><code>write()</code></a> &#x304C; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x59CB;&#x3081;&#x308B;
+&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EC;&#x30D9;&#x30EB;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; 16kb&#x3002;</li>
+<li><code>decodeStrings</code> {Boolean} &#x6587;&#x5B57;&#x5217;&#x304C; <a href="#stream_writable_write_chunk_encoding_callback_1"><code>_write()</code></a> &#x306B;&#x6E21;&#x3055;&#x308C;&#x308B;&#x524D;&#x306B;
+&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x30C7;&#x30B3;&#x30FC;&#x30C9;&#x3059;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>true</code>&#x3002;</li>
+<li><code>objectMode</code> {Boolean} <code>write(anyObj)</code> &#x304C;&#x59A5;&#x5F53;&#x306A;&#x64CD;&#x4F5C;&#x304B;&#x3069;&#x3046;&#x304B;&#x3002;
+&#x3082;&#x3057; <code>true</code> &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3001;<code>Buffer</code> / <code>String</code> &#x30C7;&#x30FC;&#x30BF;&#x306E;&#x307F;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;
+&#x4EFB;&#x610F;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x66F8;&#x304D;&#x8FBC;&#x3080;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code>&#x3002;</li>
+</ul>
+</li>
+</ul>
+<!--
+In classes that extend the Writable class, make sure to call the
+constructor so that the buffering settings can be properly
+initialized.
+-->
+
+<p><code>Writable</code> &#x30AF;&#x30E9;&#x30B9;&#x3092;&#x62E1;&#x5F35;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;&#x3001;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x306E;&#x8A2D;&#x5B9A;&#x3092;&#x78BA;&#x5B9F;&#x306B;
+&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;&#x5FC5;&#x305A;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h4>writable._write(chunk, encoding, callback)<span><a class="mark" href="#stream_writable_write_chunk_encoding_callback_1" id="stream_writable_write_chunk_encoding_callback_1">#</a></span></h4>
+<!--
+* `chunk` {Buffer | String} The chunk to be written.  Will always
+  be a buffer unless the `decodeStrings` option was set to `false`.
+* `encoding` {String} If the chunk is a string, then this is the
+  encoding type.  Ignore chunk is a buffer.  Note that chunk will
+  **always** be a buffer unless the `decodeStrings` option is
+  explicitly set to `false`.
+* `callback` {Function} Call this function (optionally with an error
+  argument) when you are done processing the supplied chunk.
+-->
+
+<ul>
+<li><code>chunk</code> {Buffer | Array} &#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x3002;
+<code>decodeStrings</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x304C; <code>false</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x3044;&#x9650;&#x308A;&#x5E38;&#x306B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3067;&#x3059;&#x3002;</li>
+<li><code>encoding</code> {String} &#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x304C;&#x6587;&#x5B57;&#x5217;&#x306E;&#x5834;&#x5408;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x65B9;&#x5F0F;&#x3002;
+&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x5834;&#x5408;&#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>decodeStrings</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x660E;&#x793A;&#x7684;&#x306B; <code>false</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x3044;&#x9650;&#x308A;&#x3001;
+&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x306F; <em>&#x5E38;&#x306B;</em> &#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3067;&#x3042;&#x308B;&#x3079;&#x304D;&#x4E8B;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</li>
+<li><code>callback</code> {Function} &#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x3092;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x51E6;&#x7406;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x6642;&#x306B;&#x3001;
+(&#x4EFB;&#x610F;&#x306E;&#x30A8;&#x30E9;&#x30FC;&#x5F15;&#x6570;&#x3068;&#x5171;&#x306B;) &#x3053;&#x306E;&#x95A2;&#x6570;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</li>
+</ul>
+<!--
+All Writable stream implementations must provide a [`_write()`][]
+method to send data to the underlying resource.
+-->
+
+<p>&#x5168;&#x3066;&#x306E; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;&#x4E0B;&#x5C64;&#x306E;&#x30EA;&#x30BD;&#x30FC;&#x30B9;&#x306B;&#x30C7;&#x30FC;&#x30BF;&#x3092;
+&#x9001;&#x308B;&#x305F;&#x3081;&#x306B; <a href="#stream_writable_write_chunk_encoding_callback_1"><code>_write()</code></a> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Note: **This function MUST NOT be called directly.**  It should be
+implemented by child classes, and called by the internal Writable
+class methods only.
+-->
+
+<p>&#x6CE8;&#x610F;: <strong>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x306F;&#x3044;&#x3051;&#x307E;&#x305B;&#x3093;&#x3002;</strong>
+&#x3053;&#x308C;&#x306F;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x5B9F;&#x88C5;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3042;&#x308A;&#x3001;Writable &#x30AF;&#x30E9;&#x30B9;&#x306E;&#x5185;&#x90E8;&#x304B;&#x3089;&#x306E;&#x307F;
+&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Call the callback using the standard `callback(error)` pattern to
+signal that the write completed successfully or with an error.
+-->
+
+<p>&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306F;&#x51FA;&#x529B;&#x304C;&#x6210;&#x529F;&#x3057;&#x3066;&#x5B8C;&#x4E86;&#x3057;&#x305F;&#x304B;&#x3001;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F;&#x304B;&#x3092;&#x4F1D;&#x3048;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;
+&#x6A19;&#x6E96;&#x7684;&#x306A; <code>callback(error)</code> &#x30D1;&#x30BF;&#x30FC;&#x30F3;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If the `decodeStrings` flag is set in the constructor options, then
+`chunk` may be a string rather than a Buffer, and `encoding` will
+indicate the sort of string that it is.  This is to support
+implementations that have an optimized handling for certain string
+data encodings.  If you do not explicitly set the `decodeStrings`
+option to `false`, then you can safely ignore the `encoding` argument,
+and assume that `chunk` will always be a Buffer.
+-->
+
+<p>&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>decodeStrings</code> &#x30D5;&#x30E9;&#x30B0;&#x304C;&#x30BB;&#x30C3;&#x30C8;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;
+<code>chunk</code> &#x3092; Buffer &#x3067;&#x306F;&#x306A;&#x304F;&#x6587;&#x5B57;&#x5217;&#x306B;&#x3057;&#x3001;<code>encoding</code> &#x3067;&#x305D;&#x306E;&#x6587;&#x5B57;&#x5217;&#x306E;
+&#x7A2E;&#x985E;&#x3092;&#x793A;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;&#x5B9F;&#x88C5;&#x304C;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3092;&#x6700;&#x9069;&#x5316;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x305F;&#x3081;&#x3067;&#x3059;&#x3002;
+<code>decodeStrings</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x660E;&#x793A;&#x7684;&#x306B; <code>false</code> &#x306B;&#x8A2D;&#x5B9A;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;
+<code>endocing</code> &#x5F15;&#x6570;&#x306F;&#x5B89;&#x5168;&#x306B;&#x7121;&#x8996;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x3057;&#x3066; <code>chunk</code> &#x306F;&#x5E38;&#x306B; Buffer &#x3067;&#x3042;&#x308B;&#x3068;&#x898B;&#x306A;&#x305B;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This method is prefixed with an underscore because it is internal to
+the class that defines it, and should not be called directly by user
+programs.  However, you **are** expected to override this method in
+your own extension classes.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x3053;&#x308C;&#x3092;&#x5B9A;&#x7FA9;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x5185;&#x90E8;&#x306E;&#x3082;&#x306E;&#x3067;&#x3042;&#x308A;&#x3001;&#x30E6;&#x30FC;&#x30B6;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304B;&#x3089;
+&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3082;&#x306E;&#x3067;&#x306F;&#x306A;&#x3044;&#x305F;&#x3081;&#x3001;&#x30A2;&#x30F3;&#x30C0;&#x30FC;&#x30B9;&#x30B3;&#x30A2;&#x306E;&#x63A5;&#x982D;&#x8F9E;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x3042;&#x306A;&#x305F;&#x306E;&#x62E1;&#x5F35;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x30AA;&#x30FC;&#x30D0;&#x30FC;&#x30E9;&#x30A4;&#x30C9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;
+<strong>&#x6C42;&#x3081;&#x3089;&#x308C;&#x3066;</strong>&#x3044;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h3>Class: stream.Duplex<span><a class="mark" href="#stream_class_stream_duplex_1" id="stream_class_stream_duplex_1">#</a></span></h3>
+<!--type=class-->
+
+<!--
+A "duplex" stream is one that is both Readable and Writable, such as a
+TCP socket connection.
+-->
+
+<p>&quot;duplex&quot; &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;TCP &#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x3088;&#x3046;&#x306B;
+Readable &#x3067;&#x3042;&#x308A; Writable &#x3067;&#x3082;&#x3042;&#x308B;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x4E00;&#x7A2E;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Note that `stream.Duplex` is an abstract class designed to be extended
+with an underlying implementation of the `_read(size)` and
+[`_write(chunk, encoding, callback)`][] methods as you would with a
+Readable or Writable stream class.
+-->
+
+<p><code>stream.Duplex</code> &#x306F;&#x3001;Readable &#x304A;&#x3088;&#x3073; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x30AF;&#x30E9;&#x30B9;&#x3068;&#x540C;&#x69D8;&#x3001;
+&#x4E0B;&#x5C64;&#x306E;&#x5B9F;&#x88C5;&#x3067;&#x3042;&#x308B; <a href="#stream_readable_read_size_1"><code>_read(size)</code></a> &#x304A;&#x3088;&#x3073;
+<a href="#stream_writable_write_chunk_encoding_callback_1"><code>_write(chunk, encoding, callback)</code></a> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306B;&#x3088;&#x3063;&#x3066;&#x62E1;&#x5F35;&#x3055;&#x308C;&#x308B;&#x3088;&#x3046;&#x306B;
+&#x8A2D;&#x8A08;&#x3055;&#x308C;&#x305F;&#x62BD;&#x8C61;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3042;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Since JavaScript doesn't have multiple prototypal inheritance, this
+class prototypally inherits from Readable, and then parasitically from
+Writable.  It is thus up to the user to implement both the lowlevel
+`_read(n)` method as well as the lowlevel
+[`_write(chunk, encoding, callback)`][] method on extension duplex classes.
+-->
+
+<p>JavaScript &#x306F;&#x8907;&#x6570;&#x306E;&#x30D7;&#x30ED;&#x30C8;&#x30BF;&#x30A4;&#x30D7;&#x7D99;&#x627F;&#x3092;&#x6301;&#x3064;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x306A;&#x3044;&#x305F;&#x3081;&#x3001;
+&#x3053;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x306F; Readable &#x304B;&#x3089;&#x30D7;&#x30ED;&#x30C8;&#x30BF;&#x30A4;&#x30D7;&#x3092;&#x7D99;&#x627F;&#x3057;&#x305F;&#x3046;&#x3048;&#x3067;&#x3001;
+Writable &#x304B;&#x3089;&#x5BC4;&#x751F;&#x7684;&#x306A;&#x65B9;&#x6CD5; (&#x30D7;&#x30ED;&#x30C8;&#x30BF;&#x30A4;&#x30D7;&#x30E1;&#x30F3;&#x30D0;&#x30FC;&#x306E;&#x30B3;&#x30D4;&#x30FC;) &#x3092;&#x884C;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x4F4E;&#x6C34;&#x6E96;&#x306E; <a href="#stream_readable_read_size_1"><code>_read(size)</code></a> &#x304A;&#x3088;&#x3073; <a href="#stream_writable_write_chunk_encoding_callback_1"><code>_write(chunk, encoding, callback)</code></a>
+&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x3001;Duplex &#x30AF;&#x30E9;&#x30B9;&#x3092;&#x62E1;&#x5F35;&#x3059;&#x308B;&#x30E6;&#x30FC;&#x30B6;&#x306E;&#x8CAC;&#x52D9;&#x3067;&#x3059;&#x3002;
+
+</p>
+<h4>new stream.Duplex(options)<span><a class="mark" href="#stream_new_stream_duplex_options" id="stream_new_stream_duplex_options">#</a></span></h4>
+<!--
+* `options` {Object} Passed to both Writable and Readable
+  constructors. Also has the following fields:
+  * `allowHalfOpen` {Boolean} Default=true.  If set to `false`, then
+    the stream will automatically end the readable side when the
+    writable side ends and vice versa.
+-->
+
+<ul>
+<li><code>options</code> {Object} Writable &#x304A;&#x3088;&#x3073; Readable &#x306E;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x306B;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x4EE5;&#x4E0B;&#x306E;&#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x3092;&#x6301;&#x3064;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;:<ul>
+<li><code>allowHalfOpen</code> {Boolean} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>true</code>&#x3002;
+&#x3082;&#x3057; <code>false</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5074;&#x304C;&#x9589;&#x3058;&#x3089;&#x308C;&#x308B;&#x3068;
+&#x81EA;&#x52D5;&#x7684;&#x306B;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5074;&#x3082;&#x9589;&#x3058;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+</li>
+</ul>
+<!--
+In classes that extend the Duplex class, make sure to call the
+constructor so that the buffering settings can be properly
+initialized.
+-->
+
+<p><code>Duplex</code> &#x30AF;&#x30E9;&#x30B9;&#x3092;&#x62E1;&#x5F35;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;&#x3001;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x306E;&#x8A2D;&#x5B9A;&#x3092;&#x78BA;&#x5B9F;&#x306B;
+&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;&#x5FC5;&#x305A;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+
+</p>
+<h3>Class: stream.Transform<span><a class="mark" href="#stream_class_stream_transform_1" id="stream_class_stream_transform_1">#</a></span></h3>
+<!--
+A "transform" stream is a duplex stream where the output is causally
+connected in some way to the input, such as a [zlib][] stream or a
+[crypto][] stream.
+-->
+
+<p>&quot;Transform&quot; &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;<a href="zlib.html">zlib</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3084; <a href="crypto.html">crypto</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x3088;&#x3046;&#x306B;&#x3001;
+&#x5165;&#x529B;&#x304C;&#x4F55;&#x3089;&#x304B;&#x306E;&#x65B9;&#x6CD5;&#x3067;&#x51FA;&#x529B;&#x306E;&#x5143;&#x3068;&#x306A;&#x3063;&#x3066;&#x3044;&#x308B;&#x3088;&#x3046;&#x306A; Duplex &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+There is no requirement that the output be the same size as the input,
+the same number of chunks, or arrive at the same time.  For example, a
+Hash stream will only ever have a single chunk of output which is
+provided when the input is ended.  A zlib stream will produce output
+that is either much smaller or much larger than its input.
+-->
+
+<p>&#x51FA;&#x529B;&#x306F;&#x3001;&#x5165;&#x529B;&#x3068;&#x540C;&#x3058;&#x30B5;&#x30A4;&#x30BA;&#x3001;&#x540C;&#x3058;&#x6570;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x3001;&#x540C;&#x6642;&#x306B;&#x5230;&#x7740;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;
+&#x8981;&#x6C42;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;Hash &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x5165;&#x529B;&#x304C;&#x7D42;&#x4E86;&#x3059;&#x308B;&#x3068;&#x4E00;&#x3064;&#x3060;&#x3051;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x3092;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
+zlib &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;&#x5165;&#x529B;&#x3088;&#x308A;&#x5C0F;&#x3055;&#x3044;&#x304B;&#x3001;&#x307E;&#x305F;&#x306F;&#x3088;&#x308A;&#x5927;&#x304D;&#x3044;&#x51FA;&#x529B;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Rather than implement the [`_read()`][] and [`_write()`][] methods, Transform
+classes must implement the `_transform()` method, and may optionally
+also implement the `_flush()` method.  (See below.)
+-->
+
+<p><a href="#stream_readable_read_size_1"><code>_read()</code></a> &#x304A;&#x3088;&#x3073; <a href="#stream_writable_write_chunk_encoding_callback_1"><code>_write()</code></a> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306E;&#x4EE3;&#x308F;&#x308A;&#x306B;&#x3001;Transform &#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;
+<code>_transform()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x307E;&#x305F;&#x3001;&#x4EFB;&#x610F;&#x3067; <code>_flush()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059; (&#x5F8C;&#x8FF0;)&#x3002;
+
+</p>
+<h4>new stream.Transform([options])<span><a class="mark" href="#stream_new_stream_transform_options" id="stream_new_stream_transform_options">#</a></span></h4>
+<!--
+* `options` {Object} Passed to both Writable and Readable
+  constructors.
+-->
+
+<ul>
+<li><code>options</code> {Object} Writable &#x304A;&#x3088;&#x3073; Readable &#x306E;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x306B;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+In classes that extend the Transform class, make sure to call the
+constructor so that the buffering settings can be properly
+initialized.
+-->
+
+<p><code>Transform</code> &#x30AF;&#x30E9;&#x30B9;&#x3092;&#x62E1;&#x5F35;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;&#x3001;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x306E;&#x8A2D;&#x5B9A;&#x3092;&#x78BA;&#x5B9F;&#x306B;
+&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;&#x5FC5;&#x305A;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h4>transform._transform(chunk, encoding, callback)<span><a class="mark" href="#stream_transform_transform_chunk_encoding_callback" id="stream_transform_transform_chunk_encoding_callback">#</a></span></h4>
+<!--
+* `chunk` {Buffer | String} The chunk to be transformed.  Will always
+  be a buffer unless the `decodeStrings` option was set to `false`.
+* `encoding` {String} If the chunk is a string, then this is the
+  encoding type.  (Ignore if `decodeStrings` chunk is a buffer.)
+* `callback` {Function} Call this function (optionally with an error
+  argument) when you are done processing the supplied chunk.
+-->
+
+<ul>
+<li><code>chunk</code> {Buffer | Array} &#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x3002;
+<code>decodeStrings</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x304C; <code>false</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x3044;&#x9650;&#x308A;&#x5E38;&#x306B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3067;&#x3059;&#x3002;</li>
+<li><code>encoding</code> {String} &#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x304C;&#x6587;&#x5B57;&#x5217;&#x306E;&#x5834;&#x5408;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x65B9;&#x5F0F;
+(&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x304C;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x5834;&#x5408;&#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;)&#x3002;</li>
+<li><code>callback</code> {Function} &#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x3092;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x51E6;&#x7406;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x6642;&#x306B;&#x3001;
+(&#x4EFB;&#x610F;&#x306E;&#x30A8;&#x30E9;&#x30FC;&#x5F15;&#x6570;&#x3068;&#x5171;&#x306B;) &#x3053;&#x306E;&#x95A2;&#x6570;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</li>
+</ul>
+<!--
+Note: **This function MUST NOT be called directly.**  It should be
+implemented by child classes, and called by the internal Transform
+class methods only.
+-->
+
+<p>&#x6CE8;&#x610F;: <strong>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x306F;&#x3044;&#x3051;&#x307E;&#x305B;&#x3093;&#x3002;</strong>
+&#x3053;&#x308C;&#x306F;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x5B9F;&#x88C5;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3042;&#x308A;&#x3001;Transform &#x30AF;&#x30E9;&#x30B9;&#x306E;&#x5185;&#x90E8;&#x304B;&#x3089;&#x306E;&#x307F;
+&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+All Transform stream implementations must provide a `_transform`
+method to accept input and produce output.
+-->
+
+<p>&#x5168;&#x3066;&#x306E; Transform &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x5B9F;&#x88C5;&#x306F;&#x3001;&#x5165;&#x529B;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x3066;&#x51FA;&#x529B;&#x3092;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;
+<code>_transform()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+`_transform` should do whatever has to be done in this specific
+Transform class, to handle the bytes being written, and pass them off
+to the readable portion of the interface.  Do asynchronous I/O,
+process things, and so on.
+-->
+
+<p>&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x308B;&#x30D0;&#x30A4;&#x30C8;&#x3092;&#x51E6;&#x7406;&#x3057;&#x3001;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306A;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306B;&#x6E21;&#x3059;&#x306A;&#x3069;&#x3001;
+Transform &#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306F;&#x5168;&#x3066; <code>_transform()</code>
+&#x3067;&#x884C;&#x308F;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;&#x975E;&#x540C;&#x671F; I/O&#x3001;&#x4F55;&#x304B;&#x306E;&#x51E6;&#x7406;&#x3001;&#x305D;&#x306E;&#x4ED6;&#x3002;
+
+</p>
+<!--
+Call `transform.push(outputChunk)` 0 or more times to generate output
+from this input chunk, depending on how much data you want to output
+as a result of this chunk.
+-->
+
+<p>&#x3053;&#x306E;&#x5165;&#x529B;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x304B;&#x3089;&#x306E;&#x51FA;&#x529B;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;<code>transform.push(outputChunk)</code>
+&#x3092; 0 &#x56DE;&#x4EE5;&#x4E0A;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x3053;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x306E;&#x7D50;&#x679C;&#x3068;&#x3057;&#x3066;&#x3069;&#x308C;&#x3060;&#x3051;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x51FA;&#x529B;&#x3057;&#x305F;&#x3044;&#x306E;&#x304B;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Call the callback function only when the current chunk is completely
+consumed.  Note that there may or may not be output as a result of any
+particular input chunk.
+-->
+
+<p>&#x73FE;&#x5728;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x306E;&#x51E6;&#x7406;&#x304C;&#x5B8C;&#x5168;&#x306B;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x306E;&#x307F;&#x3001;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x95A2;&#x6570;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x7279;&#x5B9A;&#x306E;&#x5165;&#x529B;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x304B;&#x3089;&#x306E;&#x7D50;&#x679C;&#x3068;&#x3057;&#x3066;&#x3001;&#x51FA;&#x529B;&#x304C;&#x3042;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3057;&#x3001;
+&#x7121;&#x3044;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+This method is prefixed with an underscore because it is internal to
+the class that defines it, and should not be called directly by user
+programs.  However, you **are** expected to override this method in
+your own extension classes.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x3053;&#x308C;&#x3092;&#x5B9A;&#x7FA9;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x5185;&#x90E8;&#x306E;&#x3082;&#x306E;&#x3067;&#x3042;&#x308A;&#x3001;&#x30E6;&#x30FC;&#x30B6;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304B;&#x3089;
+&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3082;&#x306E;&#x3067;&#x306F;&#x306A;&#x3044;&#x305F;&#x3081;&#x3001;&#x30A2;&#x30F3;&#x30C0;&#x30FC;&#x30B9;&#x30B3;&#x30A2;&#x306E;&#x63A5;&#x982D;&#x8F9E;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x3042;&#x306A;&#x305F;&#x306E;&#x62E1;&#x5F35;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x30AA;&#x30FC;&#x30D0;&#x30FC;&#x30E9;&#x30A4;&#x30C9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;
+<strong>&#x6C42;&#x3081;&#x3089;&#x308C;&#x3066;</strong>&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h4>transform._flush(callback)<span><a class="mark" href="#stream_transform_flush_callback" id="stream_transform_flush_callback">#</a></span></h4>
+<!--
+* `callback` {Function} Call this function (optionally with an error
+  argument) when you are done flushing any remaining data.
+-->
+
+<ul>
+<li><code>callback</code> {Function} &#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x306E;&#x51E6;&#x7406;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x3001;
+(&#x4EFB;&#x610F;&#x306E;&#x30A8;&#x30E9;&#x30FC;&#x5F15;&#x6570;&#x3068;&#x5171;&#x306B;) &#x3053;&#x306E;&#x95A2;&#x6570;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</li>
+</ul>
+<!--
+Note: **This function MUST NOT be called directly.**  It MAY be implemented
+by child classes, and if so, will be called by the internal Transform
+class methods only.
+-->
+
+<p>&#x6CE8;&#x610F;: <strong>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x306F;&#x3044;&#x3051;&#x307E;&#x305B;&#x3093;&#x3002;</strong>
+&#x3053;&#x308C;&#x306F;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x5B9F;&#x88C5;&#x3055;&#x308C;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x305A;&#x3001;Transform &#x30AF;&#x30E9;&#x30B9;&#x306E;&#x5185;&#x90E8;&#x304B;&#x3089;&#x306E;&#x307F;
+&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+In some cases, your transform operation may need to emit a bit more
+data at the end of the stream.  For example, a `Zlib` compression
+stream will store up some internal state so that it can optimally
+compress the output.  At the end, however, it needs to do the best it
+can with what is left, so that the data will be complete.
+-->
+
+<p>&#x5834;&#x5408;&#x306B;&#x3088;&#x3063;&#x3066;&#x306F;&#x3001;&#x5909;&#x63DB;&#x64CD;&#x4F5C;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x7D42;&#x7AEF;&#x3067;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;
+&#x751F;&#x6210;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;<code>Zlib</code> &#x5727;&#x7E2E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x51FA;&#x529B;&#x3092;&#x6700;&#x9069;&#x306B;&#x5727;&#x7E2E;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;
+&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x5185;&#x90E8;&#x72B6;&#x614B;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x4E00;&#x65B9;&#x3001;&#x7D42;&#x7AEF;&#x3067;&#x306F;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x5B8C;&#x5168;&#x306A;&#x3082;&#x306E;&#x306B;&#x306A;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;
+&#x6B8B;&#x3055;&#x308C;&#x305F;&#x3082;&#x306E;&#x306B;&#x6700;&#x5584;&#x3092;&#x5C3D;&#x304F;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+In those cases, you can implement a `_flush` method, which will be
+called at the very end, after all the written data is consumed, but
+before emitting `end` to signal the end of the readable side.  Just
+like with `_transform`, call `transform.push(chunk)` zero or more
+times, as appropriate, and call `callback` when the flush operation is
+complete.
+-->
+
+<p>&#x3053;&#x306E;&#x5834;&#x5408;&#x3001;&#x6700;&#x5F8C;&#x306E;&#x6700;&#x5F8C; (&#x66F8;&#x304D;&#x8FBC;&#x307E;&#x308C;&#x305F;&#x5168;&#x3066;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x6D88;&#x8CBB;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3001;
+&#x305F;&#x3060;&#x3057;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5074;&#x306E;&#x7D42;&#x4E86;&#x3092;&#x77E5;&#x3089;&#x305B;&#x308B; <code>&apos;end&apos;</code> &#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x308B;&#x524D;) &#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;
+<code>_flush()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+<code>_transform()</code> &#x3068;&#x540C;&#x69D8;&#x3001;<code>transform.push(chunk)</code> &#x3092;&#x4F55;&#x5EA6; (0 &#x56DE;&#x4EE5;&#x4E0A;) &#x3067;&#x3082;
+&#x9069;&#x5207;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3001;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x64CD;&#x4F5C;&#x304C;&#x5B8C;&#x4E86;&#x3057;&#x305F;&#x6642;&#x306B; <code>callback</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+This method is prefixed with an underscore because it is internal to
+the class that defines it, and should not be called directly by user
+programs.  However, you **are** expected to override this method in
+your own extension classes.
+-->
+
+<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x3053;&#x308C;&#x3092;&#x5B9A;&#x7FA9;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;&#x5185;&#x90E8;&#x306E;&#x3082;&#x306E;&#x3067;&#x3042;&#x308A;&#x3001;&#x30E6;&#x30FC;&#x30B6;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x304B;&#x3089;
+&#x76F4;&#x63A5;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3079;&#x304D;&#x3082;&#x306E;&#x3067;&#x306F;&#x306A;&#x3044;&#x305F;&#x3081;&#x3001;&#x30A2;&#x30F3;&#x30C0;&#x30FC;&#x30B9;&#x30B3;&#x30A2;&#x306E;&#x63A5;&#x982D;&#x8F9E;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x3042;&#x306A;&#x305F;&#x306E;&#x62E1;&#x5F35;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x306F;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x30AA;&#x30FC;&#x30D0;&#x30FC;&#x30E9;&#x30A4;&#x30C9;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;
+<strong>&#x6C42;&#x3081;&#x3089;&#x308C;&#x3066;</strong>&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h4>Example: <code>SimpleProtocol</code> parser v2<span><a class="mark" href="#stream_example_simpleprotocol_parser_v2" id="stream_example_simpleprotocol_parser_v2">#</a></span></h4>
+<!--
+The example above of a simple protocol parser can be implemented
+simply by using the higher level [Transform][] stream class, similar to
+the `parseHeader` and `SimpleProtocol v1` examples above.
+-->
+
+<p>&#x524D;&#x8FF0;&#x3057;&#x305F;&#x5358;&#x7D14;&#x306A;&#x30D7;&#x30ED;&#x30C8;&#x30B3;&#x30EB;&#x30D1;&#x30FC;&#x30B5;&#x306E;&#x4F8B;&#x306F;&#x3001;&#x3088;&#x308A;&#x9AD8;&#x6C34;&#x6E96;&#x306A; <a href="#stream_class_stream_transform">Transform</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x30AF;&#x30E9;&#x30B9;&#x3092;
+&#x4F7F;&#x3046;&#x3053;&#x3068;&#x3067;&#x3001;&#x3055;&#x3089;&#x306B;&#x30B7;&#x30F3;&#x30D7;&#x30EB;&#x306B;&#x5B9F;&#x88C5;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x524D;&#x8FF0;&#x306E; <code>parseHeader</code> &#x304A;&#x3088;&#x3073; <code>SimpleProtocol v1</code> &#x3068;&#x3088;&#x304F;&#x4F3C;&#x305F;&#x4F8B;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+In this example, rather than providing the input as an argument, it
+would be piped into the parser, which is a more idiomatic Node stream
+approach.
+-->
+
+<p>&#x3053;&#x306E;&#x4F8B;&#x3067;&#x306F;&#x3001;&#x5165;&#x529B;&#x3092;&#x5F15;&#x6570;&#x3067;&#x4E0E;&#x3048;&#x308B;&#x306E;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;Node &#x306E;&#x30B9;&#x30C8;&#x30FC;&#x30E0;&#x306B;&#x304A;&#x3051;&#x308B;
+&#x3088;&#x308A;&#x6163;&#x7528;&#x7684;&#x306A;&#x30A2;&#x30D7;&#x30ED;&#x30FC;&#x30C1;&#x3068;&#x3057;&#x3066;&#x30D1;&#x30FC;&#x30B5;&#x306B;&#x30D1;&#x30A4;&#x30D7;&#x3067;&#x9001;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">var util = require(&apos;util&apos;);
+var Transform = require(&apos;stream&apos;).Transform;
+util.inherits(SimpleProtocol, Transform);
+
+function SimpleProtocol(options) {
+  if (!(this instanceof SimpleProtocol))
+    return new SimpleProtocol(options);
+
+  Transform.call(this, options);
+  this._inBody = false;
+  this._sawFirstCr = false;
+  this._rawHeader = [];
+  this.header = null;
+}
+
+SimpleProtocol.prototype._transform = function(chunk, encoding, done) {
+  if (!this._inBody) {
+    // check if the chunk has a \n\n
+    var split = -1;
+    for (var i = 0; i &lt; chunk.length; i++) {
+      if (chunk[i] === 10) { // &apos;\n&apos;
+        if (this._sawFirstCr) {
+          split = i;
+          break;
+        } else {
+          this._sawFirstCr = true;
+        }
+      } else {
+        this._sawFirstCr = false;
+      }
+    }
+
+    if (split === -1) {
+      // still waiting for the \n\n
+      // stash the chunk, and try again.
+      this._rawHeader.push(chunk);
+    } else {
+      this._inBody = true;
+      var h = chunk.slice(0, split);
+      this._rawHeader.push(h);
+      var header = Buffer.concat(this._rawHeader).toString();
+      try {
+        this.header = JSON.parse(header);
+      } catch (er) {
+        this.emit(&apos;error&apos;, new Error(&apos;invalid simple protocol data&apos;));
+        return;
+      }
+      // and let them know that we are done parsing the header.
+      this.emit(&apos;header&apos;, this.header);
+
+      // now, because we got some extra data, emit this first.
+      this.push(chunk.slice(split));
+    }
+  } else {
+    // from there on, just provide the data to our consumer as-is.
+    this.push(chunk);
+  }
+  done();
+};
+
+// Usage:
+// var parser = new SimpleProtocol();
+// source.pipe(parser)
+// Now parser is a readable stream that will emit &apos;header&apos;
+// with the parsed header data.</code></pre>
+<h3>Class: stream.PassThrough<span><a class="mark" href="#stream_class_stream_passthrough" id="stream_class_stream_passthrough">#</a></span></h3>
+<!--
+This is a trivial implementation of a [Transform][] stream that simply
+passes the input bytes across to the output.  Its purpose is mainly
+for examples and testing, but there are occasionally use cases where
+it can come in handy as a building block for novel sorts of streams.
+-->
+
+<p>&#x3053;&#x308C;&#x306F; <a href="#stream_class_stream_transform">Transform</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x53D6;&#x308B;&#x306B;&#x8DB3;&#x3089;&#x306A;&#x3044;&#x5B9F;&#x88C5;&#x3067;&#x3001;
+&#x5165;&#x529B;&#x3057;&#x305F;&#x30D0;&#x30A4;&#x30C8;&#x5217;&#x3092;&#x51FA;&#x529B;&#x306B;&#x5358;&#x7D14;&#x306B;&#x6E21;&#x3059;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306E;&#x4E3B;&#x306A;&#x76EE;&#x7684;&#x306F;&#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x53CA;&#x3073;&#x30C6;&#x30B9;&#x30C8;&#x3067;&#x3059;&#x304C;&#x3001;&#x65B0;&#x3057;&#x3044;&#x7A2E;&#x985E;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x305F;&#x3081;&#x306E;
+&#x30D3;&#x30EB;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x3068;&#x3057;&#x3066;&#x3001;&#x4F55;&#x304B;&#x3068;&#x4FBF;&#x5229;&#x3068;&#x306A;&#x308B;&#x30E6;&#x30FC;&#x30B9;&#x30B1;&#x30FC;&#x30B9;&#x304C;&#x6642;&#x6298;&#x5B58;&#x5728;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>Streams: Under the Hood<span><a class="mark" href="#stream_streams_under_the_hood" id="stream_streams_under_the_hood">#</a></span></h2>
+<!--type=misc-->
+
+<h3>Buffering<span><a class="mark" href="#stream_buffering" id="stream_buffering">#</a></span></h3>
+<!--type=misc-->
+
+<!--
+Both Writable and Readable streams will buffer data on an internal
+object called `_writableState.buffer` or `_readableState.buffer`,
+respectively.
+-->
+
+<p>Readable &#x53CA;&#x3073; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x305D;&#x308C;&#x305E;&#x308C;&#x3001;<code>_writableState.buffer</code> &#x307E;&#x305F;&#x306F;
+<code>_readableState.buffer</code> &#x3068;&#x547C;&#x3070;&#x308C;&#x308B;&#x5185;&#x90E8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x30C7;&#x30FC;&#x30BF;&#x3092;
+&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The amount of data that will potentially be buffered depends on the
+`highWaterMark` option which is passed into the constructor.
+-->
+
+<p>&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x91CF;&#x306F;&#x3001;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x306B;&#x6E21;&#x3055;&#x308C;&#x308B; <code>highWaterMark</code>
+&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x4F9D;&#x5B58;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Buffering in Readable streams happens when the implementation calls
+[`stream.push(chunk)`][].  If the consumer of the Stream does not call
+`stream.read()`, then the data will sit in the internal queue until it
+is consumed.
+-->
+
+<p>Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x304A;&#x3051;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x306F;&#x3001;&#x5B9F;&#x88C5;&#x304C; <a href="#stream_readable_push_chunk_encoding"><code>stream.push(chunk)</code></a>
+&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x305F;&#x6642;&#x306B;&#x8D77;&#x3053;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x5229;&#x7528;&#x8005;&#x304C; <code>stream.read()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x3044;&#x3068;&#x3001;
+&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x305D;&#x308C;&#x304C;&#x6D88;&#x8CBB;&#x3055;&#x308C;&#x308B;&#x307E;&#x3067;&#x5185;&#x90E8;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x7559;&#x307E;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Buffering in Writable streams happens when the user calls
+[`stream.write(chunk)`][] repeatedly, even when `write()` returns `false`.
+-->
+
+<p>Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x304A;&#x3051;&#x308B;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x306F;&#x3001;&#x5229;&#x7528;&#x8005;&#x304C; <a href="#stream_writable_write_chunk_encoding_callback"><code>stream.write(chunk)</code></a>
+&#x3092;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3068;&#x3001;<code>write()</code> &#x304C; <code>false</code> &#x3092;&#x8FD4;&#x3057;&#x305F;&#x5834;&#x5408;&#x3067;&#x3082;&#x8D77;&#x3053;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The purpose of streams, especially with the `pipe()` method, is to
+limit the buffering of data to acceptable levels, so that sources and
+destinations of varying speed will not overwhelm the available memory.
+-->
+
+<p>&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3001;&#x7279;&#x306B; <code>pipe()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306E;&#x76EE;&#x7684;&#x306F;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3092;
+&#x8A31;&#x5BB9;&#x3067;&#x304D;&#x308B;&#x30EC;&#x30D9;&#x30EB;&#x306B;&#x5236;&#x9650;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;&#x305D;&#x306E;&#x305F;&#x3081;&#x3001;&#x69D8;&#x3005;&#x306A;&#x901F;&#x5EA6;&#x306E;&#x5165;&#x529B;&#x5143;&#x3068;&#x51FA;&#x529B;&#x5148;&#x3067;&#x3001;
+&#x5229;&#x7528;&#x53EF;&#x80FD;&#x306A;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x5727;&#x8FEB;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3><code>stream.read(0)</code><span><a class="mark" href="#stream_stream_read_0" id="stream_stream_read_0">#</a></span></h3>
+<!--
+There are some cases where you want to trigger a refresh of the
+underlying readable stream mechanisms, without actually consuming any
+data.  In that case, you can call `stream.read(0)`, which will always
+return null.
+-->
+
+<p>&#x5B9F;&#x969B;&#x306B;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x8CBB;&#x3059;&#x308B;&#x3053;&#x3068;&#x306A;&#x304F;&#x3001;&#x4E0B;&#x5C64;&#x306E; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x30E1;&#x30AB;&#x30CB;&#x30BA;&#x30E0;&#x3092;
+&#x30EA;&#x30D5;&#x30EC;&#x30C3;&#x30B7;&#x30E5;&#x3059;&#x308B;&#x304D;&#x3063;&#x304B;&#x3051;&#x304C;&#x6B32;&#x3057;&#x304F;&#x306A;&#x308B;&#x30B1;&#x30FC;&#x30B9;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;&#x5E38;&#x306B; <code>null</code> &#x3092;&#x8FD4;&#x3059; <code>stream.read(0)</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If the internal read buffer is below the `highWaterMark`, and the
+stream is not currently reading, then calling `read(0)` will trigger
+a low-level `_read` call.
+-->
+
+<p>&#x5185;&#x90E8;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C; <code>highWaterMark</code> &#x3092;&#x4E0B;&#x56DE;&#x3063;&#x3066;&#x3044;&#x3066;&#x3001;
+&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x73FE;&#x5728;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x4E2D;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;<code>read(0)</code> &#x306E;&#x547C;&#x3073;&#x51FA;&#x3057;&#x306F;&#x4F4E;&#x6C34;&#x6E96;&#x306E;
+<code>_read()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x304D;&#x3063;&#x304B;&#x3051;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+There is almost never a need to do this.  However, you will see some
+cases in Node's internals where this is done, particularly in the
+Readable stream class internals.
+-->
+
+<p>&#x3053;&#x308C;&#x3092;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x306F;&#x307B;&#x3068;&#x3093;&#x3069;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089; Node &#x306E;&#x5185;&#x90E8;&#x3001;&#x7279;&#x306B; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x5185;&#x90E8;&#x3067;&#x3001;
+&#x3053;&#x308C;&#x304C;&#x4F7F;&#x308F;&#x308C;&#x3066;&#x3044;&#x308B;&#x30B1;&#x30FC;&#x30B9;&#x3092;&#x898B;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+
+</p>
+<h3><code>stream.push(&apos;&apos;)</code><span><a class="mark" href="#stream_stream_push" id="stream_stream_push">#</a></span></h3>
+<!--
+Pushing a zero-byte string or Buffer (when not in [Object mode][]) has an
+interesting side effect.  Because it *is* a call to
+[`stream.push()`][], it will end the `reading` process.  However, it
+does *not* add any data to the readable buffer, so there's nothing for
+a user to consume.
+-->
+
+<p>&#x30BC;&#x30ED;&#x30D0;&#x30A4;&#x30C8;&#x306E;&#x9577;&#x3055;&#x306E;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3092;&#x30D7;&#x30C3;&#x30B7;&#x30E5;&#x3059;&#x308B;&#x3068;&#x3001;
+(<a href="#stream_object_mode">&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30E2;&#x30FC;&#x30C9;</a>&#x306E;&#x5834;&#x5408;&#x3092;&#x9664;&#x304D;) &#x9762;&#x767D;&#x3044;&#x526F;&#x4F5C;&#x7528;&#x304C;&#x8D77;&#x3053;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F; <a href="#stream_readable_push_chunk_encoding"><code>stream.push()</code></a> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x306E;&#x3067;&#x3001;<code>reading</code> &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x305D;&#x308C;&#x306F;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x3069;&#x3093;&#x306A;&#x30C7;&#x30FC;&#x30BF;&#x3082;&#x52A0;&#x3048; <em>&#x306A;&#x3044;</em> &#x306E;&#x3067;&#x3001;
+&#x30E6;&#x30FC;&#x30B6;&#x304C;&#x6D88;&#x8CBB;&#x3059;&#x308B;&#x3082;&#x306E;&#x306F;&#x4F55;&#x3082;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Very rarely, there are cases where you have no data to provide now,
+but the consumer of your stream (or, perhaps, another bit of your own
+code) will know when to check again, by calling `stream.read(0)`.  In
+those cases, you *may* call `stream.push('')`.
+-->
+
+<p>&#x3054;&#x304F;&#x307E;&#x308C;&#x306B;&#x3001;&#x4ECA;&#x306F;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x7121;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;&#x3057;&#x304B;&#x3057;&#x3001;<code>stream.read(0)</code>
+&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x306B;&#x3088;&#x308A;&#x3001;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x5229;&#x7528;&#x8005; (&#x3042;&#x308B;&#x3044;&#x306F;&#x3001;&#x3082;&#x3057;&#x304B;&#x3059;&#x308B;&#x3068;&#x3042;&#x306A;&#x305F;&#x306E;
+&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x4E00;&#x90E8;) &#x306F;&#x518D;&#x3073;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3059;&#x3079;&#x304D;&#x306A;&#x306E;&#x304C;&#x3044;&#x3064;&#x304B;&#x3092;&#x77E5;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;<code>stream.push(&apos;&apos;)</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x304C; <em>&#x3067;&#x304D;&#x307E;&#x3059;</em> &#x3002;
+
+</p>
+<!--
+So far, the only use case for this functionality is in the
+[tls.CryptoStream][] class, which is deprecated in Node v0.12.  If you
+find that you have to use `stream.push('')`, please consider another
+approach, because it almost certainly indicates that something is
+horribly wrong.
+-->
+
+<p>&#x73FE;&#x5728;&#x306E;&#x6240;&#x3001;&#x3053;&#x306E;&#x6A5F;&#x80FD;&#x306E;&#x552F;&#x4E00;&#x306E;&#x30E6;&#x30FC;&#x30B9;&#x30B1;&#x30FC;&#x30B9;&#x306F; v0.12 &#x3067;&#x5EC3;&#x6B62;&#x4E88;&#x5B9A;&#x306E;
+<a href="tls.html#tls_class_cryptostream">tls.CryptoStream</a> &#x306E;&#x4E2D;&#x306B;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057; <code>stream.push(&apos;&apos;)</code> &#x3092;&#x4F7F;&#x308F;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x306A;&#x3063;&#x305F;&#x3089;&#x3001;&#x305D;&#x308C;&#x306F;&#x304A;&#x305D;&#x3089;&#x304F;
+&#x4F55;&#x304B;&#x304C;&#x6050;&#x308D;&#x3057;&#x304F;&#x9593;&#x9055;&#x3063;&#x3066;&#x3044;&#x308B;&#x3053;&#x3068;&#x3092;&#x793A;&#x3059;&#x306E;&#x3067;&#x3001;&#x4ED6;&#x306E;&#x65B9;&#x6CD5;&#x3092;&#x691C;&#x8A0E;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h3>Compatibility with Older Node Versions<span><a class="mark" href="#stream_compatibility_with_older_node_versions" id="stream_compatibility_with_older_node_versions">#</a></span></h3>
+<!--type=misc-->
+
+<!--
+In versions of Node prior to v0.10, the Readable stream interface was
+simpler, but also less powerful and less useful.
+-->
+
+<p>v0.10 &#x3088;&#x308A;&#x524D;&#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x306E; Node &#x3067;&#x306F;&#x3001;Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306F;
+&#x3088;&#x308A;&#x30B7;&#x30F3;&#x30D7;&#x30EB;&#x3067;&#x3057;&#x305F;&#x304C;&#x3001;&#x5F37;&#x529B;&#x3067;&#x306F;&#x306A;&#x304F;&#x4F7F;&#x3044;&#x3084;&#x3059;&#x304F;&#x3082;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3067;&#x3057;&#x305F;&#x3002;
+
+</p>
+<!--
+* Rather than waiting for you to call the `read()` method, `'data'`
+  events would start emitting immediately.  If you needed to do some
+  I/O to decide how to handle data, then you had to store the chunks
+  in some kind of buffer so that they would not be lost.
+* The `pause()` method was advisory, rather than guaranteed.  This
+  meant that you still had to be prepared to receive `'data'` events
+  even when the stream was in a paused state.
+-->
+
+<ul>
+<li><code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x306E;&#x3092;&#x5F85;&#x3064;&#x306E;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;
+<code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x3059;&#x3050;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x59CB;&#x3081;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x51E6;&#x7406;&#x3059;&#x308B;&#x65B9;&#x6CD5;&#x3092;&#x6C7A;&#x5B9A;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3044;&#x304F;&#x3089;&#x304B;&#x306E; I/O &#x3092;&#x3059;&#x308B;
+&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308B;&#x5834;&#x5408;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x5931;&#x308F;&#x308C;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x306F;
+&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x3092;&#x4F55;&#x3089;&#x304B;&#x306E;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x4FDD;&#x5B58;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3067;&#x3057;&#x305F;&#x3002;</li>
+<li><code>pause()</code> &#x306F;&#x4FDD;&#x8A3C;&#x3068;&#x3044;&#x3046;&#x3088;&#x308A;&#x306F;&#x3080;&#x3057;&#x308D;&#x52A9;&#x8A00;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x4E2D;&#x65AD;&#x3055;&#x308C;&#x305F;&#x72B6;&#x614B;&#x3067;&#x3042;&#x3063;&#x305F;&#x3068;&#x3057;&#x3066;&#x3082;&#x3001;
+<code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B;&#x6E96;&#x5099;&#x304C;&#x5FC5;&#x8981;&#x3060;&#x3068;&#x3044;&#x3046;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+In Node v0.10, the Readable class described below was added.  For
+backwards compatibility with older Node programs, Readable streams
+switch into "flowing mode" when a `'data'` event handler is added, or
+when the `pause()` or `resume()` methods are called.  The effect is
+that, even if you are not using the new `read()` method and
+`'readable'` event, you no longer have to worry about losing `'data'`
+chunks.
+-->
+
+<p>Node v0.10 &#x304B;&#x3089;&#x3001;&#x4E0A;&#x8A18;&#x3067;&#x8AAC;&#x660E;&#x3057;&#x305F; Readable &#x30AF;&#x30E9;&#x30B9;&#x304C;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3057;&#x305F;&#x3002;
+&#x53E4;&#x3044; Node &#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3068;&#x306E;&#x5F8C;&#x65B9;&#x4E92;&#x63DB;&#x6027;&#x306E;&#x305F;&#x3081;&#x306B;&#x3001;Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;
+<code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x304C;&#x52A0;&#x3048;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x3084;&#x3001;<code>pause()</code> &#x307E;&#x305F;&#x306F;
+<code>resume()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x8AAD;&#x307F;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x300C;flowing &#x30E2;&#x30FC;&#x30C9;&#x300D;&#x306B;&#x5207;&#x308A;&#x66FF;&#x308F;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x7D50;&#x679C;&#x3068;&#x3057;&#x3066;&#x3001;&#x65B0;&#x3057;&#x3044; <code>read()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3084; <code>&apos;readable&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;
+&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3044;&#x306A;&#x304F;&#x3066;&#x3082;&#x3001;&#x3082;&#x3046; <code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x304C;&#x5931;&#x308F;&#x308C;&#x308B;&#x3053;&#x3068;&#x3092;
+&#x5FC3;&#x914D;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+Most programs will continue to function normally.  However, this
+introduces an edge case in the following conditions:
+-->
+
+<p>&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x306F;&#x3053;&#x308C;&#x307E;&#x3067;&#x901A;&#x308A;&#x306B;&#x6A5F;&#x80FD;&#x3059;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x4EE5;&#x4E0B;&#x306E;&#x6761;&#x4EF6;&#x3067;&#x30A8;&#x30C3;&#x30B8;&#x30B1;&#x30FC;&#x30B9;&#x304C;&#x5B58;&#x5728;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+* No `'data'` event handler is added.
+* The `pause()` and `resume()` methods are never called.
+-->
+
+<ul>
+<li><code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x304C;&#x767B;&#x9332;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x3002;</li>
+<li><code>pause()</code> &#x304A;&#x3088;&#x3073; <code>resume()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x3002;</li>
+</ul>
+<!--
+For example, consider the following code:
+-->
+
+<p>&#x4F8B;&#x3048;&#x3070;&#x3001;&#x4EE5;&#x4E0B;&#x306E;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x8003;&#x3048;&#x3066;&#x307F;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;:
+
+</p>
+<pre><code class="javascript">// WARNING!  BROKEN!
+net.createServer(function(socket) {
+
+  // we add an &apos;end&apos; method, but never consume the data
+  socket.on(&apos;end&apos;, function() {
+    // It will never get here.
+    socket.end(&apos;I got your message (but didnt read it)\n&apos;);
+  });
+
+}).listen(1337);</code></pre>
+<!--
+In versions of node prior to v0.10, the incoming message data would be
+simply discarded.  However, in Node v0.10 and beyond, the socket will
+remain paused forever.
+-->
+
+<p>v0.10 &#x3088;&#x308A;&#x524D;&#x306E; Node &#x3067;&#x306F;&#x3001;&#x5165;&#x3063;&#x3066;&#x304D;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x5358;&#x7D14;&#x306B;&#x7834;&#x68C4;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x3002;
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;Node v0.10 &#x4EE5;&#x964D;&#x3067;&#x306F;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x4E2D;&#x65AD;&#x3057;&#x305F;&#x307E;&#x307E;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The workaround in this situation is to call the `resume()` method to
+trigger "old mode" behavior:
+-->
+
+<p>&#x3053;&#x306E;&#x72B6;&#x6CC1;&#x306E;&#x56DE;&#x907F;&#x7B56;&#x306F;&#x3001;&#x300C;flowwing &#x30E2;&#x30FC;&#x30C9;&#x300D;&#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x3078;&#x306E;&#x30C8;&#x30EA;&#x30AC;&#x30FC;&#x3068;&#x3057;&#x3066;
+<code>resume()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code class="javascript">// Workaround
+net.createServer(function(socket) {
+
+  socket.on(&apos;end&apos;, function() {
+    socket.end(&apos;I got your message (but didnt read it)\n&apos;);
+  });
+
+  // start the flow of data, discarding it.
+  socket.resume();
+
+}).listen(1337);</code></pre>
+<!--
+In addition to new Readable streams switching into flowing-mode, pre-v0.10
+style streams can be wrapped in a Readable class using the `wrap()`
+method.
+-->
+
+<p>&#x65B0;&#x3057;&#x3044; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092; flowing &#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x3089;&#x308C;&#x308B;&#x3053;&#x3068;&#x306B;&#x52A0;&#x3048;&#x3066;&#x3001;
+<code>wrap()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F7F;&#x3063;&#x3066; v0.10 &#x3088;&#x308A;&#x524D;&#x306E;&#x30B9;&#x30BF;&#x30A4;&#x30EB;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3092;
+Readable &#x30AF;&#x30E9;&#x30B9;&#x3067;&#x30E9;&#x30C3;&#x30D7;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h3>Object Mode<span><a class="mark" href="#stream_object_mode" id="stream_object_mode">#</a></span></h3>
+<!--type=misc-->
+
+<!--
+Normally, Streams operate on Strings and Buffers exclusively.
+-->
+
+<p>&#x901A;&#x5E38;&#x3001;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306E;&#x307F;&#x3092;&#x6271;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Streams that are in **object mode** can emit generic JavaScript values
+other than Buffers and Strings.
+-->
+
+<p><strong>&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30E2;&#x30FC;&#x30C9;</strong> &#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;&#x6587;&#x5B57;&#x5217;&#x53CA;&#x3073;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x4EE5;&#x5916;&#x306E;
+&#x4E00;&#x822C;&#x7684;&#x306A;JavaScript&#x306E;&#x5024;&#x3092;&#x6271;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+A Readable stream in object mode will always return a single item from
+a call to `stream.read(size)`, regardless of what the size argument
+is.
+-->
+
+<p>&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30E2;&#x30FC;&#x30C9;&#x306E; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;<code>stream.read(size)</code> &#x306E;&#x30B5;&#x30A4;&#x30BA;&#x5F15;&#x6570;&#x304C;
+&#x3044;&#x304F;&#x3064;&#x3067;&#x3042;&#x308B;&#x304B;&#x306B;&#x95A2;&#x308F;&#x3089;&#x305A;&#x3001;&#x5E38;&#x306B;&#x4E00;&#x3064;&#x306E;&#x9805;&#x76EE;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+A Writable stream in object mode will always ignore the `encoding`
+argument to `stream.write(data, encoding)`.
+-->
+
+<p>&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30E2;&#x30FC;&#x30C9;&#x306E; Writable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x3001;<code>stream.write(data, encoding)</code>
+&#x306E; <code>encoding</code> &#x5F15;&#x6570;&#x3092;&#x5E38;&#x306B;&#x7121;&#x8996;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+The special value `null` still retains its special value for object
+mode streams.  That is, for object mode readable streams, `null` as a
+return value from `stream.read()` indicates that there is no more
+data, and [`stream.push(null)`][] will signal the end of stream data
+(`EOF`).
+-->
+
+<p>&#x7279;&#x5225;&#x306A;&#x5024; <code>null</code> &#x306F;&#x3001;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x304A;&#x3044;&#x3066;&#x3082;
+&#x7279;&#x5225;&#x306A;&#x5024;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30E2;&#x30FC;&#x30C9;&#x306E; Readable &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x306F;&#x3001;<code>stream.read()</code>
+&#x306E;&#x623B;&#x308A;&#x5024; <code>null</code> &#x306F;&#x3082;&#x3046;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x7121;&#x3044;&#x3053;&#x3068;&#x3092;&#x3001;<a href="#stream_readable_push_chunk_encoding"><code>stream.push(null)</code></a>
+&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x7D42;&#x7AEF;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059; (<code>EOF</code>)&#x3002;
+
+</p>
+<!--
+No streams in Node core are object mode streams.  This pattern is only
+used by userland streaming libraries.
+-->
+
+<p>Node &#x306E;&#x30B3;&#x30A2;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x306B;&#x306F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x5B58;&#x5728;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x3053;&#x306E;&#x30D1;&#x30BF;&#x30FC;&#x30F3;&#x306F;&#x30E6;&#x30FC;&#x30B6;&#x30E9;&#x30F3;&#x30C9;&#x306E;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x3067;&#x306E;&#x307F;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+You should set `objectMode` in your stream child class constructor on
+the options object.  Setting `objectMode` mid-stream is not safe.
+-->
+
+<p>&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x306F;&#x30B3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x306E; <code>options</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067; <code>objectMode</code>
+&#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;
+<code>objectMode</code> &#x3092;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x9014;&#x4E2D;&#x3067;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x5B89;&#x5168;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<h3>State Objects<span><a class="mark" href="#stream_state_objects" id="stream_state_objects">#</a></span></h3>
+<!--
+[Readable][] streams have a member object called `_readableState`.
+[Writable][] streams have a member object called `_writableState`.
+[Duplex][] streams have both.
+-->
+
+<p><a href="#stream_class_stream_readable">Readable</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F; <code>_readableState</code> &#x3068;&#x547C;&#x3070;&#x308C;&#x308B;&#x30E1;&#x30F3;&#x30D0;&#x3092;&#x6301;&#x3063;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+<a href="#stream_class_stream_writable">Writable</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F; <code>_writableState</code> &#x3068;&#x547C;&#x3070;&#x308C;&#x308B;&#x30E1;&#x30F3;&#x30D0;&#x3092;&#x6301;&#x3063;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+<a href="#stream_class_stream_duplex">Duplex</a> &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306F;&#x4E21;&#x65B9;&#x3092;&#x6301;&#x3063;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+**These objects should generally not be modified in child classes.**
+However, if you have a Duplex or Transform stream that should be in
+`objectMode` on the readable side, and not in `objectMode` on the
+writable side, then you may do this in the constructor by setting the
+flag explicitly on the appropriate state object.
+-->
+
+<p><strong>&#x901A;&#x5E38;&#x3001;&#x3053;&#x308C;&#x3089;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x5909;&#x66F4;&#x3059;&#x3079;&#x304D;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;</strong>
+&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x3082;&#x3057; Duplex &#x307E;&#x305F;&#x306F; Transform &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5074;&#x304C;
+<code>objectMode</code> &#x3067;&#x3001;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x5074;&#x304C; <code>objectMode</code> &#x3067;&#x306F;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3067;
+&#x9069;&#x5207;&#x306A;&#x30B9;&#x30C6;&#x30FC;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x30D5;&#x30E9;&#x30B0;&#x3092;&#x660E;&#x793A;&#x7684;&#x306B;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<pre><code class="javascript">var util = require(&apos;util&apos;);
+var StringDecoder = require(&apos;string_decoder&apos;).StringDecoder;
+var Transform = require(&apos;stream&apos;).Transform;
+util.inherits(JSONParseStream, Transform);
+
+// Gets \n-delimited JSON string data, and emits the parsed objects
+function JSONParseStream(options) {
+  if (!(this instanceof JSONParseStream))
+    return new JSONParseStream(options);
+
+  Transform.call(this, options);
+  this._writableState.objectMode = false;
+  this._readableState.objectMode = true;
+  this._buffer = &apos;&apos;;
+  this._decoder = new StringDecoder(&apos;utf8&apos;);
+}
+
+JSONParseStream.prototype._transform = function(chunk, encoding, cb) {
+  this._buffer += this._decoder.write(chunk);
+  // split on newlines
+  var lines = this._buffer.split(/\r?\n/);
+  // keep the last partial line buffered
+  this._buffer = lines.pop();
+  for (var l = 0; l &lt; lines.length; l++) {
+    var line = lines[l];
+    try {
+      var obj = JSON.parse(line);
+    } catch (er) {
+      this.emit(&apos;error&apos;, er);
+      return;
+    }
+    // push the parsed object out to the readable consumer
+    this.push(obj);
+  }
+  cb();
+};
+
+JSONParseStream.prototype._flush = function(cb) {
+  // Just handle any leftover
+  var rem = this._buffer.trim();
+  if (rem) {
+    try {
+      var obj = JSON.parse(rem);
+    } catch (er) {
+      this.emit(&apos;error&apos;, er);
+      return;
+    }
+    // push the parsed object out to the readable consumer
+    this.push(obj);
+  }
+  cb();
+};</code></pre>
+<!--
+The state objects contain other useful information for debugging the
+state of streams in your programs.  It is safe to look at them, but
+beyond setting option flags in the constructor, it is **not** safe to
+modify them.
+-->
+
+<p>&#x30B9;&#x30C6;&#x30FC;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3001;&#x30C7;&#x30D0;&#x30C3;&#x30B0;&#x3067;&#x5F79;&#x306B;&#x7ACB;&#x3064;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x72B6;&#x614B;&#x3092;
+&#x60C5;&#x5831;&#x3068;&#x3057;&#x3066;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;&#x305D;&#x308C;&#x3092;&#x898B;&#x308B;&#x3053;&#x3068;&#x306F;&#x5B89;&#x5168;&#x3067;&#x3059;&#x304C;&#x3001;&#x3057;&#x304B;&#x3057;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3067;&#x8A2D;&#x5B9A;&#x3057;&#x305F;
+&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x30D5;&#x30E9;&#x30B0;&#x3092;&#x5909;&#x66F4;&#x3059;&#x308B;&#x3053;&#x3068;&#x306F;&#x5B89;&#x5168;&#x3067;&#x306F; <strong>&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;</strong>&#x3002;
+
+
+</p>
+<!--
+[EventEmitter]: events.html#events_class_events_eventemitter
+[Object mode]: #stream_object_mode
+[`stream.push(chunk)`]: #stream_readable_push_chunk_encoding
+[`stream.push(null)`]: #stream_readable_push_chunk_encoding
+[`stream.push()`]: #stream_readable_push_chunk_encoding
+[`unpipe()`]: #stream_readable_unpipe_destination
+[unpiped]: #stream_readable_unpipe_destination
+[tcp sockets]: net.html#net_class_net_socket
+[zlib streams]: zlib.html
+[zlib]: zlib.html
+[crypto streams]: crypto.html
+[crypto]: crypto.html
+[tls.CryptoStream]: tls.html#tls_class_cryptostream
+[process.stdin]: process.html#process_process_stdin
+[stdout]: process.html#process_process_stdout
+[process.stdout]: process.html#process_process_stdout
+[process.stderr]: process.html#process_process_stderr
+[child process stdout and stderr]: child_process.html#child_process_child_stdout
+[API for Stream Consumers]: #stream_api_for_stream_consumers
+[API for Stream Implementors]: #stream_api_for_stream_implementors
+[Readable]: #stream_class_stream_readable
+[Writable]: #stream_class_stream_writable
+[Duplex]: #stream_class_stream_duplex
+[Transform]: #stream_class_stream_transform
+[`_read(size)`]: #stream_readable_read_size_1
+[`_read()`]: #stream_readable_read_size_1
+[_read]: #stream_readable_read_size_1
+[`writable.write(chunk)`]: #stream_writable_write_chunk_encoding_callback
+[`write(chunk, encoding, callback)`]: #stream_writable_write_chunk_encoding_callback
+[`write()`]: #stream_writable_write_chunk_encoding_callback
+[`stream.write(chunk)`]: #stream_writable_write_chunk_encoding_callback
+[`_write(chunk, encoding, callback)`]: #stream_writable_write_chunk_encoding_callback_1
+[`_write()`]: #stream_writable_write_chunk_encoding_callback_1
+[_write]: #stream_writable_write_chunk_encoding_callback_1
+[`util.inherits`]: util.html#util_util_inherits_constructor_superconstructor
+[`end()`]: #stream_writable_end_chunk_encoding_callback
+-->
+
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

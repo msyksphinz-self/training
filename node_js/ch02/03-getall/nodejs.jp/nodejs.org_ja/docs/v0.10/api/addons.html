@@ -1,0 +1,1020 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Addons Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/addons.html">
+</head>
+<body class="alt apidoc" id="api-section-addons">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="addons.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#addons_addons">Addons</a><ul>
+<li><a href="#addons_hello_world">Hello world</a></li>
+<li><a href="#addons_addon_patterns">Addon patterns</a><ul>
+<li><a href="#addons_function_arguments">Function arguments</a></li>
+<li><a href="#addons_callbacks">Callbacks</a></li>
+<li><a href="#addons_object_factory">Object factory</a></li>
+<li><a href="#addons_function_factory">Function factory</a></li>
+<li><a href="#addons_wrapping_c_objects">Wrapping C++ objects</a></li>
+<li><a href="#addons_factory_of_wrapped_objects">Factory of wrapped objects</a></li>
+<li><a href="#addons_passing_wrapped_objects_around">Passing wrapped objects around</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Addons<span><a class="mark" href="#addons_addons" id="addons_addons">#</a></span></h1>
+<!--
+Addons are dynamically linked shared objects. They can provide glue to C and
+C++ libraries. The API (at the moment) is rather complex, involving
+knowledge of several libraries:
+-->
+
+<p>&#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x306F;&#x52D5;&#x7684;&#x306B;&#x5171;&#x6709;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x30EA;&#x30F3;&#x30AF;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x3089;&#x306F;&#x3001;C &#x3084; C++ &#x306E;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x306B;&#x63A5;&#x5408;&#x70B9;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;
+API &#x306F;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x306E;&#x77E5;&#x8B58;&#x304C;&#x5FC5;&#x8981;&#x3067;&#x3001;(&#x73FE;&#x6642;&#x70B9;&#x3067;&#x306F;) &#x304B;&#x306A;&#x308A;&#x8907;&#x96D1;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+ - V8 JavaScript, a C++ library. Used for interfacing with JavaScript:
+   creating objects, calling functions, etc.  Documented mostly in the
+   `v8.h` header file (`deps/v8/include/v8.h` in the Node source
+   tree), which is also available
+   [online](http://izs.me/v8-docs/main.html).
+-->
+
+<ul>
+<li>V8 JavaScript &#x306F; C++ &#x306E;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x3067;&#x3059;&#x3002;
+JavaScript &#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x4F5C;&#x6210;&#x3084;&#x95A2;&#x6570;&#x547C;&#x3073;&#x51FA;&#x3057;&#x7B49;&#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306B;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;&#x306F;&#x4E3B;&#x306B;&#x3001;<code>v8.h</code> &#x306E;&#x30D8;&#x30C3;&#x30C0;&#x30D5;&#x30A1;&#x30A4;&#x30EB;
+(Node &#x306E;&#x30BD;&#x30FC;&#x30B9;&#x30C4;&#x30EA;&#x30FC;&#x306E;&#x4E2D;&#x306E; <code>deps/v8/include/v8.h</code>) &#x306B;&#x8A18;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x304C;&#x3001;
+<a href="http://izs.me/v8-docs/main.html">&#x30AA;&#x30F3;&#x30E9;&#x30A4;&#x30F3;</a> &#x3067;&#x53C2;&#x7167;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+ - [libuv](https://github.com/joyent/libuv), C event loop library.
+   Anytime one needs to wait for a file descriptor to become readable,
+   wait for a timer, or wait for a signal to be received one will need
+   to interface with libuv. That is, if you perform any I/O, libuv will
+   need to be used.
+-->
+
+<ul>
+<li><a href="https://github.com/joyent/libuv">libuv</a> &#x306F;
+C &#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EB;&#x30FC;&#x30D7;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x3067;&#x3059;&#x3002;
+&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x304C;&#x8AAD;&#x307F;&#x53D6;&#x308A;&#x53EF;&#x80FD;&#x306B;&#x306A;&#x308B;&#x306E;&#x3092;&#x5F85;&#x3064;&#x3068;&#x304D;&#x3001;&#x30BF;&#x30A4;&#x30DE;&#x30FC;&#x3092;&#x5F85;&#x3064;&#x3068;&#x304D;&#x3001;
+&#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x306E;&#x3092;&#x5F85;&#x3064;&#x3068;&#x304D;&#x306F;&#x3044;&#x3064;&#x3067;&#x3082;&#x3001;
+libv &#x306E;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x304C;&#x5FC5;&#x8981;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3064;&#x307E;&#x308A;&#x3001;&#x4F55;&#x3089;&#x304B;&#x306E; I/O &#x51E6;&#x7406;&#x3092;&#x3059;&#x308B;&#x3068;&#x5FC5;&#x305A; libuv &#x3092;&#x4F7F;&#x3046;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308B;&#x3068;&#x3044;&#x3046;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;</li>
+</ul>
+<!--
+ - Internal Node libraries. Most importantly is the `node::ObjectWrap`
+   class which you will likely want to derive from.
+-->
+
+<ul>
+<li>Node &#x306E;&#x5185;&#x90E8;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x3002;
+&#x3082;&#x3063;&#x3068;&#x3082;&#x91CD;&#x8981;&#x306A;&#x306E;&#x306F; <code>node::ObjectWrap</code> &#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3001;
+&#x3053;&#x306E;&#x30AF;&#x30E9;&#x30B9;&#x304B;&#x3089;&#x6D3E;&#x751F;&#x3055;&#x305B;&#x308B;&#x3053;&#x3068;&#x304C;&#x591A;&#x304F;&#x306A;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;</li>
+</ul>
+<!--
+ - Others. Look in `deps/` for what else is available.
+-->
+
+<ul>
+<li>&#x305D;&#x306E;&#x4ED6;&#x3002;&#x3069;&#x306E;&#x3088;&#x3046;&#x306A;&#x7269;&#x304C;&#x5229;&#x7528;&#x3067;&#x304D;&#x308B;&#x304B;&#x306F; <code>deps/</code> &#x4EE5;&#x4E0B;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x3055;&#x3044;&#x3002;</li>
+</ul>
+<!--
+Node statically compiles all its dependencies into the executable.
+When compiling your module, you don't need to worry about linking to
+any of these libraries.
+-->
+
+<p>Node &#x306F;&#x5168;&#x3066;&#x306E;&#x4F9D;&#x5B58;&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;&#x3092;&#x5B9F;&#x884C;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x9759;&#x7684;&#x306B;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306E;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x6642;&#x306B;&#x306F;&#x3001;&#x305D;&#x308C;&#x3089;&#x306E;&#x30EA;&#x30F3;&#x30AF;&#x306B;&#x3064;&#x3044;&#x3066;&#x4E00;&#x5207;&#x6C17;&#x306B;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x306F;&#x6709;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+All of the following examples are available for
+[download](https://github.com/rvagg/node-addon-examples) and may be
+used as a starting-point for your own Addon.
+-->
+
+<p>&#x4EE5;&#x4E0B;&#x306E;&#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x306E;&#x5168;&#x3066;&#x306F;
+<a href="https://github.com/rvagg/node-addon-examples">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a>
+&#x304B;&#x3089;&#x5229;&#x7528;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x3001;&#x72EC;&#x81EA;&#x306E;&#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x306E;&#x51FA;&#x767A;&#x70B9;&#x306B;&#x306A;&#x308B;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+
+</p>
+<h2>Hello world<span><a class="mark" href="#addons_hello_world" id="addons_hello_world">#</a></span></h2>
+<!--
+To get started let's make a small Addon which is the C++ equivalent of
+the following JavaScript code:
+-->
+
+<p>&#x3067;&#x306F;&#x3001; &#x4EE5;&#x4E0B;&#x306E; JavaScript &#x30B3;&#x30FC;&#x30C9;&#x3068;&#x540C;&#x3058;&#x69D8;&#x306B;&#x52D5;&#x4F5C;&#x3059;&#x308B;&#x5C0F;&#x3055;&#x306A;&#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x3092;
+C++ &#x3067;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x307F;&#x307E;&#x3057;&#x3087;&#x3046;&#x3002;
+
+</p>
+<pre><code>module.exports.hello = function() { return &apos;world&apos;; };</code></pre>
+<!--
+First we create a file `hello.cc`:
+-->
+
+<p>&#x6700;&#x521D;&#x306B; <code>hello.cc</code> &#x3068;&#x3044;&#x3046;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;:
+
+
+</p>
+<pre><code>#include &lt;node.h&gt;
+#include &lt;v8.h&gt;
+
+using namespace v8;
+
+Handle&lt;Value&gt; Method(const Arguments&amp; args) {
+  HandleScope scope;
+  return scope.Close(String::New(&quot;world&quot;));
+}
+
+void init(Handle&lt;Object&gt; exports) {
+  exports-&gt;Set(String::NewSymbol(&quot;hello&quot;),
+      FunctionTemplate::New(Method)-&gt;GetFunction());
+}
+
+NODE_MODULE(hello, init)</code></pre>
+<!--
+Note that all Node addons must export an initialization function:
+-->
+
+<p>&#x5168;&#x3066;&#x306E; Node &#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x306F;&#x521D;&#x671F;&#x5316;&#x95A2;&#x6570;&#x3092;&#x30A8;&#x30AF;&#x30B9;&#x30DD;&#x30FC;&#x30C8;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;
+&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<pre><code>void Initialize (Handle&lt;Object&gt; exports);
+NODE_MODULE(module_name, Initialize)</code></pre>
+<!--
+There is no semi-colon after `NODE_MODULE` as it's not a function (see `node.h`).
+
+The `module_name` needs to match the filename of the final binary (minus the
+.node suffix).
+
+The source code needs to be built into `hello.node`, the binary Addon. To
+do this we create a file called `binding.gyp` which describes the configuration
+to build your module in a JSON-like format. This file gets compiled by
+[node-gyp](https://github.com/TooTallNate/node-gyp).
+-->
+
+<p><code>NODE_MODULE</code> &#x306F;&#x95A2;&#x6570;&#x3067;&#x306F;&#x306A;&#x3044;&#x306E;&#x3067;&#x3001;&#x305D;&#x306E;&#x5F8C;&#x306B;&#x30BB;&#x30DF;&#x30B3;&#x30ED;&#x30F3;&#x3092;&#x4ED8;&#x3051;&#x3066;&#x306F;&#x3044;&#x3051;&#x307E;&#x305B;&#x3093;
+(<code>node.h</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;)&#x3002;
+
+</p>
+<p><code>module_name</code> &#x306F;&#x6700;&#x7D42;&#x7684;&#x306A;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D; (&#x62E1;&#x5F35;&#x5B50; .node &#x3092;&#x9664;&#x304F;)
+&#x3068;&#x30DE;&#x30C3;&#x30C1;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p>&#x3053;&#x306E;&#x30BD;&#x30FC;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x306F;&#x3001;<code>hello.node</code> &#x3068;&#x3044;&#x3046;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x3068;&#x3057;&#x3066;&#x30D3;&#x30EB;&#x30C9;&#x3055;&#x308C;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x6709;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x305F;&#x3081;&#x306B; <code>binding.gyp</code> &#x3068;&#x547C;&#x3070;&#x308C;&#x308B;&#x3001;&#x3042;&#x306A;&#x305F;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x30D3;&#x30EB;&#x30C9;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;
+&#x69CB;&#x6210;&#x3092; JSON &#x7684;&#x306A;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3067;&#x8A18;&#x8FF0;&#x3057;&#x305F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306F; <a href="https://github.com/TooTallNate/node-gyp">node-gyp</a>
+&#x306B;&#x3088;&#x3063;&#x3066;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>{
+  &quot;targets&quot;: [
+    {
+      &quot;target_name&quot;: &quot;hello&quot;,
+      &quot;sources&quot;: [ &quot;hello.cc&quot; ]
+    }
+  ]
+}</code></pre>
+<!--
+The next step is to generate the appropriate project build files for the
+current platform. Use `node-gyp configure` for that.
+-->
+
+<p>&#x6B21;&#x306E;&#x30B9;&#x30C6;&#x30C3;&#x30D7;&#x306F;&#x73FE;&#x5728;&#x306E;&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x306B;&#x9069;&#x3057;&#x305F;&#x30D7;&#x30ED;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x30D3;&#x30EB;&#x30C9;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;
+&#x751F;&#x6210;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;
+<code>node-gyp configure</code> &#x3092;&#x4F7F;&#x3044;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Now you will have either a `Makefile` (on Unix platforms) or a `vcxproj` file
+(on Windows) in the `build/` directory. Next invoke the `node-gyp build`
+command.
+-->
+
+<p>&#x3053;&#x308C;&#x3067;&#x3001;<code>Makefile</code> (Unix &#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x306E;&#x5834;&#x5408;)&#x3001;&#x307E;&#x305F;&#x306F; <code>vcxproj</code> &#x30D5;&#x30A1;&#x30A4;&#x30EB;
+(Windows &#x306E;&#x5834;&#x5408;) &#x304C; <code>build/</code> &#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x306B;&#x4F5C;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x6B21;&#x306B; <code>node-gyp build</code> &#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3092;&#x8D77;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Now you have your compiled `.node` bindings file! The compiled bindings end up
+in `build/Release/`.
+-->
+
+<p>&#x3053;&#x308C;&#x3067;&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3055;&#x308C;&#x305F; <code>.node</code> &#x30D0;&#x30A4;&#x30F3;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#xFF01;
+&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3055;&#x308C;&#x305F;&#x30D0;&#x30A4;&#x30F3;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306F; <code>build/Release/</code> &#x306B;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+You can now use the binary addon in a Node project `hello.js` by pointing `require` to
+the recently built `hello.node` module:
+-->
+
+<p>&#x30D3;&#x30EB;&#x30C9;&#x3055;&#x308C;&#x305F; <code>hello.node</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092; <code>require</code> &#x3067;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x3088;&#x308A;&#x3001;
+&#x3053;&#x306E;&#x30D0;&#x30A4;&#x30CA;&#x30EA;&#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x3092; Node &#x30D7;&#x30ED;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E; <code>hello.js</code> &#x304B;&#x3089;&#x5229;&#x7528;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;
+&#x53EF;&#x80FD;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var addon = require(&apos;./build/Release/hello&apos;);
+
+console.log(addon.hello()); // &apos;world&apos;</code></pre>
+<!--
+Please see patterns below for further information or
+<https://github.com/arturadib/node-qt> for an example in production.
+-->
+
+<p>&#x3055;&#x3089;&#x306B;&#x8A73;&#x3057;&#x3044;&#x60C5;&#x5831;&#x306B;&#x3064;&#x3044;&#x3066;&#x306F;&#x4E0B;&#x8A18;&#x306E;&#x30D1;&#x30BF;&#x30FC;&#x30F3;&#x304B;&#x3001;
+</p>
+<p><a href="https://github.com/arturadib/node-qt">https://github.com/arturadib/node-qt</a> &#x3092;&#x5B9F;&#x969B;&#x306E;&#x30D7;&#x30ED;&#x30C0;&#x30AF;&#x30C8;&#x306B;&#x304A;&#x3051;&#x308B;
+&#x4F8B;&#x3068;&#x3057;&#x3066;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>Addon patterns<span><a class="mark" href="#addons_addon_patterns" id="addons_addon_patterns">#</a></span></h2>
+<!--
+Below are some addon patterns to help you get started. Consult the online
+[v8 reference](http://izs.me/v8-docs/main.html) for help with the various v8
+calls, and v8's [Embedder's Guide](http://code.google.com/apis/v8/embed.html)
+for an explanation of several concepts used such as handles, scopes,
+function templates, etc.
+-->
+
+<p>&#x4EE5;&#x4E0B;&#x306F;&#x521D;&#x5FC3;&#x8005;&#x306B;&#x5F79;&#x7ACB;&#x3064;&#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x306E;&#x30D1;&#x30BF;&#x30FC;&#x30F3;&#x3067;&#x3059;&#x3002;
+v8 &#x306E;&#x69D8;&#x3005;&#x306A; API &#x306B;&#x3064;&#x3044;&#x3066;&#x306F;&#x30AA;&#x30F3;&#x30E9;&#x30A4;&#x30F3;&#x306E;
+<a href="http://izs.me/v8-docs/main.html">v8 reference</a> &#x304C;&#x3001;
+&#x305D;&#x3057;&#x3066; &#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x3084;&#x30B9;&#x30B3;&#x30FC;&#x30D7;&#x3001;&#x95A2;&#x6570;&#x30C6;&#x30F3;&#x30D7;&#x30EC;&#x30FC;&#x30C8;&#x306A;&#x3069;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x6982;&#x5FF5;&#x306B;&#x3064;&#x3044;&#x3066;&#x306F;
+v8 &#x306E; <a href="http://code.google.com/apis/v8/embed.html">Embedder&apos;s Guide</a> &#x304C;
+&#x5F79;&#x306B;&#x7ACB;&#x3064;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;
+
+</p>
+<!--
+In order to use these examples you need to compile them using `node-gyp`.
+Create the following `binding.gyp` file:
+-->
+
+<p>&#x3053;&#x306E;&#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x3092;&#x5229;&#x7528;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;<code>node-gyp</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;
+&#x30B3;&#x30F3;&#x30D1;&#x30A4;&#x30EB;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x4EE5;&#x4E0B;&#x306E; <code>binding.gyp</code> &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>{
+  &quot;targets&quot;: [
+    {
+      &quot;target_name&quot;: &quot;addon&quot;,
+      &quot;sources&quot;: [ &quot;addon.cc&quot; ]
+    }
+  ]
+}</code></pre>
+<!--
+In cases where there is more than one `.cc` file, simply add the file name to the
+`sources` array, e.g.:
+-->
+
+<p>&#x4E00;&#x3064;&#x4EE5;&#x4E0A;&#x306E; <code>.cc</code> &#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x304C;&#x3042;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001;&#x5358;&#x7D14;&#x306B; <code>sources</code> &#x914D;&#x5217;&#x306B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3092;
+&#x52A0;&#x3048;&#x308B;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;&#x4F8B;:
+
+</p>
+<pre><code>&quot;sources&quot;: [&quot;addon.cc&quot;, &quot;myexample.cc&quot;]</code></pre>
+<!--
+Now that you have your `binding.gyp` ready, you can configure and build the
+addon:
+-->
+
+<p>&#x3053;&#x308C;&#x3067; <code>binding.gyp</code> &#x306E;&#x6E96;&#x5099;&#x304C;&#x3067;&#x304D;&#x307E;&#x3057;&#x305F;&#x3002;
+&#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x3092;&#x30B3;&#x30F3;&#x30D5;&#x30A3;&#x30AE;&#x30E5;&#x30A2;&#x304A;&#x3088;&#x3073;&#x30D3;&#x30EB;&#x30C9;&#x3059;&#x308B;&#x306B;&#x306F;:
+
+</p>
+<pre><code>$ node-gyp configure build</code></pre>
+<h3>Function arguments<span><a class="mark" href="#addons_function_arguments" id="addons_function_arguments">#</a></span></h3>
+<!--
+The following pattern illustrates how to read arguments from JavaScript
+function calls and return a result. This is the main and only needed source
+`addon.cc`:
+-->
+
+<p>&#x4EE5;&#x4E0B;&#x306E;&#x30D1;&#x30BF;&#x30FC;&#x30F3;&#x306F; JavaScript &#x304B;&#x3089;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x95A2;&#x6570;&#x3067;&#x5F15;&#x6570;&#x3092;&#x8AAD;&#x307F;&#x51FA;&#x3057;&#x305F;&#x308A;&#x3001;
+&#x7D50;&#x679C;&#x3092;&#x8FD4;&#x3059;&#x65B9;&#x6CD5;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;&#x3053;&#x308C;&#x306F; <code>addon.cc</code> &#x3067;&#x306E;&#x307F;&#x5FC5;&#x8981;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+
+using namespace v8;
+
+Handle&lt;Value&gt; Add(const Arguments&amp; args) {
+  HandleScope scope;
+
+  if (args.Length() &lt; 2) {
+    ThrowException(Exception::TypeError(String::New(&quot;Wrong number of arguments&quot;)));
+    return scope.Close(Undefined());
+  }
+
+  if (!args[0]-&gt;IsNumber() || !args[1]-&gt;IsNumber()) {
+    ThrowException(Exception::TypeError(String::New(&quot;Wrong arguments&quot;)));
+    return scope.Close(Undefined());
+  }
+
+  Local&lt;Number&gt; num = Number::New(args[0]-&gt;NumberValue() +
+      args[1]-&gt;NumberValue());
+  return scope.Close(num);
+}
+
+void Init(Handle&lt;Object&gt; exports) {
+  exports-&gt;Set(String::NewSymbol(&quot;add&quot;),
+      FunctionTemplate::New(Add)-&gt;GetFunction());
+}
+
+NODE_MODULE(addon, Init)</code></pre>
+<!--
+You can test it with the following JavaScript snippet:
+-->
+
+<p>&#x4EE5;&#x4E0B;&#x306E; JavaScript &#x30B3;&#x30FC;&#x30C9;&#x7247;&#x3067;&#x30C6;&#x30B9;&#x30C8;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var addon = require(&apos;./build/Release/addon&apos;);
+
+console.log( &apos;This should be eight:&apos;, addon.add(3,5) );</code></pre>
+<h3>Callbacks<span><a class="mark" href="#addons_callbacks" id="addons_callbacks">#</a></span></h3>
+<!--
+You can pass JavaScript functions to a C++ function and execute them from
+there. Here's `addon.cc`:
+-->
+
+<p>JavaScript &#x306E;&#x95A2;&#x6570;&#x3092; C++ &#x306E;&#x95A2;&#x6570;&#x306B;&#x6E21;&#x3057;&#x3066;&#x305D;&#x3053;&#x304B;&#x3089;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>addon.cc</code> &#x3067;&#x3059;:
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+
+using namespace v8;
+
+Handle&lt;Value&gt; RunCallback(const Arguments&amp; args) {
+  HandleScope scope;
+
+  Local&lt;Function&gt; cb = Local&lt;Function&gt;::Cast(args[0]);
+  const unsigned argc = 1;
+  Local&lt;Value&gt; argv[argc] = { Local&lt;Value&gt;::New(String::New(&quot;hello world&quot;)) };
+  cb-&gt;Call(Context::GetCurrent()-&gt;Global(), argc, argv);
+
+  return scope.Close(Undefined());
+}
+
+void Init(Handle&lt;Object&gt; exports, Handle&lt;Object&gt; module) {
+  module-&gt;Set(String::NewSymbol(&quot;exports&quot;),
+      FunctionTemplate::New(RunCallback)-&gt;GetFunction());
+}
+
+NODE_MODULE(addon, Init)</code></pre>
+<!--
+Note that this example uses a two-argument form of `Init()` that receives
+the full `module` object as the second argument. This allows the addon
+to completely overwrite `exports` with a single function instead of
+adding the function as a property of `exports`.
+-->
+
+<p>&#x3053;&#x306E;&#x4F8B;&#x306F;&#x4E8C;&#x3064;&#x306E;&#x5F15;&#x6570;&#x3092;&#x53D6;&#x308B;&#x5F62;&#x5F0F;&#x306E; <code>Init()</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3001;&#x7B2C;2&#x5F15;&#x6570;&#x3067;&#x5B8C;&#x5168;&#x306A; <code>module</code>
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x3063;&#x3066;&#x3044;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x3001;<code>exports</code> &#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3068;&#x3057;&#x3066;&#x95A2;&#x6570;&#x3092;&#x52A0;&#x3048;&#x308B;&#x4EE3;&#x308F;&#x308A;&#x306B;&#x3001;&#x30A2;&#x30C9;&#x30AA;&#x30F3;&#x304C;
+&#x4E00;&#x3064;&#x306E;&#x95A2;&#x6570;&#x3067; <code>exports</code> &#x3092;&#x5B8C;&#x5168;&#x306B;&#x4E0A;&#x66F8;&#x304D;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x53EF;&#x80FD;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+To test it run the following JavaScript snippet:
+-->
+
+<p>&#x4EE5;&#x4E0B;&#x306E; JavaScript &#x30B3;&#x30FC;&#x30C9;&#x7247;&#x3067;&#x30C6;&#x30B9;&#x30C8;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>var addon = require(&apos;./build/Release/addon&apos;);
+
+addon(function(msg){
+  console.log(msg); // &apos;hello world&apos;
+});</code></pre>
+<h3>Object factory<span><a class="mark" href="#addons_object_factory" id="addons_object_factory">#</a></span></h3>
+<!--
+You can create and return new objects from within a C++ function with this
+`addon.cc` pattern, which returns an object with property `msg` that echoes
+the string passed to `createObject()`:
+-->
+
+<p>C++ &#x95A2;&#x6570;&#x306E;&#x4E2D;&#x304B;&#x3089;&#x65B0;&#x3057;&#x3044;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x4EE5;&#x4E0B;&#x306E; <code>addon.cc</code> &#x306E;&#x30D1;&#x30BF;&#x30FC;&#x30F3;&#x3067;&#x306F;&#x3001;<code>createObject()</code> &#x306B;&#x6E21;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3092;
+&#x53CD;&#x6620;&#x3059;&#x308B; <code>msg</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x6301;&#x3063;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+
+using namespace v8;
+
+Handle&lt;Value&gt; CreateObject(const Arguments&amp; args) {
+  HandleScope scope;
+
+  Local&lt;Object&gt; obj = Object::New();
+  obj-&gt;Set(String::NewSymbol(&quot;msg&quot;), args[0]-&gt;ToString());
+
+  return scope.Close(obj);
+}
+
+void Init(Handle&lt;Object&gt; exports, Handle&lt;Object&gt; module) {
+  module-&gt;Set(String::NewSymbol(&quot;exports&quot;),
+      FunctionTemplate::New(CreateObject)-&gt;GetFunction());
+}
+
+NODE_MODULE(addon, Init)</code></pre>
+<!--
+To test it in JavaScript:
+-->
+
+<p>&#x30C6;&#x30B9;&#x30C8;&#x7528;&#x306E; JavaScript:
+
+</p>
+<pre><code>var addon = require(&apos;./build/Release/addon&apos;);
+
+var obj1 = addon(&apos;hello&apos;);
+var obj2 = addon(&apos;world&apos;);
+console.log(obj1.msg+&apos; &apos;+obj2.msg); // &apos;hello world&apos;</code></pre>
+<h3>Function factory<span><a class="mark" href="#addons_function_factory" id="addons_function_factory">#</a></span></h3>
+<!--
+This pattern illustrates how to create and return a JavaScript function that
+wraps a C++ function:
+-->
+
+<p>&#x3053;&#x306E;&#x30D1;&#x30BF;&#x30FC;&#x30F3;&#x306F; C++ &#x95A2;&#x6570;&#x3092;&#x30E9;&#x30C3;&#x30D7;&#x3057;&#x305F; JavaScript &#x95A2;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x8FD4;&#x3059;&#x65B9;&#x6CD5;&#x3092;
+&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+
+using namespace v8;
+
+Handle&lt;Value&gt; MyFunction(const Arguments&amp; args) {
+  HandleScope scope;
+  return scope.Close(String::New(&quot;hello world&quot;));
+}
+
+Handle&lt;Value&gt; CreateFunction(const Arguments&amp; args) {
+  HandleScope scope;
+
+  Local&lt;FunctionTemplate&gt; tpl = FunctionTemplate::New(MyFunction);
+  Local&lt;Function&gt; fn = tpl-&gt;GetFunction();
+  fn-&gt;SetName(String::NewSymbol(&quot;theFunction&quot;)); // omit this to make it anonymous
+
+  return scope.Close(fn);
+}
+
+void Init(Handle&lt;Object&gt; exports, Handle&lt;Object&gt; module) {
+  module-&gt;Set(String::NewSymbol(&quot;exports&quot;),
+      FunctionTemplate::New(CreateFunction)-&gt;GetFunction());
+}
+
+NODE_MODULE(addon, Init)</code></pre>
+<!--
+To test:
+-->
+
+<p>&#x30C6;&#x30B9;&#x30C8;:
+
+</p>
+<pre><code>var addon = require(&apos;./build/Release/addon&apos;);
+
+var fn = addon();
+console.log(fn()); // &apos;hello world&apos;</code></pre>
+<h3>Wrapping C++ objects<span><a class="mark" href="#addons_wrapping_c_objects" id="addons_wrapping_c_objects">#</a></span></h3>
+<!--
+Here we will create a wrapper for a C++ object/class `MyObject` that can be
+instantiated in JavaScript through the `new` operator. First prepare the main
+module `addon.cc`:
+-->
+
+<p>&#x3053;&#x3053;&#x3067;&#x306F;&#x3001;
+C++ &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF0F;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x30E9;&#x30C3;&#x30D7;&#x3057;&#x3001;JavaScript &#x304B;&#x3089; new &#x6F14;&#x7B97;&#x5B50;&#x3092;&#x4F7F;&#x3063;&#x3066;
+&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x5316;&#x3067;&#x304D;&#x308B; <code>MyObject</code> &#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6700;&#x521D;&#x306B;&#x30E1;&#x30A4;&#x30F3;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB; <code>addon.cc</code> &#x3092;&#x6E96;&#x5099;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+#include &quot;myobject.h&quot;
+
+using namespace v8;
+
+void InitAll(Handle&lt;Object&gt; exports) {
+  MyObject::Init(exports);
+}
+
+NODE_MODULE(addon, InitAll)</code></pre>
+<!--
+Then in `myobject.h` make your wrapper inherit from `node::ObjectWrap`:
+-->
+
+<p>&#x6B21;&#x306B;&#x3001;<code>node::ObjectWrap</code> &#x3092;&#x7D99;&#x627F;&#x3057;&#x305F;&#x30E9;&#x30C3;&#x30D1;&#x30FC;&#x3092; <code>myobject.h</code> &#x306B;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>#ifndef MYOBJECT_H
+#define MYOBJECT_H
+
+#include &lt;node.h&gt;
+
+class MyObject : public node::ObjectWrap {
+ public:
+  static void Init(v8::Handle&lt;v8::Object&gt; exports);
+
+ private:
+  explicit MyObject(double value = 0);
+  ~MyObject();
+
+  static v8::Handle&lt;v8::Value&gt; New(const v8::Arguments&amp; args);
+  static v8::Handle&lt;v8::Value&gt; PlusOne(const v8::Arguments&amp; args);
+  static v8::Persistent&lt;v8::Function&gt; constructor;
+  double value_;
+};
+
+#endif</code></pre>
+<!--
+And in `myobject.cc` implement the various methods that you want to expose.
+Here we expose the method `plusOne` by adding it to the constructor's
+prototype:
+-->
+
+<p>&#x516C;&#x958B;&#x3057;&#x305F;&#x3044;&#x69D8;&#x3005;&#x306A;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092; <code>myobject.cc</code> &#x306B;&#x5B9F;&#x88C5;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x3053;&#x3067;&#x306F;&#x3001;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x306B;&#x6E21;&#x3055;&#x308C;&#x305F;&#x5024;&#x306B;&#x52A0;&#x7B97;&#x3059;&#x308B; <code>plusOne</code> &#x3092;&#x516C;&#x958B;&#x3057;&#x3066;&#x3044;&#x307E;&#x3059;:
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+#include &quot;myobject.h&quot;
+
+using namespace v8;
+
+Persistent&lt;Function&gt; MyObject::constructor;
+
+MyObject::MyObject(double value) : value_(value) {
+}
+
+MyObject::~MyObject() {
+}
+
+void MyObject::Init(Handle&lt;Object&gt; exports) {
+  // Prepare constructor template
+  Local&lt;FunctionTemplate&gt; tpl = FunctionTemplate::New(New);
+  tpl-&gt;SetClassName(String::NewSymbol(&quot;MyObject&quot;));
+  tpl-&gt;InstanceTemplate()-&gt;SetInternalFieldCount(1);
+  // Prototype
+  tpl-&gt;PrototypeTemplate()-&gt;Set(String::NewSymbol(&quot;plusOne&quot;),
+      FunctionTemplate::New(PlusOne)-&gt;GetFunction());
+  constructor = Persistent&lt;Function&gt;::New(tpl-&gt;GetFunction());
+  exports-&gt;Set(String::NewSymbol(&quot;MyObject&quot;), constructor);
+}
+
+Handle&lt;Value&gt; MyObject::New(const Arguments&amp; args) {
+  HandleScope scope;
+
+  if (args.IsConstructCall()) {
+    // Invoked as constructor: `new MyObject(...)`
+    double value = args[0]-&gt;IsUndefined() ? 0 : args[0]-&gt;NumberValue();
+    MyObject* obj = new MyObject(value);
+    obj-&gt;Wrap(args.This());
+    return args.This();
+  } else {
+    // Invoked as plain function `MyObject(...)`, turn into construct call.
+    const int argc = 1;
+    Local&lt;Value&gt; argv[argc] = { args[0] };
+    return scope.Close(constructor-&gt;NewInstance(argc, argv));
+  }
+}
+
+Handle&lt;Value&gt; MyObject::PlusOne(const Arguments&amp; args) {
+  HandleScope scope;
+
+  MyObject* obj = ObjectWrap::Unwrap&lt;MyObject&gt;(args.This());
+  obj-&gt;value_ += 1;
+
+  return scope.Close(Number::New(obj-&gt;value_));
+}</code></pre>
+<!--
+Test it with:
+-->
+
+<p>&#x3053;&#x308C;&#x3067;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<pre><code>var addon = require(&apos;./build/Release/addon&apos;);
+
+var obj = new addon.MyObject(10);
+console.log( obj.plusOne() ); // 11
+console.log( obj.plusOne() ); // 12
+console.log( obj.plusOne() ); // 13</code></pre>
+<h3>Factory of wrapped objects<span><a class="mark" href="#addons_factory_of_wrapped_objects" id="addons_factory_of_wrapped_objects">#</a></span></h3>
+<!--
+This is useful when you want to be able to create native objects without
+explicitly instantiating them with the `new` operator in JavaScript, e.g.
+-->
+
+<p>JavaScript &#x306E; <code>new</code> &#x6F14;&#x7B97;&#x5B50;&#x3067;&#x660E;&#x793A;&#x7684;&#x306B;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x5316;&#x3059;&#x308B;&#x3053;&#x3068;&#x306A;&#x304F;&#x3001;
+&#x30CD;&#x30A4;&#x30C6;&#x30A3;&#x30D6;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x4F5C;&#x6210;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306B;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;&#x4F8B;:
+
+</p>
+<pre><code>var obj = addon.createObject();
+// instead of:
+// var obj = new addon.Object();</code></pre>
+<!--
+Let's register our `createObject` method in `addon.cc`:
+-->
+
+<p>createObject<code> &#x3092; </code>addon.cc` &#x306B;&#x767B;&#x9332;&#x3057;&#x307E;&#x3057;&#x3087;&#x3046;:
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+#include &quot;myobject.h&quot;
+
+using namespace v8;
+
+Handle&lt;Value&gt; CreateObject(const Arguments&amp; args) {
+  HandleScope scope;
+  return scope.Close(MyObject::NewInstance(args));
+}
+
+void InitAll(Handle&lt;Object&gt; exports, Handle&lt;Object&gt; module) {
+  MyObject::Init();
+
+  module-&gt;Set(String::NewSymbol(&quot;exports&quot;),
+      FunctionTemplate::New(CreateObject)-&gt;GetFunction());
+}
+
+NODE_MODULE(addon, InitAll)</code></pre>
+<!--
+In `myobject.h` we now introduce the static method `NewInstance` that takes
+care of instantiating the object (i.e. it does the job of `new` in JavaScript):
+-->
+
+<p><code>myobject.h</code> &#x306B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B; static &#x30E1;&#x30BD;&#x30C3;&#x30C9; <code>NewInstance</code> &#x3092;
+&#x5C0E;&#x5165;&#x3057;&#x307E;&#x3057;&#x3087;&#x3046; (&#x3059;&#x306A;&#x308F;&#x3061;&#xFF0C;&#x305D;&#x308C;&#x304C; JavaScript &#x5185;&#x306E; <code>new</code> &#x306E;&#x50CD;&#x304D;&#x3092;&#x3057;&#x307E;&#x3059;)&#x3002;
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#ifndef MYOBJECT_H
+#define MYOBJECT_H
+
+#include &lt;node.h&gt;
+
+class MyObject : public node::ObjectWrap {
+ public:
+  static void Init();
+  static v8::Handle&lt;v8::Value&gt; NewInstance(const v8::Arguments&amp; args);
+
+ private:
+  explicit MyObject(double value = 0);
+  ~MyObject();
+
+  static v8::Handle&lt;v8::Value&gt; New(const v8::Arguments&amp; args);
+  static v8::Handle&lt;v8::Value&gt; PlusOne(const v8::Arguments&amp; args);
+  static v8::Persistent&lt;v8::Function&gt; constructor;
+  double value_;
+};
+
+#endif</code></pre>
+<!--
+The implementation is similar to the above in `myobject.cc`:
+-->
+
+<p>&#x5B9F;&#x88C5;&#x306F;&#x524D;&#x8FF0;&#x306E; <code>myobject.cc</code> &#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;:
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+#include &quot;myobject.h&quot;
+
+using namespace v8;
+
+Persistent&lt;Function&gt; MyObject::constructor;
+
+MyObject::MyObject(double value) : value_(value) {
+}
+
+MyObject::~MyObject() {
+}
+
+void MyObject::Init() {
+  // Prepare constructor template
+  Local&lt;FunctionTemplate&gt; tpl = FunctionTemplate::New(New);
+  tpl-&gt;SetClassName(String::NewSymbol(&quot;MyObject&quot;));
+  tpl-&gt;InstanceTemplate()-&gt;SetInternalFieldCount(1);
+  // Prototype
+  tpl-&gt;PrototypeTemplate()-&gt;Set(String::NewSymbol(&quot;plusOne&quot;),
+      FunctionTemplate::New(PlusOne)-&gt;GetFunction());
+  constructor = Persistent&lt;Function&gt;::New(tpl-&gt;GetFunction());
+}
+
+Handle&lt;Value&gt; MyObject::New(const Arguments&amp; args) {
+  HandleScope scope;
+
+  if (args.IsConstructCall()) {
+    // Invoked as constructor: `new MyObject(...)`
+    double value = args[0]-&gt;IsUndefined() ? 0 : args[0]-&gt;NumberValue();
+    MyObject* obj = new MyObject(value);
+    obj-&gt;Wrap(args.This());
+    return args.This();
+  } else {
+    // Invoked as plain function `MyObject(...)`, turn into construct call.
+    const int argc = 1;
+    Local&lt;Value&gt; argv[argc] = { args[0] };
+    return scope.Close(constructor-&gt;NewInstance(argc, argv));
+  }
+}
+
+Handle&lt;Value&gt; MyObject::NewInstance(const Arguments&amp; args) {
+  HandleScope scope;
+
+  const unsigned argc = 1;
+  Handle&lt;Value&gt; argv[argc] = { args[0] };
+  Local&lt;Object&gt; instance = constructor-&gt;NewInstance(argc, argv);
+
+  return scope.Close(instance);
+}
+
+Handle&lt;Value&gt; MyObject::PlusOne(const Arguments&amp; args) {
+  HandleScope scope;
+
+  MyObject* obj = ObjectWrap::Unwrap&lt;MyObject&gt;(args.This());
+  obj-&gt;value_ += 1;
+
+  return scope.Close(Number::New(obj-&gt;value_));
+}</code></pre>
+<!--
+Test it with:
+-->
+
+<p>&#x3053;&#x308C;&#x3067;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<pre><code>var createObject = require(&apos;./build/Release/addon&apos;);
+
+var obj = createObject(10);
+console.log( obj.plusOne() ); // 11
+console.log( obj.plusOne() ); // 12
+console.log( obj.plusOne() ); // 13
+
+var obj2 = createObject(20);
+console.log( obj2.plusOne() ); // 21
+console.log( obj2.plusOne() ); // 22
+console.log( obj2.plusOne() ); // 23</code></pre>
+<h3>Passing wrapped objects around<span><a class="mark" href="#addons_passing_wrapped_objects_around" id="addons_passing_wrapped_objects_around">#</a></span></h3>
+<!--
+In addition to wrapping and returning C++ objects, you can pass them around
+by unwrapping them with Node's `node::ObjectWrap::Unwrap` helper function.
+In the following `addon.cc` we introduce a function `add()` that can take on two
+`MyObject` objects:
+-->
+
+<p>C++ &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x30E9;&#x30C3;&#x30D7;&#x3057;&#x3066;&#x8FD4;&#x3059;&#x3053;&#x3068;&#x306B;&#x52A0;&#x3048;&#x3066;&#x3001;Node &#x304C;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x30D8;&#x30EB;&#x30D1;&#x95A2;&#x6570;
+<code>node::ObjectWrap::Unwrap</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x30A2;&#x30F3;&#x30E9;&#x30C3;&#x30D7;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x4EE5;&#x4E0B;&#x306E; <code>addon.cc</code> &#x3067;&#x306F;&#x3001;&#x4E8C;&#x3064;&#x306E; <code>MyObject</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x53D7;&#x3051;&#x53D6;&#x308B; <code>add()</code>
+&#x95A2;&#x6570;&#x3092;&#x5C0E;&#x5165;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+#include &quot;myobject.h&quot;
+
+using namespace v8;
+
+Handle&lt;Value&gt; CreateObject(const Arguments&amp; args) {
+  HandleScope scope;
+  return scope.Close(MyObject::NewInstance(args));
+}
+
+Handle&lt;Value&gt; Add(const Arguments&amp; args) {
+  HandleScope scope;
+
+  MyObject* obj1 = node::ObjectWrap::Unwrap&lt;MyObject&gt;(
+      args[0]-&gt;ToObject());
+  MyObject* obj2 = node::ObjectWrap::Unwrap&lt;MyObject&gt;(
+      args[1]-&gt;ToObject());
+
+  double sum = obj1-&gt;Value() + obj2-&gt;Value();
+  return scope.Close(Number::New(sum));
+}
+
+void InitAll(Handle&lt;Object&gt; exports) {
+  MyObject::Init();
+
+  exports-&gt;Set(String::NewSymbol(&quot;createObject&quot;),
+      FunctionTemplate::New(CreateObject)-&gt;GetFunction());
+
+  exports-&gt;Set(String::NewSymbol(&quot;add&quot;),
+      FunctionTemplate::New(Add)-&gt;GetFunction());
+}
+
+NODE_MODULE(addon, InitAll)</code></pre>
+<!--
+To make things interesting we introduce a public method in `myobject.h` so we
+can probe private values after unwrapping the object:
+-->
+
+<p>&#x3088;&#x308A;&#x304A;&#x3082;&#x3057;&#x308D;&#x304F;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;<code>myobject.h</code> &#x306B;&#x30D1;&#x30D6;&#x30EA;&#x30C3;&#x30AF;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x5C0E;&#x5165;&#x3057;&#x307E;&#x3057;&#x3087;&#x3046;&#x3002;
+&#x3057;&#x305F;&#x304C;&#x3063;&#x3066;&#x3001;&#x30A2;&#x30F3;&#x30E9;&#x30C3;&#x30D7;&#x3055;&#x308C;&#x305F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x30D7;&#x30E9;&#x30A4;&#x30D9;&#x30FC;&#x30C8;&#x5909;&#x6570;&#x3092;&#x8ABF;&#x3079;&#x308B;&#x3053;&#x3068;&#x304C;
+&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#ifndef MYOBJECT_H
+#define MYOBJECT_H
+
+#include &lt;node.h&gt;
+
+class MyObject : public node::ObjectWrap {
+ public:
+  static void Init();
+  static v8::Handle&lt;v8::Value&gt; NewInstance(const v8::Arguments&amp; args);
+  double Value() const { return value_; }
+
+ private:
+  explicit MyObject(double value = 0);
+  ~MyObject();
+
+  static v8::Handle&lt;v8::Value&gt; New(const v8::Arguments&amp; args);
+  static v8::Persistent&lt;v8::Function&gt; constructor;
+  double value_;
+};
+
+#endif</code></pre>
+<!--
+The implementation of `myobject.cc` is similar as before:
+-->
+
+<p><code>myobject.cc</code> &#x306E;&#x5B9F;&#x88C5;&#x306F;&#x3053;&#x308C;&#x307E;&#x3067;&#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;:
+
+</p>
+<pre><code>#define BUILDING_NODE_EXTENSION
+#include &lt;node.h&gt;
+#include &quot;myobject.h&quot;
+
+using namespace v8;
+
+Persistent&lt;Function&gt; MyObject::constructor;
+
+MyObject::MyObject(double value) : value_(value) {
+}
+
+MyObject::~MyObject() {
+}
+
+void MyObject::Init() {
+  // Prepare constructor template
+  Local&lt;FunctionTemplate&gt; tpl = FunctionTemplate::New(New);
+  tpl-&gt;SetClassName(String::NewSymbol(&quot;MyObject&quot;));
+  tpl-&gt;InstanceTemplate()-&gt;SetInternalFieldCount(1);
+  constructor = Persistent&lt;Function&gt;::New(tpl-&gt;GetFunction());
+}
+
+Handle&lt;Value&gt; MyObject::New(const Arguments&amp; args) {
+  HandleScope scope;
+
+  if (args.IsConstructCall()) {
+    // Invoked as constructor: `new MyObject(...)`
+    double value = args[0]-&gt;IsUndefined() ? 0 : args[0]-&gt;NumberValue();
+    MyObject* obj = new MyObject(value);
+    obj-&gt;Wrap(args.This());
+    return args.This();
+  } else {
+    // Invoked as plain function `MyObject(...)`, turn into construct call.
+    const int argc = 1;
+    Local&lt;Value&gt; argv[argc] = { args[0] };
+    return scope.Close(constructor-&gt;NewInstance(argc, argv));
+  }
+}
+
+Handle&lt;Value&gt; MyObject::NewInstance(const Arguments&amp; args) {
+  HandleScope scope;
+
+  const unsigned argc = 1;
+  Handle&lt;Value&gt; argv[argc] = { args[0] };
+  Local&lt;Object&gt; instance = constructor-&gt;NewInstance(argc, argv);
+
+  return scope.Close(instance);
+}</code></pre>
+<!--
+Test it with:
+-->
+
+<p>&#x3053;&#x308C;&#x3067;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<pre><code>var addon = require(&apos;./build/Release/addon&apos;);
+
+var obj1 = addon.createObject(10);
+var obj2 = addon.createObject(20);
+var result = addon.add(obj1, obj2);
+
+console.log(result); // 30</code></pre>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

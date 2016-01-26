@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Debugger Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/debugger.html">
+</head>
+<body class="alt apidoc" id="api-section-debugger">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="debugger.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#debugger_debugger">Debugger</a><ul>
+<li><a href="#debugger_watchers">Watchers</a></li>
+<li><a href="#debugger_commands_reference">Commands reference</a><ul>
+<li><a href="#debugger_stepping">Stepping</a></li>
+<li><a href="#debugger_breakpoints">Breakpoints</a></li>
+<li><a href="#debugger_info">Info</a></li>
+<li><a href="#debugger_execution_control">Execution control</a></li>
+<li><a href="#debugger_various">Various</a></li>
+</ul>
+</li>
+<li><a href="#debugger_advanced_usage">Advanced Usage</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Debugger<span><a class="mark" href="#debugger_debugger" id="debugger_debugger">#</a></span></h1>
+<pre class="api_stability_3">Stability: 3 - Stable</pre><!-- type=misc -->
+
+<!--
+V8 comes with an extensive debugger which is accessible out-of-process via a
+simple [TCP protocol](http://code.google.com/p/v8/wiki/DebuggerProtocol).
+Node has a built-in client for this debugger. To use this, start Node with the
+`debug` argument; a prompt will appear:
+-->
+
+<p>V8&#x306F;&#x5916;&#x90E8;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x304B;&#x3089; <a href="http://code.google.com/p/v8/wiki/DebuggerProtocol">TCP &#x30D7;&#x30ED;&#x30C8;&#x30B3;&#x30EB;</a>&#x7D4C;&#x7531;&#x3067;&#x63A5;&#x7D9A;&#x53EF;&#x80FD;&#x306A;&#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x3092;&#x5099;&#x3048;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+Node &#x306B;&#x306F;&#x3053;&#x306E;&#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x3078;&#x306E;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x7D44;&#x307F;&#x8FBC;&#x307E;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x3092;&#x4F7F;&#x3046;&#x306B;&#x306F;&#x3001; <code>debug</code> &#x5F15;&#x6570;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x3066; Node &#x3092;&#x8D77;&#x52D5;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;:
+
+</p>
+<pre><code>% node debug myscript.js
+&lt; debugger listening on port 5858
+connecting... ok
+break in /home/indutny/Code/git/indutny/myscript.js:1
+  1 x = 5;
+  2 setTimeout(function () {
+  3   debugger;
+debug&gt;</code></pre>
+<!--
+Node's debugger client doesn't support the full range of commands, but
+simple step and inspection is possible. By putting the statement `debugger;`
+into the source code of your script, you will enable a breakpoint.
+-->
+
+<p>Node &#x306E;&#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306F;&#x3042;&#x3089;&#x3086;&#x308B;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3092;&#x5B8C;&#x5168;&#x306B;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3057;&#x3066;&#x3044;&#x308B;&#x308F;&#x3051;&#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x304C;&#x3001;
+&#x5358;&#x7D14;&#x306A;&#x30B9;&#x30C6;&#x30C3;&#x30D7;&#x5B9F;&#x884C;&#x3084;&#x30A4;&#x30F3;&#x30B9;&#x30DA;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;
+&#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x306E;&#x30BD;&#x30FC;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x306B; <code>debugger;</code> &#x6587;&#x3092;&#x633F;&#x5165;&#x3059;&#x308B;&#x3068;&#x3001;
+&#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x304C;&#x6709;&#x52B9;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+For example, suppose `myscript.js` looked like this:
+-->
+
+<p>&#x4F8B;&#x3048;&#x3070;&#x3001;<code>myscript.js</code> &#x304C;&#x6B21;&#x306E;&#x3088;&#x3046;&#x3060;&#x3068;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<pre><code>// myscript.js
+x = 5;
+setTimeout(function () {
+  debugger;
+  console.log(&quot;world&quot;);
+}, 1000);
+console.log(&quot;hello&quot;);</code></pre>
+<!--
+Then once the debugger is run, it will break on line 4.
+-->
+
+<p>&#x3072;&#x3068;&#x305F;&#x3073;&#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x3092;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x3068;&#x3001;4&#x884C;&#x76EE;&#x3067;&#x4E2D;&#x65AD;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>% node debug myscript.js
+&lt; debugger listening on port 5858
+connecting... ok
+break in /home/indutny/Code/git/indutny/myscript.js:1
+  1 x = 5;
+  2 setTimeout(function () {
+  3   debugger;
+debug&gt; cont
+&lt; hello
+break in /home/indutny/Code/git/indutny/myscript.js:3
+  1 x = 5;
+  2 setTimeout(function () {
+  3   debugger;
+  4   console.log(&quot;world&quot;);
+  5 }, 1000);
+debug&gt; next
+break in /home/indutny/Code/git/indutny/myscript.js:4
+  2 setTimeout(function () {
+  3   debugger;
+  4   console.log(&quot;world&quot;);
+  5 }, 1000);
+  6 console.log(&quot;hello&quot;);
+debug&gt; repl
+Press Ctrl + C to leave debug repl
+&gt; x
+5
+&gt; 2+2
+4
+debug&gt; next
+&lt; world
+break in /home/indutny/Code/git/indutny/myscript.js:5
+  3   debugger;
+  4   console.log(&quot;world&quot;);
+  5 }, 1000);
+  6 console.log(&quot;hello&quot;);
+  7
+debug&gt; quit
+%</code></pre>
+<!--
+The `repl` command allows you to evaluate code remotely. The `next` command
+steps over to the next line. There are a few other commands available and more
+to come. Type `help` to see others.
+-->
+
+<p><code>repl</code> &#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x306F;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x3067;&#x8A55;&#x4FA1;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>next</code> &#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x306F;&#x6B21;&#x306E;&#x884C;&#x306B;&#x30B9;&#x30C6;&#x30C3;&#x30D7;&#x30AA;&#x30FC;&#x30D0;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4ED6;&#x306B;&#x3082;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3092;&#x5229;&#x7528;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x305D;&#x306E;&#x4ED6;&#x306B;&#x3064;&#x3044;&#x3066;&#x306F; <code>help</code> &#x3092;&#x30BF;&#x30A4;&#x30D7;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>Watchers<span><a class="mark" href="#debugger_watchers" id="debugger_watchers">#</a></span></h2>
+<!--
+You can watch expression and variable values while debugging your code.
+On every breakpoint each expression from the watchers list will be evaluated
+in the current context and displayed just before the breakpoint's source code
+listing.
+-->
+
+<p>&#x30C7;&#x30D0;&#x30C3;&#x30B0;&#x4E2D;&#x306B;&#x5F0F;&#x3084;&#x5909;&#x6570;&#x306E;&#x5024;&#x3092;&#x30A6;&#x30A9;&#x30C3;&#x30C1;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x5168;&#x3066;&#x306E;&#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306B;&#x304A;&#x3044;&#x3066;&#x3001;&#x30A6;&#x30A9;&#x30C3;&#x30C1;&#x30EA;&#x30B9;&#x30C8;&#x306E;&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x5F0F;&#x306F;
+&#x73FE;&#x5728;&#x306E;&#x30B3;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x3067;&#x8A55;&#x4FA1;&#x3055;&#x308C;&#x3001;&#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x306E;&#x30BD;&#x30FC;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x524D;&#x306B;
+&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+To start watching an expression, type `watch("my_expression")`. `watchers`
+prints the active watchers. To remove a watcher, type
+`unwatch("my_expression")`.
+-->
+
+<p>&#x5F0F;&#x306E;&#x30A6;&#x30A9;&#x30C3;&#x30C1;&#x3092;&#x958B;&#x59CB;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;<code>watch(&quot;my_expression&quot;)</code> &#x3092;&#x30BF;&#x30A4;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+<code>watchers</code> &#x306F;&#x30A2;&#x30AF;&#x30C6;&#x30A3;&#x30D6;&#x306A;&#x30A6;&#x30A9;&#x30C3;&#x30C1;&#x306E;&#x4E00;&#x89A7;&#x3092;&#x8868;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x30A6;&#x30A9;&#x30C3;&#x30C1;&#x3092;&#x89E3;&#x9664;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;<code>unwatch(&quot;my_expression&quot;)</code> &#x3068;&#x30BF;&#x30A4;&#x30D7;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>Commands reference<span><a class="mark" href="#debugger_commands_reference" id="debugger_commands_reference">#</a></span></h2>
+<h3>Stepping<span><a class="mark" href="#debugger_stepping" id="debugger_stepping">#</a></span></h3>
+<!--
+* `cont`, `c` - Continue execution
+* `next`, `n` - Step next
+* `step`, `s` - Step in
+* `out`, `o` - Step out
+* `pause` - Pause running code (like pause button in Developer Tools)
+-->
+
+<ul>
+<li><code>cont</code>, <code>c</code> - &#x5B9F;&#x884C;&#x3092;&#x7D99;&#x7D9A;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>next</code>, <code>n</code> - &#x6B21;&#x306E;&#x884C;&#x3078;&#x30B9;&#x30C6;&#x30C3;&#x30D7;&#x30AA;&#x30FC;&#x30D0;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>step</code>, <code>s</code> - &#x30B9;&#x30C6;&#x30C3;&#x30D7;&#x30A4;&#x30F3;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>out</code>, <code>o</code> - &#x30B9;&#x30C6;&#x30C3;&#x30D7;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>pause</code> - &#x30B3;&#x30FC;&#x30C9;&#x306E;&#x5B9F;&#x884C;&#x3092;&#x4E2D;&#x65AD;&#x3057;&#x307E;&#x3059; (Developer Tools &#x306E; pause
+&#x30DC;&#x30BF;&#x30F3;&#x3068;&#x540C;&#x3058;&#x3067;&#x3059;&#x3002;</li>
+</ul>
+<h3>Breakpoints<span><a class="mark" href="#debugger_breakpoints" id="debugger_breakpoints">#</a></span></h3>
+<!--
+* `setBreakpoint()`, `sb()` - Set breakpoint on current line
+* `setBreakpoint(line)`, `sb(line)` - Set breakpoint on specific line
+* `setBreakpoint('fn()')`, `sb(...)` - Set breakpoint on a first statement in
+functions body
+* `setBreakpoint('script.js', 1)`, `sb(...)` - Set breakpoint on first line of
+script.js
+* `clearBreakpoint`, `cb(...)` - Clear breakpoint
+-->
+
+<ul>
+<li><code>setBreakpoint()</code>, <code>sb()</code> - &#x73FE;&#x5728;&#x884C;&#x306B;&#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>setBreakpoint(line)</code>, <code>sb(line)</code> - &#x6307;&#x5B9A;&#x3057;&#x305F;&#x884C;&#x306B;&#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>setBreakpoint(&apos;fn()&apos;)</code>, <code>sb(...)</code> - &#x6307;&#x5B9A;&#x3057;&#x305F;&#x95A2;&#x6570;&#x306E;&#x5148;&#x982D;&#x884C;&#x306B;&#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;</li>
+<li><code>setBreakpoint(&apos;script.js&apos;, 1)</code>, <code>sb(...)</code> - &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x884C;&#x306B;&#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>clearBreakpoint</code>, <code>cb(...)</code> - &#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3092;&#x524A;&#x9664;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<!--
+It is also possible to set a breakpoint in a file (module) that
+isn't loaded yet:
+-->
+
+<p>&#x307E;&#x3060;&#x30ED;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x30D5;&#x30A1;&#x30A4;&#x30EB; (&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;) &#x306B;&#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3092;
+&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>% ./node debug test/fixtures/break-in-module/main.js
+&lt; debugger listening on port 5858
+connecting to port 5858... ok
+break in test/fixtures/break-in-module/main.js:1
+  1 var mod = require(&apos;./mod.js&apos;);
+  2 mod.hello();
+  3 mod.hello();
+debug&gt; setBreakpoint(&apos;mod.js&apos;, 23)
+Warning: script &apos;mod.js&apos; was not loaded yet.
+  1 var mod = require(&apos;./mod.js&apos;);
+  2 mod.hello();
+  3 mod.hello();
+debug&gt; c
+break in test/fixtures/break-in-module/mod.js:23
+ 21
+ 22 exports.hello = function() {
+ 23   return &apos;hello from module&apos;;
+ 24 };
+ 25
+debug&gt;</code></pre>
+<h3>Info<span><a class="mark" href="#debugger_info" id="debugger_info">#</a></span></h3>
+<!--
+* `backtrace`, `bt` - Print backtrace of current execution frame
+* `list(5)` - List scripts source code with 5 line context (5 lines before and
+after)
+* `watch(expr)` - Add expression to watch list
+* `unwatch(expr)` - Remove expression from watch list
+* `watchers` - List all watchers and their values (automatically listed on each
+breakpoint)
+* `repl` - Open debugger's repl for evaluation in debugging script's context
+-->
+
+<ul>
+<li><code>backtrace</code>, <code>bt</code> - &#x73FE;&#x5728;&#x306E;&#x5B9F;&#x884C;&#x30D5;&#x30EC;&#x30FC;&#x30E0;&#x306E;&#x30D0;&#x30C3;&#x30AF;&#x30C8;&#x30EC;&#x30FC;&#x30B9;&#x3092;&#x8868;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>list(5)</code> - &#x73FE;&#x5728;&#x306E;&#x884C;&#x306E;&#x524D;&#x5F8C;&#x306E;&#x30BD;&#x30FC;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x8868;&#x793A;&#x3057;&#x307E;&#x3059; (&#x4F8B;&#x3067;&#x306F;&#x524D;&#x5F8C;&#x3068;&#x3082; 5 &#x884C;&#x304C;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;)&#x3002;</li>
+<li><code>watch(expr)</code> - &#x5F0F;&#x3092;&#x30A6;&#x30A9;&#x30C3;&#x30C1;&#x30EA;&#x30B9;&#x30C8;&#x306B;&#x8FFD;&#x52A0;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>unwatch(expr)</code> - &#x5F0F;&#x3092;&#x30A6;&#x30A9;&#x30C3;&#x30C1;&#x30EA;&#x30B9;&#x30C8;&#x304B;&#x3089;&#x524A;&#x9664;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>watchers</code> - &#x30A6;&#x30A9;&#x30C3;&#x30C1;&#x3057;&#x3066;&#x3044;&#x308B;&#x5168;&#x3066;&#x306E;&#x5F0F;&#x3068;&#x305D;&#x306E;&#x5024;&#x3092;&#x8868;&#x793A;&#x3057;&#x307E;&#x3059; (&#x5404;&#x30D6;&#x30EC;&#x30FC;&#x30AF;&#x30DD;&#x30A4;&#x30F3;&#x30C8;&#x3067;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x8868;&#x793A;&#x3055;&#x308C;&#x307E;&#x3059;)&#x3002;</li>
+<li><code>repl</code> - &#x30C7;&#x30D0;&#x30C3;&#x30B0;&#x3057;&#x3066;&#x3044;&#x308B;&#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x3092;&#x30B3;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x3068;&#x3059;&#x308B; REPL &#x3092;&#x958B;&#x304D;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<h3>Execution control<span><a class="mark" href="#debugger_execution_control" id="debugger_execution_control">#</a></span></h3>
+<!--
+* `run` - Run script (automatically runs on debugger's start)
+* `restart` - Restart script
+* `kill` - Kill script
+-->
+
+<ul>
+<li><code>run</code> - &#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x3092;&#x5B9F;&#x884C;&#x3057;&#x307E;&#x3059; (&#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x3092;&#x958B;&#x59CB;&#x3059;&#x308B;&#x3068;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x5B9F;&#x884C;&#x3057;&#x307E;&#x3059;)&#x3002;</li>
+<li><code>restart</code> - &#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x3092;&#x518D;&#x5B9F;&#x884C;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>kill</code> - &#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<h3>Various<span><a class="mark" href="#debugger_various" id="debugger_various">#</a></span></h3>
+<!--
+* `scripts` - List all loaded scripts
+* `version` - Display v8's version
+-->
+
+<ul>
+<li><code>scripts</code> - &#x30ED;&#x30FC;&#x30C9;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5168;&#x30B9;&#x30AF;&#x30EA;&#x30D7;&#x30C8;&#x306E;&#x4E00;&#x89A7;&#x3092;&#x8868;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+<li><code>version</code> - v8 &#x306E;&#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3092;&#x8868;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<h2>Advanced Usage<span><a class="mark" href="#debugger_advanced_usage" id="debugger_advanced_usage">#</a></span></h2>
+<!--
+The V8 debugger can be enabled and accessed either by starting Node with
+the `--debug` command-line flag or by signaling an existing Node process
+with `SIGUSR1`.
+-->
+
+<p>V8 &#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x306F; Node &#x3092;&#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x30E9;&#x30A4;&#x30F3;&#x306E; <code>--debug</code> &#x30D5;&#x30E9;&#x30B0;&#x3067;&#x8D77;&#x52D5;&#x3057;&#x305F;&#x308A;&#x3001;&#x8D77;&#x52D5;&#x6E08;&#x307F;&#x306E; Node &#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B; <code>SIGUSR1</code> &#x30B7;&#x30B0;&#x30CA;&#x30EB;&#x3092;&#x9001;&#x308B;&#x3053;&#x3068;&#x3067;&#x3082;&#x6709;&#x52B9;&#x306B;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Once a process has been set in debug mode with this it can be connected to
+with the node debugger. Either connect to the `pid` or the URI to the debugger.
+The syntax is:
+-->
+
+<p>&#x3053;&#x308C;&#x306B;&#x3088;&#x3063;&#x3066;&#x4E00;&#x5EA6;&#x30C7;&#x30D0;&#x30C3;&#x30B0;&#x30E2;&#x30FC;&#x30C9;&#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306F;&#x3001;
+<code>pid</code> &#x307E;&#x305F;&#x306F; URI &#x306E;&#x3069;&#x3061;&#x3089;&#x3067;&#x3082; node &#x30C7;&#x30D0;&#x30C3;&#x30AC;&#x306B;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+&#x5F62;&#x5F0F;&#x306F;:
+
+</p>
+<!--
+* `node debug -p <pid>` - Connects to the process via the `pid`
+* `node debug <URI>` - Connects to the process via the URI such as localhost:5858
+-->
+
+<ul>
+<li><code>node debug -p &lt;pid&gt;</code> - <code>pid</code> &#x3092;&#x901A;&#x3058;&#x3066;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x63A5;&#x7D9A;</li>
+<li><code>node debug &lt;URI&gt; - </code>localhost:585` &#x306E;&#x3088;&#x3046;&#x306A; URI &#x3092;&#x901A;&#x3058;&#x3066;&#x30D7;&#x30ED;&#x30BB;&#x30B9;&#x306B;&#x63A5;&#x7D9A;</li>
+</ul>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>URL Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/url.html">
+</head>
+<body class="alt apidoc" id="api-section-url">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="url.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#url_url">URL</a><ul>
+<li><a href="#url_url_parse_urlstr_parsequerystring_slashesdenotehost">url.parse(urlStr, [parseQueryString], [slashesDenoteHost])</a></li>
+<li><a href="#url_url_format_urlobj">url.format(urlObj)</a></li>
+<li><a href="#url_url_resolve_from_to">url.resolve(from, to)</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>URL<span><a class="mark" href="#url_url" id="url_url">#</a></span></h1>
+<pre class="api_stability_3">Stability: 3 - Stable</pre><!--
+This module has utilities for URL resolution and parsing.
+Call `require('url')` to use it.
+-->
+
+<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;URL&#x306E;&#x89E3;&#x6C7A;&#x3084;&#x89E3;&#x6790;&#x306E;&#x70BA;&#x306E;&#x30E6;&#x30FC;&#x30C6;&#x30A3;&#x30EA;&#x30C6;&#x30A3;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x5229;&#x7528;&#x3059;&#x308B;&#x306B;&#x306F; <code>require(&apos;url&apos;)</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<!--
+Parsed URL objects have some or all of the following fields, depending on
+whether or not they exist in the URL string. Any parts that are not in the URL
+string will not be in the parsed object. Examples are shown for the URL
+-->
+
+<p>&#x89E3;&#x6790;&#x3055;&#x308C;&#x305F;URL&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F;&#x3001;URL&#x6587;&#x5B57;&#x5217;&#x306E;&#x4E2D;&#x306B;&#x5B58;&#x5728;&#x3059;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x306B;&#x5FDC;&#x3058;&#x3066;
+&#x6B21;&#x306B;&#x793A;&#x3059;&#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x3092;&#x3044;&#x304F;&#x3064;&#x304B;&#x3082;&#x3057;&#x304F;&#x306F;&#x5168;&#x3066;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+URL&#x6587;&#x5B57;&#x5217;&#x306B;&#x542B;&#x307E;&#x308C;&#x306A;&#x3044;&#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x306F;&#x89E3;&#x6790;&#x7D50;&#x679C;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x542B;&#x307E;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;
+&#x6B21;&#x306E;URL&#x3067;&#x4F8B;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>&apos;http://user:pass@host.com:8080/p/a/t/h?query=string#hash&apos;</code>
+
+</p>
+<!--
+* `href`: The full URL that was originally parsed. Both the protocol and host are lowercased.
+
+    Example: `'http://user:pass@host.com:8080/p/a/t/h?query=string#hash'`
+
+* `protocol`: The request protocol, lowercased.
+
+    Example: `'http:'`
+
+* `host`: The full lowercased host portion of the URL, including port
+  information.
+
+    Example: `'host.com:8080'`
+
+* `auth`: The authentication information portion of a URL.
+
+    Example: `'user:pass'`
+
+* `hostname`: Just the lowercased hostname portion of the host.
+
+    Example: `'host.com'`
+
+* `port`: The port number portion of the host.
+
+    Example: `'8080'`
+
+* `pathname`: The path section of the URL, that comes after the host and
+  before the query, including the initial slash if present.
+
+    Example: `'/p/a/t/h'`
+
+* `search`: The 'query string' portion of the URL, including the leading
+  question mark.
+
+    Example: `'?query=string'`
+
+* `path`: Concatenation of `pathname` and `search`.
+
+    Example: `'/p/a/t/h?query=string'`
+
+* `query`: Either the 'params' portion of the query string, or a
+  querystring-parsed object.
+
+    Example: `'query=string'` or `{'query':'string'}`
+
+* `hash`: The 'fragment' portion of the URL including the pound-sign.
+
+    Example: `'#hash'`
+-->
+
+<ul>
+<li><p><code>href</code>: &#x89E3;&#x6790;&#x3059;&#x308B;&#x524D;&#x306E;&#x5B8C;&#x5168;&#x306A; URL&#x3002;protocol &#x3068; host &#x306F;&#x3069;&#x3061;&#x3089;&#x3082;&#x5C0F;&#x6587;&#x5B57;&#x5316;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;http://user:pass@host.com:8080/p/a/t/h?query=string#hash&apos;</code></p>
+</li>
+<li><p><code>protocol</code>: &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30D7;&#x30ED;&#x30C8;&#x30B3;&#x30EB;&#x3002;&#x5C0F;&#x6587;&#x5B57;&#x5316;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;http:&apos;</code></p>
+</li>
+<li><p><code>host</code>: URL &#x306E;&#x5B8C;&#x5168;&#x3067;&#x5C0F;&#x6587;&#x5B57;&#x5316;&#x3055;&#x308C;&#x305F;&#x30DB;&#x30B9;&#x30C8;&#x60C5;&#x5831;&#x3002;&#x30DD;&#x30FC;&#x30C8;&#x756A;&#x53F7;&#x3092;&#x542B;&#x307F;&#x307E;&#x3059;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;host.com:8080&apos;</code></p>
+</li>
+<li><p><code>auth</code>: URL &#x306E;&#x8A8D;&#x8A3C;&#x60C5;&#x5831;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;user:pass&apos;</code></p>
+</li>
+<li><p><code>hostname</code>: &#x30DB;&#x30B9;&#x30C8;&#x60C5;&#x5831;&#x306E;&#x4E2D;&#x306E;&#x5C0F;&#x6587;&#x5B57;&#x5316;&#x3055;&#x308C;&#x305F;&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;host.com&apos;</code></p>
+</li>
+<li><p><code>port</code>: &#x30DB;&#x30B9;&#x30C8;&#x60C5;&#x5831;&#x306E;&#x4E2D;&#x306E;&#x30DD;&#x30FC;&#x30C8;&#x756A;&#x53F7;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;8080&apos;</code></p>
+</li>
+<li><p><code>pathname</code>: URL &#x306E;&#x30D1;&#x30B9;&#x90E8;&#x5206;&#x3002;&#x30DB;&#x30B9;&#x30C8;&#x60C5;&#x5831;&#x304B;&#x3089;&#x30AF;&#x30A8;&#x30EA;&#x307E;&#x3067;&#x306E;&#x9593;&#x306B;&#x4F4D;&#x7F6E;&#x3057;&#x3001;
+&#x6700;&#x521D;&#x306B;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F;&#x305D;&#x308C;&#x3082;&#x542B;&#x307F;&#x307E;&#x3059;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;/p/a/t/h&apos;</code></p>
+</li>
+<li><p><code>search</code>: URL &#x306E;&#x30AF;&#x30A8;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3002;&#x5148;&#x982D;&#x306E; ? &#x30DE;&#x30FC;&#x30AF;&#x3082;&#x542B;&#x307F;&#x307E;&#x3059;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;?query=string&apos;</code></p>
+</li>
+<li><p><code>path</code>: <code>pathname</code> &#x3068; <code>search</code> &#x3092;&#x9023;&#x7D50;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;/p/a/t/h?query=string&apos;</code></p>
+</li>
+<li><p><code>query</code>: &#x30AF;&#x30A8;&#x30EA;&#x306E;&#x5909;&#x6570;&#x90E8;&#x5206;&#x306E;&#x6587;&#x5B57;&#x5217;&#x3001;&#x3082;&#x3057;&#x304F;&#x306F;&#x30AF;&#x30A8;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3092;&#x89E3;&#x6790;&#x3057;&#x305F;
+&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;query=string&apos;</code> or <code>{&apos;query&apos;:&apos;string&apos;}</code></p>
+</li>
+<li><p><code>hash</code>: URL &#x306E; # &#x30DE;&#x30FC;&#x30AF;&#x3092;&#x542B;&#x3080;&#x90E8;&#x5206;&#x3002;</p>
+<p>  &#x4F8B;: <code>&apos;#hash&apos;</code></p>
+</li>
+</ul>
+<!--
+The following methods are provided by the URL module:
+-->
+
+<p>&#x4EE5;&#x4E0B;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;URL&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306B;&#x3088;&#x308A;&#x63D0;&#x4F9B;&#x3055;&#x308C;&#x307E;&#x3059;:
+
+</p>
+<h2>url.parse(urlStr, [parseQueryString], [slashesDenoteHost])<span><a class="mark" href="#url_url_parse_urlstr_parsequerystring_slashesdenotehost" id="url_url_parse_urlstr_parsequerystring_slashesdenotehost">#</a></span></h2>
+<!--
+Take a URL string, and return an object.
+
+Pass `true` as the second argument to also parse
+the query string using the `querystring` module.
+Defaults to `false`.
+
+Pass `true` as the third argument to treat `//foo/bar` as
+`{ host: 'foo', pathname: '/bar' }` rather than
+`{ pathname: '//foo/bar' }`. Defaults to `false`.
+-->
+
+<p>URL&#x6587;&#x5B57;&#x5217;&#x3092;&#x5F15;&#x6570;&#x306B;&#x53D6;&#x308A;&#x3001;&#x89E3;&#x6790;&#x7D50;&#x679C;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<p><code>querystring</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x30AF;&#x30A8;&#x30EA;&#x6587;&#x5B57;&#x5217;&#x3082;&#x89E3;&#x6790;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;
+&#x7B2C; 2 &#x5F15;&#x6570;&#x306B; <code>true</code> &#x3092;&#x6E21;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<p><code>//foo/bar</code> &#x3092; <code>{ pathname: &apos;//foo/bar&apos; }</code> &#x3067;&#x306F;&#x306A;&#x304F;
+<code>{ host: &apos;foo&apos;, pathname: &apos;/bar&apos; }</code> &#x3068;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;
+&#x7B2C; 3 &#x5F15;&#x6570;&#x306B; <code>true</code> &#x3092;&#x6E21;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>false</code> &#x3067;&#x3059;&#x3002;
+
+</p>
+<h2>url.format(urlObj)<span><a class="mark" href="#url_url_format_urlobj" id="url_url_format_urlobj">#</a></span></h2>
+<!--
+Take a parsed URL object, and return a formatted URL string.
+-->
+
+<p>URL &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x5F15;&#x6570;&#x306B;&#x53D6;&#x308A;&#x3001;&#x30D5;&#x30A9;&#x30FC;&#x30DE;&#x30C3;&#x30C8;&#x3057;&#x305F; URL &#x6587;&#x5B57;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+* `href` will be ignored.
+* `protocol`is treated the same with or without the trailing `:` (colon).
+  * The protocols `http`, `https`, `ftp`, `gopher`, `file` will be
+    postfixed with `://` (colon-slash-slash).
+  * All other protocols `mailto`, `xmpp`, `aim`, `sftp`, `foo`, etc will
+    be postfixed with `:` (colon)
+* `auth` will be used if present.
+* `hostname` will only be used if `host` is absent.
+* `port` will only be used if `host` is absent.
+* `host` will be used in place of `hostname` and `port`
+* `pathname` is treated the same with or without the leading `/` (slash)
+* `search` will be used in place of `query`
+* `query` (object; see `querystring`) will only be used if `search` is absent.
+* `search` is treated the same with or without the leading `?` (question mark)
+* `hash` is treated the same with or without the leading `#` (pound sign, anchor)
+-->
+
+<ul>
+<li><code>href</code> &#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>protocol</code> &#x306E;&#x672B;&#x5C3E;&#x306B; <code>:</code> (&#x30B3;&#x30ED;&#x30F3;) &#x304C;&#x3042;&#x3063;&#x3066;&#x3082;&#x306A;&#x304F;&#x3066;&#x3082;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x6271;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;<ul>
+<li><code>http</code>&#x3001;<code>https</code>&#x3001;<code>ftp</code>&#x3001;<code>gopher</code>&#x3001;<code>file</code> &#x306F;&#x672B;&#x5C3E;&#x306B; <code>://</code>
+(&#x30B3;&#x30ED;&#x30F3;&#x3001;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3001;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;) &#x304C;&#x4ED8;&#x3051;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>mailto</code>&#x3001;<code>xmpp</code>&#x3001;<code>aim</code>&#x3001;<code>sftp</code>&#x3001;<code>foo</code> &#x306A;&#x3069;&#x3001;&#x305D;&#x306E;&#x4ED6;&#x306E;&#x30D7;&#x30ED;&#x30C8;&#x30B3;&#x30EB;&#x306F;&#x672B;&#x5C3E;&#x306B; <code>:</code>
+(&#x30B3;&#x30ED;&#x30F3;) &#x304C;&#x4ED8;&#x3051;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+</li>
+<li><code>auth</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B;&#x3068;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>hostname</code> &#x306F; <code>host</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x3060;&#x3051;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>port</code> &#x306F; <code>host</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x3060;&#x3051;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>host</code> &#x306F; <code>hostname</code>&#x3001;<code>port</code> &#x306E;&#x4F4D;&#x7F6E;&#x3067;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>pathname</code> &#x306E;&#x5148;&#x982D;&#x306B; <code>/</code> (&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;) &#x304C;&#x3042;&#x3063;&#x3066;&#x3082;&#x306A;&#x304F;&#x3066;&#x3082;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x6271;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>search</code> &#x306F; <code>query</code> &#x306E;&#x4F4D;&#x7F6E;&#x3067;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>query</code> (&#x6587;&#x5B57;&#x5217;&#x3067;&#x306F;&#x306A;&#x304F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;; <code>querystring</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;) &#x306F; <code>search</code> &#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x3060;&#x3051;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>search</code> &#x306E;&#x5148;&#x982D;&#x306B; <code>?</code> (&#x30AF;&#x30A8;&#x30B9;&#x30C1;&#x30E7;&#x30F3;&#x30DE;&#x30FC;&#x30AF;) &#x304C;&#x3042;&#x3063;&#x3066;&#x3082;&#x306A;&#x304F;&#x3066;&#x3082;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x6271;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+<li><code>hash</code> &#x306E;&#x5148;&#x982D;&#x306B; <code>#</code> (&#x30B7;&#x30E3;&#x30FC;&#x30D7;, &#x30A2;&#x30F3;&#x30AB;&#x30FC;) &#x304C;&#x3042;&#x3063;&#x3066;&#x3082;&#x306A;&#x304F;&#x3066;&#x3082;&#x540C;&#x3058;&#x3088;&#x3046;&#x306B;&#x6271;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;</li>
+</ul>
+<h2>url.resolve(from, to)<span><a class="mark" href="#url_url_resolve_from_to" id="url_url_resolve_from_to">#</a></span></h2>
+<!--
+Take a base URL, and a href URL, and resolve them as a browser would for
+an anchor tag.  Examples:
+-->
+
+<p>&#x30D9;&#x30FC;&#x30B9;&#x3068;&#x306A;&#x308B; URL &#x3068;&#x76F8;&#x5BFE; URL &#x3092;&#x5F15;&#x6570;&#x306B;&#x53D6;&#x308A;&#x3001;&#x30D6;&#x30E9;&#x30A6;&#x30B6;&#x304C;&#x30A2;&#x30F3;&#x30AB;&#x30FC;&#x30BF;&#x30B0;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x884C;&#x3046;&#x306E;&#x3068;&#x540C;&#x69D8;&#x306B; URL &#x3092;&#x89E3;&#x6C7A;&#x3057;&#x307E;&#x3059;&#x3002;&#x4F8B;:
+
+</p>
+<pre><code>url.resolve(&apos;/one/two/three&apos;, &apos;four&apos;)         // &apos;/one/two/four&apos;
+url.resolve(&apos;http://example.com/&apos;, &apos;/one&apos;)    // &apos;http://example.com/one&apos;
+url.resolve(&apos;http://example.com/one&apos;, &apos;/two&apos;) // &apos;http://example.com/two&apos;</code></pre>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

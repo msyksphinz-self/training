@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>TTY Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/tty.html">
+</head>
+<body class="alt apidoc" id="api-section-tty">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="tty.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#tty_tty">TTY</a><ul>
+<li><a href="#tty_tty_isatty_fd">tty.isatty(fd)</a></li>
+<li><a href="#tty_tty_setrawmode_mode">tty.setRawMode(mode)</a></li>
+<li><a href="#tty_class_readstream">Class: ReadStream</a><ul>
+<li><a href="#tty_rs_israw">rs.isRaw</a></li>
+<li><a href="#tty_rs_setrawmode_mode">rs.setRawMode(mode)</a></li>
+</ul>
+</li>
+<li><a href="#tty_class_writestream">Class: WriteStream</a><ul>
+<li><a href="#tty_ws_columns">ws.columns</a></li>
+<li><a href="#tty_ws_rows">ws.rows</a></li>
+<li><a href="#tty_event_resize">Event: &apos;resize&apos;</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>TTY<span><a class="mark" href="#tty_tty" id="tty_tty">#</a></span></h1>
+<pre class="api_stability_2">Stability: 2 - Unstable</pre><!--
+The `tty` module houses the `tty.ReadStream` and `tty.WriteStream` classes. In
+most cases, you will not need to use this module directly.
+-->
+
+<p><code>tty</code> &#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F; <code>tty.ReadStream</code> &#x3068; <code>tty.WriteStream</code> &#x30AF;&#x30E9;&#x30B9;&#x3092;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;
+&#x591A;&#x304F;&#x306E;&#x30B1;&#x30FC;&#x30B9;&#x3067;&#x306F;&#x3001;&#x3053;&#x308C;&#x3089;&#x3092;&#x76F4;&#x63A5;&#x4F7F;&#x3046;&#x5FC5;&#x8981;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<!--
+When node detects that it is being run inside a TTY context, then `process.stdin`
+will be a `tty.ReadStream` instance and `process.stdout` will be
+a `tty.WriteStream` instance. The preferred way to check if node is being run in
+a TTY context is to check `process.stdout.isTTY`:
+-->
+
+<p>node &#x306F; TTY &#x30B3;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x306E;&#x4E2D;&#x306B;&#x3044;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3092;&#x691C;&#x51FA;&#x3057;&#x3001;
+<code>process.stdin</code> &#x306F; <code>tty.ReadStream</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306B;&#x3001;
+<code>process.stdout</code> &#x306F; <code>tty.WriteStream</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3082;&#x3057; node &#x304C; TTY &#x306E;&#x30B3;&#x30F3;&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x3067;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3092;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3057;&#x305F;&#x3051;&#x308C;&#x3070;&#x3001;
+<code>process.stdout.isTTY</code> &#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;:
+
+</p>
+<pre><code>$ node -p -e &quot;Boolean(process.stdout.isTTY)&quot;
+true
+$ node -p -e &quot;Boolean(process.stdout.isTTY)&quot; | cat
+false</code></pre>
+<h2>tty.isatty(fd)<span><a class="mark" href="#tty_tty_isatty_fd" id="tty_tty_isatty_fd">#</a></span></h2>
+<!--
+Returns `true` or `false` depending on if the `fd` is associated with a
+terminal.
+-->
+
+<p><code>fd</code> &#x304C;&#x7AEF;&#x672B;&#x306B;&#x95A2;&#x9023;&#x3065;&#x3051;&#x3089;&#x308C;&#x3066;&#x3044;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3092; <code>true</code> &#x307E;&#x305F;&#x306F; <code>false</code> &#x3067;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>tty.setRawMode(mode)<span><a class="mark" href="#tty_tty_setrawmode_mode" id="tty_tty_setrawmode_mode">#</a></span></h2>
+<!--
+Deprecated. Use `tty.ReadStream#setRawMode()`
+(i.e. `process.stdin.setRawMode()`) instead.
+-->
+
+<p>Deprecated.
+&#x4EE3;&#x308F;&#x308A;&#x306B; <code>tty.ReadStream#setRawMode()</code> (&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;<code>process.stdin.setRawMode()</code>)
+&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+
+</p>
+<h2>Class: ReadStream<span><a class="mark" href="#tty_class_readstream" id="tty_class_readstream">#</a></span></h2>
+<!--
+A `net.Socket` subclass that represents the readable portion of a tty. In normal
+circumstances, `process.stdin` will be the only `tty.ReadStream` instance in any
+node program (only when `isatty(0)` is true).
+-->
+
+<p><code>net.Socket</code> &#x306E;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3001;tty &#x306E;&#x5165;&#x529B;&#x5074;&#x3092;&#x8868;&#x73FE;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4E00;&#x822C;&#x7684;&#x306A;&#x72B6;&#x6CC1;&#x3067;&#x306F;&#x3001;&#x3069;&#x3093;&#x306A;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067;&#x3082; (<code>isatty(0)</code> &#x304C; true &#x306E;&#x5834;&#x5408;&#x306B;&#x9650;&#x308A;)
+<code>process.stdin</code> &#x304C;&#x552F;&#x4E00;&#x306E; <code>tty.ReadStream</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>rs.isRaw<span><a class="mark" href="#tty_rs_israw" id="tty_rs_israw">#</a></span></h3>
+<!--
+A `Boolean` that is initialized to `false`. It represents the current "raw" state
+of the `tty.ReadStream` instance.
+-->
+
+<p><code>Boolean</code> &#x5024;&#x3067; <code>false</code> &#x306B;&#x521D;&#x671F;&#x5316;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+<code>tty.ReadStream</code> &#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306E;&#x73FE;&#x5728;&#x306E; &quot;raw&quot; &#x72B6;&#x614B;&#x3092;&#x8868;&#x73FE;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>rs.setRawMode(mode)<span><a class="mark" href="#tty_rs_setrawmode_mode" id="tty_rs_setrawmode_mode">#</a></span></h3>
+<!--
+`mode` should be `true` or `false`. This sets the properties of the
+`tty.ReadStream` to act either as a raw device or default. `isRaw` will be set
+to the resulting mode.
+-->
+
+<p><code>mode</code> &#x306F; <code>true</code> &#x307E;&#x305F;&#x306F; <code>false</code> &#x306E;&#x3069;&#x3061;&#x3089;&#x304B;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F; <code>tty.ReadStream</code> &#x304C;&#x30ED;&#x30FC;&#x30C7;&#x30D0;&#x30A4;&#x30B9;&#x304B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x3069;&#x3061;&#x3089;&#x3067;&#x632F;&#x308B;&#x821E;&#x3046;&#x304B;&#x3092;
+&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x7D50;&#x679C;&#x306E;&#x30E2;&#x30FC;&#x30C9;&#x306F; <code>isRaw</code> &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+
+</p>
+<h2>Class: WriteStream<span><a class="mark" href="#tty_class_writestream" id="tty_class_writestream">#</a></span></h2>
+<!--
+A `net.Socket` subclass that represents the writable portion of a tty. In normal
+circumstances, `process.stdout` will be the only `tty.WriteStream` instance
+ever created (and only when `isatty(1)` is true).
+-->
+
+<p><code>net.Socket</code> &#x306E;&#x30B5;&#x30D6;&#x30AF;&#x30E9;&#x30B9;&#x3067;&#x3001;tty &#x306E;&#x51FA;&#x529B;&#x5074;&#x3092;&#x8868;&#x73FE;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4E00;&#x822C;&#x7684;&#x306A;&#x72B6;&#x6CC1;&#x3067;&#x306F;&#x3001;&#x3069;&#x3093;&#x306A;&#x30D7;&#x30ED;&#x30B0;&#x30E9;&#x30E0;&#x3067;&#x3082; (<code>isatty(1)</code> &#x304C; true &#x306E;&#x5834;&#x5408;&#x306B;&#x9650;&#x308A;)
+<code>process.stdout</code> &#x304C;&#x552F;&#x4E00;&#x306E; <code>tty.WriteStream</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>ws.columns<span><a class="mark" href="#tty_ws_columns" id="tty_ws_columns">#</a></span></h3>
+<!--
+A `Number` that gives the number of columns the TTY currently has. This property
+gets updated on "resize" events.
+-->
+
+<p>TTY &#x306E;&#x73FE;&#x5728;&#x306E;&#x30AB;&#x30E9;&#x30E0;&#x6570;&#x3092;&#x4FDD;&#x6301;&#x3059;&#x308B; <code>Number</code> &#x5024;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F; <code>&apos;resize&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3067;&#x66F4;&#x65B0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>ws.rows<span><a class="mark" href="#tty_ws_rows" id="tty_ws_rows">#</a></span></h3>
+<!--
+A `Number` that gives the number of rows the TTY currently has. This property
+gets updated on "resize" events.
+-->
+
+<p>TTY &#x306E;&#x73FE;&#x5728;&#x306E;&#x884C;&#x6570;&#x3092;&#x4FDD;&#x6301;&#x3059;&#x308B; <code>Number</code> &#x5024;&#x3067;&#x3059;&#x3002;
+&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F; <code>&apos;resize&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3067;&#x66F4;&#x65B0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h3>Event: &apos;resize&apos;<span><a class="mark" href="#tty_event_resize" id="tty_event_resize">#</a></span></h3>
+<p><code>function () {}</code>
+
+</p>
+<!--
+Emitted by `refreshSize()` when either of the `columns` or `rows` properties
+has changed.
+-->
+
+<p><code>columns</code> &#x307E;&#x305F;&#x306F; <code>rows</code> &#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x304C;&#x5909;&#x66F4;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306B;
+<code>refreshSize()</code> &#x306B;&#x3088;&#x3063;&#x3066;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<pre><code>process.stdout.on(&apos;resize&apos;, function() {
+  console.log(&apos;screen size has changed!&apos;);
+  console.log(process.stdout.columns + &apos;x&apos; + process.stdout.rows);
+});</code></pre>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

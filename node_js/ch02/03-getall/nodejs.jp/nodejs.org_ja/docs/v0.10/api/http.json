@@ -1,0 +1,773 @@
+{
+  &quot;source&quot;: &quot;doc/api/http.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;HTTP&quot;,
+      &quot;name&quot;: &quot;http&quot;,
+      &quot;stability&quot;: 3,
+      &quot;stabilityText&quot;: &quot;Stable&quot;,
+      &quot;desc&quot;: &quot;<!--\nTo use the HTTP server and client one must `require('http')`.\n-->\n\n<p>HTTP &#x30B5;&#x30FC;&#x30D0;&#x304A;&#x3088;&#x3073;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x306B;&#x306F;&#x3044;&#x305A;&#x308C;&#x3082; <code>require(&apos;http&apos;)</code> &#x304C;&#x5FC5;&#x8981;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThe HTTP interfaces in Node are designed to support many features\nof the protocol which have been traditionally difficult to use.\nIn particular, large, possibly chunk-encoded, messages. The interface is\ncareful to never buffer entire requests or responses--the\nuser is able to stream data.\n-->\n\n<p>Node &#x306E; HTTP &#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306F;&#x3001;\n&#x4F1D;&#x7D71;&#x7684;&#x306B;&#x6271;&#x3044;&#x304C;&#x96E3;&#x3057;&#x304B;&#x3063;&#x305F;&#x30D7;&#x30ED;&#x30C8;&#x30B3;&#x30EB;&#x306E;&#x591A;&#x304F;&#x306E;&#x6A5F;&#x80FD;&#x3092;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x8A2D;&#x8A08;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;\n&#x3068;&#x308A;&#x308F;&#x3051;&#x5927;&#x304D;&#x304F;&#x3066;&#x3001;&#x5834;&#x5408;&#x306B;&#x3088;&#x3063;&#x3066;&#x306F;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x5316;&#x3055;&#x308C;&#x305F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3067;&#x3059;&#x3002;\n&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306F;&#x6C7A;&#x3057;&#x3066;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x307E;&#x305F;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x5168;&#x4F53;&#x3092;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3057;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x6C17;&#x3092;&#x3064;&#x3051;&#x3066;&#x3044;&#x307E;&#x3059;\n&#xFF0D; &#x5229;&#x7528;&#x8005;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F7F;&#x3046;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nHTTP message headers are represented by an object like this:\n-->\n\n<p>HTTP &#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x30D8;&#x30C3;&#x30C0;&#x306F;&#x3053;&#x306E;&#x3088;&#x3046;&#x306A;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3068;&#x3057;&#x3066;&#x8868;&#x73FE;&#x3055;&#x308C;&#x307E;&#x3059;:\n\n</p>\n<pre><code>{ &apos;content-length&apos;: &apos;123&apos;,\n  &apos;content-type&apos;: &apos;text/plain&apos;,\n  &apos;connection&apos;: &apos;keep-alive&apos;,\n  &apos;accept&apos;: &apos;*/*&apos; }</code></pre>\n<!--\nKeys are lowercased. Values are not modified.\n-->\n\n<p>&#x30AD;&#x30FC;&#x306F;&#x5C0F;&#x6587;&#x5B57;&#x5316;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;&#x5024;&#x306F;&#x5909;&#x66F4;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nIn order to support the full spectrum of possible HTTP applications, Node's\nHTTP API is very low-level. It deals with stream handling and message\nparsing only. It parses a message into headers and body but it does not\nparse the actual headers or the body.\n-->\n\n<p>&#x8003;&#x3048;&#x3089;&#x308C;&#x308B; HTTP &#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x5B8C;&#x5168;&#x306B;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;\nNode &#x306E; HTTP API &#x306F;&#x3068;&#x3066;&#x3082;&#x4F4E;&#x6C34;&#x6E96;&#x3067;&#x3059;&#x3002;&#x305D;&#x308C;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30EA;&#x30F3;&#x30B0;&#x3068;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306E;&#x89E3;&#x6790;&#x3060;&#x3051;&#x306B;&#x5BFE;&#x51E6;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x89E3;&#x6790;&#x306F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x30D8;&#x30C3;&#x30C0;&#x3068;&#x30DC;&#x30C7;&#x30A3;&#x306B;&#x5206;&#x3051;&#x307E;&#x3059;&#x304C;&#x3001;&#x5B9F;&#x969B;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x3068;&#x30DC;&#x30C7;&#x30A3;&#x306F;&#x89E3;&#x6790;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n\n\n</p>\n&quot;,
+      &quot;properties&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;`STATUS_CODES` {Object} &quot;,
+          &quot;name&quot;: &quot;STATUS_CODES&quot;,
+          &quot;A collection of all the standard HTTP response status codes, and the\nshort description of each.  For example, `http.STATUS_CODES[404]&quot;: &quot;== &apos;Not\nFound&apos;`.&quot;,
+          &quot;desc&quot;: &quot;<p>&#x5168;&#x3066;&#x306E; HTTP &#x6A19;&#x6E96;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3068;&#x77ED;&#x3044;&#x8AAC;&#x660E;&#x306E;&#x30B3;&#x30EC;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x3059;&#x3002;\n&#x305F;&#x3068;&#x3048;&#x3070;&#x3001;<code>http.STATUS_CODES[404] === &apos;Not Found&apos;</code>&#x3002;\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;http.globalAgent&quot;,
+          &quot;name&quot;: &quot;globalAgent&quot;,
+          &quot;desc&quot;: &quot;<!--\nGlobal instance of Agent which is used as the default for all http client\nrequests.\n-->\n\n<p>&#x5168;&#x3066;&#x306E; HTTP &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E; Agent &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n\n</p>\n&quot;
+        },
+        {
+          &quot;textRaw&quot;: &quot;http.IncomingMessage&quot;,
+          &quot;name&quot;: &quot;IncomingMessage&quot;,
+          &quot;desc&quot;: &quot;<!--\nAn `IncomingMessage` object is created by [http.Server][] or\n[http.ClientRequest][] and passed as the first argument to the `'request'`\nand `'response'` event respectively. It may be used to access response status,\nheaders and data.\n-->\n\n<p><code>IncomingMessage</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; [http.Server][] &#x307E;&#x305F;&#x306F; [http.ClientRequest][]\n&#x306B;&#x3088;&#x3063;&#x3066;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x3001;<code>&apos;request&apos;</code> &#x304A;&#x3088;&#x3073; <code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;\n&#x6700;&#x521D;&#x306E;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x308C;&#x306F;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x3001;&#x30D8;&#x30C3;&#x30C0;&#x3001;&#x304A;&#x3088;&#x3073;&#x30C7;&#x30FC;&#x30BF;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIt implements the [Readable Stream][] interface, as well as the\nfollowing additional events, methods, and properties.\n-->\n\n<p>&#x3053;&#x308C;&#x306F; [Readable Stream][] &#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x306E;&#x5B9F;&#x88C5;&#x3067;&#x3001;\n&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3001;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3001;&#x304A;&#x3088;&#x3073;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x3092;&#x8FFD;&#x52A0;&#x3067;&#x6301;&#x3061;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;close&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () { }</code>\n\n</p>\n<!--\nIndicates that the underlaying connection was closed.\nJust like `'end'`, this event occurs only once per response.\n-->\n\n<p>&#x4E0B;&#x5C64;&#x306E;&#x63A5;&#x7D9A;&#x304C;&#x5207;&#x65AD;&#x3055;&#x308C;&#x305F;&#x3053;&#x3068;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>&apos;end&apos;</code> &#x3068;&#x540C;&#x69D8;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x6BCE;&#x306B;&#x4E00;&#x5EA6;&#x3060;&#x3051;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nJust like `'end'`, this event occurs only once per response. See\n[http.ServerResponse][]'s `'close'` event for more information.\n-->\n\n<p><code>&apos;end&apos;</code> &#x306E;&#x3088;&#x3046;&#x306B;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x6BCE;&#x306B;&#x4E00;&#x56DE;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n[http.ServerResponse][] &#x306E; <code>&apos;close&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x3088;&#x308A;&#x591A;&#x304F;&#x306E;&#x60C5;&#x5831;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            }
+          ],
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;message.httpVersion&quot;,
+              &quot;name&quot;: &quot;httpVersion&quot;,
+              &quot;desc&quot;: &quot;<!--\nIn case of server request, the HTTP version sent by the client. In the case of\nclient response, the HTTP version of the connected-to server.\nProbably either `'1.1'` or `'1.0'`.\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x5834;&#x5408;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x9001;&#x4FE1;&#x3057;&#x305F; HTTP &#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x3059;&#x3002;\n&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306E;&#x5834;&#x5408;&#x3001;&#x63A5;&#x7D9A;&#x3057;&#x305F;&#x30B5;&#x30FC;&#x30D0;&#x306E; HTTP &#x30D0;&#x30FC;&#x30B8;&#x30E7;&#x30F3;&#x3067;&#x3059;&#x3002;\n&#x3044;&#x305A;&#x308C;&#x306E;&#x5834;&#x5408;&#x3082; <code>&apos;1.1&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;1.0&apos;</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nAlso `response.httpVersionMajor` is the first integer and\n`response.httpVersionMinor` is the second.\n-->\n\n<p>&#x540C;&#x69D8;&#x306B; <code>response.httpVersionMajor</code> &#x306F;&#x6700;&#x521D;&#x306E;&#x6574;&#x6570;&#x3001;\n<code>response.httpVersionMinor</code> &#x306F; 2 &#x756A;&#x76EE;&#x306E;&#x6574;&#x6570;&#x3067;&#x3059;&#x3002;\n\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;message.headers&quot;,
+              &quot;name&quot;: &quot;headers&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe request/response headers object.\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#xFF0F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nRead only map of header names and values. Header names are lower-cased.\nExample:\n-->\n\n<p>&#x30D8;&#x30C3;&#x30C0;&#x540D;&#x3068;&#x5024;&#x306E;&#x30EA;&#x30FC;&#x30C9;&#x30AA;&#x30F3;&#x30EA;&#x30FC;&#x306A;&#x30DE;&#x30C3;&#x30D7;&#x3067;&#x3059;&#x3002;&#x30D8;&#x30C3;&#x30C0;&#x540D;&#x306F;&#x5C0F;&#x6587;&#x5B57;&#x3067;&#x3059;&#x3002;\n&#x4F8B;:\n\n</p>\n<pre><code>// Prints something like:\n//\n// { &apos;user-agent&apos;: &apos;curl/7.22.0&apos;,\n//   host: &apos;127.0.0.1:8000&apos;,\n//   accept: &apos;*/*&apos; }\nconsole.log(request.headers);</code></pre>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;message.trailers&quot;,
+              &quot;name&quot;: &quot;trailers&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe request/response trailers object. Only populated after the 'end' event.\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#xFF0F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306E;&#x30C8;&#x30EC;&#x30FC;&#x30E9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n<code>&apos;end&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x5F8C;&#x306B;&#x3060;&#x3051;&#x767A;&#x751F;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;message.method&quot;,
+              &quot;name&quot;: &quot;method&quot;,
+              &quot;desc&quot;: &quot;<!--\n**Only valid for request obtained from [http.Server][].**\n-->\n\n<p><strong> [http.Server][] &#x304B;&#x3089;&#x5F97;&#x305F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x306E;&#x307F;&#x6709;&#x52B9;&#x3067;&#x3059; </strong>\n\n</p>\n<!--\nThe request method as a string. Read only. Example:\n`'GET'`, `'DELETE'`.\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x8868;&#x3059;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;&#x53C2;&#x7167;&#x306E;&#x307F;&#x53EF;&#x80FD;&#x3067;&#x3059;&#x3002;\n&#x4F8B;: <code>&apos;GET&apos;</code>&#x3001;<code>&apos;DELETE&apos;</code>\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;message.url&quot;,
+              &quot;name&quot;: &quot;url&quot;,
+              &quot;desc&quot;: &quot;<!--\n**Only valid for request obtained from [http.Server][].**\n-->\n\n<p><strong> [http.Server][] &#x304B;&#x3089;&#x5F97;&#x305F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x306E;&#x307F;&#x6709;&#x52B9;&#x3067;&#x3059; </strong>\n\n</p>\n<!--\nRequest URL string. This contains only the URL that is\npresent in the actual HTTP request. If the request is:\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8; URL &#x3092;&#x8868;&#x3059;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x5B9F;&#x969B;&#x306E; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x5B58;&#x5728;&#x3059;&#x308B; URL &#x3060;&#x3051;&#x3092;&#x542B;&#x307F;&#x307E;&#x3059;&#x3002;\n&#x3082;&#x3057;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;:\n\n</p>\n<pre><code>GET /status?name=ryan HTTP/1.1\\r\\n\nAccept: text/plain\\r\\n\n\\r\\n</code></pre>\n<!--\nThen `request.url` will be:\n-->\n\n<p>&#x3053;&#x306E;&#x5834;&#x5408;&#x306E; <code>request.url</code> &#x306F;&#x3053;&#x3046;&#x306A;&#x308A;&#x307E;&#x3059;:\n\n</p>\n<pre><code>&apos;/status?name=ryan&apos;</code></pre>\n<!--\nIf you would like to parse the URL into its parts, you can use\n`require('url').parse(request.url)`.  Example:\n-->\n\n<p>URL &#x306E;&#x8981;&#x7D20;&#x3092;&#x89E3;&#x6790;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;\n<code>require(&apos;url&apos;).parse(request.url)</code> &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;&#x4F8B;:\n\n</p>\n<pre><code>node&gt; require(&apos;url&apos;).parse(&apos;/status?name=ryan&apos;)\n{ href: &apos;/status?name=ryan&apos;,\n  search: &apos;?name=ryan&apos;,\n  query: &apos;name=ryan&apos;,\n  pathname: &apos;/status&apos; }</code></pre>\n<!--\nIf you would like to extract the params from the query string,\nyou can use the `require('querystring').parse` function, or pass\n`true` as the second argument to `require('url').parse`.  Example:\n-->\n\n<p>&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x6587;&#x5B57;&#x5217;&#x304B;&#x3089;&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x3092;&#x53D6;&#x308A;&#x51FA;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;\n<code>require(&apos;querystring&apos;).parse</code> &#x95A2;&#x6570;&#x3092;&#x53C2;&#x7167;&#x3059;&#x308B;&#x304B;&#x3001;\n<code>require(&apos;url&apos;).parse</code> &#x306E;&#x7B2C; 2 &#x5F15;&#x6570;&#x306B; <code>true</code> &#x3092;&#x6E21;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;&#x4F8B;:\n\n</p>\n<pre><code>node&gt; require(&apos;url&apos;).parse(&apos;/status?name=ryan&apos;, true)\n{ href: &apos;/status?name=ryan&apos;,\n  search: &apos;?name=ryan&apos;,\n  query: { name: &apos;ryan&apos; },\n  pathname: &apos;/status&apos; }</code></pre>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;message.statusCode&quot;,
+              &quot;name&quot;: &quot;statusCode&quot;,
+              &quot;desc&quot;: &quot;<!--\n**Only valid for response obtained from `http.ClientRequest`.**\n-->\n\n<p><strong> <code>http.ClientRequest</code> &#x304B;&#x3089;&#x5F97;&#x305F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3067;&#x306E;&#x307F;&#x6709;&#x52B9;&#x3067;&#x3059; </strong>\n\n</p>\n<!--\nThe 3-digit HTTP response status code. E.G. `404`.\n-->\n\n<p>3 &#x6841;&#x306E;&#x6570;&#x5B57;&#x306B;&#x3088;&#x308B;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306E;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x3059;&#x3002;&#x4F8B;&#x3048;&#x3070; <code>404</code>&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;message.socket&quot;,
+              &quot;name&quot;: &quot;socket&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe `net.Socket` object associated with the connection.\n-->\n\n<p>&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x95A2;&#x9023;&#x3065;&#x3051;&#x3089;&#x308C;&#x305F; <code>net.Socket</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nWith HTTPS support, use request.connection.verifyPeer() and\nrequest.connection.getPeerCertificate() to obtain the client's\nauthentication details.\n-->\n\n<p>HTTPS &#x3067;&#x306F; <code>request.connection.verifyPeer()</code> &#x3068;\n<code>request.connection.getPeerCertificate()</code> &#x3067;\n&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x8A8D;&#x8A3C;&#x306E;&#x8A73;&#x7D30;&#x3092;&#x53D6;&#x5F97;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            }
+          ],
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;message.setTimeout(msecs, callback)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setTimeout&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;textRaw&quot;: &quot;`msecs` {Number} &quot;,
+                      &quot;name&quot;: &quot;msecs&quot;,
+                      &quot;type&quot;: &quot;Number&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`callback` {Function} &quot;,
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;type&quot;: &quot;Function&quot;
+                    }
+                  ]
+                },
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;msecs&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;
+                    }
+                  ]
+                }
+              ],
+              &quot;desc&quot;: &quot;<!--\nCalls `message.connection.setTimeout(msecs, callback)`.\n-->\n\n<p><code>message.connection.setTimeout(msecs, callback)</code> &#x3092;&#x547C;&#x3073;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            }
+          ]
+        }
+      ],
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;http.createServer([requestListener])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createServer&quot;,
+          &quot;desc&quot;: &quot;<!--\nReturns a new web server object.\n-->\n\n<p>&#x65B0;&#x3057;&#x3044; Web &#x30B5;&#x30FC;&#x30D0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe `requestListener` is a function which is automatically\nadded to the `'request'` event.\n-->\n\n<p><code>requestListener</code> &#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B; <code>&apos;request&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x52A0;&#x3048;&#x3089;&#x308C;&#x308B;&#x95A2;&#x6570;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;requestListener&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;http.createClient([port], [host])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;createClient&quot;,
+          &quot;desc&quot;: &quot;<!--\nThis function is **deprecated**; please use [http.request()][] instead.\nConstructs a new HTTP client. `port` and `host` refer to the server to be\nconnected to.\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F; <strong>deprecated</strong> &#x3067;&#x3059;; &#x4EE3;&#x308F;&#x308A;&#x306B;\n[http.request()][] &#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x65B0;&#x3057;&#x3044; HTTP &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3092;&#x69CB;&#x7BC9;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>port</code> &#x3068; <code>host</code> &#x306F;&#x63A5;&#x7D9A;&#x3059;&#x308B;&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;port&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;host&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;http.request(options, [callback])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;request&quot;,
+          &quot;desc&quot;: &quot;<!--\nNode maintains several connections per server to make HTTP requests.\nThis function allows one to transparently issue requests.\n-->\n\n<p>Node &#x306F; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x884C;&#x3046;&#x305F;&#x3081;&#x306B;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x3054;&#x3068;&#x306B;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;\n&#x4FDD;&#x6301;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x305D;&#x306E;&#x4E00;&#x3064;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x900F;&#x904E;&#x7684;&#x306B;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x767A;&#x884C;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`options` can be an object or a string. If `options` is a string, it is\nautomatically parsed with [url.parse()][].\n-->\n\n<p><code>options</code> &#x306F;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x307E;&#x305F;&#x306F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;\n&#x3082;&#x3057; <code>options</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x306A;&#x3089;&#x3001;&#x305D;&#x308C;&#x306F; [url.parse()][] &#x306B;&#x3088;&#x3063;&#x3066;&#x81EA;&#x52D5;&#x7684;&#x306B;\n&#x89E3;&#x6790;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nOptions:\n-->\n\n<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;:\n\n</p>\n<!--\n- `host`: A domain name or IP address of the server to issue the request to.\n  Defaults to `'localhost'`.\n- `hostname`: To support `url.parse()` `hostname` is preferred over `host`\n- `port`: Port of remote server. Defaults to 80.\n- `localAddress`: Local interface to bind for network connections.\n- `socketPath`: Unix Domain Socket (use one of host:port or socketPath)\n- `method`: A string specifying the HTTP request method. Defaults to `'GET'`.\n- `path`: Request path. Defaults to `'/'`. Should include query string if any.\n  E.G. `'/index.html?page=12'`\n- `headers`: An object containing request headers.\n- `auth`: Basic authentication i.e. `'user:password'` to compute an\n  Authorization header.\n- `agent`: Controls [Agent][] behavior. When an Agent is used request will\n  default to `Connection: keep-alive`. Possible values:\n - `undefined` (default): use [global Agent][] for this host and port.\n - `Agent` object: explicitly use the passed in `Agent`.\n - `false`: opts out of connection pooling with an Agent, defaults request to\n   `Connection: close`.\n-->\n\n<ul>\n<li><code>host</code>: &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x767A;&#x884C;&#x3059;&#x308B;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x307E;&#x305F;&#x306F; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3002;</li>\n<li><code>hostname</code>: <code>url.parse()</code> &#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3002;<code>hostname</code> &#x306F; <code>host</code> &#x3092;&#x4E0A;&#x66F8;&#x304D;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n<li><code>port</code>: &#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30DD;&#x30FC;&#x30C8;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; 80 &#x3067;&#x3059;&#x3002;</li>\n<li><code>localAddress</code>: &#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x63A5;&#x7D9A;&#x3092;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3059;&#x308B;&#x30ED;&#x30FC;&#x30AB;&#x30EB;&#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3067;&#x3059;&#x3002;</li>\n<li><code>socketPath</code>: Unix &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8; (host:port &#x307E;&#x305F;&#x306F; socketPath &#x306E;&#x3069;&#x3061;&#x3089;&#x304B;)</li>\n<li><code>method</code>: HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306E;&#x6587;&#x5B57;&#x5217;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;GET&apos;</code> &#x3067;&#x3059;&#x3002;</li>\n<li><code>path</code>: &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30D1;&#x30B9;&#x3002;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;/&apos;</code> &#x3067;&#x3059;&#x3002;\n&#x5FC5;&#x8981;&#x306A;&#x3089;&#x554F;&#x3044;&#x5408;&#x308F;&#x305B;&#x6587;&#x5B57;&#x5217;&#x3092;&#x542B;&#x3081;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#xFF0E;\n&#x4F8B; <code>&apos;/index.html?page=12&apos;</code></li>\n<li><code>headers</code>: &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x542B;&#x3080;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3002;</li>\n<li><code>auth</code>: &#x30D9;&#x30FC;&#x30B7;&#x30C3;&#x30AF;&#x8A8D;&#x8A3C;&#x3059;&#x306A;&#x308F;&#x3061; Authorization &#x30D8;&#x30C3;&#x30C0;&#x306E;&#x305F;&#x3081;&#x306E;\n<code>&apos;user:password&apos;</code>&#x3002;</li>\n<li><code>agent</code>: [Agent][] &#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x3092;&#x5236;&#x5FA1;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x304C;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x5834;&#x5408;&#x3001;Connection:keep-alive &#x304C;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x53EF;&#x80FD;&#x306A;&#x5024;&#x306F;:<ul>\n<li><code>undefined</code> (&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;): &#x30DB;&#x30B9;&#x30C8;&#x3068;&#x30DD;&#x30FC;&#x30C8;&#x3067; [global Agent][] &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n<li><code>Agent</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;: &#x660E;&#x793A;&#x7684;&#x306B;&#x6E21;&#x3055;&#x308C;&#x305F; <code>Agent</code> &#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x3059;&#x3002;</li>\n<li><code>false</code>: Agent &#x306B;&#x3088;&#x308B;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x30D7;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n Connection:close &#x306E;&#x5834;&#x5408;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x3059;&#x3002;</li>\n</ul>\n</li>\n</ul>\n<!--\nThe optional `callback` parameter will be added as a one time listener for\nthe ['response'][] event.\n-->\n\n<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306E; <code>callback</code> &#x5F15;&#x6570;&#x306F;&#x3001;[&apos;response&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3078;&#x306E;\n&#x4E00;&#x56DE;&#x9650;&#x308A;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x8FFD;&#x52A0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`http.request()` returns an instance of the [http.ClientRequest][]\nclass. The `ClientRequest` instance is a writable stream. If one needs to\nupload a file with a POST request, then write to the `ClientRequest` object.\n-->\n\n<p><code>http.request()</code> &#x306F; [http.ClientRequest][] &#x30AF;&#x30E9;&#x30B9;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>http.ClientRequest</code> &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x306F;&#x66F8;&#x304D;&#x8FBC;&#x307F;&#x53EF;&#x80FD;&#x306A;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x3067;&#x3059;&#x3002;\n&#x3082;&#x3057; POST &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x30A2;&#x30C3;&#x30D7;&#x30ED;&#x30FC;&#x30C9;&#x304C;&#x3057;&#x305F;&#x3051;&#x308C;&#x3070;&#x3001;\n<code>http.ClientRequest</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x51FA;&#x529B;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>var options = {\n  hostname: &apos;www.google.com&apos;,\n  port: 80,\n  path: &apos;/upload&apos;,\n  method: &apos;POST&apos;\n};\n\nvar req = http.request(options, function(res) {\n  console.log(&apos;STATUS: &apos; + res.statusCode);\n  console.log(&apos;HEADERS: &apos; + JSON.stringify(res.headers));\n  res.setEncoding(&apos;utf8&apos;);\n  res.on(&apos;data&apos;, function (chunk) {\n    console.log(&apos;BODY: &apos; + chunk);\n  });\n});\n\nreq.on(&apos;error&apos;, function(e) {\n  console.log(&apos;problem with request: &apos; + e.message);\n});\n\n// write data to request body\nreq.write(&apos;data\\n&apos;);\nreq.write(&apos;data\\n&apos;);\nreq.end();</code></pre>\n<!--\nNote that in the example `req.end()` was called. With `http.request()` one\nmust always call `req.end()` to signify that you're done with the request -\neven if there is no data being written to the request body.\n-->\n\n<p>&#x3053;&#x306E;&#x4F8B;&#x3067; <code>req.end()</code> &#x304C;&#x547C;&#x3070;&#x308C;&#x3066;&#x3044;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n<code>http.request()</code> &#x3067;&#x306F;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x3053;&#x3068;&#x3092;&#x793A;&#x3059;&#x305F;&#x3081;&#x306B;&#x3001;\n&#x5E38;&#x306B; <code>req.end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;\n- &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30DC;&#x30C7;&#x30A3;&#x306B;&#x51FA;&#x529B;&#x3059;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x306A;&#x304B;&#x3063;&#x305F;&#x3068;&#x3057;&#x3066;&#x3082;&#x3002;\n\n</p>\n<!--\nIf any error is encountered during the request (be that with DNS resolution,\nTCP level errors, or actual HTTP parse errors) an `'error'` event is emitted\non the returned request object.\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x4E2D;&#x306B;&#x4F55;&#x3089;&#x304B;&#x306E;&#x30A8;&#x30E9;&#x30FC; (DNS &#x89E3;&#x6C7A;&#x3001;TCP &#x30EC;&#x30D9;&#x30EB;&#x306E;&#x30A8;&#x30E9;&#x30FC;&#x3001;HTTP &#x30D1;&#x30FC;&#x30B9;&#x30A8;&#x30E9;&#x30FC;&#x306A;&#x3069;) &#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3068;&#x3001;&#x623B;&#x308A;&#x5024;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067; <code>&apos;error&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n<!--\nThere are a few special headers that should be noted.\n-->\n\n<p>&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x7279;&#x5225;&#x306A;&#x30D8;&#x30C3;&#x30C0;&#x306B;&#x6CE8;&#x610F;&#x304C;&#x5FC5;&#x8981;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n* Sending a 'Connection: keep-alive' will notify Node that the connection to\n  the server should be persisted until the next request.\n\n* Sending a 'Content-length' header will disable the default chunked encoding.\n\n* Sending an 'Expect' header will immediately send the request headers.\n  Usually, when sending 'Expect: 100-continue', you should both set a timeout\n  and listen for the `continue` event. See RFC2616 Section 8.2.3 for more\n  information.\n\n* Sending an Authorization header will override using the `auth` option\n  to compute basic authentication.\n-->\n\n<ul>\n<li><p>&apos;Connection: keep-alive&apos; &#x306E;&#x9001;&#x4FE1;&#x306F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x6B21;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x307E;&#x3067;&#x6301;&#x7D9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092; Node &#x306B;&#x901A;&#x77E5;&#x3057;&#x307E;&#x3059;&#x3002;</p>\n</li>\n<li><p>&apos;Content-length&apos; &#x30D8;&#x30C3;&#x30C0;&#x306E;&#x9001;&#x4FE1;&#x306F;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3092;&#x7121;&#x52B9;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;</p>\n</li>\n<li><p>&apos;Expect&apos; &#x30D8;&#x30C3;&#x30C0;&#x306E;&#x9001;&#x4FE1;&#x306F;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x5373;&#x6642;&#x306B;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x901A;&#x5E38;&#x3001;&apos;Expect: 100-continue&apos; &#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3068;&#x3001;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3068; <code>continue</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x307E;&#x3059;&#x3002;&#x8A73;&#x7D30;&#x306F; RFC2616 &#x306E; 8.2.3 &#x7BC0;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;</p>\n</li>\n<li><p>Authorization &#x30D8;&#x30C3;&#x30C0;&#x306E;&#x9001;&#x4FE1;&#x306F;&#x3001;<code>auth</code> &#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x306B;&#x3088;&#x308B;&#x30D9;&#x30FC;&#x30B7;&#x30C3;&#x30AF;&#x8A8D;&#x8A3C;&#x3092;\n&#x4E0A;&#x66F8;&#x304D;&#x3057;&#x307E;&#x3059;&#x3002;</p>\n</li>\n</ul>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;http.get(options, [callback])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;get&quot;,
+          &quot;desc&quot;: &quot;<!--\nSince most requests are GET requests without bodies, Node provides this\nconvenience method. The only difference between this method and `http.request()`\nis that it sets the method to GET and calls `req.end()` automatically.\n-->\n\n<p>&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306F;&#x672C;&#x6587;&#x306E;&#x306A;&#x3044; GET &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x3042;&#x308B;&#x305F;&#x3081;&#x3001;\nNode &#x306F;&#x4FBF;&#x5229;&#x306A;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3068; <code>http.request()</code> &#x306E;&#x9593;&#x306E;&#x9055;&#x3044;&#x306F;&#x3001;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092; GET &#x306B;&#x8A2D;&#x5B9A;&#x3057;&#x3066;\n<code>req.end()</code> &#x3092;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x3060;&#x3051;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>http.get(&quot;http://www.google.com/index.html&quot;, function(res) {\n  console.log(&quot;Got response: &quot; + res.statusCode);\n}).on(&apos;error&apos;, function(e) {\n  console.log(&quot;Got error: &quot; + e.message);\n});</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;options&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;callback&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;classes&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;Class: http.Server&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;http.Server&quot;,
+          &quot;desc&quot;: &quot;<!--\nThis is an [EventEmitter][] with the following events:\n-->\n\n<p>&#x3053;&#x308C;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x6301;&#x3064; [EventEmitter][] &#x3067;&#x3059;:\n\n</p>\n&quot;,
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;request&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;request&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (request, response) { }</code>\n\n</p>\n<!--\nEmitted each time there is a request. Note that there may be multiple requests\nper connection (in the case of keep-alive connections).\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3054;&#x3068;&#x306B;&#x8907;&#x6570;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;&#x3042;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;\n(Keep Alive &#x306A;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x5834;&#x5408;)&#x3002;\n\n</p>\n<!--\n `request` is an instance of [http.IncomingMessage][] and `response` is\nan instance of [http.ServerResponse][].\n-->\n\n<p><code>request</code> &#x306F; [http.IncomingMessage][] &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3001;\n<code>response</code> &#x306F; [http.ServerResponse][] &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;connection&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;connection&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (socket) { }</code>\n\n</p>\n<!--\n When a new TCP stream is established. `socket` is an object of type\n `net.Socket`. Usually users will not want to access this event. In\n particular, the socket will not emit `readable` events because of how\n the protocol parser attaches to the socket. The `socket` can also be\n accessed at `request.connection`.\n-->\n\n<p>&#x65B0;&#x3057;&#x3044; TCP &#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x304C;&#x78BA;&#x7ACB;&#x3057;&#x305F;&#x6642;&#x3002;\n<code>socket</code> &#x306F; <code>net.Socket</code> &#x578B;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n&#x901A;&#x5E38;&#x306E;&#x5229;&#x7528;&#x8005;&#x304C;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306B;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3057;&#x305F;&#x304F;&#x306A;&#x308B;&#x3053;&#x3068;&#x306F;&#x306A;&#x3044;&#x3067;&#x3057;&#x3087;&#x3046;&#x3002;\n&#x3068;&#x308A;&#x308F;&#x3051;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x30D7;&#x30ED;&#x30C8;&#x30B3;&#x30EB;&#x30D1;&#x30FC;&#x30B5;&#x306B;&#x30A2;&#x30BF;&#x30C3;&#x30C1;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;&#x3001;\n<code>&apos;readable&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n<code>socket</code> &#x306F; <code>request.connection</code> &#x304B;&#x3089;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3059;&#x308B;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;close&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () { }</code>\n\n</p>\n<!--\n Emitted when the server closes.\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3057;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;checkContinue&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;checkContinue&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (request, response) { }</code>\n\n</p>\n<!--\nEmitted each time a request with an http Expect: 100-continue is received.\nIf this event isn't listened for, the server will automatically respond\nwith a 100 Continue as appropriate.\n-->\n\n<p>http&#x306E; Expect: 100-continue &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B; 100 Continue &#x3092;&#x5FDC;&#x7B54;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nHandling this event involves calling [response.writeContinue()][] if the client\nshould continue to send the request body, or generating an appropriate HTTP\nresponse (e.g., 400 Bad Request) if the client should not continue to send the\nrequest body.\n-->\n\n<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x51E6;&#x7406;&#x3059;&#x308B;&#x5834;&#x5408;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x7D9A;&#x3051;&#x308B;&#x3079;&#x304D;&#x306A;&#x3089;\n[response.writeContinue()][] &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;\n&#x3042;&#x308B;&#x3044;&#x306F;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x7D9A;&#x3051;&#x308B;&#x3079;&#x304D;&#x3067;&#x306A;&#x3044;&#x306A;&#x3089;&#x3001;\n&#x9069;&#x5207;&#x306A; HTTP &#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9; (&#x4F8B;&#x3048;&#x3070; 400 Bad Request) &#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote that when this event is emitted and handled, the `request` event will\nnot be emitted.\n-->\n\n<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x3066;&#x51E6;&#x7406;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;<code>request</code>&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;connect&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;connect&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (request, socket, head) { }</code>\n\n</p>\n<!--\nEmitted each time a client requests a http CONNECT method. If this event isn't\nlistened for, then clients requesting a CONNECT method will have their\nconnections closed.\n-->\n\n<p>&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C; HTTP &#x306E; CONNECT &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x8981;&#x6C42;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;CONNECT &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x8981;&#x6C42;&#x3057;&#x305F;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n* `request` is the arguments for the http request, as it is in the request\n  event.\n* `socket` is the network socket between the server and client.\n* `head` is an instance of Buffer, the first packet of the tunneling stream,\n  this may be empty.\n-->\n\n<ul>\n<li><code>request</code> &#x306F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x5F15;&#x6570;&#x3068;&#x540C;&#x69D8;&#x306B; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x3059;&#x3002;</li>\n<li><code>socket</code> &#x306F;&#x30B5;&#x30FC;&#x30D0;&#x3068;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x9593;&#x306E;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x3059;&#x3002;</li>\n<li><code>head</code> &#x306F;&#x30C8;&#x30F3;&#x30CD;&#x30EA;&#x30F3;&#x30B0;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x6700;&#x521D;&#x306E;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x6301;&#x3064; Buffer &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;\n&#x7A7A;&#x306E;&#x5834;&#x5408;&#x3082;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\nAfter this event is emitted, the request's socket will not have a `data`\nevent listener, meaning you will need to bind to it in order to handle data\nsent to the server on that socket.\n-->\n\n<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x5143;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x3082;&#x3046; <code>data</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x6301;&#x3061;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x9001;&#x3089;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6271;&#x3046;&#x305F;&#x3081;&#x306B;&#x305D;&#x308C;&#x3092;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;upgrade&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;upgrade&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (request, socket, head) { }</code>\n\n</p>\n<!--\nEmitted each time a client requests a http upgrade. If this event isn't\nlistened for, then clients requesting an upgrade will have their connections\nclosed.\n-->\n\n<p>&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C; HTTP &#x306E;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x3092;&#x8981;&#x6C42;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x3092;&#x8981;&#x6C42;&#x3057;&#x305F;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n* `request` is the arguments for the http request, as it is in the request\n  event.\n* `socket` is the network socket between the server and client.\n* `head` is an instance of Buffer, the first packet of the upgraded stream,\n  this may be empty.\n-->\n\n<ul>\n<li><code>request</code> &#x306F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x5F15;&#x6570;&#x3068;&#x540C;&#x69D8;&#x306B; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3067;&#x3059;&#x3002;</li>\n<li><code>socket</code> &#x306F;&#x30B5;&#x30FC;&#x30D0;&#x3068;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306E;&#x9593;&#x306E;&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x3059;&#x3002;</li>\n<li><code>head</code> &#x306F;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306E;&#x6700;&#x521D;&#x306E;&#x30D1;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x6301;&#x3064; Buffer &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;\n&#x7A7A;&#x306E;&#x5834;&#x5408;&#x3082;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;</li>\n</ul>\n<!--\nAfter this event is emitted, the request's socket will not have a `data`\nevent listener, meaning you will need to bind to it in order to handle data\nsent to the server on that socket.\n-->\n\n<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x5143;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x3082;&#x3046; <code>data</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x6301;&#x3061;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x3053;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3067;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x9001;&#x3089;&#x308C;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6271;&#x3046;&#x305F;&#x3081;&#x306B;&#x305D;&#x308C;&#x3092;&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;clientError&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;clientError&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (exception, socket) { }</code>\n\n</p>\n<!--\nIf a client connection emits an 'error' event - it will forwarded here.\n-->\n\n<p>&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x304C; &apos;error&apos; &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x767A;&#x3057;&#x305F;&#x5834;&#x5408; &#xFF0D; &#x3053;&#x3053;&#x306B;&#x8EE2;&#x9001;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\n`socket` is the `net.Socket` object that the error originated from.\n-->\n\n<p><code>socket</code> &#x306F;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F; <code>net.Socket</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            }
+          ],
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;server.listen(port, [hostname], [backlog], [callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;listen&quot;,
+              &quot;desc&quot;: &quot;<!--\nBegin accepting connections on the specified port and hostname.  If the\nhostname is omitted, the server will accept connections directed to any\nIPv4 address (`INADDR_ANY`).\n-->\n\n<p>&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x30DD;&#x30FC;&#x30C8;&#x3068;&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x3067;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x53D7;&#x3051;&#x5165;&#x308C;&#x3092;&#x958B;&#x59CB;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x3069;&#x3093;&#x306A; IPv4 &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3078;&#x306E;&#x63A5;&#x7D9A;&#x3082;&#x53D7;&#x3051;&#x5165;&#x308C;&#x307E;&#x3059; (<code>INADDR_ANY</code>)&#x3002;\n\n</p>\n<!--\nTo listen to a unix socket, supply a filename instead of port and hostname.\n-->\n\n<p>UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x308B;&#x5834;&#x5408;&#x3001;&#x30DD;&#x30FC;&#x30C8;&#x3068;&#x30DB;&#x30B9;&#x30C8;&#x540D;&#x3067;&#x306F;&#x306A;&#x304F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nBacklog is the maximum length of the queue of pending connections.\nThe actual length will be determined by your OS through sysctl settings such as\n`tcp_max_syn_backlog` and `somaxconn` on linux. The default value of this\nparameter is 511 (not 512).\n-->\n\n<p>&#x30D0;&#x30C3;&#x30AF;&#x30ED;&#x30B0;&#x306F;&#x4FDD;&#x7559;&#x3055;&#x308C;&#x305F;&#x63A5;&#x7D9A;&#x306E;&#x30AD;&#x30E5;&#x30FC;&#x306E;&#x6700;&#x5927;&#x9577;&#x3067;&#x3059;&#x3002;\n&#x5B9F;&#x969B;&#x306E;&#x9577;&#x3055;&#x306F; Linux &#x3067;&#x306F; <code>tcp_max_syn_backlog</code> &#x3084; <code>somaxconn</code> &#x306A;&#x3069;&#x3001;\nsysctl &#x306E;&#x8A2D;&#x5B9A;&#x3092;&#x901A;&#x3058;&#x3066; OS &#x306B;&#x3088;&#x3063;&#x3066;&#x6C7A;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x306F; 511 (512 &#x3067;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;) &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThis function is asynchronous. The last parameter `callback` will be added as\na listener for the ['listening'][] event.  See also [net.Server.listen(port)][].\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570;&#x306E; <code>callback</code> &#x306F;\n[&apos;listening&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x8A73;&#x7D30;&#x306F; [net.Server.listen(port)][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;port&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;hostname&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;backlog&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.listen(path, [callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;listen&quot;,
+              &quot;desc&quot;: &quot;<!--\nStart a UNIX socket server listening for connections on the given `path`.\n-->\n\n<p><code>path</code> &#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x305F;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x5F85;&#x3061;&#x53D7;&#x3051;&#x308B; UNIX &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30B5;&#x30FC;&#x30D0;&#x3092;&#x958B;&#x59CB;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThis function is asynchronous. The last parameter `callback` will be added as\na listener for the ['listening'][] event.  See also [net.Server.listen(path)][].\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570;&#x306E; <code>callback</code> &#x306F;\n[&apos;listening&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x8A73;&#x7D30;&#x306F; [net.Server.listen(path)][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;path&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.listen(handle, [callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;listen&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;textRaw&quot;: &quot;`handle` {Object} &quot;,
+                      &quot;name&quot;: &quot;handle&quot;,
+                      &quot;type&quot;: &quot;Object&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`callback` {Function} &quot;,
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;type&quot;: &quot;Function&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                },
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;handle&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ],
+              &quot;desc&quot;: &quot;<!--\nThe `handle` object can be set to either a server or socket (anything\nwith an underlying `_handle` member), or a `{fd: <n>}` object.\n-->\n\n<p><code>handle</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x306F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x307E;&#x305F;&#x306F;&#x30BD;&#x30B1;&#x30C3;&#x30C8; (&#x4E0B;&#x5C64;&#x306E; <code>_handle</code> &#x30E1;&#x30F3;&#x30D0;&#x306A;&#x3089;\n&#x306A;&#x3093;&#x3067;&#x3082;) &#x307E;&#x305F;&#x306F;&#x3001; <code>{fd: &lt;n&gt;}</code> &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThis will cause the server to accept connections on the specified\nhandle, but it is presumed that the file descriptor or handle has\nalready been bound to a port or domain socket.\n-->\n\n<p>&#x3053;&#x308C;&#x306B;&#x3088;&#x308A;&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x3078;&#x306E;&#x63A5;&#x7D9A;&#x3092;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x304C;&#x3001;\n&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x307E;&#x305F;&#x306F;&#x30CF;&#x30F3;&#x30C9;&#x30EB;&#x306F;&#x65E2;&#x306B;&#x30DD;&#x30FC;&#x30C8;&#x307E;&#x305F;&#x306F;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;\n&#x30D0;&#x30A4;&#x30F3;&#x30C9;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x3082;&#x306E;&#x3068;&#x898B;&#x306A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nListening on a file descriptor is not supported on Windows.\n-->\n\n<p>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x8A18;&#x8FF0;&#x5B50;&#x3078;&#x306E;&#x30EA;&#x30B9;&#x30CB;&#x30F3;&#x30B0;&#x306F; Windows &#x3067;&#x306F;&#x30B5;&#x30DD;&#x30FC;&#x30C8;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nThis function is asynchronous. The last parameter `callback` will be added as\na listener for the ['listening'](net.html#event_listening_) event.\nSee also [net.Server.listen()](net.html#net_server_listen_handle_callback).\n-->\n\n<p>&#x3053;&#x306E;&#x95A2;&#x6570;&#x306F;&#x975E;&#x540C;&#x671F;&#x3067;&#x3059;&#x3002;&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570;&#x306E; <code>callback</code> &#x306F;\n<a href="\&quot;net.html#event_listening_\&quot;">&apos;listening&apos;</a> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x8A73;&#x7D30;&#x306F; <a href="\&quot;net.html#net_server_listen_handle_callback\&quot;">net.Server.listen()</a>\n&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.close([callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<!--\nStops the server from accepting new connections.  See [net.Server.close()][].\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x65B0;&#x3057;&#x3044;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x3092;&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x308B;&#x306E;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;\n[net.Server.close()][] &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;server.setTimeout(msecs, callback)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setTimeout&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;textRaw&quot;: &quot;`msecs` {Number} &quot;,
+                      &quot;name&quot;: &quot;msecs&quot;,
+                      &quot;type&quot;: &quot;Number&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`callback` {Function} &quot;,
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;type&quot;: &quot;Function&quot;
+                    }
+                  ]
+                },
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;msecs&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;
+                    }
+                  ]
+                }
+              ],
+              &quot;desc&quot;: &quot;<!--\nSets the timeout value for sockets, and emits a `'timeout'` event on\nthe Server object, passing the socket as an argument, if a timeout\noccurs.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x5024;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x4E0A;&#x3067; <code>&apos;timeout&apos;</code>\n&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x3068;&#x3001;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIf there is a `'timeout'` event listener on the Server object, then it\nwill be called with the timed-out socket as an argument.\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B; <code>&apos;timeout&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x5B58;&#x5728;&#x3059;&#x308B;&#x3068;&#x3001;\n&#x305D;&#x308C;&#x306F;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nBy default, the Server's timeout value is 2 minutes, and sockets are\ndestroyed automatically if they time out.  However, if you assign a\ncallback to the Server's `'timeout'` event, then you are responsible\nfor handling socket timeouts.\n-->\n\n<p>&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x5024;&#x306F; 2 &#x5206;&#x3067;&#x3001;\n&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x7834;&#x68C4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3057;&#x304B;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;<code>&apos;timeout&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x3092;&#x30B5;&#x30FC;&#x30D0;&#x306B;&#x5272;&#x308A;&#x5F53;&#x3066;&#x305F;&#x5834;&#x5408;&#x3001;\n&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30EA;&#x30F3;&#x30B0;&#x306F;&#x3042;&#x306A;&#x305F;&#x306E;&#x8CAC;&#x52D9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            }
+          ],
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;server.maxHeadersCount&quot;,
+              &quot;name&quot;: &quot;maxHeadersCount&quot;,
+              &quot;desc&quot;: &quot;<!--\nLimits maximum incoming headers count, equal to 1000 by default. If set to 0 -\nno limit will be applied.\n-->\n\n<p>&#x53D7;&#x3051;&#x4ED8;&#x3051;&#x308B;&#x30D8;&#x30C3;&#x30C0;&#x6570;&#x306E;&#x4E0A;&#x9650;&#x3067;&#x3001;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; 1000 &#x3067;&#x3059;&#x3002;\n0 &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;&#x5236;&#x9650;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;`timeout` {Number} &#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8; = 120000 (2 &#x5206;) &quot;,
+              &quot;name&quot;: &quot;timeout&quot;,
+              &quot;* {Number} Default&quot;: &quot;120000 (2 minutes)&quot;,
+              &quot;desc&quot;: &quot;<!--\nThe number of milliseconds of inactivity before a socket is presumed\nto have timed out.\n-->\n\n<p>&#x4E0D;&#x6D3B;&#x6027;&#x306A;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x3068;&#x63A8;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x307E;&#x3067;&#x306E;&#x30DF;&#x30EA;&#x79D2;&#x3092;&#x8868;&#x3059;&#x6570;&#x5024;&#x3002;\n\n</p>\n<!--\nNote that the socket timeout logic is set up on connection, so\nchanging this value only affects *new* connections to the server, not\nany existing connections.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x51E6;&#x7406;&#x306F;&#x63A5;&#x7D9A;&#x306E;&#x30BB;&#x30C3;&#x30C8;&#x30A2;&#x30C3;&#x30D7;&#x6642;&#x306B;&#x884C;&#x308F;&#x308C;&#x308B;&#x305F;&#x3081;&#x3001;\n&#x3053;&#x306E;&#x5024;&#x306E;&#x5909;&#x66F4;&#x306F;&#x65E2;&#x5B58;&#x306E;&#x63A5;&#x7D9A;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x306E; <em>&#x65B0;&#x3057;&#x3044;</em> &#x63A5;&#x7D9A;&#x306B;&#x3060;&#x3051;\n&#x5F71;&#x97FF;&#x3059;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nSet to 0 to disable any kind of automatic timeout behavior on incoming\nconnections.\n-->\n\n<p>0 &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x3068;&#x3001;&#x5230;&#x7740;&#x3059;&#x308B;&#x63A5;&#x7D9A;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x81EA;&#x52D5;&#x7684;&#x306A;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x306E;&#x632F;&#x308B;&#x821E;&#x3044;&#x306F;\n&#x7121;&#x52B9;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;shortDesc&quot;: &quot;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8; = 120000 (2 &#x5206;)&quot;
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: http.ServerResponse&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;http.ServerResponse&quot;,
+          &quot;desc&quot;: &quot;<!--\nThis object is created internally by a HTTP server--not by the user. It is\npassed as the second parameter to the `'request'` event.\n\nThe response implements the [Writable Stream][] interface. This is an\n[EventEmitter][] with the following events:\n-->\n\n<p>&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; HTTP &#x30B5;&#x30FC;&#x30D0;&#x5185;&#x90E8; &#xFF0D; &#x30E6;&#x30FC;&#x30B6;&#x3067;&#x306F;&#x306A;&#x304F; &#xFF0D; &#x3067;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>&apos;request&apos;</code> &#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x306E;&#x7B2C; 2 &#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x6E21;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306F; [Writable  Stream][] &#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x6301;&#x3064; [EventEmitter][] &#x3067;&#x3059;:\n\n</p>\n&quot;,
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;close&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;close&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () { }</code>\n\n</p>\n<!--\nIndicates that the underlying connection was terminated before\n[response.end()][] was called or able to flush.\n-->\n\n<p>[response.end()][] &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x305F;&#x308A;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x308B;&#x524D;&#x306B;&#x3001;\n&#x4E0B;&#x5C64;&#x306E;&#x63A5;&#x7D9A;&#x304C;&#x5207;&#x65AD;&#x3055;&#x308C;&#x305F;&#x3053;&#x3068;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;finish&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;finish&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () { }</code>\n\n</p>\n<!--\nEmitted when the response has been sent. More specifically, this event is\nemitted when the last segment of the response headers and body have been\nhanded off to the operating system for transmission over the network. It\ndoes not imply that the client has received anything yet.\n-->\n\n<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x304C;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x3068;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3088;&#x308A;&#x8A73;&#x3057;&#x304F;&#x306F;&#x3001;&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x304A;&#x3088;&#x3073;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x6700;&#x5F8C;&#x306E;&#x30BB;&#x30B0;&#x30E1;&#x30F3;&#x30C8;&#x304C;\n&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;&#x306B;&#x8EE2;&#x9001;&#x3055;&#x308C;&#x308B;&#x305F;&#x3081;OS&#x306B;&#x6E21;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x4F55;&#x304B;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\nAfter this event, no more events will be emitted on the response object.\n-->\n\n<p>&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x5F8C;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x4E0A;&#x3067;&#x306F;&#x3069;&#x3093;&#x306A;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3082;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            }
+          ],
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;response.writeContinue()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;writeContinue&quot;,
+              &quot;desc&quot;: &quot;<!--\nSends a HTTP/1.1 100 Continue message to the client, indicating that\nthe request body should be sent. See the ['checkContinue'][] event on `Server`.\n-->\n\n<p>HTTP/1.1 &#x306E; 100 Continue &#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306B;&#x9001;&#x4FE1;&#x3057;&#x3001;\n&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x3066;&#x3082;&#x3088;&#x3044;&#x3053;&#x3068;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>Server</code>&#x306E; [&apos;checkContinue&apos;][] &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.writeHead(statusCode, [reasonPhrase], [headers])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;writeHead&quot;,
+              &quot;desc&quot;: &quot;<!--\nSends a response header to the request. The status code is a 3-digit HTTP\nstatus code, like `404`. The last argument, `headers`, are the response headers.\nOptionally one can give a human-readable `reasonPhrase` as the second\nargument.\n-->\n\n<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x306F; <code>404</code> &#x306E;&#x3088;&#x3046;&#x306A; 3 &#x6841;&#x306E;&#x6570;&#x5B57;&#x306B;&#x3088;&#x308B; HTTP &#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x3059;&#x3002;\n&#x6700;&#x5F8C;&#x306E;&#x5F15;&#x6570; <code>headers</code> &#x306F;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x3067;&#x3059;&#x3002;\n&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3068;&#x3057;&#x3066;&#x4EBA;&#x306B;&#x8AAD;&#x3081;&#x308B;&#x5F62;&#x5F0F;&#x306E; <code>reasonPhrase</code> &#x3092;&#x7B2C; 2 &#x5F15;&#x6570;&#x3067;&#x4E0E;&#x3048;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>var body = &apos;hello world&apos;;\nresponse.writeHead(200, {\n  &apos;Content-Length&apos;: body.length,\n  &apos;Content-Type&apos;: &apos;text/plain&apos; });</code></pre>\n<!--\nThis method must only be called once on a message and it must\nbe called before [response.end()][] is called.\n\nIf you call [response.write()][] or [response.end()][] before calling this, the\nimplicit/mutable headers will be calculated and call this function for you.\n-->\n\n<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3054;&#x3068;&#x306B; 1 &#x56DE;&#x3060;&#x3051;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x306A;&#x304F;&#x3066;&#x306F;&#x306A;&#x3089;&#x305A;&#x3001;\n[response.end()][] &#x306E;&#x524D;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<p>&#x3082;&#x3057;&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x524D;&#x306B; [response.write()][] &#x307E;&#x305F;&#x306F;\n[response.end()][] &#x304C;&#x547C;&#x3070;&#x308C;&#x308B;&#x3068;&#x3001;&#x6697;&#x9ED9;&#x7684;&#x306B;&#x53EF;&#x5909;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x7B97;&#x51FA;&#x3055;&#x308C;&#x3066;&#x3001;\n&#x3053;&#x306E;&#x95A2;&#x6570;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote: that Content-Length is given in bytes not characters. The above example\nworks because the string `'hello world'` contains only single byte characters.\nIf the body contains higher coded characters then `Buffer.byteLength()`\nshould be used to determine the number of bytes in a given encoding.\nAnd Node does not check whether Content-Length and the length of the body\nwhich has been transmitted are equal or not.\n-->\n\n<p>&#x6CE8;&#x610F;: <code>Content-Length</code> &#x306F;&#x6587;&#x5B57;&#x6570;&#x3067;&#x306F;&#x306A;&#x304F;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3067;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x4E0A;&#x306E;&#x4F8B;&#x304C;&#x52D5;&#x4F5C;&#x3059;&#x308B;&#x306E;&#x306F; <code>&apos;hello world&apos;</code> &#x3068;&#x3044;&#x3046;&#x6587;&#x5B57;&#x5217;&#x304C;&#x5358;&#x4E00;&#x30D0;&#x30A4;&#x30C8;&#x6587;&#x5B57;&#x3060;&#x3051;&#x3092;&#x542B;&#x3080;&#x305F;&#x3081;&#x3067;&#x3059;&#x3002;\n&#x3082;&#x3057;&#x30DC;&#x30C7;&#x30A3;&#x304C;&#x3088;&#x308A;&#x4E0A;&#x4F4D;&#x306B;&#x30B3;&#x30FC;&#x30C9;&#x5316;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x3092;&#x542B;&#x3080;&#x5834;&#x5408;&#x306F;&#x3001;\n&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306B;&#x3088;&#x308B;&#x30D0;&#x30A4;&#x30C8;&#x6570;&#x3092;&#x5F97;&#x308B;&#x305F;&#x3081;&#x306B; <code>Buffer.byteLength()</code> &#x3092;&#x4F7F;&#x3046;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;\nNode &#x306F;&#x3001;Content-Length &#x3068;&#x5B9F;&#x969B;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x305F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x9577;&#x3055;&#x304C;&#x7B49;&#x3057;&#x3044;&#x304B;&#x3069;&#x3046;&#x304B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;statusCode&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;reasonPhrase&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;headers&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.setTimeout(msecs, callback)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setTimeout&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;textRaw&quot;: &quot;`msecs` {Number} &quot;,
+                      &quot;name&quot;: &quot;msecs&quot;,
+                      &quot;type&quot;: &quot;Number&quot;
+                    },
+                    {
+                      &quot;textRaw&quot;: &quot;`callback` {Function} &quot;,
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;type&quot;: &quot;Function&quot;
+                    }
+                  ]
+                },
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;msecs&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;
+                    }
+                  ]
+                }
+              ],
+              &quot;desc&quot;: &quot;<!--\nSets the Socket's timeout value to `msecs`.  If a callback is\nprovided, then it is added as a listener on the `'timeout'` event on\nthe response object.\n-->\n\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x5024;&#x3092; <code>msec</code> &#x306B;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x304C;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x308B;&#x3068;&#x3001;&#x305D;&#x308C;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E; <code>&apos;timeout&apos;</code>\n&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x3068;&#x3057;&#x3066;&#x52A0;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIf no `'timeout'` listener is added to the request, the response, or\nthe server, then sockets are destroyed when they time out.  If you\nassign a handler on the request, the response, or the server's\n`'timeout'` events, then it is your responsibility to handle timed out\nsockets.\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3001;&#x305D;&#x3057;&#x3066;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x3044;&#x305A;&#x308C;&#x306B;&#x3082; <code>&apos;timeout&apos;</code>\n&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x7834;&#x68C4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3082;&#x3057;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x306B; <code>&apos;timeout&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;\n&#x8A2D;&#x5B9A;&#x3057;&#x305F;&#x5834;&#x5408;&#x3001;&#x30BF;&#x30A4;&#x30E0;&#x30A2;&#x30A6;&#x30C8;&#x3057;&#x305F;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x30CF;&#x30F3;&#x30C9;&#x30EA;&#x30F3;&#x30B0;&#x306F;&#x3042;&#x306A;&#x305F;&#x306E;&#x8CAC;&#x52D9;&#x3068;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.setHeader(name, value)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setHeader&quot;,
+              &quot;desc&quot;: &quot;<!--\nSets a single header value for implicit headers.  If this header already exists\nin the to-be-sent headers, its value will be replaced.  Use an array of strings\nhere if you need to send multiple headers with the same name.\n-->\n\n<p>&#x6697;&#x9ED9;&#x7684;&#x30D8;&#x30C3;&#x30C0;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x5024;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x9001;&#x4FE1;&#x3055;&#x308C;&#x3088;&#x3046;&#x3068;&#x3057;&#x3066;&#x3044;&#x308B;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x306B;&#x3053;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x65E2;&#x306B;&#x542B;&#x307E;&#x308C;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;\n&#x305D;&#x306E;&#x5024;&#x306F;&#x7F6E;&#x304D;&#x63DB;&#x3048;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x540C;&#x3058;&#x540D;&#x524D;&#x3067;&#x8907;&#x6570;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x305F;&#x3044;&#x5834;&#x5408;&#x306F;&#x6587;&#x5B57;&#x5217;&#x306E;&#x914D;&#x5217;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>response.setHeader(&quot;Content-Type&quot;, &quot;text/html&quot;);</code></pre>\n<!--\nor\n-->\n\n<p>&#x307E;&#x305F;&#x306F;\n\n</p>\n<pre><code>response.setHeader(&quot;Set-Cookie&quot;, [&quot;type=ninja&quot;, &quot;language=javascript&quot;]);</code></pre>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;name&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;value&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.getHeader(name)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;getHeader&quot;,
+              &quot;desc&quot;: &quot;<!--\nReads out a header that's already been queued but not sent to the client.  Note\nthat the name is case insensitive.  This can only be called before headers get\nimplicitly flushed.\n-->\n\n<p>&#x3059;&#x3067;&#x306B;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x3066;&#x3044;&#x308B;&#x304C;&#x672A;&#x9001;&#x4FE1;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x8AAD;&#x307F;&#x4E0A;&#x3052;&#x307E;&#x3059;&#xFF0E;\n&#x540D;&#x524D;&#x306F;&#x5927;&#x6587;&#x5B57;&#x5C0F;&#x6587;&#x5B57;&#x3092;&#x533A;&#x5225;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x6697;&#x9ED9;&#x7684;&#x306B;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x308B;&#x524D;&#x3060;&#x3051;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>var contentType = response.getHeader(&apos;content-type&apos;);</code></pre>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;name&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.removeHeader(name)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;removeHeader&quot;,
+              &quot;desc&quot;: &quot;<!--\nRemoves a header that's queued for implicit sending.\n-->\n\n<p>&#x6697;&#x9ED9;&#x7684;&#x306B;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x305F;&#x3081;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x305F;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x524A;&#x9664;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>response.removeHeader(&quot;Content-Encoding&quot;);</code></pre>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;name&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.write(chunk, [encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;write&quot;,
+              &quot;desc&quot;: &quot;<!--\nIf this method is called and [response.writeHead()][] has not been called,\nit will switch to implicit header mode and flush the implicit headers.\n\nThis sends a chunk of the response body. This method may\nbe called multiple times to provide successive parts of the body.\n-->\n\n<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x3001;[response.writeHead()][] &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;\n&#x6697;&#x9ED9;&#x7684;&#x30D8;&#x30C3;&#x30C0;&#x30E2;&#x30FC;&#x30C9;&#x306B;&#x5207;&#x308A;&#x66FF;&#x308F;&#x308A;&#x3001;&#x6697;&#x9ED9;&#x7684;&#x30D8;&#x30C3;&#x30C0;&#x306F;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x3053;&#x308C;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x9023;&#x7D9A;&#x3057;&#x305F;&#x90E8;&#x5206;&#x3092;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x8907;&#x6570;&#x56DE;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x304B;&#x3082;&#x3057;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<!--\n`chunk` can be a string or a buffer. If `chunk` is a string,\nthe second parameter specifies how to encode it into a byte stream.\nBy default the `encoding` is `'utf8'`.\n-->\n\n<p><code>chunk</code> &#x306F;&#x6587;&#x5B57;&#x5217;&#x307E;&#x305F;&#x306F;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n<code>chunk</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x306E;&#x5834;&#x5408;&#x3001;&#x3069;&#x306E;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x30D0;&#x30A4;&#x30C8;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x3059;&#x308B;&#x304B;&#x3092;&#x7B2C; 2 &#x5F15;&#x6570;&#x3067;&#x6307;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306E; <code>encoding</code> &#x306F; <code>&apos;utf8&apos;</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\n**Note**: This is the raw HTTP body and has nothing to do with\nhigher-level multi-part body encodings that may be used.\n-->\n\n<p><strong>&#x6CE8;&#x610F;</strong>: &#x3053;&#x308C;&#x306F;&#x751F;&#x306E; HTTP &#x30DC;&#x30C7;&#x30A3;&#x3067;&#x3001;\n&#x9AD8;&#x6C34;&#x6E96;&#x306E;&#x30DE;&#x30EB;&#x30C1;&#x30D1;&#x30FC;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;&#x4F7F;&#x308F;&#x308C;&#x308B;&#x3082;&#x306E;&#x3068;&#x306F;&#x7121;&#x95A2;&#x4FC2;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThe first time `response.write()` is called, it will send the buffered\nheader information and the first body to the client. The second time\n`response.write()` is called, Node assumes you're going to be streaming\ndata, and sends that separately. That is, the response is buffered up to the\nfirst chunk of body.\n-->\n\n<p>&#x521D;&#x3081;&#x3066; <code>response.write()</code> &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x308B;&#x3068;&#x3001;\n&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x3066;&#x3044;&#x305F;&#x30D8;&#x30C3;&#x30C0;&#x60C5;&#x5831;&#x3068;&#x6700;&#x521D;&#x306E;&#x30DC;&#x30C7;&#x30A3;&#x304C;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n2 &#x56DE;&#x76EE;&#x306B; <code>response.write()</code> &#x304C;&#x547C;&#x3070;&#x308C;&#x308B;&#x3068;&#x3001;\nNode &#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30DF;&#x30F3;&#x30B0;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x5206;&#x5272;&#x3057;&#x3066;&#x9001;&#x4FE1;&#x3057;&#x3088;&#x3046;&#x3068;&#x3057;&#x3066;&#x3044;&#x308B;&#x3068;&#x4EEE;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3059;&#x306A;&#x308F;&#x3061;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306F;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x6700;&#x521D;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x307E;&#x3067;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x30EA;&#x30F3;&#x30B0;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nReturns `true` if the entire data was flushed successfully to the kernel\nbuffer. Returns `false` if all or part of the data was queued in user memory.\n`'drain'` will be emitted when the buffer is again free.\n-->\n\n<p>&#x30C7;&#x30FC;&#x30BF;&#x5168;&#x4F53;&#x306E;&#x30AB;&#x30FC;&#x30CD;&#x30EB;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x3078;&#x306E;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x304C;&#x6210;&#x529F;&#x3059;&#x308B;&#x3068; <code>true</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30FC;&#x30BF;&#x5168;&#x4F53;&#x307E;&#x305F;&#x306F;&#x4E00;&#x90E8;&#x304C;&#x30E6;&#x30FC;&#x30B6;&#x30E1;&#x30E2;&#x30EA;&#x5185;&#x306E;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;\n<code>false</code> &#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x518D;&#x3073;&#x30D0;&#x30C3;&#x30D5;&#x30A1;&#x304C;&#x7A7A;&#x3044;&#x305F;&#x5834;&#x5408;&#x306F; <code>&apos;drain&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;chunk&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.addTrailers(headers)&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;addTrailers&quot;,
+              &quot;desc&quot;: &quot;<!--\nThis method adds HTTP trailing headers (a header but at the end of the\nmessage) to the response.\n-->\n\n<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F; HTTP &#x30C8;&#x30EC;&#x30FC;&#x30E9;&#x30D8;&#x30C3;&#x30C0; (&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x306E;&#x6700;&#x5F8C;&#x306B;&#x7F6E;&#x304B;&#x308C;&#x308B;&#x30D8;&#x30C3;&#x30C0;) &#x3092;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306B;&#x8FFD;&#x52A0;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nTrailers will **only** be emitted if chunked encoding is used for the\nresponse; if it is not (e.g., if the request was HTTP/1.0), they will\nbe silently discarded.\n-->\n\n<p>&#x30C8;&#x30EC;&#x30FC;&#x30E9;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x304C;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x5316;&#x3055;&#x308C;&#x305F;&#x30A8;&#x30F3;&#x30B3;&#x30FC;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x3067;<strong>&#x306E;&#x307F;</strong>&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;;\n&#x305D;&#x3046;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070; (&#x4F8B;&#x3048;&#x3070;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C; HTTP/1.0)&#x3001;&#x9ED9;&#x3063;&#x3066;&#x7834;&#x68C4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nNote that HTTP requires the `Trailer` header to be sent if you intend to\nemit trailers, with a list of the header fields in its value. E.g.,\n-->\n\n<p>HTTP &#x306F;&#x3001;&#x30C8;&#x30EC;&#x30FC;&#x30E9;&#x3092;&#x751F;&#x6210;&#x3059;&#x308B;&#x306A;&#x3089;&#x305D;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x306E;&#x30EA;&#x30B9;&#x30C8;&#x3092;&#x5024;&#x3068;&#x3057;&#x3066;\n<code>Trailer</code> &#x30D8;&#x30C3;&#x30C0;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x8981;&#x6C42;&#x3057;&#x3066;&#x3044;&#x308B;&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<pre><code>response.writeHead(200, { &apos;Content-Type&apos;: &apos;text/plain&apos;,\n                          &apos;Trailer&apos;: &apos;Content-MD5&apos; });\nresponse.write(fileData);\nresponse.addTrailers({&apos;Content-MD5&apos;: &quot;7895bf4b8828b55ceaf47747b4bca667&quot;});\nresponse.end();</code></pre>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;headers&quot;
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.end([data], [encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;end&quot;,
+              &quot;desc&quot;: &quot;<!--\nThis method signals to the server that all of the response headers and body\nhave been sent; that server should consider this message complete.\nThe method, `response.end()`, MUST be called on each\nresponse.\n-->\n\n<p>&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306E;&#x5168;&#x3066;&#x306E;&#x30D8;&#x30C3;&#x30C0;&#x3068;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x305F;&#x3053;&#x3068;&#x3092;&#x30B5;&#x30FC;&#x30D0;&#x306B;&#x4F1D;&#x3048;&#x307E;&#x3059;;\n&#x30B5;&#x30FC;&#x30D0;&#x306F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x304C;&#x7D42;&#x4E86;&#x3057;&#x305F;&#x3068;&#x8003;&#x3048;&#x308B;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;\n&#x3053;&#x306E; <code>response.end()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5404;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3054;&#x3068;&#x306B;&#x547C;&#x3073;&#x51FA;&#x3055;&#x306A;&#x3051;&#x308C;&#x3070;<em>&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;</em>&#x3002;\n\n</p>\n<!--\nIf `data` is specified, it is equivalent to calling `response.write(data, encoding)`\nfollowed by `response.end()`.\n-->\n\n<p><code>data</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x3001;\n<code>response.write(data, encoding)</code> &#x306B;&#x7D9A;&#x3051;&#x3066; <code>response.end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x306E;&#x3068;&#x7B49;&#x4FA1;&#x3067;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;response.statusCode&quot;,
+              &quot;name&quot;: &quot;statusCode&quot;,
+              &quot;desc&quot;: &quot;<!--\nWhen using implicit headers (not calling [response.writeHead()][] explicitly),\nthis property controls the status code that will be sent to the client when\nthe headers get flushed.\n-->\n\n<p>([response.writeHead()][] &#x304C;&#x660E;&#x793A;&#x7684;&#x306B;&#x547C;&#x3070;&#x308C;&#x306A;&#x3044;&#x305F;&#x3081;&#x306B;) &#x6697;&#x9ED9;&#x7684;&#x306A;&#x30D8;&#x30C3;&#x30C0;&#x304C;\n&#x4F7F;&#x308F;&#x308C;&#x308B;&#x5834;&#x5408;&#x3001;&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x308B;&#x6642;&#x306B;\n&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3078;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x5236;&#x5FA1;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nExample:\n-->\n\n<p>&#x4F8B;:\n\n</p>\n<pre><code>response.statusCode = 404;</code></pre>\n<!--\nAfter response header was sent to the client, this property indicates the\nstatus code which was sent out.\n-->\n\n<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x305F;&#x5F8C;&#x3001;\n&#x3053;&#x306E;&#x30D7;&#x30ED;&#x30D1;&#x30C6;&#x30A3;&#x306F;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x305F;&#x30B9;&#x30C6;&#x30FC;&#x30BF;&#x30B9;&#x30B3;&#x30FC;&#x30C9;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.headersSent&quot;,
+              &quot;name&quot;: &quot;headersSent&quot;,
+              &quot;desc&quot;: &quot;<!--\nBoolean (read-only). True if headers were sent, false otherwise.\n-->\n\n<p>(&#x8AAD;&#x307F;&#x8FBC;&#x307F;&#x5C02;&#x7528;&#x306E;) Boolean&#x3002;\n&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x9001;&#x4FE1;&#x6E08;&#x307F;&#x306A;&#x3089; true&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306F; false &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;response.sendDate&quot;,
+              &quot;name&quot;: &quot;sendDate&quot;,
+              &quot;desc&quot;: &quot;<!--\nWhen true, the Date header will be automatically generated and sent in\nthe response if it is not already present in the headers. Defaults to true.\n\nThis should only be disabled for testing; HTTP requires the Date header\nin responses.\n-->\n\n<p><code>true</code> &#x306E;&#x5834;&#x5408;&#x3001;Date &#x30D8;&#x30C3;&#x30C0;&#x304C;&#x81EA;&#x52D5;&#x7684;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3068;&#x3057;&#x3066;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x307E;&#x3059;\n(<code>headers</code> &#x306B;&#x3059;&#x3067;&#x306B;&#x4E0E;&#x3048;&#x3089;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;)&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>true</code> &#x3067;&#x3059;&#x3002;\n\n</p>\n<p>&#x3053;&#x308C;&#x3092;&#x7121;&#x52B9;&#x306B;&#x3059;&#x308B;&#x306E;&#x306F;&#x30C6;&#x30B9;&#x30C8;&#x3067;&#x306E;&#x307F;&#x306B;&#x3059;&#x3079;&#x304D;&#x3067;&#x3059;&#x3002;\nHTTP &#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306B; Date &#x30D8;&#x30C3;&#x30C0;&#x3092;&#x8981;&#x6C42;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: http.Agent&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;http.Agent&quot;,
+          &quot;desc&quot;: &quot;<!--\nIn node 0.5.3+ there is a new implementation of the HTTP Agent which is used\nfor pooling sockets used in HTTP client requests.\n\nPreviously, a single agent instance helped pool for a single host+port. The\ncurrent implementation now holds sockets for any number of hosts.\n\nThe current HTTP Agent also defaults client requests to using\nConnection:keep-alive. If no pending HTTP requests are waiting on a socket\nto become free the socket is closed. This means that node's pool has the\nbenefit of keep-alive when under load but still does not require developers\nto manually close the HTTP clients using keep-alive.\n\nSockets are removed from the agent's pool when the socket emits either a\n\"close\" event or a special \"agentRemove\" event. This means that if you intend\nto keep one HTTP request open for a long time and don't want it to stay in the\npool you can do something along the lines of:\n-->\n\n<p>Node 0.5.3 &#x4EE5;&#x964D;&#x306B;&#x306F;&#x3001;HTTP &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;\n&#x30D7;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x65B0;&#x3057;&#x3044; HTTP Agent &#x306E;&#x5B9F;&#x88C5;&#x304C;&#x5B58;&#x5728;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x4EE5;&#x524D;&#x306F;&#x3001;&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x306E;&#x4E00;&#x3064;&#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x304C;&#x4E00;&#x3064;&#x306E;&#x30DB;&#x30B9;&#x30C8; + &#x30DD;&#x30FC;&#x30C8;&#x306E;&#x30D7;&#x30FC;&#x30EB;&#x3092;\n&#x52A9;&#x3051;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x304C;&#x3001;&#x73FE;&#x5728;&#x306E;&#x5B9F;&#x88C5;&#x3067;&#x306F;&#x4EFB;&#x610F;&#x306E;&#x6570;&#x306E;&#x30DB;&#x30B9;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;\n&#x4FDD;&#x6301;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x306A;&#x308A;&#x307E;&#x3057;&#x305F;&#x3002;\n\n</p>\n<p>&#x73FE;&#x5728;&#x306E; HTTP Agent &#x3067;&#x306F;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306F;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;\nConnection:keep-alive &#x3092;&#x4F7F;&#x3046;&#x3088;&#x3046;&#x306B;&#x3082;&#x306A;&#x308A;&#x307E;&#x3057;&#x305F;&#x3002;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5F85;&#x3063;&#x3066;&#x30DA;&#x30F3;&#x30C7;&#x30A3;&#x30F3;&#x30B0;&#x306B;&#x306A;&#x3063;&#x3066;&#x3044;&#x308B; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;\n&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x3001;node &#x306E;&#x30D7;&#x30FC;&#x30EB;&#x306F;&#x9AD8;&#x8CA0;&#x8377;&#x6642;&#x306B; keep-alive &#x306E;&#x30E1;&#x30EA;&#x30C3;&#x30C8;&#x3092;&#x6301;&#x3061;&#x306A;&#x304C;&#x3089;&#x3001;\nkeep-alive &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B; HTTP &#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3092;&#x958B;&#x767A;&#x8005;&#x304C;&#x624B;&#x52D5;&#x3067;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3059;&#x308B;\n&#x5FC5;&#x8981;&#x304C;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<p>&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306F; <code>&apos;close&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x307E;&#x305F;&#x306F;&#x7279;&#x5225;&#x306A; <code>&apos;agentRemove&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;\n&#x751F;&#x6210;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x306E;&#x30D7;&#x30FC;&#x30EB;&#x304B;&#x3089;&#x524A;&#x9664;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x3001;&#x4E00;&#x3064;&#x306E; HTTP &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x9577;&#x6642;&#x9593;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3057;&#x305F;&#x307E;&#x307E;&#x306B;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;\n&#x30D7;&#x30FC;&#x30EB;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x3068;&#x3069;&#x307E;&#x3089;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x610F;&#x56F3;&#x3059;&#x308B;&#x306A;&#x3089;&#x3001;\n&#x4EE5;&#x4E0B;&#x306E;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;:\n\n</p>\n<pre><code>http.get(options, function(res) {\n  // Do stuff\n}).on(&quot;socket&quot;, function (socket) {\n  socket.emit(&quot;agentRemove&quot;);\n});</code></pre>\n<!--\nAlternatively, you could just opt out of pooling entirely using `agent:false`:\n-->\n\n<p>&#x5225;&#x306E;&#x65B9;&#x6CD5;&#x3068;&#x3057;&#x3066;&#x3001; <code>agent: false</code> &#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3001;\n&#x30D7;&#x30FC;&#x30EA;&#x30F3;&#x30B0;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x3082;&#x3067;&#x304D;&#x307E;&#x3059;:\n\n</p>\n<pre><code>http.get({hostname:&apos;localhost&apos;, port:80, path:&apos;/&apos;, agent:false}, function (res) {\n  // Do stuff\n})</code></pre>\n&quot;,
+          &quot;properties&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;agent.maxSockets&quot;,
+              &quot;name&quot;: &quot;maxSockets&quot;,
+              &quot;desc&quot;: &quot;<!--\nBy default set to 5. Determines how many concurrent sockets the agent can have\nopen per origin. Origin is either a 'host:port' or 'host:port:localAddress'\ncombination.\n-->\n\n<p>&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x3067;&#x306F; 5 &#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x304C;&#x30AA;&#x30EA;&#x30B8;&#x30F3;&#x6BCE;&#x306B;&#x3044;&#x304F;&#x3064;&#x306E;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x4E26;&#x884C;&#x306B;&#x30AA;&#x30FC;&#x30D7;&#x30F3;&#x3059;&#x308B;&#x304B;&#x3092;&#x6C7A;&#x5B9A;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30AA;&#x30EA;&#x30B8;&#x30F3;&#x306F; <code>&apos;host:port&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;host:port:localAddress&apos;</code>\n&#x306E;&#x7D44;&#x307F;&#x5408;&#x308F;&#x305B;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;agent.sockets&quot;,
+              &quot;name&quot;: &quot;sockets&quot;,
+              &quot;desc&quot;: &quot;<!--\nAn object which contains arrays of sockets currently in use by the Agent. Do not\nmodify.\n-->\n\n<p>&#x30A8;&#x30FC;&#x30B8;&#x30A7;&#x30F3;&#x30C8;&#x304C;&#x73FE;&#x5728;&#x4F7F;&#x3063;&#x3066;&#x3044;&#x308B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x914D;&#x5217;&#x3067;&#x3059;&#x3002;\n&#x5909;&#x66F4;&#x3057;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+            },
+            {
+              &quot;textRaw&quot;: &quot;agent.requests&quot;,
+              &quot;name&quot;: &quot;requests&quot;,
+              &quot;desc&quot;: &quot;<!--\nAn object which contains queues of requests that have not yet been assigned to\nsockets. Do not modify.\n-->\n\n<p>&#x307E;&#x3060;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x30AD;&#x30E5;&#x30FC;&#x3092;&#x542B;&#x3080;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x3059;&#x3002;\n&#x5909;&#x66F4;&#x3057;&#x306A;&#x3044;&#x3067;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;Class: http.ClientRequest&quot;,
+          &quot;type&quot;: &quot;class&quot;,
+          &quot;name&quot;: &quot;http.ClientRequest&quot;,
+          &quot;desc&quot;: &quot;<!--\nThis object is created internally and returned from `http.request()`.  It\nrepresents an _in-progress_ request whose header has already been queued.  The\nheader is still mutable using the `setHeader(name, value)`, `getHeader(name)`,\n`removeHeader(name)` API.  The actual header will be sent along with the first\ndata chunk or when closing the connection.\n-->\n\n<p>&#x3053;&#x306E;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306F; HTTP &#x30B5;&#x30FC;&#x30D0;&#x5185;&#x90E8;&#x3067;&#x4F5C;&#x6210;&#x3055;&#x308C;&#x3001;<code>http.request()</code> &#x304B;&#x3089;&#x8FD4;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x305D;&#x308C;&#x306F;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x30AD;&#x30E5;&#x30FC;&#x306B;&#x5165;&#x308C;&#x3089;&#x308C;&#x305F; <em>&#x9032;&#x884C;&#x4E2D;</em> &#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x8868;&#x73FE;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30D8;&#x30C3;&#x30C0;&#x306F; <code>setHeader(name, value)</code>, <code>getHeader(name)</code>, <code>removeHeader(name)</code> API &#x306B;&#x3088;&#x3063;&#x3066;&#x307E;&#x3060;&#x53EF;&#x5909;&#x306E;&#x307E;&#x307E;&#x3067;&#x3059;&#x3002;\n&#x5B9F;&#x969B;&#x306B;&#x30D8;&#x30C3;&#x30C0;&#x304C;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x306E;&#x306F;&#x3001;&#x6700;&#x521D;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x304C;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x308B;&#x6642;&#x307E;&#x305F;&#x306F;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x304C;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x308B;&#x6642;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nTo get the response, add a listener for `'response'` to the request object.\n`'response'` will be emitted from the request object when the response\nheaders have been received.  The `'response'` event is executed with one\nargument which is an instance of [http.IncomingMessage][].\n-->\n\n<p>&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x306B;&#x306F;&#x3001;<code>&apos;response&apos;</code> &#x7528;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x52A0;&#x3048;&#x307E;&#x3059;&#x3002;\n<code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x3068;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x3088;&#x3063;&#x3066;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F; [http.IncomingMessage][] &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3092;\n&#x552F;&#x4E00;&#x306E;&#x5F15;&#x6570;&#x3068;&#x3057;&#x3066;&#x5B9F;&#x884C;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nDuring the `'response'` event, one can add listeners to the\nresponse object; particularly to listen for the `'data'` event.\n-->\n\n<p><code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x9593;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306B;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3092;&#x52A0;&#x3048;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;;\n&#x3068;&#x308A;&#x308F;&#x3051; <code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306E;&#x30EA;&#x30B9;&#x30CA;&#x30FC;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nIf no `'response'` handler is added, then the response will be\nentirely discarded.  However, if you add a `'response'` event handler,\nthen you **must** consume the data from the response object, either by\ncalling `response.read()` whenever there is a `'readable'` event, or\nby adding a `'data'` handler, or by calling the `.resume()` method.\nUntil the data is consumed, the `'end'` event will not fire.  Also, until\nthe data is read it will consume memory that can eventually lead to a\n'process out of memory' error.\n-->\n\n<p><code>&apos;response&apos;</code> &#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x304C;&#x52A0;&#x3048;&#x3089;&#x308C;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x306F;&#x5B8C;&#x5168;&#x306B;&#x6368;&#x3066;&#x3089;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3057;&#x304B;&#x3057;&#x3001;<code>&apos;response&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x3092;&#x52A0;&#x3048;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;\n<code>&apos;readable&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x767A;&#x751F;&#x3057;&#x305F;&#x6642;&#x306B; <code>response.read()</code> &#x3092;&#x547C;&#x3076;&#x304B;&#x3001;\n<code>&apos;data&apos;</code> &#x30CF;&#x30F3;&#x30C9;&#x30E9;&#x3092;&#x52A0;&#x3048;&#x308B;&#x304B;&#x3001;<code>.resume()</code> &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x304B;&#x306E;&#x3044;&#x305A;&#x308C;&#x304B;&#x306B;&#x3088;&#x308A;&#x3001;\n&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x304B;&#x3089;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x8CBB;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070; <em>&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;</em> &#x3002;\n&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x6D88;&#x8CBB;&#x3055;&#x308C;&#x308B;&#x307E;&#x3067;&#x3001;<code>&apos;end&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x305B;&#x3093;&#x3002;\n&#x307E;&#x305F;&#x3001;&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x8AAD;&#x307E;&#x308C;&#x308B;&#x307E;&#x3067;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x6D88;&#x8CBB;&#x3057;&#x3001;&apos;process out of memory&apos;\n&#x30A8;&#x30E9;&#x30FC;&#x306B;&#x3064;&#x306A;&#x304C;&#x308B;&#x3053;&#x3068;&#x306B;&#x306A;&#x308A;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThis is a `Writable Stream`.\nNote: Node does not check whether Content-Length and the length of the body\nwhich has been transmitted are equal or not.\n\nNote: Node does not check whether Content-Length and the length of the body\nwhich has been transmitted are equal or not.\n-->\n\n<p>&#x3053;&#x308C;&#x306F; <code>Writable Stream</code> &#x3067;&#x3059;&#x3002;\n&#x6CE8;&#x610F;: Node &#x306F; Content-Length &#x3068;&#x5B9F;&#x969B;&#x306B;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x305F;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x9577;&#x3055;&#x304C;&#x7B49;&#x3057;&#x3044;&#x304B;&#x3069;&#x3046;&#x304B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3057;&#x307E;&#x305B;&#x3093;&#x3002;\n\n</p>\n<p><code>ServerRequest</code> &#x304C; <code>&apos;data&apos;</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x305F;&#x6642;&#x306B;&#x30EA;&#x30B9;&#x30CA;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;\n<strong>&#x30C7;&#x30FC;&#x30BF;&#x306F;&#x5931;&#x308F;&#x308C;&#x308B;</strong>&#x3053;&#x3068;&#x306B;&#x6CE8;&#x610F;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n<!--\nThe request implements the [Writable Stream][] interface. This is an\n[EventEmitter][] with the following events:\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306F; [Writable  Stream][] &#x30A4;&#x30F3;&#x30BF;&#x30D5;&#x30A7;&#x30FC;&#x30B9;&#x3092;&#x5B9F;&#x88C5;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x6301;&#x3064; [EventEmitter][] &#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;events&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;Event &apos;response&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;response&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (response) { }</code>\n\n</p>\n<!--\nEmitted when a response is received to this request. This event is emitted only\nonce. The `response` argument will be an instance of [http.IncomingMessage][].\n-->\n\n<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3092;&#x53D7;&#x4FE1;&#x3057;&#x305F;&#x6642;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x306F;&#x4E00;&#x56DE;&#x3060;&#x3051;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n<code>response</code> &#x5F15;&#x6570;&#x306F; [http.IncomingMessage][] &#x306E;&#x30A4;&#x30F3;&#x30B9;&#x30BF;&#x30F3;&#x30B9;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nOptions:\n-->\n\n<p>&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;:\n\n</p>\n<!--\n- `host`: A domain name or IP address of the server to issue the request to.\n- `port`: Port of remote server.\n- `socketPath`: Unix Domain Socket (use one of host:port or socketPath)\n-->\n\n<ul>\n<li><code>host</code>: &#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x767A;&#x884C;&#x3059;&#x308B;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x540D;&#x307E;&#x305F;&#x306F; IP &#x30A2;&#x30C9;&#x30EC;&#x30B9;&#x3002;</li>\n<li><code>port</code>: &#x30EA;&#x30E2;&#x30FC;&#x30C8;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30DD;&#x30FC;&#x30C8;&#x3002;</li>\n<li><code>soocketPath</code>: Unix &#x30C9;&#x30E1;&#x30A4;&#x30F3;&#x30BD;&#x30B1;&#x30C3;&#x30C8; (host:port &#x307E;&#x305F;&#x306F; socketPath &#x306E;&#x3069;&#x3061;&#x3089;&#x304B;)</li>\n</ul>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;socket&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;socket&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (socket) { }</code>\n\n</p>\n<!--\nEmitted after a socket is assigned to this request.\n-->\n\n<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x305F;&#x5F8C;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;connect&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;connect&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (response, socket, head) { }</code>\n\n</p>\n<!--\nEmitted each time a server responds to a request with a CONNECT method. If this\nevent isn't being listened for, clients receiving a CONNECT method will have\ntheir connections closed.\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x304C; CONNECT &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306E;&#x8981;&#x6C42;&#x306B;&#x5FDC;&#x7B54;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C; CONNECT &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3078;&#x306E;\n&#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x3068;&#x3001;&#x305D;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nA client server pair that show you how to listen for the `connect` event.\n-->\n\n<p>&#x3069;&#x306E;&#x3088;&#x3046;&#x306B; <code>connect</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x304B;&#x3092;&#x793A;&#x3059;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3068;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30DA;&#x30A2;:\n\n\n</p>\n<pre><code>var http = require(&apos;http&apos;);\nvar net = require(&apos;net&apos;);\nvar url = require(&apos;url&apos;);\n\n// Create an HTTP tunneling proxy\nvar proxy = http.createServer(function (req, res) {\n  res.writeHead(200, {&apos;Content-Type&apos;: &apos;text/plain&apos;});\n  res.end(&apos;okay&apos;);\n});\nproxy.on(&apos;connect&apos;, function(req, cltSocket, head) {\n  // connect to an origin server\n  var srvUrl = url.parse(&apos;http://&apos; + req.url);\n  var srvSocket = net.connect(srvUrl.port, srvUrl.hostname, function() {\n    cltSocket.write(&apos;HTTP/1.1 200 Connection Established\\r\\n&apos; +\n                    &apos;Proxy-agent: Node-Proxy\\r\\n&apos; +\n                    &apos;\\r\\n&apos;);\n    srvSocket.write(head);\n    srvSocket.pipe(cltSocket);\n    cltSocket.pipe(srvSocket);\n  });\n});\n\n// now that proxy is running\nproxy.listen(1337, &apos;127.0.0.1&apos;, function() {\n\n  // make a request to a tunneling proxy\n  var options = {\n    port: 1337,\n    hostname: &apos;127.0.0.1&apos;,\n    method: &apos;CONNECT&apos;,\n    path: &apos;www.google.com:80&apos;\n  };\n\n  var req = http.request(options);\n  req.end();\n\n  req.on(&apos;connect&apos;, function(res, socket, head) {\n    console.log(&apos;got connected!&apos;);\n\n    // make a request over an HTTP tunnel\n    socket.write(&apos;GET / HTTP/1.1\\r\\n&apos; +\n                 &apos;Host: www.google.com:80\\r\\n&apos; +\n                 &apos;Connection: close\\r\\n&apos; +\n                 &apos;\\r\\n&apos;);\n    socket.on(&apos;data&apos;, function(chunk) {\n      console.log(chunk.toString());\n    });\n    socket.on(&apos;end&apos;, function() {\n      proxy.close();\n    });\n  });\n});</code></pre>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;upgrade&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;upgrade&quot;,
+              &quot;desc&quot;: &quot;<p><code>function (response, socket, head) { }</code>\n\n</p>\n<!--\nEmitted each time a server responds to a request with an upgrade. If this\nevent isn't being listened for, clients receiving an upgrade header will have\ntheir connections closed.\n-->\n\n<p>&#x30B5;&#x30FC;&#x30D0;&#x304C;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x8981;&#x6C42;&#x306B;&#x5FDC;&#x7B54;&#x3059;&#x308B;&#x5EA6;&#x306B;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x304C;&#x76E3;&#x8996;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x30A2;&#x30C3;&#x30D7;&#x30B0;&#x30EC;&#x30FC;&#x30C9;&#x30D8;&#x30C3;&#x30C0;&#x3092;&#x53D7;&#x4FE1;&#x3059;&#x308B;&#x3068;&#x305D;&#x306E;&#x30B3;&#x30CD;&#x30AF;&#x30B7;&#x30E7;&#x30F3;&#x306F;&#x30AF;&#x30ED;&#x30FC;&#x30BA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nA client server pair that show you how to listen for the `upgrade` event.\n-->\n\n<p>&#x3069;&#x306E;&#x3088;&#x3046;&#x306B; <code>upgrade</code> &#x30A4;&#x30D9;&#x30F3;&#x30C8;&#x3092;&#x76E3;&#x8996;&#x3059;&#x308B;&#x304B;&#x3092;&#x793A;&#x3059;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x3068;&#x30B5;&#x30FC;&#x30D0;&#x306E;&#x30DA;&#x30A2;:\n\n</p>\n<pre><code>var http = require(&apos;http&apos;);\n\n// Create an HTTP server\nvar srv = http.createServer(function (req, res) {\n  res.writeHead(200, {&apos;Content-Type&apos;: &apos;text/plain&apos;});\n  res.end(&apos;okay&apos;);\n});\nsrv.on(&apos;upgrade&apos;, function(req, socket, head) {\n  socket.write(&apos;HTTP/1.1 101 Web Socket Protocol Handshake\\r\\n&apos; +\n               &apos;Upgrade: WebSocket\\r\\n&apos; +\n               &apos;Connection: Upgrade\\r\\n&apos; +\n               &apos;\\r\\n&apos;);\n\n  socket.pipe(socket); // echo back\n});\n\n// now that server is running\nsrv.listen(1337, &apos;127.0.0.1&apos;, function() {\n\n  // make a request\n  var options = {\n    port: 1337,\n    hostname: &apos;127.0.0.1&apos;,\n    headers: {\n      &apos;Connection&apos;: &apos;Upgrade&apos;,\n      &apos;Upgrade&apos;: &apos;websocket&apos;\n    }\n  };\n\n  var req = http.request(options);\n  req.end();\n\n  req.on(&apos;upgrade&apos;, function(res, socket, upgradeHead) {\n    console.log(&apos;got upgraded!&apos;);\n    socket.end();\n    process.exit(0);\n  });\n});</code></pre>\n&quot;,
+              &quot;params&quot;: []
+            },
+            {
+              &quot;textRaw&quot;: &quot;Event: &apos;continue&apos;&quot;,
+              &quot;type&quot;: &quot;event&quot;,
+              &quot;name&quot;: &quot;continue&quot;,
+              &quot;desc&quot;: &quot;<p><code>function () { }</code>\n\n</p>\n<!--\nEmitted when the server sends a '100 Continue' HTTP response, usually because\nthe request contained 'Expect: 100-continue'. This is an instruction that\nthe client should send the request body.\n-->\n\n<p>&#x901A;&#x5E38;&#x3001;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C; &apos;Expect: 100-continue&apos; &#x3092;&#x542B;&#x3093;&#x3067;&#x3044;&#x305F;&#x3053;&#x3068;&#x306B;&#x3088;&#x308A;&#x3001;\n&#x30B5;&#x30FC;&#x30D0;&#x304C; &apos;100 Continue&apos; HTTP &#x30EC;&#x30B9;&#x30DD;&#x30F3;&#x30B9;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x751F;&#x6210;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x308C;&#x306F;&#x30AF;&#x30E9;&#x30A4;&#x30A2;&#x30F3;&#x30C8;&#x304C;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x9001;&#x4FE1;&#x3059;&#x3079;&#x304D;&#x4E8B;&#x3092;&#x793A;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;params&quot;: []
+            }
+          ],
+          &quot;methods&quot;: [
+            {
+              &quot;textRaw&quot;: &quot;request.write(chunk, [encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;write&quot;,
+              &quot;desc&quot;: &quot;<!--\nSends a chunk of the body.  By calling this method\nmany times, the user can stream a request body to a\nserver--in that case it is suggested to use the\n`['Transfer-Encoding', 'chunked']` header line when\ncreating the request.\n-->\n\n<p>&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x3053;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x4F55;&#x56DE;&#x3082;&#x547C;&#x3073;&#x51FA;&#x3059;&#x3068;&#x3001;&#x30B5;&#x30FC;&#x30D0;&#x3078;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x30DC;&#x30C7;&#x30A3;&#x3092;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x5316;&#x3067;&#x304D;&#x307E;&#x3059; &#xFF0D; \n&#x3053;&#x306E;&#x30B1;&#x30FC;&#x30B9;&#x306F; <code>[&apos;Transfer-Encoding&apos;, &apos;chunked&apos;]</code> &#x30D8;&#x30C3;&#x30C0;&#x3067;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x751F;&#x6210;&#x3057;&#x305F;&#x3053;&#x3068;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nThe `chunk` argument should be a [Buffer][] or a string.\n-->\n\n<p><code>chunk</code> &#x5F15;&#x6570;&#x306F; [Buffer][] &#x307E;&#x305F;&#x306F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x3059;&#x3002;\n\n</p>\n<!--\nThe `encoding` argument is optional and only applies when `chunk` is a string.\nDefaults to `'utf8'`.\n-->\n\n<p><code>encoding</code> &#x5F15;&#x6570;&#x306F;&#x30AA;&#x30D7;&#x30B7;&#x30E7;&#x30F3;&#x3067;&#x3001;<code>chunk</code> &#x304C;&#x6587;&#x5B57;&#x5217;&#x306E;&#x5834;&#x5408;&#x3060;&#x3051;&#x9069;&#x7528;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x306F; <code>&apos;utf8&apos;</code> &#x3067;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;chunk&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;request.end([data], [encoding])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;end&quot;,
+              &quot;desc&quot;: &quot;<!--\nFinishes sending the request. If any parts of the body are\nunsent, it will flush them to the stream. If the request is\nchunked, this will send the terminating `'0\\r\\n\\r\\n'`.\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306E;&#x9001;&#x4FE1;&#x3092;&#x7D42;&#x4E86;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30DC;&#x30C7;&#x30A3;&#x306E;&#x3044;&#x304F;&#x3064;&#x304B;&#x306E;&#x90E8;&#x5206;&#x304C;&#x307E;&#x3060;&#x9001;&#x4FE1;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x3001;&#x305D;&#x308C;&#x306F;&#x30B9;&#x30C8;&#x30EA;&#x30FC;&#x30E0;&#x306B;&#x30D5;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x304C;&#x30C1;&#x30E3;&#x30F3;&#x30AF;&#x5316;&#x3055;&#x308C;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x3001;&#x3053;&#x308C;&#x306F;&#x7D42;&#x7AEF;&#x306E; <code>&apos;0\\r\\n\\r\\n&apos;</code> &#x3092;&#x9001;&#x4FE1;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nIf `data` is specified, it is equivalent to calling\n`request.write(data, encoding)` followed by `request.end()`.\n-->\n\n<p><code>data</code> &#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;\n<code>request.write(data, encoding)</code> &#x306B;&#x7D9A;&#x3051;&#x3066; <code>request.end()</code> &#x3092;&#x547C;&#x3073;&#x51FA;&#x3059;&#x306E;&#x3068;&#x7B49;&#x4FA1;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;data&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;encoding&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;request.abort()&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;abort&quot;,
+              &quot;desc&quot;: &quot;<!--\nAborts a request.  (New since v0.3.8.)\n-->\n\n<p>&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x3092;&#x30A2;&#x30DC;&#x30FC;&#x30C8;&#x3057;&#x307E;&#x3059; (v0.3.8 &#x304B;&#x3089;&#x306E;&#x65B0;&#x6A5F;&#x80FD;)\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: []
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;request.setTimeout(timeout, [callback])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setTimeout&quot;,
+              &quot;desc&quot;: &quot;<!--\nOnce a socket is assigned to this request and is connected\n[socket.setTimeout()][] will be called.\n-->\n\n<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x3066;&#x63A5;&#x7D9A;&#x3057;&#x305F;&#x969B;&#x306B;&#x3001;\n[socket.setTimeout()][] &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;timeout&quot;
+                    },
+                    {
+                      &quot;name&quot;: &quot;callback&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;request.setNoDelay([noDelay])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setNoDelay&quot;,
+              &quot;desc&quot;: &quot;<!--\nOnce a socket is assigned to this request and is connected\n[socket.setNoDelay()][] will be called.\n-->\n\n<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x3066;&#x63A5;&#x7D9A;&#x3057;&#x305F;&#x969B;&#x306B;&#x3001;\n[socket.setNoDelay()][] &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;noDelay&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              &quot;textRaw&quot;: &quot;request.setSocketKeepAlive([enable], [initialDelay])&quot;,
+              &quot;type&quot;: &quot;method&quot;,
+              &quot;name&quot;: &quot;setSocketKeepAlive&quot;,
+              &quot;desc&quot;: &quot;<!--\nOnce a socket is assigned to this request and is connected\n[socket.setKeepAlive()][] will be called.\n-->\n\n<p>&#x3053;&#x306E;&#x30EA;&#x30AF;&#x30A8;&#x30B9;&#x30C8;&#x306B;&#x30BD;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x5272;&#x308A;&#x5F53;&#x3066;&#x3089;&#x308C;&#x3066;&#x63A5;&#x7D9A;&#x3057;&#x305F;&#x969B;&#x306B;&#x3001;\n[socket.setKeepAlive()][] &#x304C;&#x547C;&#x3073;&#x51FA;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;\n\n\n</p>\n&quot;,
+              &quot;signatures&quot;: [
+                {
+                  &quot;params&quot;: [
+                    {
+                      &quot;name&quot;: &quot;enable&quot;,
+                      &quot;optional&quot;: true
+                    },
+                    {
+                      &quot;name&quot;: &quot;initialDelay&quot;,
+                      &quot;optional&quot;: true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;HTTP&quot;
+    }
+  ]
+}

@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Path Node.js v0.10.26 Manual &amp; Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/sh.css">
+  <link rel="canonical" href="http://nodejs.org/api/path.html">
+</head>
+<body class="alt apidoc" id="api-section-path">
+    <div id="intro" class="interior">
+        <a href="/" title="Go back to the home page">
+            <img id="logo" src="http://nodejs.org/images/logo-light.png" alt="node.js">
+        </a>
+    </div>
+    <div id="content" class="clearfix">
+        <div id="column2" class="interior">
+            <ul>
+                <!--
+                <li><a href="/" class="home">Home</a></li>
+                <li><a href="/download/" class="download">Download</a></li>
+                <li><a href="/about/" class="about">About</a></li>
+                <li><a href="http://npmjs.org/" class="npm">npm Registry</a></li>
+                <li><a href="http://nodejs.org/api/" class="docs current">Docs</a></li>
+                <li><a href="http://blog.nodejs.org" class="blog">Blog</a></li>
+                <li><a href="/community/" class="community">Community</a></li>
+                <li><a href="/logos/" class="logos">Logos</a></li>
+                -->
+               <li><a href="../" class="home">&#x30DB;&#x30FC;&#x30E0;</a></li>
+               <li><a href="../#download" class="download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+               <li><a href="../about/" class="about">&#x6982;&#x8981;</a></li>
+               <li><a href="http://npmjs.org/" class="npm">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+               <li><a href="../api/" class="docs current">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+               <li><a href="http://blog.nodejs.org" class="blog">&#x30D6;&#x30ED;&#x30B0;</a></li>
+               <li><a href="../community/" class="community">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+               <li><a href="../logos/" class="logos">&#x30ED;&#x30B4;</a></li>
+                <li><a href="http://jobs.nodejs.org/" class="jobs">Jobs</a></li>
+            </ul>
+            <p class="twitter"><a href="http://twitter.com/nodejs">@nodejs</a></p>
+        </div>
+
+        <div id="column1" class="interior">
+          <header>
+            <h1>Node.js v0.10.26 &#x30DE;&#x30CB;&#x30E5;&#x30A2;&#x30EB; &amp; &#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</h1>
+            <div id="gtoc">
+              <p>
+                <a href="index.html" name="toc">Index</a> |
+                <a href="all.html">View on single page</a> |
+                <a href="path.json">View as JSON</a>
+              </p>
+            </div>
+            <hr>
+          </header>
+
+          <div id="toc">
+            <h2>Table of Contents</h2>
+            <ul>
+<li><a href="#path_path">Path</a><ul>
+<li><a href="#path_path_normalize_p">path.normalize(p)</a></li>
+<li><a href="#path_path_join_path1_path2">path.join([path1], [path2], [...])</a></li>
+<li><a href="#path_path_resolve_from_to">path.resolve([from ...], to)</a></li>
+<li><a href="#path_path_relative_from_to">path.relative(from, to)</a></li>
+<li><a href="#path_path_dirname_p">path.dirname(p)</a></li>
+<li><a href="#path_path_basename_p_ext">path.basename(p, [ext])</a></li>
+<li><a href="#path_path_extname_p">path.extname(p)</a></li>
+<li><a href="#path_path_sep">path.sep</a></li>
+<li><a href="#path_path_delimiter">path.delimiter</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+
+          <div id="apicontent">
+            <h1>Path<span><a class="mark" href="#path_path" id="path_path">#</a></span></h1>
+<pre class="api_stability_3">Stability: 3 - Stable</pre><!--
+This module contains utilities for handling and transforming file
+paths.  Almost all these methods perform only string transformations.
+The file system is not consulted to check whether paths are valid.
+
+Use `require('path')` to use this module.  The following methods are provided:
+-->
+
+<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306E;&#x30D1;&#x30B9;&#x306B;&#x5BFE;&#x3059;&#x308B;&#x51E6;&#x7406;&#x3084;&#x5909;&#x63DB;&#x3092;&#x884C;&#x3046;&#x30E6;&#x30FC;&#x30C6;&#x30A3;&#x30EA;&#x30C6;&#x30A3;&#x3092;&#x542B;&#x307F;&#x307E;&#x3059;&#x3002;
+&#x307B;&#x3068;&#x3093;&#x3069;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x6587;&#x5B57;&#x5217;&#x306E;&#x5909;&#x63DB;&#x3060;&#x3051;&#x3092;&#x884C;&#x3044;&#x307E;&#x3059;&#x3002;
+&#x30D1;&#x30B9;&#x304C;&#x6B63;&#x3057;&#x3044;&#x304B;&#x691C;&#x8A3C;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x306B;&#x5C0B;&#x306D;&#x308B;&#x3053;&#x3068;&#x306F;&#x3042;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+
+</p>
+<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x3092;&#x5229;&#x7528;&#x3059;&#x308B;&#x306B;&#x306F;<code>require(&apos;path&apos;)</code>&#x3092;&#x547C;&#x3073;&#x51FA;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;
+&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x4EE5;&#x4E0B;&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3092;&#x63D0;&#x4F9B;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<h2>path.normalize(p)<span><a class="mark" href="#path_path_normalize_p" id="path_path_normalize_p">#</a></span></h2>
+<!--
+Normalize a string path, taking care of `'..'` and `'.'` parts.
+->
+
+文字列によるパスを正規化します。`'..'` と `'.'` の要素には注意してください。
+
+<!--
+When multiple slashes are found, they're replaced by a single one;
+when the path contains a trailing slash, it is preserved.
+On Windows backslashes are used.
+-->
+
+<p>&#x8907;&#x6570;&#x306E;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x304C;&#x898B;&#x3064;&#x304B;&#x308B;&#x3068;&#x3001;&#x305D;&#x308C;&#x3089;&#x306F;&#x4E00;&#x3064;&#x306B;&#x7F6E;&#x63DB;&#x3055;&#x308C;&#x307E;&#x3059;;
+&#x30D1;&#x30B9;&#x306E;&#x6700;&#x5F8C;&#x306B;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x304C;&#x542B;&#x307E;&#x308C;&#x3066;&#x3044;&#x308B;&#x3068;&#x3001;&#x305D;&#x308C;&#x306F;&#x7DAD;&#x6301;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+Windows &#x3067;&#x306F;&#x30D0;&#x30C3;&#x30AF;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x304C;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>path.normalize(&apos;/foo/bar//baz/asdf/quux/..&apos;)
+// returns
+&apos;/foo/bar/baz/asdf&apos;</code></pre>
+<h2>path.join([path1], [path2], [...])<span><a class="mark" href="#path_path_join_path1_path2" id="path_path_join_path1_path2">#</a></span></h2>
+<!--
+Join all arguments together and normalize the resulting path.
+-->
+
+<p>&#x5168;&#x3066;&#x306E;&#x5F15;&#x6570;&#x3092;&#x4E00;&#x3064;&#x306B;&#x7D50;&#x5408;&#x3057;&#x3001;&#x7D50;&#x679C;&#x3068;&#x3057;&#x3066;&#x5F97;&#x3089;&#x308C;&#x308B;&#x30D1;&#x30B9;&#x3092;&#x6B63;&#x898F;&#x5316;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Arguments must be strings.  In v0.8, non-string arguments were
+silently ignored.  In v0.10 and up, an exception is thrown.
+-->
+
+<p>&#x5F15;&#x6570;&#x306F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x306A;&#x304F;&#x3066;&#x306F;&#x306A;&#x308A;&#x307E;&#x305B;&#x3093;&#x3002;
+v0.8 &#x3067;&#x306F;&#x3001;&#x975E;&#x6587;&#x5B57;&#x5217;&#x306E;&#x5F15;&#x6570;&#x306F;&#x9759;&#x304B;&#x306B;&#x7121;&#x8996;&#x3055;&#x308C;&#x3066;&#x3044;&#x307E;&#x3057;&#x305F;&#x3002;
+v0.10 &#x4EE5;&#x964D;&#x3067;&#x306F;&#x3001;&#x4F8B;&#x5916;&#x304C;&#x30B9;&#x30ED;&#x30FC;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>path.join(&apos;/foo&apos;, &apos;bar&apos;, &apos;baz/asdf&apos;, &apos;quux&apos;, &apos;..&apos;)
+// returns
+&apos;/foo/bar/baz/asdf&apos;
+
+path.join(&apos;foo&apos;, {}, &apos;bar&apos;)
+// throws exception
+TypeError: Arguments to path.join must be strings</code></pre>
+<h2>path.resolve([from ...], to)<span><a class="mark" href="#path_path_resolve_from_to" id="path_path_resolve_from_to">#</a></span></h2>
+<!--
+Resolves `to` to an absolute path.
+-->
+
+<p><code>to</code> &#x306E;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3092;&#x89E3;&#x6C7A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+If `to` isn't already absolute `from` arguments are prepended in right to left
+order, until an absolute path is found. If after using all `from` paths still
+no absolute path is found, the current working directory is used as well. The
+resulting path is normalized, and trailing slashes are removed unless the path
+gets resolved to the root directory. Non-string arguments are ignored.
+-->
+
+<p>&#x3082;&#x3057; <code>to</code> &#x304C;&#x65E2;&#x306B;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x304C;&#x898B;&#x3064;&#x304B;&#x308B;&#x307E;&#x3067; <code>from</code> &#x5F15;&#x6570;&#x3092;&#x53F3;&#x304B;&#x3089;&#x5DE6;&#x306E;&#x9806;&#x3067;&#x5148;&#x982D;&#x306B;&#x52A0;&#x3048;&#x307E;&#x3059;&#x3002;
+&#x5168;&#x3066;&#x306E; <code>from</code> &#x3092;&#x52A0;&#x3048;&#x305F;&#x5F8C;&#x3001;&#x30D1;&#x30B9;&#x304C;&#x307E;&#x3060;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x3067;&#x306A;&#x3051;&#x308C;&#x3070;&#x3001;&#x30AB;&#x30EC;&#x30F3;&#x30C8;&#x30EF;&#x30FC;&#x30AD;&#x30F3;&#x30B0;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x304C;&#x540C;&#x69D8;&#x306B;&#x4F7F;&#x308F;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x7D50;&#x679C;&#x306E;&#x30D1;&#x30B9;&#x306F;&#x6B63;&#x898F;&#x5316;&#x3055;&#x308C;&#x3001;&#x89E3;&#x6C7A;&#x3055;&#x308C;&#x305F;&#x30D1;&#x30B9;&#x304C;&#x30EB;&#x30FC;&#x30C8;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x3067;&#x306A;&#x3044;&#x9650;&#x308A;&#x672B;&#x5C3E;&#x306E;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x306F;&#x524A;&#x9664;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+&#x6587;&#x5B57;&#x5217;&#x3067;&#x306A;&#x3044;&#x5F15;&#x6570;&#x306F;&#x7121;&#x8996;&#x3055;&#x308C;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Another way to think of it is as a sequence of `cd` commands in a shell.
+-->
+
+<p>&#x305D;&#x308C;&#x306F;&#x30B7;&#x30A7;&#x30EB;&#x306B;&#x304A;&#x3051;&#x308B; <code>cd</code> &#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x306E;&#x5217;&#x3060;&#x3068;&#x8003;&#x3048;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+Examples:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>path.resolve(&apos;foo/bar&apos;, &apos;/tmp/file/&apos;, &apos;..&apos;, &apos;a/../subfile&apos;)</code></pre>
+<!--
+Is similar to:
+-->
+
+<p>&#x3053;&#x308C;&#x306F;&#x4EE5;&#x4E0B;&#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x3002;
+
+</p>
+<pre><code>cd foo/bar
+cd /tmp/file/
+cd ..
+cd a/../subfile
+pwd</code></pre>
+<!--
+The difference is that the different paths don't need to exist and may also be
+files.
+-->
+
+<p>&#x3044;&#x306F;&#x3001;&#x305D;&#x308C;&#x305E;&#x308C;&#x306E;&#x30D1;&#x30B9;&#x304C;&#x5FC5;&#x305A;&#x3057;&#x3082;&#x5B58;&#x5728;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x306A;&#x3044;&#x3053;&#x3068;&#x3068;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x3067;&#x3082;&#x69CB;&#x308F;&#x306A;&#x3044;&#x3053;&#x3068;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Examples:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>path.resolve(&apos;/foo/bar&apos;, &apos;./baz&apos;)
+// returns
+&apos;/foo/bar/baz&apos;
+
+path.resolve(&apos;/foo/bar&apos;, &apos;/tmp/file/&apos;)
+// returns
+&apos;/tmp/file&apos;
+
+path.resolve(&apos;wwwroot&apos;, &apos;static_files/png/&apos;, &apos;../gif/image.gif&apos;)
+// if currently in /home/myself/node, it returns
+&apos;/home/myself/node/wwwroot/static_files/gif/image.gif&apos;</code></pre>
+<h2>path.relative(from, to)<span><a class="mark" href="#path_path_relative_from_to" id="path_path_relative_from_to">#</a></span></h2>
+<!--
+Solve the relative path from `from` to `to`.
+-->
+
+<p><code>from</code> &#x304B;&#x3089; <code>to</code> &#x3078;&#x306E;&#x76F8;&#x5BFE;&#x30D1;&#x30B9;&#x3092;&#x89E3;&#x6C7A;&#x3057;&#x307E;&#x3059;&#x3002;
+
+</p>
+<!--
+At times we have two absolute paths, and we need to derive the relative
+path from one to the other.  This is actually the reverse transform of
+`path.resolve`, which means we see that:
+-->
+
+<p>&#x4E8C;&#x3064;&#x306E;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x304C;&#x3042;&#x308A;&#x3001;&#x4E00;&#x65B9;&#x304B;&#x3089;&#x4ED6;&#x65B9;&#x3078;&#x306E;&#x76F8;&#x5BFE;&#x30D1;&#x30B9;&#x3092;&#x5F97;&#x306A;&#x3051;&#x308C;&#x3070;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308A;&#x307E;&#x3059;&#x3002;
+&#x3053;&#x308C;&#x306F;&#x5B9F;&#x969B;&#x306E;&#x3068;&#x3053;&#x308D;&#x3001;<code>path.resolve()</code> &#x3068;&#x306F;&#x9006;&#x306E;&#x5909;&#x63DB;&#x3067;&#x3059;&#x3002;
+&#x305D;&#x308C;&#x306F;&#x4EE5;&#x4E0B;&#x3092;&#x610F;&#x5473;&#x3057;&#x307E;&#x3059;:
+
+</p>
+<pre><code>path.resolve(from, path.relative(from, to)) == path.resolve(to)</code></pre>
+<!--
+Examples:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>path.relative(&apos;C:\\orandea\\test\\aaa&apos;, &apos;C:\\orandea\\impl\\bbb&apos;)
+// returns
+&apos;..\\..\\impl\\bbb&apos;
+
+path.relative(&apos;/data/orandea/test/aaa&apos;, &apos;/data/orandea/impl/bbb&apos;)
+// returns
+&apos;../../impl/bbb&apos;</code></pre>
+<h2>path.dirname(p)<span><a class="mark" href="#path_path_dirname_p" id="path_path_dirname_p">#</a></span></h2>
+<!--
+Return the directory name of a path.  Similar to the Unix `dirname` command.
+-->
+
+<p>&#x30D1;&#x30B9;&#x306B;&#x542B;&#x307E;&#x308C;&#x308B;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;&#x540D;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;Unix&#x306E; <code>dirname</code> &#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>path.dirname(&apos;/foo/bar/baz/asdf/quux&apos;)
+// returns
+&apos;/foo/bar/baz/asdf&apos;</code></pre>
+<h2>path.basename(p, [ext])<span><a class="mark" href="#path_path_basename_p_ext" id="path_path_basename_p_ext">#</a></span></h2>
+<!--
+Return the last portion of a path.  Similar to the Unix `basename` command.
+-->
+
+<p>&#x30D1;&#x30B9;&#x306E;&#x6700;&#x5F8C;&#x306E;&#x8981;&#x7D20;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;Unix&#x306E; <code>basename</code> &#x30B3;&#x30DE;&#x30F3;&#x30C9;&#x3068;&#x540C;&#x69D8;&#x3067;&#x3059;&#x3002;
+
+</p>
+<!--
+Example:
+-->
+
+<p>&#x4F8B;:
+
+</p>
+<pre><code>path.basename(&apos;/foo/bar/baz/asdf/quux.html&apos;)
+// returns
+&apos;quux.html&apos;
+
+path.basename(&apos;/foo/bar/baz/asdf/quux.html&apos;, &apos;.html&apos;)
+// returns
+&apos;quux&apos;</code></pre>
+<h2>path.extname(p)<span><a class="mark" href="#path_path_extname_p" id="path_path_extname_p">#</a></span></h2>
+<!--
+Return the extension of the path, from the last '.' to end of string
+in the last portion of the path.  If there is no '.' in the last portion
+of the path or the first character of it is '.', then it returns
+an empty string.  Examples:
+-->
+
+<p>&#x30D1;&#x30B9;&#x306E;&#x6700;&#x5F8C;&#x306E;&#x8981;&#x7D20;&#x306B;&#x3064;&#x3044;&#x3066;&#x3001;&#x6700;&#x5F8C;&#x306E; &apos;.&apos; &#x304B;&#x3089;&#x6587;&#x5B57;&#x5217;&#x306E;&#x6700;&#x5F8C;&#x307E;&#x3067;&#x306E;&#x30D1;&#x30B9;&#x306E;&#x62E1;&#x5F35;&#x5B50;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x6700;&#x5F8C;&#x306E;&#x8981;&#x7D20;&#x306B; &apos;.&apos; &#x304C;&#x542B;&#x307E;&#x308C;&#x3066;&#x3044;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x3001;&#x3082;&#x3057;&#x304F;&#x306F; &apos;.&apos; &#x304C;&#x6700;&#x521D;&#x306E;&#x6587;&#x5B57;&#x3060;&#x3063;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x7A7A;&#x306E;&#x6587;&#x5B57;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;
+&#x4F8B;:
+
+</p>
+<pre><code>path.extname(&apos;index.html&apos;)
+// returns
+&apos;.html&apos;
+
+path.extname(&apos;index.coffee.md&apos;)
+// returns
+&apos;.md&apos;
+
+path.extname(&apos;index.&apos;)
+// returns
+&apos;.&apos;
+
+path.extname(&apos;index&apos;)
+// returns
+&apos;&apos;</code></pre>
+<h2>path.sep<span><a class="mark" href="#path_path_sep" id="path_path_sep">#</a></span></h2>
+<!--
+The platform-specific file separator. `'\\'` or `'/'`.
+-->
+
+<p>&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x56FA;&#x6709;&#x306E;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30BB;&#x30D1;&#x30EC;&#x30FC;&#x30BF;&#x3002; <code>&apos;\\&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;/&apos;</code>&#x3002;
+
+</p>
+<!--
+An example on *nix:
+-->
+
+<p>*nix &#x3067;&#x306E;&#x4F8B;:
+
+</p>
+<pre><code>&apos;foo/bar/baz&apos;.split(path.sep)
+// returns
+[&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]</code></pre>
+<!--
+An example on Windows:
+-->
+
+<p>Windows &#x3067;&#x306E;&#x4F8B;:
+
+</p>
+<pre><code>&apos;foo\\bar\\baz&apos;.split(path.sep)
+// returns
+[&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]</code></pre>
+<h2>path.delimiter<span><a class="mark" href="#path_path_delimiter" id="path_path_delimiter">#</a></span></h2>
+<!--
+The platform-specific path delimiter, `;` or `':'`.
+-->
+
+<p>&#x30D7;&#x30E9;&#x30C3;&#x30C8;&#x30D5;&#x30A9;&#x30FC;&#x30E0;&#x56FA;&#x6709;&#x306E;&#x30D1;&#x30B9;&#x533A;&#x5207;&#x308A;&#x6587;&#x5B57;&#x3001;<code>&apos;;&apos;</code> &#x307E;&#x305F;&#x306F; <code>&apos;:&apos;</code>&#x3002;
+
+</p>
+<!--
+An example on *nix:
+-->
+
+<p>*nix &#x3067;&#x306E;&#x4F8B;:
+
+</p>
+<pre><code>console.log(process.env.PATH)
+// &apos;/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin&apos;
+
+process.env.PATH.split(path.delimiter)
+// returns
+[&apos;/usr/bin&apos;, &apos;/bin&apos;, &apos;/usr/sbin&apos;, &apos;/sbin&apos;, &apos;/usr/local/bin&apos;]</code></pre>
+<!--
+An example on Windows:
+-->
+
+<p>Windows &#x3067;&#x306E;&#x4F8B;:
+
+</p>
+<pre><code>console.log(process.env.PATH)
+// &apos;C:\Windows\system32;C:\Windows;C:\Program Files\nodejs\&apos;
+
+process.env.PATH.split(path.delimiter)
+// returns
+[&apos;C:\Windows\system32&apos;, &apos;C:\Windows&apos;, &apos;C:\Program Files\nodejs\&apos;]</code></pre>
+
+          </div>
+        </div>
+    </div>
+    <div id="footer">
+        <a href="http://joyent.com" class="joyent-logo">Joyent</a>
+        <ul class="clearfix">
+            <!--
+            <li><a href="/">Node.js</a></li>
+            <li><a href="/download/">Download</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="http://npmjs.org/">npm Registry</a></li>
+            <li><a href="http://nodejs.org/api/">Docs</a></li>
+            <li><a href="http://blog.nodejs.org">Blog</a></li>
+            <li><a href="/community/">Community</a></li>
+            <li><a href="/logos/">Logos</a></li>
+            -->
+            <li><a href="../">Node.js</a></li>
+            <li><a href="../#download">&#x30C0;&#x30A6;&#x30F3;&#x30ED;&#x30FC;&#x30C9;</a></li>
+            <li><a href="../about/">&#x6982;&#x8981;</a></li>
+            <li><a href="http://npmjs.org/">npm &#x30EC;&#x30B8;&#x30B9;&#x30C8;&#x30EA;</a></li>
+            <li><a href="../api/">&#x30C9;&#x30AD;&#x30E5;&#x30E1;&#x30F3;&#x30C8;</a></li>
+            <li><a href="http://blog.nodejs.org">&#x30D6;&#x30ED;&#x30B0;</a></li>
+            <li><a href="../community/">&#x30B3;&#x30DF;&#x30E5;&#x30CB;&#x30C6;&#x30A3;</a></li>
+            <li><a href="../logos/">&#x30ED;&#x30B4;</a></li>
+            <li><a href="http://jobs.nodejs.org/">Jobs</a></li>
+            <li><a href="http://twitter.com/nodejs" class="twitter">@nodejs</a></li>
+        </ul>
+
+        <p>Copyright <a href="http://joyent.com/">Joyent, Inc</a>, Node.js is a <a href="/trademark-policy.pdf">trademark</a> of Joyent, Inc. View <a href="https://raw.github.com/joyent/node/v0.10.26/LICENSE">license</a>.</p>
+    </div>
+
+  <script src="../sh_main.js"></script>
+  <script src="../sh_javascript.min.js"></script>
+  <script>highlight(undefined, undefined, 'pre');</script>
+  <script>
+    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = '//www.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g, s);
+    }(document, 'script'));
+  </script>
+</body>
+</html>
+

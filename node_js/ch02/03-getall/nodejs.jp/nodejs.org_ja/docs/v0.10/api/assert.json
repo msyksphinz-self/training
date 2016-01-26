@@ -1,0 +1,258 @@
+{
+  &quot;source&quot;: &quot;doc/api/assert.markdown&quot;,
+  &quot;modules&quot;: [
+    {
+      &quot;textRaw&quot;: &quot;Assert&quot;,
+      &quot;name&quot;: &quot;assert&quot;,
+      &quot;stability&quot;: 5,
+      &quot;stabilityText&quot;: &quot;Locked&quot;,
+      &quot;desc&quot;: &quot;<!--\nThis module is used for writing unit tests for your applications, you can\naccess it with `require('assert')`.\n-->\n\n<p>&#x3053;&#x306E;&#x30E2;&#x30B8;&#x30E5;&#x30FC;&#x30EB;&#x306F;&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x306E;&#x5358;&#x4F53;&#x30C6;&#x30B9;&#x30C8;&#x3092;&#x8A18;&#x8FF0;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x3001;\n<code>require(&apos;assert&apos;)</code> &#x3067;&#x30A2;&#x30AF;&#x30BB;&#x30B9;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+      &quot;methods&quot;: [
+        {
+          &quot;textRaw&quot;: &quot;assert.fail(actual, expected, message, operator)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;fail&quot;,
+          &quot;desc&quot;: &quot;<!--\nThrows an exception that displays the values for `actual` and `expected` separated by the provided operator.\n-->\n\n<p><code>actual</code> &#x3068; <code>expected</code> &#x3092; <code>operator</code> &#x3067;&#x533A;&#x5207;&#x3063;&#x305F;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x6301;&#x3064;&#x4F8B;&#x5916;&#x3092;\n&#x30B9;&#x30ED;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;actual&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;expected&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;operator&quot;
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert(value, message), assert.ok(value, [message])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;ok&quot;,
+          &quot;desc&quot;: &quot;<!--\nTests if value is truthy, it is equivalent to `assert.equal(true, !!value, message);`\n-->\n\n<p><code>value</code> &#x304C; truthy &#x304B;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3001;\n&#x3053;&#x308C;&#x306F; <code>assert.equal(true, !!value, message);</code> &#x3068;&#x7B49;&#x4FA1;&#x3067;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;value&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message)&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;assert.ok(value&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert.equal(actual, expected, [message])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;equal&quot;,
+          &quot;Tests shallow, coercive equality with the equal comparison operator ( `&quot;: &quot;=` ).&quot;,
+          &quot;desc&quot;: &quot;<p><code>==</code> &#x6F14;&#x7B97;&#x5B50;&#x3092;&#x5F37;&#x5236;&#x3057;&#x3066;&#x6D45;&#x3044;&#x540C;&#x5024;&#x6027;&#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;actual&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;expected&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert.notEqual(actual, expected, [message])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;notEqual&quot;,
+          &quot;Tests shallow, coercive non-equality with the not equal comparison operator ( `!&quot;: &quot;` ).&quot;,
+          &quot;desc&quot;: &quot;<p><code>!=</code> &#x6F14;&#x7B97;&#x5B50;&#x3092;&#x5F37;&#x5236;&#x3057;&#x3066;&#x6D45;&#x3044;&#x975E;&#x540C;&#x5024;&#x6027;&#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;actual&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;expected&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert.deepEqual(actual, expected, [message])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;deepEqual&quot;,
+          &quot;desc&quot;: &quot;<!--\nTests for deep equality.\n-->\n\n<p>&#x6DF1;&#x3044;&#x540C;&#x5024;&#x6027;&#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;actual&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;expected&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert.notDeepEqual(actual, expected, [message])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;notDeepEqual&quot;,
+          &quot;desc&quot;: &quot;<!--\nTests for any deep inequality.\n-->\n\n<p>&#x6DF1;&#x3044;&#x975E;&#x540C;&#x5024;&#x6027;&#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;actual&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;expected&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert.strictEqual(actual, expected, [message])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;strictEqual&quot;,
+          &quot;Tests strict equality, as determined by the strict equality operator ( `&quot;: &quot;==` )&quot;,
+          &quot;desc&quot;: &quot;<p><code>===</code> &#x6F14;&#x7B97;&#x5B50;&#x3067;&#x53B3;&#x5BC6;&#x306A;&#x540C;&#x5024;&#x6027;&#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;actual&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;expected&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert.notStrictEqual(actual, expected, [message])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;notStrictEqual&quot;,
+          &quot;Tests strict non-equality, as determined by the strict not equal operator ( `!&quot;: &quot;=` )&quot;,
+          &quot;desc&quot;: &quot;<p><code>!==</code> &#x6F14;&#x7B97;&#x5B50;&#x3067;&#x53B3;&#x5BC6;&#x306A;&#x975E;&#x540C;&#x5024;&#x6027;&#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x307E;&#x3059;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;actual&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;expected&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert.throws(block, [error], [message])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;throws&quot;,
+          &quot;desc&quot;: &quot;<!--\nExpects `block` to throw an error. `error` can be constructor, regexp or \nvalidation function.\n-->\n\n<p><code>block</code> &#x304C;&#x30A8;&#x30E9;&#x30FC;&#x3092;&#x30B9;&#x30ED;&#x30FC;&#x3059;&#x308B;&#x3053;&#x3068;&#x3092;&#x671F;&#x5F85;&#x3057;&#x307E;&#x3059;&#x3002;\n<code>error</code> &#x306F;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3001;&#x6B63;&#x898F;&#x8868;&#x73FE;&#x3001;&#x307E;&#x305F;&#x306F;&#x691C;&#x8A3C;&#x95A2;&#x6570;&#x306B;&#x3059;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x307E;&#x3059;&#x3002;\n\n</p>\n<!--\nValidate instanceof using constructor:\n-->\n\n<p>&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x3092;&#x4F7F;&#x3063;&#x3066; instanceof &#x3067;&#x691C;&#x8A3C;:\n\n</p>\n<pre><code>assert.throws(\n  function() {\n    throw new Error(&quot;Wrong value&quot;);\n  },\n  Error\n);</code></pre>\n<!--\nValidate error message using RegExp:\n-->\n\n<p>&#x6B63;&#x898F;&#x8868;&#x73FE;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x30A8;&#x30E9;&#x30FC;&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;&#x3092;&#x691C;&#x8A3C;:\n\n</p>\n<pre><code>assert.throws(\n  function() {\n    throw new Error(&quot;Wrong value&quot;);\n  },\n  /value/\n);</code></pre>\n<!--\nCustom error validation:\n-->\n\n<p>&#x72EC;&#x81EA;&#x306E;&#x30A8;&#x30E9;&#x30FC;&#x691C;&#x8A3C;:\n\n</p>\n<pre><code>assert.throws(\n  function() {\n    throw new Error(&quot;Wrong value&quot;);\n  },\n  function(err) {\n    if ( (err instanceof Error) &amp;&amp; /value/.test(err) ) {\n      return true;\n    }\n  },\n  &quot;unexpected error&quot;\n);</code></pre>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;block&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;error&quot;,
+                  &quot;optional&quot;: true
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert.doesNotThrow(block, [message])&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;doesNotThrow&quot;,
+          &quot;desc&quot;: &quot;<!--\nExpects `block` not to throw an error, see assert.throws for details.\n-->\n\n<p><code>block</code> &#x304C;&#x30A8;&#x30E9;&#x30FC;&#x3092;&#x30B9;&#x30ED;&#x30FC;&#x3057;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x671F;&#x5F85;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x8A73;&#x7D30;&#x306F; assert.throws &#x3092;&#x53C2;&#x7167;&#x3057;&#x3066;&#x304F;&#x3060;&#x3055;&#x3044;&#x3002;\n\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;block&quot;
+                },
+                {
+                  &quot;name&quot;: &quot;message&quot;,
+                  &quot;optional&quot;: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          &quot;textRaw&quot;: &quot;assert.ifError(value)&quot;,
+          &quot;type&quot;: &quot;method&quot;,
+          &quot;name&quot;: &quot;ifError&quot;,
+          &quot;desc&quot;: &quot;<!--\nTests if value is not a false value, throws if it is a true value. Useful when\ntesting the first argument, `error` in callbacks.\n-->\n\n<p><code>value</code> &#x304C; false &#x3067;&#x306A;&#x3044;&#x3053;&#x3068;&#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3057;&#x3001;true &#x3060;&#x3063;&#x305F;&#x3089;&#x305D;&#x308C;&#x3092;&#x30B9;&#x30ED;&#x30FC;&#x3057;&#x307E;&#x3059;&#x3002;\n&#x30B3;&#x30FC;&#x30EB;&#x30D0;&#x30C3;&#x30AF;&#x306E;&#x7B2C; 1 &#x5F15;&#x6570;&#x3067;&#x3042;&#x308B; <code>error</code> &#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3059;&#x308B;&#x306E;&#x306B;&#x4FBF;&#x5229;&#x3067;&#x3059;&#x3002;\n</p>\n&quot;,
+          &quot;signatures&quot;: [
+            {
+              &quot;params&quot;: [
+                {
+                  &quot;name&quot;: &quot;value&quot;
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      &quot;type&quot;: &quot;module&quot;,
+      &quot;displayName&quot;: &quot;Assert&quot;
+    }
+  ]
+}
