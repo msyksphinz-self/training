@@ -1,0 +1,56 @@
+# macros to include
+load = ndlPolyMacros
+
+# the actual NDL that defines the network
+run = DNN
+
+ndlPolyMacros = [
+    features = InputValue(1)
+    labels = Input(1)
+]
+
+# If we want to use 2-dementional, use follows
+
+DNN=[
+    W1 = Parameter (1, 1, init="uniform", initValueScale=1.0)
+    W2 = Parameter (1, 1, init="uniform", initValueScale=1.0)
+    W3 = Parameter (1, 1, init="uniform", initValueScale=1.0)
+
+    y0  = Times(W1, ElementTimes(features, features))
+    y1  = Times(W2, features)
+    y   = Plus(Plus(y0, y1), W3)
+
+    y1  = Times(W2, features)
+    y   = Plus(y1, W3)
+
+    ce = SquareError(labels, y)
+    err = ErrorPrediction(labels, y)
+
+    # Special Nodes
+    FeatureNodes = (features)
+    LabelNodes = (labels)
+    CriterionNodes = (ce)
+    EvalNodes = (err)
+    OutputNodes = (y)
+]
+
+# If we want to use 1-dementional, use follows
+
+DNN=[
+    W1 = Parameter (1, 1, init="uniform", initValueScale=1.0)
+    W2 = Parameter (1, 1, init="uniform", initValueScale=1.0)
+    W3 = Parameter (1, 1, init="uniform", initValueScale=1.0)
+
+    y1  = Times(W2, features)
+    y   = Plus(y1, W3)
+
+    ce = SquareError(labels, y)
+    err = ErrorPrediction(labels, y)
+
+    # Special Nodes
+    FeatureNodes = (features)
+    LabelNodes = (labels)
+    CriterionNodes = (ce)
+    EvalNodes = (err)
+    OutputNodes = (y)
+]
