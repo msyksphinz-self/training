@@ -31,7 +31,7 @@ model_exporter.init(sess.graph.as_graph_def(),
 model_exporter.export(export_path, tf.constant(FLAGS.export_version), sess)
 ```
 
-Exporter.__init__はtensorflow.train.serverを引数に取る。このときに必要なのは、Serverがshared=Trueであることのみである。
+`Exporter.__init__`は`tensorflow.train.Saver`を引数に取る。このときに必要なのは、Serverがshared=Trueであることのみである。
 `saver`はグラフの値をモデルのエクスポートのためにシリアライズし、モデルを正常に復元する。
 `Saver`において`variable_list`が指定されていないのは、グラフの全ての変数をエクスポートするためである。
 より複雑なグラフでは、後に推論に利用するための変数のみを選択することもできる。
