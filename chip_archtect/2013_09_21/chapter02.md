@@ -9,7 +9,7 @@
 - 2.7 •ÏŠ·‚Æ•ª—Şƒ†ƒjƒbƒg
 - 2.8 x87ó‘Ôˆ— : FCOMI/FCMOV ‚Æ FCOM/FSTSWƒyƒA
 
-[Opteron's Floating Point Processing Unit's](Opteron_FloatPnt_Core.jpg)
+![Opteron's Floating Point Processing Unit's](Opteron_FloatPnt_Core.jpg)
 
 # 2.1 •‚“®¬”“_‚ÌƒŠƒl[ƒ€ƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹
 
@@ -58,5 +58,5 @@ AthlonXP‚Å‚ÍSSE‚Ì‚½‚ß‚Ì128ŒÂ‚ÌXMMƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚àŠÜ‚Ü‚ê‚Ä‚¢‚é‚ªA88ŒÂ‚ÌƒŠƒl[ƒ
 | 8  | Micro Code Scratch reg.(latest)    |   |    |                                   |   | 7 | Unsupported                        |
 | 24 | Renaming speculative               |   |    |                                   |   |   |                                    |
 
-[Opteron's Floating Point Core](Opteron_FloatPnt_Core_Ill.jpg)
+![Opteron's Floating Point Core](Opteron_FloatPnt_Core_Ill.jpg)
 
