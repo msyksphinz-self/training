@@ -8,4 +8,7 @@ AMDの64ビットコア詳細アーキテクチャの理解
 翻訳 : @msyksphinz
 
 [第1章: 整数コア: 整数スーパハイウェイ](chapter01.md)
+[第2章: Opteronの浮動小数点ユニット](chapter02.md)
+
+
 
