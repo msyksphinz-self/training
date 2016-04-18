@@ -11,7 +11,7 @@
 
 ![Opteron's Floating Point Processing Unit's](Opteron_FloatPnt_Core.jpg)
 
-# 2.1 •‚“®¬”“_‚ÌƒŠƒl[ƒ€ƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹
+## 2.1 •‚“®¬”“_‚ÌƒŠƒl[ƒ€ƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹
 
 Opteron‚Ì•‚“®¬”“_ƒŠƒl[ƒ€ƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚ÍA88‚©‚ç120ƒGƒ“ƒgƒŠ‚É‘‰Á‚µ‚Ä‚¢‚éB
 ‚±‚ÌƒŠƒl[ƒ€ƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚ÍŒ¾—t’Ê‚è‚ÌˆÓ–¡‚ÌƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚Å‚ ‚éB
@@ -60,3 +60,20 @@ AthlonXP‚Å‚ÍSSE‚Ì‚½‚ß‚Ì128ŒÂ‚ÌXMMƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚àŠÜ‚Ü‚ê‚Ä‚¢‚é‚ªA88ŒÂ‚ÌƒŠƒl[ƒ
 
 ![Opteron's Floating Point Core](Opteron_FloatPnt_Core_Ill.jpg)
 
+## 2.2 •‚“®¬”“_ƒŠƒl[ƒ€ƒXƒe[ƒW1 : x87‚ÌƒXƒ^ƒbƒN‚©‚çâ‘ÎFPƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚Ö‚Ìƒ}ƒbƒsƒ“ƒO
+
+ƒŒƒKƒV[‚Èx87–½—ß‚ÌuƒXƒ^ƒbƒN‹@”\v‚ÍA•‚“®¬”“_ƒpƒCƒvƒ‰ƒCƒ“‚ÌƒXƒe[ƒW1‚Å‚Í‹@”\‚µ‚Ä‚¢‚È‚¢B
+x87–½—ß‚Í8‚Â‚Ì80ƒrƒbƒg‚ÌƒA[ƒLƒeƒNƒ`ƒƒƒŒƒWƒXƒ^‚É‘Î‚µ‚ÄA3ƒrƒbƒg‚ÌTop of Stack(TOS)ƒ|ƒCƒ“ƒ^Œo—R‚ÅƒAƒNƒZƒX‚·‚éB
+–½—ßƒZƒbƒg‚ÍATOS‚ðƒ\[ƒXƒIƒyƒ‰ƒ“ƒh‚É‚àA‘‚«ž‚ÝƒIƒyƒ‰ƒ“ƒh‚É‚à—˜—p‚·‚éB
+2”Ô–Ú‚Ìˆø”‚ÍATOSƒŒƒWƒXƒ^‚©‚ç‚Ì‘Š‘Î’l‚Æ‚·‚é‚©Aƒƒ‚ƒŠƒIƒyƒ‰ƒ“ƒh‚Æ‚·‚é‚©‚ð‘I‘ð‚Å‚«‚éB
+3ƒrƒbƒg‚ÌTOSƒ|ƒCƒ“ƒ^‚Í16bit‚Ìx87 FPó‘ÔƒŒƒWƒXƒ^‚É‚æ‚Á‚ÄŠÇ—‚³‚ê‚Ä‚¢‚éB
+
+x87 TOSƒŒƒWƒXƒ^‚Ö‚Ì‘Š‘ÎƒAƒNƒZƒX‚ÍA‰‰ŽZ‚É‚à‚Æ‚Ã‚­x87ƒŒƒWƒXƒ^‚Ìâ‘ÎƒAƒhƒŒƒX‚É•ÏŠ·‚³‚ê‚éB
+TOSƒŒƒWƒXƒ^‚Ì“Š‹@“Iƒo[ƒWƒ‡ƒ“‚ÍA‚±‚Ì•ÏŠ·‚Ì‚½‚ß‚É—˜—p‚³‚ê‚Ä‚¢‚éB
+3ƒrƒbƒg‚Ìƒ|ƒCƒ“ƒ^‚ÍA1ƒTƒCƒNƒ‹‚ ‚½‚èÅ‘å‚Å3–½—ß•ªƒAƒbƒvƒf[ƒg‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+–½—ß‚Í“Š‹@“I‚ÉŽÀs‚³‚ê‚é‚ªA‚Ü‚¾‚±‚ÌƒXƒe[ƒW‚Å‚ÍƒCƒ“ƒI[ƒ_‚Å‚ç‚¤B
+‚±‚ê‚ç‚Ì–½—ß‚Í‚Ü‚¾•‚“®¬”“_‚ÌƒAƒEƒgƒIƒuƒI[ƒ_[ƒXƒPƒWƒ…[ƒ‰‚ÅƒXƒPƒWƒ…[ƒŠƒ“ƒO‚Í‚³‚ê‚Ä‚¢‚È‚¢B
+
+‚à‚µ—áŠO‚â•ªŠò—\‘ªƒ~ƒX‚ª”­¶‚·‚é‚ÆA“Š‹@“I‚ÈTOSƒ|ƒCƒ“ƒ^‚ÍA”Û“Š‹@“I‚ÈAƒŠƒ^ƒCƒA‚µ‚½TOSƒ|ƒCƒ“ƒ^‚©‚ç‘‚«–ß‚³‚ê‚éB
+‚±‚ê‚ÍƒŠƒI[ƒ_ƒoƒbƒtƒ@‚©‚ç‘‚«–ß‚³‚ê‚é‚±‚Æ‚É‚È‚éB
+ƒŠƒ^ƒCƒA‚µ‚½’l‚ÍTOS‚Ì‚ÉŠÖ˜A‚·‚é’l‚ªA‘S‚Ä—áŠO‚©A•ªŠò—\‘ªƒ~ƒX‚Ì”­¶‘O‚Ì‚à‚Ì‚Å‚ ‚é‚Æ‚¢‚¤‘O’ñ‚Ì‚à‚Æ\¬‚³‚ê‚Ä‚¢‚éB
