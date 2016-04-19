@@ -103,4 +103,31 @@ AthlonXP‚Å‚ÍSSE‚Ì‚½‚ß‚Ì128ŒÂ‚ÌXMMƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚àŠÜ‚Ü‚ê‚Ä‚¢‚é‚ªA88ŒÂ‚ÌƒŠƒl[ƒ
 ‚±‚ê‚ç‚Ì‚¤‚¿2‚Â‚ªAƒŠƒ^ƒCƒAˆ—‚ÌÛ‚ÉƒA[ƒLƒeƒNƒ`ƒƒƒ^ƒOƒAƒŒƒC‚ÌXV‚É—˜—p‚³‚ê‚éB
 1‚Â‚Íƒf[ƒ^‚Å‚ ‚èA‚à‚¤ˆê‚Â‚ÍƒA[ƒLƒeƒNƒ`ƒƒƒ^ƒOƒAƒŒƒC‚ÌƒGƒ“ƒgƒŠ”Ô†‚Å‚ ‚éB
 
+## 2.4 •‚“®¬”“_–½—ßƒXƒPƒWƒ…[ƒ‰
+
+•‚“®¬”“_–½—ß‚ÌƒXƒPƒWƒ…[ƒ‰‚ÍA(FPMUL,FPADD, FPMISC)‚ÉŠÖ˜A‚·‚é–½—ß‚ªŽÀsƒpƒCƒvƒ‰ƒCƒ“‚ÉƒfƒBƒXƒpƒbƒ`‚³‚ê‚é‚Æ‚«‚ÉAˆÈ‰º‚Ì—vˆö‚ðŽg—p‚·‚éB
+1) –½—ß‚Ìƒ\[ƒXƒŒƒWƒXƒ^‚Æƒƒ‚ƒŠƒIƒyƒ‰ƒ“ƒh
+2) ‚Ç‚Ì–½—ßƒpƒCƒvƒ‰ƒCƒ“‚É–½—ß‚ªŠ„‚è“–‚Ä‚ç‚ê‚é‚©
+3) –½—ß‚ªŠ®—¹‚·‚éƒNƒƒbƒNƒTƒCƒNƒ‹‚Å“üŽè‰Â”\‚É‚È‚éƒŠƒUƒ‹ƒgƒoƒX
+
+3‚Â‚ÌƒpƒCƒvƒ‰ƒCƒ“‚ÅAƒXƒPƒWƒ…[ƒ‰‚ÌŽdŽ–‚ÍA€”õ‚Ì®‚Á‚½–½—ß‚Ì’†‚ÅÅ‚àŒÃ‚¢‚à‚Ì‚ðƒfƒBƒXƒpƒbƒ`‚·‚é‚±‚Æ‚Å‚ ‚éB
+—á‚¦‚ÎAŒ»Ý‚ÌƒTƒCƒNƒ‹‚©‚ç2ƒTƒCƒNƒ‹Œã‚ÉƒIƒyƒ‰ƒ“ƒh‚ª“üŽè‰Â”\‚Å‚ ‚é‚Æ‚·‚éB
+‚±‚Ìê‡A–½—ß‚ªŽÀs‚³‚ê‚é‚Ì‚Í2ƒTƒCƒNƒ‹Œã‚Å‚ ‚éB1ƒTƒCƒNƒ‹Œã‚ÉƒXƒPƒWƒ…[ƒ‹‚ðs‚¢A‚à‚¤1ƒTƒCƒNƒ‹‚Å120ƒGƒ“ƒgƒŠ‚ÌƒŠƒl[ƒ€ƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚Ì“Ç‚Ýž‚Ý‚ðs‚¤B
+–½—ß‚Íƒ\[ƒXƒŒƒWƒXƒ^‚ª“üŽè‰Â”\‚©ƒ`ƒFƒbƒN‚ðs‚¢AƒXƒPƒWƒ…[ƒ‰‚É”z’u‚·‚éB
+ƒXƒPƒWƒ…[ƒ‰‚É“ž’B‚µ‚½Œã‚àƒ^ƒOƒoƒX‚ðŠÄŽ‹‚µ‘±‚¯A‚·‚×‚Ä‚Ìƒ\[ƒXƒf[ƒ^‚ª“üŽè‚Å‚«‚é‚Ü‚Å‘Ò‚ÂB
+
+ƒ^ƒOƒoƒX‚ÍAƒŠƒUƒ‹ƒgƒoƒX‚Éƒf[ƒ^‚ªÚ‚é2ƒTƒCƒNƒ‹‘O‚Éo—Í‚³‚ê‚Ä‹ò‚¤B
+‚µ‚½‚ª‚Á‚ÄƒXƒPƒWƒ…[ƒ‰‚ÍŒ‹‰Ê‚Ìƒf[ƒ^‚ª“üŽè‚Å‚«‚é2ƒTƒCƒNƒ‹‘O‚Éƒ^ƒO‚ð“üŽè‚·‚éB
+”­s‚³‚ê‚½–½—ß‚Í2ƒTƒCƒNƒ‹‚Å‘I‘ð‚µ‚½ƒŠƒUƒ‹ƒgƒoƒX‚©‚çƒŠƒUƒ‹ƒgƒf[ƒ^‚ð“üŽè‚·‚éB
+ŽÀsƒpƒCƒvƒAƒCƒ“‚Í4ƒXƒe[ƒW‚Ì[‚³‚Å‚ ‚éB
+2‚©3ƒTƒCƒNƒ‹‚ÅŒ‹‰Ê‚ªo—Í‚³‚ê‚é–½—ßƒŒƒCƒeƒ“ƒV‚Ì’Z‚¢AƒpƒCƒvƒ‰ƒCƒ“‚©‚ç‘‚­o‚Ä‚­‚é–½—ß‚à‘¶Ý‚·‚é‚ªA
+Å’Z‚Å‚à2ƒTƒCƒNƒ‹‚ð•K—v‚Æ‚·‚éB
+
+ƒƒ‚ƒŠ‚©‚ç‚Ìƒ[ƒhƒf[ƒ^‚ª•K—v‚È–½—ß‚É‚Â‚¢‚Ä‚ÍAƒf[ƒ^‚ªL1‚«‚á‚µ‚ã‚à‚µ‚­‚Íƒƒ‚ƒŠŠK‘w‚Ì‚¢‚¸‚ê‚©‚©‚ç“üŽè‚³‚ê‚é‚Ü‚Å‘Ò‚Á‚Ä‚¢‚éB
+ƒXƒPƒWƒ…[ƒ‰‚Íƒf[ƒ^‚ª“ž’…‚·‚é‚Ü‚Å2ƒTƒCƒNƒ‹•K—v‚Å‚ ‚é‚±‚Æ‚ð’m‚Á‚Ä‚¨‚èA
+‚±‚ê‚Í®”ƒ[ƒh‚æ‚è‚à1ƒTƒCƒNƒ‹‘½‚¢BŽc‚è‚Ì1ƒTƒCƒNƒ‹‚Íuƒf[ƒ^‚Ì•ÏŠ·‚Æ•ª—Þƒ†ƒjƒbƒgv‚ÅÁ”ï‚³‚êA•‚“®¬”“_‚Ì’l‚ð•ÏŠ·‚·‚é‚Ì‚É—˜—p‚³‚ê‚éB
+
+ƒ[ƒhƒ~ƒX‚ÍAƒ[ƒhƒf[ƒ^‚ª•K—v‚È–½—ß‚ªƒXƒPƒWƒ…[ƒ‰‚©‚çÁ‚¦‚Ä‚µ‚Ü‚¤‚Ì‚ð–h‚¢‚Å‚¢‚éB
+ƒXƒPƒWƒ…[ƒ‰’†‚Ìƒ[ƒh–½—ß‚ÍAƒ[ƒhƒf[ƒ^‚ªƒ[ƒhƒqƒbƒg‚Æ‚µ‚Ä‹A‚Á‚Ä‚±‚È‚¢ŒÀ‚èÁ‚¦‚é‚±‚Æ‚Í‚È‚¢B
+ƒ[ƒhˆ—‚ÉˆË‘¶‚·‚é–½—ß‚Åƒ~ƒX‚à‚µ‚­‚ÍƒCƒ“ƒoƒŠƒf[ƒg‚ª”­¶‚µ‚½‚à‚Ì‚ÍƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚É‘‚«ž‚Ü‚ê‚é‚±‚Æ‚Í‚È‚¢B
 
