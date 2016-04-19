@@ -131,3 +131,21 @@ AthlonXP‚Å‚ÍSSE‚Ì‚½‚ß‚Ì128ŒÂ‚ÌXMMƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚àŠÜ‚Ü‚ê‚Ä‚¢‚é‚ªA88ŒÂ‚ÌƒŠƒl[ƒ
 ƒXƒPƒWƒ…[ƒ‰’†‚Ìƒ[ƒh–½—ß‚ÍAƒ[ƒhƒf[ƒ^‚ªƒ[ƒhƒqƒbƒg‚Æ‚µ‚Ä‹A‚Á‚Ä‚±‚È‚¢ŒÀ‚èÁ‚¦‚é‚±‚Æ‚Í‚È‚¢B
 ƒ[ƒhˆ—‚ÉˆË‘¶‚·‚é–½—ß‚Åƒ~ƒX‚à‚µ‚­‚ÍƒCƒ“ƒoƒŠƒf[ƒg‚ª”­¶‚µ‚½‚à‚Ì‚ÍƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚É‘‚«ž‚Ü‚ê‚é‚±‚Æ‚Í‚È‚¢B
 
+## 2.5 5ƒ|[ƒg“Ç‚Ýž‚Ý‚Æ5ƒ|[ƒg‘‚«ž‚Ý‚Ì•‚“®¬”“_ƒŠƒl[ƒ€ƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹
+
+ƒŠƒl[ƒ€ƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚ÍA–½—ß‚ªƒXƒPƒWƒ…[ƒ‰‚©‚çƒAƒEƒgƒIƒuƒI[ƒ_‚ÅƒfƒBƒXƒpƒbƒ`‚³‚ê‚½Œã‚ÉA’¼ÚƒAƒNƒZƒX‚³‚ê‚éB
+Å‘å‚Å3–½—ß‚Ü‚Å‚ª“¯Žž‚ÉƒAƒNƒZƒX‰Â”\‚Å‚ ‚éB
+3‚Â‚Ì‹@”\ƒ†ƒjƒbƒg‚©‚çA1–½—ß‚¸‚Â‚Å‚ ‚éB
+FPMUL‚ÆFPADD–½—ß‚Í3‚Â‚Ìƒ\[ƒXƒIƒyƒ‰ƒ“ƒh‚ð‚Æ‚é‚ªAFPMISC–½—ß‚Í1ƒIƒyƒ‰ƒ“ƒh‚Å‚ ‚éB
+
+•‚“®¬”“_ƒ†ƒjƒbƒg‚©‚çƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚É‘‚«–ß‚µ‚ð‚·‚é‚Æ‚«‚ÉA3‚Â‚Ì‘‚«ž‚Ýƒ|[ƒg‚ªŽg—p‰Â”\‚Å‚ ‚éB
+‘‚«ž‚ÝƒAƒhƒŒƒXŽ–‘O‚É—¬‚ê‚Ä‚¨‚èAƒŠƒUƒ‹ƒgƒf[ƒ^‚ª‚»‚ÌŒã‚É“ž’…‚·‚éB
+‘‚«ž‚ÝƒAƒhƒŒƒX‚ÍA‘‚«ž‚Ý‚ªs‚í‚ê‚é‘O‚ÉAƒfƒR[ƒhˆ—‚É—˜—p‚³‚ê‚éB
+3ƒ†ƒjƒbƒg‚ÍAƒƒ‚ƒŠƒf[ƒ^‚ðƒ\[ƒXƒIƒyƒ‰ƒ“ƒh‚Æ‚µ‚Ä—˜—p‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+ƒŠƒI[ƒ_ƒoƒbƒtƒ@‚Íƒƒ‚ƒŠ‚©‚çƒ[ƒh‚³‚ê‚éƒf[ƒ^‚ðƒ^ƒO•t‚¯‚µAƒ[ƒh‚Ü‚Á‚Ï[‚É‚æ‚èƒŠƒl[ƒ€ƒŒƒWƒXƒ^‚ÌƒAƒhƒŒƒX‚É•ÏŠ·‚·‚éB
+1ƒTƒCƒNƒ‹‚Å2‚Â‚Ì64bitƒ[ƒh‚ðˆ—‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+
+V‚µ‚¢120ƒGƒ“ƒgƒŠ‚ÌƒŒƒWƒXƒ^‚ÍAƒoƒCƒpƒX˜_—‚ð—¼ƒTƒCƒh‚ÉŽ‚Á‚Ä‚¢‚éB
+ƒoƒCƒpƒX˜Hrƒ“‚è‚ÍAƒ[ƒhƒf[ƒ^‚ðŒã‘±‚ÌˆË‘¶‚·‚é–½—ß‚É“n‚·‚½‚ß‚É—˜—p‚³‚ê‚éB
+‚µ‚½‚ª‚Á‚ÄAƒ[ƒhƒf[ƒ^‚ªƒŒƒWƒXƒ^ƒtƒ@ƒCƒ‹‚É‘‚«ž‚Ü‚êA‚»‚Ì’l‚ð“Ç‚Þ‚½‚ß‚Ì—]•ª‚ÈƒTƒCƒNƒ‹‚ðíŒ¸‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+
