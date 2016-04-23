@@ -227,3 +227,58 @@ SSE‚ÆSSE2‚ÌÅ“K‰»‚É‚Â‚¢‚Ä‚Ìƒ}ƒjƒ…ƒAƒ‹‚Ì•t˜^E‚É‚ÍASSEƒŒƒWƒXƒ^‚Ìƒf[ƒ^‚É‚Â‚¢‚Ä•ª—
 ƒŠƒrƒWƒ‡ƒ“C ‚Í‚±‚Ì‚æ‚¤‚ÈÅ“K‰»‚Í•K—v‚È‚­‚È‚Á‚Ä‚¢‚éB
 ƒŠƒrƒWƒ‡ƒ“C‚Å‚ÍA—áŠO‚ª”­¶‚µ‚½Œã‚Éƒ}ƒCƒNƒƒR[ƒh‚ðŽg—p‚·‚é‚±‚Æ‚È‚­A’¼ÚƒtƒH[ƒ}ƒbƒg‚Ì•ÏŠ·‚ðs‚¤‚±‚Æ‚ª‚Å‚«‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚éB
 
+## 2.8 x87ó‘Ôˆ— : FCOMI/FCMOV ‚Æ FCOM/FSTSWƒyƒA
+
+AMD‚Í‘½‚­‚Ìx87‚ÌƒŒƒKƒV[‚ÈƒI[ƒoƒwƒbƒh‚Ì–â‘è‚ð‰ðŒˆ‚·‚×‚­“w—Í‚µA‚¢‚­‚Â‚©‚Ìd—v‚©‚Â‰ðŒˆ‚Ì“ï‚µ‚¢–â‘è‚É‚Â‚¢‚ÄA‘¬“x‰ü‘P‚ð’B¬‚µ‚½B
+‚æ‚è‹ï‘Ì“I‚É‚ÍAx87‚Ìó‘ÔƒŒƒWƒXƒ^‚É‚Â‚¢‚Ä‚Å‚ ‚éB
+‰Šú‚ÌAthlon‚Å‚ÍA16bit‚Ì•‚“®¬”“_ó‘ÔƒŒƒWƒXƒ^‚ðŠÇ—‚·‚é‚½‚ß‚É‘½‚­‚Ì–ÊÏ‚ðÁ”ï‚µ‚Ä‚¢‚½B
+‚±‚ê‚ç‚Í‰ß‹Ž‚Ì‚à‚Ì‚É‚È‚èAAthlon XP‚Å‚Í‚»‚Ì‚¢‚­‚Â‚©‚ªŽc‚Á‚Ä‚¢‚éB
+
+x87‚É‚¨‚¯‚é•‚“®¬”“_ðŒƒeƒXƒg‚ÌƒvƒƒOƒ‰ƒ€ƒR[ƒh‚ÍAƒAƒEƒgƒIƒuƒI[ƒ_‚ÌŒø—Í‚ð–³Œø‰»‚µ‚Ä‚µ‚Ü‚¤B
+‚È‚º‚È‚ç‚ÎA®”‚Ì•ªŠò–½—ß—pƒpƒCƒvƒ‰ƒCƒ“‚Å—˜—p‚·‚é‚½‚ß‚É•‚“®¬”“_ó‘ÔƒŒƒWƒXƒ^‚ÌƒR[ƒh‚ðƒVƒŠƒAƒ‰ƒCƒY‚µ‚Ä“n‚·‚±‚Æ‚É‚È‚é‚©‚ç‚Å‚ ‚éB
+Opteron‚Í‚±‚ÌƒVƒŠƒAƒ‹‰»‚Ìˆ—‚ð‰ñ”ð‚·‚é‚½‚ß‚Ì“ÁŽê‚Èƒn[ƒhƒEƒFƒA‚ð—pˆÓ‚µ‚Ä‚¨‚èA‚±‚ê‚É‚æ‚èƒAƒEƒgƒIƒuƒI[ƒ_ˆ—‚ðŒp‘±‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+
+![x87 Floating Point Status Register](float_status_register.JPG)
+
+x87‚Ì•‚“®¬”“_ó‘ÔƒŒƒWƒXƒ^‚Ìƒrƒbƒg‚ÍA‚»‚ê‚¼‚ê•Ê‚Ì•û–@‚É‚æ‚Á‚ÄŠÇ—‚³‚ê‚éB
+‚±‚ÌƒŒƒWƒXƒ^‚Í‚¢‚­‚Â‚©‚ÌˆÓ–¡‚ÌˆÙ‚È‚é“à—e‚ðŠÜ‚ñ‚Å‚¢‚éî•ñ‚ÌW‚Ü‚è‚Å‚ ‚èA—á‚¦‚Î3ƒrƒbƒg‚ÌTOS‚Íx87‚ÌŒ»Ý‚ÌƒXƒ^ƒbƒN‚Ìƒgƒbƒv‚ÌêŠ‚ðŽ¦‚µ‚½‚à‚Ì‚Å‚ ‚éB
+Å‰‚ÌƒŠƒl[ƒ€ƒXƒe[ƒW‚É‚æ‚Á‚ÄTOSƒ|ƒCƒ“ƒ^‚Ì“Š‹@“I‚È’l‚ª•ÛŽ‚³‚ê‚éB
+‚±‚ê‚ÍTOS‚Ì‘Š‘Î“I‚ÈƒŒƒWƒXƒ^ƒAƒhƒŒƒX‚ðx87‚Ìâ‘Î“I‚ÈƒAƒhƒŒƒX‚É•ÏŠ·‚·‚é‚½‚ß‚É—˜—p‚³‚ê‚éB
+‚·‚×‚Ä‚ÌI—¹‚µ‚½–½—ß‚ÍƒŠƒI[ƒ_ƒoƒbƒtƒ@‚É‚»‚ÌƒRƒs[‚ª•ÛŽ‚³‚ê‚Ä‚¢‚éB
+‚±‚ê‚ç‚ÌƒRƒs[‚ÍA–½—ß‚ªƒŠƒI[ƒ_ƒoƒbƒtƒ@‚©‚çƒŠƒ^ƒCƒA‚µ‚½‚Æ‚«‚ÉA”ñ“Š‹@“I‚ÈTOS‚Ìƒ|ƒCƒ“ƒ^‚Æ‚È‚éB
+
+ƒŠƒ^ƒCƒAˆ—‚Ì˜_—‚Í•ªŠòƒ~ƒX‚â—áŠO‚Ì”­¶‚ðŒŸ’m‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+‚»‚Ìê‡‚É‚ÍƒŠƒl[ƒ€ƒXƒe[ƒW‚É‘¶Ý‚µ‚Ä‚¢‚éTOS‚Ì“Š‹@“I‚Èƒf[ƒ^‚ðœ‹Ž‚µAÅV‚ÌƒŠƒ^ƒCƒA‚µ‚½TOS‚Ì’lA”ñ“Š‹@“I‚È’l‚ðã‘‚«‚·‚éB
+“Š‹@“I‚ÈTOS‚Ì3ƒrƒbƒg‚Ì’l‚Í–½—ß‚ª‚ªƒAƒEƒgƒIƒuƒI[ƒ_‚ÅƒXƒPƒWƒ…[ƒŠƒ“ƒO‚³‚ê‚Ä‚¢‚é‚Æ‚«‚Ì‚Ý—˜—p‚³‚ê‚éB
+‚±‚Ì’l‚ªŒã‚Å—˜—p‚³‚ê‚é——R‚ÍAÄ‚ÑƒCƒ“ƒI[ƒ_‚Æ‚È‚éƒŠƒ^ƒCƒAˆ—’†‚Ì‚½‚ß‚Å‚ ‚éB
+‚±‚ê‚Í‚Â‚Ü‚èATOS‚Ì‚½‚ß‚Ì“ÁŽê‚ÈƒAƒEƒgƒIƒuƒI[ƒ_ƒn[ƒhƒEƒFƒA‚ª•K—v‚É‚È‚èA‚±‚ê‚Íœ‹Ž‚³‚ê‚éB
+
+•‚“®¬”“_–½—ß‚ÌŽÀs’†‚Í—áŠO‚ª”­¶‚·‚é‰Â”\«‚ª‚ ‚éB
+x87‚Ì‚Ù‚Æ‚ñ‚Ç‚Ìó‘ÔƒŒƒWƒXƒ^‚Í—áŠO‚ðŒŸo‚·‚é‚½‚ß‚É—˜—p‚³‚ê‚éƒŒƒWƒXƒ^‚Å‚ ‚éB
+ƒŠƒI[ƒ_Žž‚É‚ÍA—áŠO‚ÍƒCƒ“ƒI[ƒ_‚Åˆ—‚³‚ê‚éB
+—á‚±‚ê‚Í‚Â‚Ü‚èAŽq‚ÌƒŒƒWƒXƒ^‚Ì‚½‚ß‚É“ÁŽê‚ÈƒAƒEƒgƒIƒuƒI[ƒ_ƒn[ƒhƒEƒFƒA‚ª•K—v‚É‚È‚èA‚±‚ê‚Íœ‹Ž‚³‚ê‚éB
+
+CCƒrƒbƒg(Condition Code)‚Ì‚½‚ß‚ÌƒgƒŠƒbƒL[‚È•”•ª‚ÍA‚±‚ê‚ç‚Ìƒrƒbƒg‚É‚Í‚Ù‚Æ‚ñ‚Ç‚ÌŽžŠÔ‚É—áŠOƒf[ƒ^‚ª“ü‚Á‚Ä‚¢‚é‚ªA
+‚Æ‚«‚Ç‚«•‚“®¬”“_‚Ì”äŠrŒ‹‰Ê‚È‚Ç‚Ìî•ñ‚ªŠi”[‚³‚ê‚Ä‚¢‚éB
+‚±‚ê‚ç‚Ìî•ñ‚ÍŠ®‘S‚ÈƒAƒEƒgƒIƒuƒI[ƒ_‚ÌŒ`Ž®‚Åˆ—‚³‚ê‚È‚¯‚ê‚Î‚È‚ç‚È‚¢B
+Opteron‚Í“ÁŽê‚ÈV‚µ‚¢ƒn[ƒhƒEƒFƒA‚ð—˜—p‚µ‚Ä‚¢‚éB
+‚±‚Ìƒn[ƒhƒEƒFƒA‚ÍA“ÁŽê‚Èˆ—‚ª•K—v‚È–½—ß‚Ì‘g‚ðŒŸo‚·‚éB
+
+![Condition Code Bits after a x87 Floating Point compare](float_condition_code.JPG)
+
+Å‰‚Ì–½—ß‚Ì‘g‚Ý‡‚í‚¹‚ÍAFCOMI‚ÆFCMOV‚Å‚ ‚éB
+Å‰‚Ì–½—ß‚ÍA’l‚ð”äŠr‚µŒ‹‰Ê‚É]‚Á‚ÄCCƒrƒbƒg‚ðÝ’è‚·‚éB
+‚Â‚¬‚É”äŠr‚µ‚½Œ‹‰Ê‚ð®”ƒŒƒWƒXƒ^‚ÉˆÚ“®‚·‚éB
+FCMOV–½—ß‚Í®”ó‘ÔƒŒƒWƒXƒ^‚Ì’l‚É]‚Á‚Ä•‚“®¬”“_ƒŒƒWƒXƒ^‚Ì’l‚ðˆÚ“®‚·‚é–½—ß‚Å‚ ‚éB
+Opteron‚Ìƒn[ƒhƒEƒFƒA‚ÍFCMOV‚ªŽÀÛ‚Ì®”ó‘Ôƒtƒ‰ƒO‚ÌŒ‹‰Ê‚ð‘Ò‚½‚È‚­‚Ä‚à—Ç‚¢‚æ‚¤‚ÉAƒAƒEƒgƒIƒuƒI[ƒ_‚ÌƒoƒCƒpƒX‰ñ˜H‚ð—˜—p‚µ‚ÄŽÀs‚µ‚Ä‚¢‚éB
+
+2”Ô–Ú‚Ì‘g‚Ý‡‚í‚¹‚ÍFCOM‚ÆFSTSW‚ÌƒyƒA‚Å‚ ‚éB
+Å‰‚Ì–½—ß‚ÍFCOMI–½—ß‚Æ”äŠr‚µ‚Ä—áŠO‚Ìˆ—‚ÆCCƒrƒbƒg‚ð®”ƒŒƒWƒXƒ^‚ÉƒRƒs[‚µ‚È‚¢“_‚ªˆÙ‚È‚éB
+FSTSW(Floating Point Store Status Word)–½—ß‚Í16bit‚Ì•‚“®¬”“_ó‘Ôƒrƒbƒg‚ðAEXƒŒƒWƒXƒ^‚©Aƒƒ‚ƒŠ‚ÉŠi”[‚µŒã‘±‚ÌðŒ•ªŠòˆ—‚ÉŠˆ—p‚·‚é‚±‚Æ‚Ì‚Å‚«‚é–½—ß‚Å‚ ‚éB
+‚·‚×‚Ä‚Ì•‚“®¬”“_‚ÍA16ŒÂ‚Ìó‘Ôƒtƒ‰ƒO‚Ì’l‚ªŒˆ’è‚µ‚Ä‚©‚çŠ®—¹‚·‚é•K—v‚ª‚ ‚é‚½‚ßA–½—ß‚ÍƒVƒŠƒAƒ‹‰»‚³‚ê‚éB
+Opteron‚Í“ÁŽê‚Èƒn[ƒhƒEƒFƒA‚ðŽ‚Á‚Ä‚¨‚èAƒAƒEƒgƒIƒuƒI[ƒ_‚ÌÅ‘åˆ—”\—Í‚ðAƒVƒŠƒAƒ‹‰»‚³‚ê‚éŒ‡“_‚ðœ‹Ž‚·‚é‚±‚Æ‚Å’B¬‚µ‚Ä‚¢‚éB
+‚Ü‚½A“¯—l‚Ì‹@\‚É‚æ‚è(‚½‚Ü‚É”­¶‚·‚é)—\‘ªƒ~ƒX‚ð‰ñ•œ‚·‚é‹@”\‚ðŽ‚Á‚Ä‚¢‚éB
+
+AMD‚Ìx87‚ÌÅ“K‰»‚ÌŒ‹‰Ê‚ÍAx87–½—ß‚ðˆ—‚·‚é‚Æ‚«‚Í•¶Žš’Ê‚èPentium 4‚ÌŽü‚è‚ð‚®‚é‚®‚é‰ñ‚é‚æ‚¤‚È‚à‚Ì‚Å‚ ‚Á‚½B
+“ÁŽê‚Å‹‘å‚È‰ñ˜H‚É‚æ‚Á‚ÄAó‘Ôˆ—ƒŒƒWƒXƒ^‚Ì–â‘è‚Í‰ðÁ‚³‚ê‚³‚êAã‹L‚Ì–â‘è‚ð‰ðÁ‚·‚é‚½‚ß‚Ì¬‚³‚È‚¢‚­‚Â‚©‚ÌV‚µ‚¢‰ñ˜H‚ªÝŒv‚³‚ê‚½B
+SSE2•‚“®¬”“_‚Ö‚ÌˆÚs‚ª‘±‚¢‚Ä‚¢‚­‚¾‚ë‚¤‚ªA‘¬“xŒüã‚Ì‚½‚ß‚É‚Íã‹L‚ÌƒeƒNƒjƒbƒN‚Åœ‹Ž‚µ‚½‰ñ˜H–ÊÏ‚ÌƒI[ƒoƒwƒbƒh‚ª‚«‚Á‚Æ–ð‚É—§‚Â‚±‚Æ‚Å‚ ‚ë‚¤B
