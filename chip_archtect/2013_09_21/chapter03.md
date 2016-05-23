@@ -436,3 +436,12 @@ ReadスヌープとInvalidateスヌープである。
 16個のヒットする可能性のあるキャッシュラインのうち、ヒットしたことが分かれば、残りの仮想アドレスビットはキャッシュとそのウェイ(0 or 1)にアクセスすることで仮想アドレスを入手することができる。
 その場所(16個のうちの1つ)は、残りの3つのアドレスビット+ウェイビットを提供する。
 これによりキャッシュがRead Snoopヒットの際にキャッシュアクセスできるようになる。
+
+## 3.20 L1データキャッシュのスヌーピングとLS2のアウトスタンディングストア
+
+他のプロセッサが、L1データキャッシュから読み込みを行い、それをLS2でリアイアしたストアのためにチェックし、キャッシュラインに書き込むアクセスは、スヌープ読み込みする必要はない。
+
+
+It is not necessary for snoop reads from other processors that want to read a cache-line from the L1 data cache to check for retired stores in LS2 that will write to the cache-line they are about to read.  This even though the data these stores will write is already considered to be part of the memory by the processor who issued the writes.  It's is OK for other processors to see these writes occur at a later stage. The only effect externally is that it looks as if the processor is slightly slower.
+
+An external processor that writes to a shared cache line must send snoop invalidates around.  The snoop interface will invalidate the local cache-line if it receives such a snoop invalidate that hits the cache. The snoop interface must also set  the hit/miss flag to miss for all stores in the Load Store unit that want to write to the cache-line that was hit.   The later is not a specific snoop operation however.  It is needed in all cases in which a cache-line is evicted or invalidated. These stores that originally did hit but who are set back to miss will need to probe the cache again.
