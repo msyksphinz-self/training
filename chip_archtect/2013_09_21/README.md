@@ -12,3 +12,5 @@ AMDの64ビットコア詳細アーキテクチャの理解
 [第2章: Opteronの浮動小数点ユニット](chapter02.md)
 
 [第3章: Opteronのデータキャッシュとロードストアユニット](chapter03.md)
+
+[第4章: Opteronの命令キャッシュとデコーディング](chapter04.md)
