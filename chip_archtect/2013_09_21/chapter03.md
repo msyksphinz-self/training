@@ -439,9 +439,14 @@ ReadスヌープとInvalidateスヌープである。
 
 ## 3.20 L1データキャッシュのスヌーピングとLS2のアウトスタンディングストア
 
-他のプロセッサが、L1データキャッシュから読み込みを行い、それをLS2でリアイアしたストアのためにチェックし、キャッシュラインに書き込むアクセスは、スヌープ読み込みする必要はない。
+L1データキャッシュから読み込みを行い、それをLS2でリアイアしたストアのためにチェックし、キャッシュラインに書き込むアクセスは、他のプロセッサのスヌープ読み込みをする必要はない。
+このようなストアを発生させる書き込みが、既に書き込みを発生させるプロセッサのメモリの一部であると考えたとしてもである。
+他のプロセッサにとってみれば、このような書き込みが後続のステージで発生しても問題ない。
+外部に対する唯一の影響は、当該プロセッサがわずかに遅く動作しているように見えるだけである。
 
-
-It is not necessary for snoop reads from other processors that want to read a cache-line from the L1 data cache to check for retired stores in LS2 that will write to the cache-line they are about to read.  This even though the data these stores will write is already considered to be part of the memory by the processor who issued the writes.  It's is OK for other processors to see these writes occur at a later stage. The only effect externally is that it looks as if the processor is slightly slower.
-
-An external processor that writes to a shared cache line must send snoop invalidates around.  The snoop interface will invalidate the local cache-line if it receives such a snoop invalidate that hits the cache. The snoop interface must also set  the hit/miss flag to miss for all stores in the Load Store unit that want to write to the cache-line that was hit.   The later is not a specific snoop operation however.  It is needed in all cases in which a cache-line is evicted or invalidated. These stores that originally did hit but who are set back to miss will need to probe the cache again.
+外部のプロセッサが共有キャッシュラインに対して書き込みを行う場合には、周囲に対してinvalidateを発行する必要がある。
+このようなスヌープInvalidateシグナルを受信するとスヌープインタフェースはキャッシュラインをチェックし、ヒットしたキャッシュラインをInvalidateする。
+スヌープインタフェースは、ヒットしたキャッシュラインへ書き込みを行いたいLoad Store Unitのために、全てのストア処理のためにHit/Missフラグを設定する。
+しかし後者はスヌープ操作のためではない。
+キャッシュラインが除去されるか、Invalidateされたときには常に必要なものである。
+これらのストア処理は、最初にヒットしたのだが、ミスに設定し直されており、再度キャッシュセットを行わなければならない処理である。
