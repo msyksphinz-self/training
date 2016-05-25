@@ -39,3 +39,23 @@ Opteron‚Ì•ªŠòƒZƒŒƒNƒ^‚Í‘¼‚ÌAthlon(32)‚Æ‚ÍˆÙ‚È‚èA‘S‚Ä‚Ì–½—ßƒLƒƒƒbƒVƒ…’†‚Ì1024ƒLƒ
 ECC‚Íƒf[ƒ^ƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚Å‚µ‚©—˜—p‚³‚ê‚¸A–½—ßƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚Å‚Í—˜—p‚³‚ê‚È‚¢B
 ŒãŽÒ‚Å‚ÍECC‚Í•K—v‚È‚¢‚Ì‚ÅAƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“’†‚Ì‚¢‚­‚Â‚©‚ÌƒpƒŠƒeƒBƒrƒbƒg‚ðŠi”[‚·‚é‚Ì‚É‚Í\•ª‚Å‚ ‚éB
 –½—ßƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚É‚¨‚¢‚ÄÕ“Ë‚µ‚½‚à‚Ì‚ÍAí‚ÉŠO•”DRAMƒƒ‚ƒŠ‚©‚çŽæ“¾‚³‚ê‚éB
+
+## 4.2 ˆê”Ê“I‚È–½—ßƒtƒH[ƒ}ƒbƒg
+
+64ƒrƒbƒg–½—ß‚ÌŠÈ’P‚ÈŠT—v‚Å‚ ‚éB
+
+˜A‘±‚µ‚½ƒvƒŠƒtƒBƒbƒNƒX‚ðAŽÀÛ‚Ì–½—ß‚Ì‘O‚É•t‰Á‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+Å‰‚ÍAƒŒƒKƒV[‚ÈƒvƒŠƒtƒBƒbƒNƒX‚ª•t‰Á‚³‚ê‚éB
+Å‚àd—v‚ÈƒŒƒKƒV[ƒvƒŠƒtƒBƒbƒNƒX‚ÍƒIƒyƒ‰ƒ“ƒhƒTƒCƒY‚ðƒI[ƒoƒ‰ƒCƒh‚·‚éƒvƒŠƒtƒBƒbƒNƒX(hex 66)‚ÆAƒAƒhƒŒƒXƒTƒCƒY‚ÌƒI[ƒoƒ‰ƒCƒhƒvƒŠƒtƒBƒbƒNƒX(hex 67)‚Å‚ ‚éB
+‚±‚ê‚ç‚ÌƒvƒŠƒtƒBƒbƒNƒX‚ÍAƒfƒBƒXƒvƒŒ[ƒXƒƒ“ƒg‚Æ‘¦’lƒtƒB[ƒ‹ƒh‚Ì’·‚³‚ðA1,2,4ƒoƒCƒg‚Ì’·‚³‚É•ÏX‚·‚é‚±‚Æ‚ª‚Å‚«‚é‚½‚ßA‘S‘Ì‚Ì–½—ß’·‚ðŒˆ’è‚·‚éB
+
+REXƒvƒŠƒtƒBƒbƒNƒX(hex 4X)‚ÍA64ƒrƒbƒg‚ÌV‚µ‚¢ƒvƒŠƒtƒBƒbƒNƒX‚ÅA64ƒrƒbƒgˆ—‚ð‰Â”\‚É‚·‚éB
+X‚Ì’l‚Í”Ä—pƒŒƒWƒXƒ^‚ÆSSEƒŒƒWƒXƒ^‚Ì”‚ð8‚©‚ç16‚ÉŠg’£‚·‚éÛ‚ÉŽg—p‚·‚éB
+x86‚ÍAƒf[ƒ^‚âƒAƒhƒŒƒX‚ðŽw’è‚·‚é‚½‚ß‚É1–½—ß‚ ‚½‚èÅ‘å‚Å3‚Â‚ÌƒŒƒWƒXƒ^‚ðŽw’è‚·‚é‚½‚ßA‚±‚ê‚ç‚Ìƒrƒbƒg‚Í‚»‚Ì–Ú“I‚É—˜—p‚³‚ê‚éB
+4”Ô–Ú‚Ìƒrƒbƒg‚ÍƒIƒyƒ‰ƒ“ƒh‚ÌƒTƒCƒY‚ðƒI[ƒoƒ‰ƒCƒh‚·‚é‚½‚ß‚ÉŽg—p‚³‚ê‚é(ƒfƒtƒHƒ‹ƒgƒTƒCƒY‚©A64ƒrƒbƒg‚ÉŠg’£‚³‚ê‚é)B
+
+EscapeƒvƒŠƒtƒBƒbƒNƒX(hex 0F)‚ÍSSE–½—ß‚ð“Á’è‚·‚é‚½‚ß‚É—˜—p‚³‚ê‚éB
+ƒIƒyƒR[ƒh‚ÍŽÀÛ‚É‚ÍƒvƒŠƒtƒBƒbƒNƒX‚ÌŒã‚©‚çŽn‚Ü‚éB
+1‚©‚ç2ƒoƒCƒg‚ÌƒIƒvƒVƒ‡ƒiƒ‹‚ÈMODRMƒoƒCƒg‚ÆSIBƒoƒCƒg‚ð•t‰Á‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+ƒIƒvƒVƒ‡ƒ“‚ÌƒfƒBƒXƒvƒŒ[ƒXƒƒ“ƒg‚Æ‘¦’lƒtƒB[ƒ‹ƒh‚ÍAƒAƒhƒŒƒX‚¨‚æ‚Ñƒf[ƒ^‚ÌŒvŽZ‚Ì‚½‚ß‚É’è”‚ðŠi”[‚·‚é‚±‚Æ‚ª‚Å‚«A1,2,4ƒoƒCƒg‚Ì‚¤‚¿‚Ç‚ê‚©‚ðŽæ‚é‚±‚Æ‚ª‚Å‚«‚éB
+–½—ß‘S‘Ì‚Ì’·‚³‚ÍA15ƒoƒCƒg‚Ü‚Å‚É§ŒÀ‚³‚ê‚éB
