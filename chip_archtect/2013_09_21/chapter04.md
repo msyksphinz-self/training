@@ -112,9 +112,6 @@ Escapeプリフィックス(hex 0F)はSSE命令を特定するために利用される。
 この領域について、候補として挙げられるのはUS Patent 6,260,134でゲートレベルの詳細が記述されているプリデコーダではないかと予想する。
 この部分について議論してみる。
 
-We find a very large block of logic with fourfold symmetry directly near the position were the 16 byte blocks of data are read and written from and to the instruction cache.
-We'll discuss the most likely candidate here, A fourfold incarnation of an earlier pre-decoder described in gate level detail in US Patent 6,260,134
-
 4倍バージョンでは、特許により記述されている説明によれば、このユニットは16バイトのライン全体を、高並列プリデコーディングと呼ばれる機構により2サイクルでプリデコードできる。
 命令の境界バイトの判定は、可変長命令に基本的な問題である。一般的に：
 
