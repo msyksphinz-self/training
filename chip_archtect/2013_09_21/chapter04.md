@@ -14,6 +14,8 @@
 - 4.12 –½—ßƒLƒƒƒbƒVƒ…ƒqƒbƒg/ƒ~ƒX‚ÌŒˆ’èBŒ»İ‚Ìƒy[ƒW‚ÆBTAC
 - 4.13 –½—ßƒLƒƒƒbƒVƒ…ƒXƒk[ƒsƒ“ƒO
 
+![Opteron's Instruction and Decoding Pipeline](Opteron_Instr_Cache.jpg)
+
 ## 4.1 –½—ßƒLƒƒƒbƒVƒ…: 1‚ÂˆÈã‚Ì–½—ß‚ğŠi”[‚·‚é
 
 –½—ßƒLƒƒƒbƒVƒ…‚Ö‚ÌƒAƒNƒZƒX‚Í128ƒrƒbƒg•‚Å‚ ‚éB
@@ -23,6 +25,13 @@
 ‚µ‚©‚µ‚Ü‚¾„’B‚Íƒtƒ‹–½—ßƒLƒƒƒbƒVƒ…‚ğƒJƒo[‚·‚é‚¾‚¯‚Ìƒrƒbƒg‚µ‚©”‚¦‚Ä‚¢‚È‚¢B
 ‚Â‚Ü‚èA1024ŒÂ‚ÌƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚ÍA‚»‚ê‚¼‚ê•t‰Áƒrƒbƒg‚ğ‚Á‚Ä‚¢‚éB
 ‚±‚ê‚ç‚Í1024ƒGƒ“ƒgƒŠ‚æ‚è‚à­‚È‚¢A‚³‚ç‚É‘½‚­‚ÌƒtƒB[ƒ‹ƒh‚ğ‚Á‚Ä‚¨‚èAƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚Ìˆê•”‚Å‚Ì‚İ—LŒø‚Æ‚È‚éB
+
+|                        | Instruction only | Total Size |
+|------------------------|------------------|------------|
+| Instruction Cache size | 64 kByte         | 102 kByte  |
+| Cache Line size        | 64 Byte          | 102 Byte   |
+| One Read Port          | 128 bit          | 204 bit    |
+| One Write Port         | 128 bit          | 204 bit    |
 
 —Ç‚­’m‚ç‚ê‚Ä‚¢‚é‚Ì‚ÍAŠeƒoƒCƒg‚É•t‰Á‚³‚ê‚Ä‚¢‚éƒvƒŠƒfƒR[ƒhƒrƒbƒg‚ÆŒÄ‚Î‚ê‚é3ƒrƒbƒg‚Ìƒf[ƒ^‚Å‚ ‚éB
 ‚±‚ê‚ç‚Ìƒrƒbƒg‚ÍA•¡G‚Èx86‰Â•Ï’·–½—ß‚Ìæ“ª‚ÆÅŒã”ö‚Éƒ}[ƒN‚³‚êA‚¢‚­‚Â‚©‚Ì‹@”\“I‚Èî•ñ‚ğ’ñ‹Ÿ‚·‚éB
@@ -39,6 +48,16 @@ Opteron‚Ì•ªŠòƒZƒŒƒNƒ^‚Í‘¼‚ÌAthlon(32)‚Æ‚ÍˆÙ‚È‚èA‘S‚Ä‚Ì–½—ßƒLƒƒƒbƒVƒ…’†‚Ì1024ƒLƒ
 ECC‚Íƒf[ƒ^ƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚Å‚µ‚©—˜—p‚³‚ê‚¸A–½—ßƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚Å‚Í—˜—p‚³‚ê‚È‚¢B
 ŒãÒ‚Å‚ÍECC‚Í•K—v‚È‚¢‚Ì‚ÅAƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“’†‚Ì‚¢‚­‚Â‚©‚ÌƒpƒŠƒeƒBƒrƒbƒg‚ğŠi”[‚·‚é‚Ì‚É‚Í\•ª‚Å‚ ‚éB
 –½—ßƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚É‚¨‚¢‚ÄÕ“Ë‚µ‚½‚à‚Ì‚ÍAí‚ÉŠO•”DRAMƒƒ‚ƒŠ‚©‚çæ“¾‚³‚ê‚éB
+
+|                  | Ram Size  | Bus Size | Comments                                                        |
+|------------------|-----------|----------|-----------------------------------------------------------------|
+| Instruction Code | 64 kByte  | 128 bit  | 16 bytes instruction code                                       |
+| Parity bits      | 4 kByte   | 8 bit    | One parity bit for each 16 bit                                  |
+| Pre-decode       | 26 kByte  | 52 bit   | 3 bits per byte (start, end, function) + 4 bit per 16 byte line |
+| Branch Selectors | 8 kByte   | 16 bit   | 2 bits for each 2 bytes of instruction code                     |
+| TOTAL            | 102 kByte | 204 bit  |                                                                 |
+
+![Opteron's Instruction Cache](Opteron_Instruction_Cache_Ill.jpg)
 
 ## 4.2 ˆê”Ê“I‚È–½—ßƒtƒH[ƒ}ƒbƒg
 
@@ -59,3 +78,5 @@ EscapeƒvƒŠƒtƒBƒbƒNƒX(hex 0F)‚ÍSSE–½—ß‚ğ“Á’è‚·‚é‚½‚ß‚É—˜—p‚³‚ê‚éB
 1‚©‚ç2ƒoƒCƒg‚ÌƒIƒvƒVƒ‡ƒiƒ‹‚ÈMODRMƒoƒCƒg‚ÆSIBƒoƒCƒg‚ğ•t‰Á‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
 ƒIƒvƒVƒ‡ƒ“‚ÌƒfƒBƒXƒvƒŒ[ƒXƒƒ“ƒg‚Æ‘¦’lƒtƒB[ƒ‹ƒh‚ÍAƒAƒhƒŒƒX‚¨‚æ‚Ñƒf[ƒ^‚ÌŒvZ‚Ì‚½‚ß‚É’è”‚ğŠi”[‚·‚é‚±‚Æ‚ª‚Å‚«A1,2,4ƒoƒCƒg‚Ì‚¤‚¿‚Ç‚ê‚©‚ğæ‚é‚±‚Æ‚ª‚Å‚«‚éB
 –½—ß‘S‘Ì‚Ì’·‚³‚ÍA15ƒoƒCƒg‚Ü‚Å‚É§ŒÀ‚³‚ê‚éB
+
+![Opteron's Instruction Format](Opteron_instruction_format_780x200.jpg)
