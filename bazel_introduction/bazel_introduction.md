@@ -34,8 +34,7 @@ src/my/app/tests/BUILD
 src/my/app/tests/test.cc
 ```
 
-2つのパッケージが含まれている。```my/app```と```my/app/tests```サブパッケージである。
-```my/app/data```はパッケージではないが、```my/app```ディレクトリに属している。
+2つのパッケージが含まれている。```my/app```と```my/app/tests```サブパッケージである。```my/app/data```はパッケージではないが、```my/app```ディレクトリに属している。
 
 ### ターゲット
 
