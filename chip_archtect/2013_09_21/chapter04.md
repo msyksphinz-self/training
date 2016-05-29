@@ -227,8 +227,6 @@ Athlon 64‚Í16,384ŒÂ‚Ì•ªŠòƒqƒXƒgƒŠƒJƒEƒ“ƒ^‚ğ‚Á‚Ä‚¨‚èA32ƒrƒbƒg‚Ì‰ß‹‚ÌƒvƒƒZƒbƒ
 | ƒJƒEƒ“ƒ^=1 | ã‚¢•ªŠò•s¬—§ |
 | ƒJƒEƒ“ƒ^=0 | ‹­‚¢•ªŠò•s¬—§ |
 
-The BHBC is accessed by using four bits of the Program Counter and the outcome (taken or not taken) from the last eight branches. This is basically the same as in the Athlon 32. The fact that we now have four times as many counters means that we have four branch predictors per 16 byte instruction line. This corresponds with the four branch target addresses per line. This would be an improvement over the Athlon 32 were the two branches per line could interfere which each others branch predictions.
-
 BHBC‚ÍƒvƒƒOƒ‰ƒ€ƒJƒEƒ“ƒ^‚Ì4ƒrƒbƒg‚ÆÅŒã‚Ì8‚Â‚Ì•ªŠòŒ‹‰Ê(¬—§or•s¬—§)‚Ìî•ñ‚ğ—˜—p‚µ‚ÄƒAƒNƒZƒX‚³‚ê‚éB
 ‚±‚ê‚ÍŠî–{“I‚ÉAthlon 32‚Æ“¯‚¶‚Å‚ ‚éB
 ‚±‚±‚ÅAthlon 64‚ª4”{‚ÌƒqƒXƒgƒŠƒJƒEƒ“ƒ^‚ğ‚Á‚½‚±‚Æ‚É‚æ‚èA16ƒoƒCƒg‚Ì–½—ßƒ‰ƒCƒ“‚Å4‚Â‚Ì•ªŠò—\‘ª‚ğs‚¤‚±‚Æ‚ª‚Å‚«‚é‚æ‚¤‚É‚È‚Á‚½B
@@ -243,8 +241,6 @@ Athlon 32‚Å‚Í1ƒ‰ƒCƒ““–‚½‚è2‚Â‚Ì•ªŠòƒAƒhƒŒƒX‚ğŒvZ‚Å‚«‚é‚¾‚¯‚ÅA•ªŠò—\‘ªŠí‚ğ—˜—p‚
 GHBCƒe[ƒuƒ‹‚ÍƒvƒƒZƒbƒT‚ª•ªŠò—\‘ª‚Ìƒpƒ^[ƒ“‚ğÅ‘å‚Å8‚Â‚Ì•ªŠò‚Å—\‘ª‚·‚é‚±‚Æ‚ğ‰Â”\‚É‚·‚éB
 
 ## 4.10 1ƒ‰ƒCƒ““–‚½‚è3•ªŠò‚Ìƒ[ƒJƒ‹&ƒOƒ[ƒoƒ‹•ªŠò—\‘ª
-
-A single 16 byte line with up to three conditional branches represents a complex situation. If we predict a first branch as not taken then we encounter the next conditional branch which must be predicted also et-cetera. Does the opteron handle this in multiple steps? or does it handle the whole multiple branch prediction at once?
 
 16ƒoƒCƒgƒ‰ƒCƒ“‚ÉÅ‘å‚Å3‚Â‚ÌğŒ•ªŠò‚ª“oê‚·‚éA•¡G‚Èó‘Ô‚ğl‚¦‚éB
 ‚à‚µÅ‰‚Ì•ªŠò—\‘ª‚ª”ñ¬—§‚ÅAŸ‚Ì•ªŠò–½—ß‚ğ—\‘ª‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢‚Æ‚·‚éB
