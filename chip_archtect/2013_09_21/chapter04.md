@@ -210,3 +210,34 @@ BTB‚É48ƒrƒbƒg‚ÌƒAƒhƒŒƒX‚ªŠi”[‚³‚ê‚é‚È‚ç‚ÎA2048ƒGƒ“ƒgƒŠ‚ÌBTB‚Í12kByte‚Ì—e—Ê‚ª•K—
 ‚±‚±‚Åg‚í‚ê‚Ä‚¢‚éƒgƒŠƒbƒN‚ÍA64kByte‚Ì–½—ßƒLƒƒƒbƒVƒ…‚ÌƒAƒNƒZƒX‚É•K—v‚È16bit•ª‚µ‚©ƒƒ‚ƒŠ‚ÉŠi”[‚µ‚È‚¢‚Æ‚¢‚¤‚±‚Æ‚Å‚ ‚éB
 ‚æ‚èãˆÊ‚Ìƒrƒbƒg‚ÍŒã‚Å’Tõ‚·‚éB
 ‚±‚ê‚ğƒTƒ|[ƒg‚·‚é‚½‚ß‚ÉAOpteron‚ÍBTAC(Branch Target Address Calculator)‚ÆŒÄ‚Î‚ê‚éV‚µ‚¢ƒ†ƒjƒbƒg‚ğŠi”[‚µ‚Ä‚¢‚éB
+
+## 4.9 ƒOƒ[ƒoƒ‹ƒqƒXƒgƒŠ2ƒ‚[ƒhƒJƒEƒ“ƒ^
+
+Athlon 64‚Í16,384ŒÂ‚Ì•ªŠòƒqƒXƒgƒŠƒJƒEƒ“ƒ^‚ğ‚Á‚Ä‚¨‚èA32ƒrƒbƒg‚Ì‰ß‹‚ÌƒvƒƒZƒbƒT‚Ì4”{‚Å‚ ‚éB
+ƒJƒEƒ“ƒ^‚Í•ªŠò‚ª¬—§‚·‚é‚©‚ÌŒöZ‚É‚Â‚¢‚Ä‹Lq‚³‚ê‚Ä‚¢‚éB
+•ªŠò‚ª¬—§‚·‚é‚ÆÅ‘å‚Å3‚Ü‚ÅƒJƒEƒ“ƒgƒAƒbƒv‚³‚êA•ªŠò‚ª”ñ¬—§‚È‚ç‚ÎÅ¬‚Å0‚Ü‚ÅƒJƒEƒ“ƒgƒ_ƒEƒ“‚·‚éB
+ƒJƒEƒ“ƒ^‚Ì’l‚Å3‚Æ2‚Í•ªŠò‚ª¬—§‚·‚é‚Æ—\‘ª‚³‚ê‚éBˆÈ‰º‚Ì•\‚ğQÆ‚Ì‚±‚ÆB
+
+- 2ƒrƒbƒg•ªŠò—š—ğƒoƒbƒtƒ@‚Ìà–¾
+
+| ƒJƒEƒ“ƒ^’l | •ªŠò—\‘ª       |
+|------------|----------------|
+| ƒJƒEƒ“ƒ^=3 | ‹­‚¢•ªŠò¬—§   |
+| ƒJƒEƒ“ƒ^=2 | ã‚¢•ªŠò¬—§   |
+| ƒJƒEƒ“ƒ^=1 | ã‚¢•ªŠò•s¬—§ |
+| ƒJƒEƒ“ƒ^=0 | ‹­‚¢•ªŠò•s¬—§ |
+
+The BHBC is accessed by using four bits of the Program Counter and the outcome (taken or not taken) from the last eight branches. This is basically the same as in the Athlon 32. The fact that we now have four times as many counters means that we have four branch predictors per 16 byte instruction line. This corresponds with the four branch target addresses per line. This would be an improvement over the Athlon 32 were the two branches per line could interfere which each others branch predictions.
+
+BHBC‚ÍƒvƒƒOƒ‰ƒ€ƒJƒEƒ“ƒ^‚Ì4ƒrƒbƒg‚ÆÅŒã‚Ì8‚Â‚Ì•ªŠòŒ‹‰Ê(¬—§or•s¬—§)‚Ìî•ñ‚ğ—˜—p‚µ‚ÄƒAƒNƒZƒX‚³‚ê‚éB
+‚±‚ê‚ÍŠî–{“I‚ÉAthlon 32‚Æ“¯‚¶‚Å‚ ‚éB
+‚±‚±‚ÅAthlon 64‚ª4”{‚ÌƒqƒXƒgƒŠƒJƒEƒ“ƒ^‚ğ‚Á‚½‚±‚Æ‚É‚æ‚èA16ƒoƒCƒg‚Ì–½—ßƒ‰ƒCƒ“‚Å4‚Â‚Ì•ªŠò—\‘ª‚ğs‚¤‚±‚Æ‚ª‚Å‚«‚é‚æ‚¤‚É‚È‚Á‚½B
+‚±‚ê‚Íƒ‰ƒCƒ““–‚½‚è‚É4‚Â‚Ì•ªŠòƒ^[ƒQƒbƒgƒAƒhƒŒƒX‚ğ¶¬‚Å‚«‚é‚±‚Æ‚ğˆÓ–¡‚·‚éB
+Athlon 32‚Å‚Í1ƒ‰ƒCƒ““–‚½‚è2‚Â‚Ì•ªŠòƒAƒhƒŒƒX‚ğŒvZ‚Å‚«‚é‚¾‚¯‚ÅA•ªŠò—\‘ªŠí‚ğ—˜—p‚·‚é‚½‚ß‚ÉÕ“Ë‚ª‹N‚«‚Ä‚¢‚½‚ªA‚»‚ê‚ğ‰ü‘P‚Å‚«‚é‚±‚Æ‚É‚È‚Á‚½B
+
+![•ªŠòƒqƒXƒgƒŠƒJƒEƒ“ƒ^](branch_history_counter.JPG)
+
+‘¼‚Ì‰ü‘P“_‚Æ‚µ‚Ä‚ÍAƒOƒ[ƒoƒ‹ƒrƒbƒg‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é•ªŠò‚Ì‚İ‚ªƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚É‚©‚©‚í‚é‚±‚Æ‚ª‚Å‚«‚é“_‚Å‚ ‚éB
+‚±‚Ì•ªŠò–½—ß‚Ì—}§‚É‚æ‚èAƒOƒ[ƒoƒ‹•ªŠò—\‘ªŠí‚Ì—š—ğ‚ª‘¼‚ÌŠÖŒW‚È‚¢•ªŠò–½—ß‚É‚æ‚è‰˜‚³‚ê‚é‚±‚Æ‚ğ–h‚¢‚Å‚¢‚é(US Patent 6,502,188‚ªAthlon 32‚ÌÄŒŸ“¢‚Æ‚¢‚¤Œ`‚Åæ‚ç‚ê‚Ä‚¢‚é)B
+ƒOƒ[ƒoƒ‹ƒrƒbƒg”h‚Í•ªŠò‚ª—\‘ª‚Å‚«‚È‚¢Œ‹‰Ê‚ğ¶¬‚µ‚Ä‚«‚Ä‚àİ’è‚³‚ê‚éB
+GHBCƒe[ƒuƒ‹‚ÍƒvƒƒZƒbƒT‚ª•ªŠò—\‘ª‚Ìƒpƒ^[ƒ“‚ğÅ‘å‚Å8‚Â‚Ì•ªŠò‚Å—\‘ª‚·‚é‚±‚Æ‚ğ‰Â”\‚É‚·‚éB
