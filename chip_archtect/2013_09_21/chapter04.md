@@ -241,3 +241,31 @@ Athlon 32‚Å‚Í1ƒ‰ƒCƒ““–‚½‚è2‚Â‚Ì•ªŠòƒAƒhƒŒƒX‚ðŒvŽZ‚Å‚«‚é‚¾‚¯‚ÅA•ªŠò—\‘ªŠí‚ð—˜—p‚
 ‚±‚Ì•ªŠò–½—ß‚Ì—}§‚É‚æ‚èAƒOƒ[ƒoƒ‹•ªŠò—\‘ªŠí‚Ì—š—ð‚ª‘¼‚ÌŠÖŒW‚È‚¢•ªŠò–½—ß‚É‚æ‚è‰˜‚³‚ê‚é‚±‚Æ‚ð–h‚¢‚Å‚¢‚é(US Patent 6,502,188‚ªAthlon 32‚ÌÄŒŸ“¢‚Æ‚¢‚¤Œ`‚ÅŽæ‚ç‚ê‚Ä‚¢‚é)B
 ƒOƒ[ƒoƒ‹ƒrƒbƒg”h‚Í•ªŠò‚ª—\‘ª‚Å‚«‚È‚¢Œ‹‰Ê‚ð¶¬‚µ‚Ä‚«‚Ä‚àÝ’è‚³‚ê‚éB
 GHBCƒe[ƒuƒ‹‚ÍƒvƒƒZƒbƒT‚ª•ªŠò—\‘ª‚Ìƒpƒ^[ƒ“‚ðÅ‘å‚Å8‚Â‚Ì•ªŠò‚Å—\‘ª‚·‚é‚±‚Æ‚ð‰Â”\‚É‚·‚éB
+
+## 4.10 1ƒ‰ƒCƒ““–‚½‚è3•ªŠò‚Ìƒ[ƒJƒ‹&ƒOƒ[ƒoƒ‹•ªŠò—\‘ª
+
+A single 16 byte line with up to three conditional branches represents a complex situation. If we predict a first branch as not taken then we encounter the next conditional branch which must be predicted also et-cetera. Does the opteron handle this in multiple steps? or does it handle the whole multiple branch prediction at once?
+
+16ƒoƒCƒgƒ‰ƒCƒ“‚ÉÅ‘å‚Å3‚Â‚ÌðŒ•ªŠò‚ª“oê‚·‚éA•¡ŽG‚Èó‘Ô‚ðl‚¦‚éB
+‚à‚µÅ‰‚Ì•ªŠò—\‘ª‚ª”ñ¬—§‚ÅAŽŸ‚Ì•ªŠò–½—ß‚ð—\‘ª‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢‚Æ‚·‚éB
+Opteron‚Í‚±‚Ì•¡”‚ÌƒXƒeƒbƒv‚ðˆ—‚Å‚«‚é‚¾‚ë‚¤‚©H‚à‚µ‚­‚Í•¡”‚Ì•ªŠò—\‘ª‚ðˆê“x‚Éˆ—‚Å‚«‚é‚¾‚ë‚¤‚©H
+
+1ƒ‰ƒCƒ“‚É‚Â‚«Aƒ[ƒJƒ‹•ªŠò‚ÆƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚Å‚ÍˆÈ‰º‚ÌðŒ‚ª‘¶Ý‚·‚éB
+
+| IF                        | AND                                                                                                                                 | THEN         |
+|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| •ªŠòƒZƒŒƒNƒ^‚ª•ªŠò1‚ð‘I‘ð | •ªŠò1‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª¬—§                                                                                           | •ªŠò0‚ª¬—§  |
+| •ªŠòƒZƒŒƒNƒ^‚ª•ªŠò1‚ð‘I‘ð |  •ªŠò1‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§  •ªŠò2‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª¬—§                                             | •ªŠò1‚ª¬—§  |
+| •ªŠòƒZƒŒƒNƒ^‚ª•ªŠò1‚ð‘I‘ð | •ªŠò1‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§ •ªŠò2‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§ •ªŠò3‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª¬—§   | •ªŠò2‚ª¬—§  |
+| •ªŠòƒZƒŒƒNƒ^‚ª•ªŠò1‚ð‘I‘ð | •ªŠò1‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§ •ªŠò2‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§ •ªŠò3‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§ | ŽŸ‚Ìƒ‰ƒCƒ“‚Ö |
+| •ªŠòƒZƒŒƒNƒ^‚ª•ªŠò2‚ð‘I‘ð | •ªŠò2‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª¬—§                                                                                           | •ªŠò0‚ª¬—§  |
+| •ªŠòƒZƒŒƒNƒ^‚ª•ªŠò2‚ð‘I‘ð | •ªŠò2‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§ •ªŠò3‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª¬—§                                               | •ªŠò1‚ª¬—§  |
+| •ªŠòƒZƒŒƒNƒ^‚ª•ªŠò2‚ð‘I‘ð | •ªŠò2‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§ •ªŠò3‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§                                             | ŽŸ‚Ìƒ‰ƒCƒ“‚Ö |
+| •ªŠòƒZƒŒƒNƒ^‚ª•ªŠò3‚ð‘I‘ð | •ªŠò3‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª¬—§                                                                                           | •ªŠò1‚ª¬—§  |
+| •ªŠòƒZƒŒƒNƒ^‚ª•ªŠò3‚ð‘I‘ð | •ªŠò3‚Ìƒ[ƒJƒ‹AƒOƒ[ƒoƒ‹•ªŠò—\‘ª‚ª•s¬—§                                                                                         | ŽŸ‚Ìƒ‰ƒCƒ“‚Ö |
+
+Fred Weber‚ÌMPF2001‚Ì”­•\‚ðŽQl‚É‚·‚é‚ÆAˆê“x‚Éã‹L‚Ì•ªŠò‚Ìˆ—‚ªs‚í‚ê‚Ä‚¢‚é‚Æ—\‘z‚·‚éB
+(‚±‚ÌƒvƒŒƒ[ƒ“ƒe[ƒVƒ‡ƒ“‚Å‚ÍA1‚Â‚ÌGHBC‚Ì—\‘ª‚ª1ƒTƒCƒNƒ‹‚ÅŽÀs‚Å‚«‚é‚Æ‚µ‚Ä‚¢‚é)B
+Šm‚©‚ÉAöÝ“I‚Èƒ{ƒgƒ‹ƒlƒbƒN‚ÍGHBC‚Ì•”•ª‚Æ‚È‚é‚¾‚ë‚¤B
+2”Ô–Ú‚Æ3”Ô–Ú‚Ì•ªŠò‚Å‚ÍAˆÙ‚È‚éu8ƒrƒbƒg‚Ì•ªŠò‚ÌŒ‹‰Êv‚ÌƒCƒ“ƒfƒbƒNƒX‚ðƒe[ƒuƒ‹‚Ì‚½‚ß‚É•K—v‚É‚È‚éB
+8ƒrƒbƒg‚Ì’l‚Í2”Ô–Ú‚Æ3”Ô–Ú‚Ì•ªŠò‚Ì‚½‚ß‚ÉA0‚Å1[2ƒrƒbƒgƒVƒtƒg‚·‚é•K—v‚ª‚ ‚èA‚±‚Ìƒ‹[ƒ‹‚Ì’Ê‚è‚Éˆ—‚·‚é‚½‚ß‚Éu—\‘ª‚µ‚È‚¢v‚Æ‚¢‚¤‚±‚Æ‚ðŽ¦‚·•K—v‚ª‚ ‚éB
