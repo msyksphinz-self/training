@@ -265,3 +265,44 @@ Fred Weber‚ÌMPF2001‚Ì”­•\‚ðŽQl‚É‚·‚é‚ÆAˆê“x‚Éã‹L‚Ì•ªŠò‚Ìˆ—‚ªs‚í‚ê‚Ä‚¢‚é‚Æ—
 Šm‚©‚ÉAöÝ“I‚Èƒ{ƒgƒ‹ƒlƒbƒN‚ÍGHBC‚Ì•”•ª‚Æ‚È‚é‚¾‚ë‚¤B
 2”Ô–Ú‚Æ3”Ô–Ú‚Ì•ªŠò‚Å‚ÍAˆÙ‚È‚éu8ƒrƒbƒg‚Ì•ªŠò‚ÌŒ‹‰Êv‚ÌƒCƒ“ƒfƒbƒNƒX‚ðƒe[ƒuƒ‹‚Ì‚½‚ß‚É•K—v‚É‚È‚éB
 8ƒrƒbƒg‚Ì’l‚Í2”Ô–Ú‚Æ3”Ô–Ú‚Ì•ªŠò‚Ì‚½‚ß‚ÉA0‚Å1[2ƒrƒbƒgƒVƒtƒg‚·‚é•K—v‚ª‚ ‚èA‚±‚Ìƒ‹[ƒ‹‚Ì’Ê‚è‚Éˆ—‚·‚é‚½‚ß‚Éu—\‘ª‚µ‚È‚¢v‚Æ‚¢‚¤‚±‚Æ‚ðŽ¦‚·•K—v‚ª‚ ‚éB
+
+## 4.11 •ªŠòƒ^[ƒQƒbƒgƒAƒhƒŒƒXŒvŽZA•ªŠòƒ^[ƒQƒbƒgƒoƒbƒtƒ@‚ÌƒoƒbƒNƒAƒbƒv
+
+‚à‚¤ˆê‚Â‚ÌV‹K‹@”\‚ÍBTAC‚Å‚ ‚éBBTAC‚ÍBranch Target Address Generator‚ÌˆÓ–¡‚Å‚ ‚èA‚³‚Ü‚´‚Ü–Ú“I‚Å”ñí‚É—L—p‚Å‚ ‚éB
+‚±‚Ìƒ†ƒjƒbƒg‚Í16ƒoƒCƒgƒ‰ƒCƒ“‚Ì–½—ßƒR[ƒh‚ðƒLƒƒƒbƒVƒ…‚©‚çƒ[ƒh‚µ‚½2ƒTƒCƒNƒ‹Œã‚Éƒtƒ‹ƒAƒhƒŒƒX(48ƒrƒbƒg)‚Ì•ªŠòƒAƒhƒŒƒX‚ð¶¬‚Å‚«‚éB
+‚±‚Ìƒ†ƒjƒbƒg‚ÍAˆê”Ê“I‚È–½—ßAƒvƒƒOƒ‰ƒ€ƒJƒEƒ“ƒ^‚©‚ç‚Ì8ƒrƒbƒg‚©‚ç32ƒrƒbƒg‚ÌƒfƒBƒXƒvƒŒ[ƒXƒƒ“ƒg‚ðŽ‚Âjump, call–½—ß‚É‚Ä“®ì‚·‚éB
+BTAC‚Í‚¨‚»‚ç‚­ƒŠƒ^[ƒ“–½—ß‚Å‚à“¯—l‚É—˜—p‚Å‚«‚éB
+
+BTAC‚Ìƒ^ƒXƒN‚Ìˆê‚Â‚ÍABTB(Branch Target Buffer)‚ÌƒoƒbƒNƒAƒbƒv‚Å‚ ‚éB
+BTB‚Í8ƒ‰ƒCƒ“‚Å•ªŠòƒAƒhƒŒƒX‚ð‹¤—L‚µ‚Ä‚¢‚éB
+•ªŠòƒZƒŒƒNƒ^‚Í•ªŠò—š—ð‚ðŽ‚Á‚Ä‚¢‚é‚à‚Ì‚ÌA•ªŠòƒ^[ƒQƒbƒg‚Ìî•ñ‚Í•Ê‚Ì•ªŠò–½—ß‚É‚æ‚Á‚Äã‘‚«‚³‚ê‚Ä‚µ‚Ü‚Á‚Ä‚¢‚éó‹µ‚ª‘¶Ý‚·‚éB
+•ªŠòƒZƒŒƒNƒ^‚ÍA–½—ßƒLƒƒƒbƒVƒ…64kByte‚Ì‚·‚×‚Ä‚ÌƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚ÅŠÇ—‚³‚ê‚Ä‚¢‚éB
+•ªŠòƒZƒŒƒNƒ^‚Ìî•ñ‚ÍAL1‚©‚çA—e—Ê‚Ì‘å‚«‚È1MB‚ÌL2‚É“f‚«o‚³‚ê‚Ä‚àAˆê‚É•Û‘¶‚³‚ê‚Ä‚¢‚éB
+•ªŠòƒZƒŒƒNƒ^‚Ìî•ñ‚ÍL2‚©‚çL1‚ÖÄ“xƒ[ƒh‚³‚ê‚Ä‚àA•ªŠòƒ^[ƒQƒbƒgƒAƒhƒŒƒX‚Ìî•ñ‚ðBTB‚©‚ç’T‚³‚È‚¯‚ê‚Î‚È‚ç‚È‚¢ó‹µ‚ª‘¶Ý‚·‚éB
+‹t‚ÉŒ¾‚¦‚ÎABTBƒGƒ“ƒgƒŠ‚ÍƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚ªL1‚©‚çL2‚Ö“f‚«o‚³‚ê‚½Žž“_‚ÅƒNƒŠƒA‚³‚ê‚é‚×‚«‚Å‚ ‚éB
+
+L2‚©‚çL1‚ÖÄƒ[ƒh‚³‚ê‚Ä‚«‚½ƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚Å‚ÍAƒvƒŠƒfƒR[ƒh‚µ‚½ƒrƒbƒg‚ð‚·‚®‚³‚ÜƒŠƒXƒgƒA‚·‚é‚±‚Æ‚ª‚Å‚«‚é(‚•À—ñƒvƒŠƒfƒR[ƒ_‚É‚æ‚è2ƒTƒCƒNƒ‹‚ÅŽÀs‚Å‚«‚é)B
+‚±‚±‚ÅABTBƒGƒ“ƒgƒŠ‚àƒŠƒXƒgƒA‚·‚é•K—v‚ª‚ ‚é‚ªA‚±‚ê‚É‚Í‚æ‚èŽžŠÔ‚ª‚©‚©‚éB
+Athlon 32‚Í•ªŠò‚ªƒŠƒ^ƒCƒA‚µ‚ÄƒŠƒI[ƒ_ƒoƒbƒtƒ@‚©‚ç–½—ßƒAƒhƒŒƒX‚ÅBTB‚ð–„‚ß‚éB
+‚±‚Ì•û–@‚Í16ƒoƒCƒgƒ‰ƒCƒ“‚Å•ªŠò‚ª¬—§‚·‚é‚½‚Ñ‚ÉŒJ‚è•Ô‚µŽÀs‚³‚ê‚éB
+Athlon 64‚Å‚Íˆø‚«‘±‚«‚±‚Ì•û–@‚ªŽg‚í‚ê‚Ä‚¢‚éB
+BTAC‚ÍABTBƒGƒ“ƒgƒŠ‚ªƒŠƒXƒgƒA‚³‚ê‚é‚Ü‚ÅA‚±‚Ì‹@”\‚ðBTB‚ªˆø‚«Œp‚®‚±‚Æ‚ª‚Å‚«‚éB
+
+BTAC‚ÍÅ‚à’á‚¢–½—ßƒtƒFƒbƒ`ƒAƒhƒŒƒXƒrƒbƒg‚ð—˜—p‚µ‚ÄA16ƒoƒCƒgƒ‰ƒCƒ“‚Ì‚Ç‚±‚É“ü‚Á‚½‚©‚ð”FŽ¯‚·‚éB
+‚»‚ÌˆÊ’u‚©‚çÅ‰‚Ì•ªŠò–½—ß‚ðƒXƒLƒƒƒ“‚µA8‚à‚µ‚­‚Í32ƒrƒbƒg‚ÌƒfƒBƒXƒvƒŒ[ƒXƒƒ“ƒg‚ðƒR[ƒh‚©‚çŒŸo‚µA48ƒrƒbƒg‚Ìƒtƒ‹ƒAƒhƒŒƒX‚ðŒvŽZ‚·‚éB
+¡AŽ„‚½‚¿‚ÍƒLƒƒƒbƒVƒ…‚ÌƒCƒ“ƒfƒbƒNƒX‚É—˜—p‚Å‚«‚é’l‚ðŒvŽZ‚µ‚½B
+‚±‚ê‚Í‚Ü‚¾—\‘z‚µ‚½ƒAƒhƒŒƒX‚Å‚ ‚éBŽÀÛ‚ÌƒAƒhƒŒƒX‚Í•ªŠò–½—ß‚ªƒŠƒ^ƒCƒA‚·‚é‚Ü‚Å‚Í‚í‚©‚ç‚È‚¢B
+BTAC‚Í—á‚¦‚ÎŒë‚Á‚½•ªŠò‚ðŽÀs‚·‚é‰Â”\«‚à‚ ‚éB
+
+BTAC‚Íƒtƒ‹48ƒrƒbƒg‚ÌƒAƒhƒŒƒX‚ðŒvŽZ‚·‚é‚ÆM‚¶‚Ä‚¢‚éB
+‚µ‚½‚ª‚Á‚ÄAƒtƒ‹48ƒrƒbƒg‚ðŠÇ—‚·‚é‚±‚Æ‚Å‚³‚Ü‚´‚Ü‚È—˜“_‚ªo‚Ä‚­‚éB
+BTB‚Í48ƒrƒbƒg‚æ‚è‚à¬‚³‚ÈƒAƒhƒŒƒX‚µ‚©Ši”[‚µ‚È‚¢‚½‚ßABTB‚ð—˜—p‚·‚é‚Æ48ƒrƒbƒg‚Ìî•ñ‚ÍŽ¸‚í‚ê‚éB
+BTAC‚ÍBTB‚Í•ªŠò‚ÌŠÜ‚Ü‚ê‚é16ƒoƒCƒgƒ‰ƒCƒ“‚Ì’†‚©‚çˆÊ’u‚ð“Á’è‚·‚é‚½‚ßABTAC‚Í48ƒrƒbƒgƒAƒhƒŒƒX‚ðŠÇ—‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+BTAC‚Í³‚µ‚¢•ªŠò‚ð’T‚µA48bit‚ÌƒAƒhƒŒƒX‚ð•Û‚Á‚ÄƒfƒBƒXƒvƒŒ[ƒXƒƒ“ƒg‚ðŒvŽZ‚·‚éB
+
+48bitƒAƒhƒŒƒX‚ðŽg‚¤2‚Â‚Ìd—v‚È‹@”\‚ª‘¶Ý‚·‚éB
+ˆê‚Â–Ú‚ÍA•ªŠòƒ~ƒX—\‘ª‚ÌƒeƒXƒgƒn[ƒhƒEƒFƒA‚ÍAƒtƒ‹48ƒrƒbƒg‚Ìu—\‘zvƒAƒhƒŒƒX‚ðA•ªŠò–½—ß‚É‚æ‚èŒvŽZ‚³‚ê‚½ŽÀÛ‚Ì48ƒrƒbƒgƒAƒhƒŒƒX‚Æ”äŠr‚·‚éB
+2”Ô–Ú‚ÉAƒLƒƒƒbƒVƒ…‚ÌƒqƒbƒgEƒ~ƒXƒeƒXƒgƒn[ƒhƒEƒFƒA‚Í48ƒrƒbƒg‚Ìu—\‘zv(‰¼‘z)ƒAƒhƒŒƒX‚ª•K—v‚Å‚ ‚èA‚±‚ê‚ð•¨—ƒAƒhƒŒƒX‚É•ÏŠ·‚µAƒLƒƒƒbƒVƒ…ƒ‰ƒCƒ“‚ÉŠi”[‚³‚ê‚Ä‚¢‚éƒAƒhƒŒƒXƒ^ƒO‚Æ”äŠr‚·‚éB
+
+BTAC‚ðŽg‚í‚¸A”½“]‚µ‚½TLB’Tõ‚É‚æ‚èA•¨—ƒLƒƒƒbƒVƒ…ƒ^ƒO‚ðŽg‚Á‚Äƒtƒ‹48ƒrƒbƒgu—\‘zv(‰¼‘z)ƒAƒhƒŒƒX‚ð•œŒ³‚µA•ªŠòƒ~ƒX—\‘ªƒeƒXƒg‚É—˜—p‚·‚é“Á‹–‚àŽæ“¾‚³‚ê‚Ä‚¢‚éB
+‚µ‚©‚µ‚±‚Ì‚æ‚¤‚ÈƒAƒhƒŒƒX‚ÍƒLƒƒƒbƒVƒ…ƒ~ƒXƒqƒbƒgƒeƒXƒg‚É‚Í—˜—p‚Å‚«‚È‚¢(í‚Éƒqƒbƒg‚·‚éI)
