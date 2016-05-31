@@ -343,3 +343,28 @@ The new BTAC ( Branch Target Address Calculator) can recover the full 48 bit add
 32kB境界をまたがずに、TLBが正しいフェッチアドレスに変換し、キャッシュミスが発生すると、このきゃしゅみすは真のキャッシュミスであると判定し、L2もしくはメモリからラインを再ロードする必要がある。
 BTACは関節ジャンプについてはサポートしない。
 リタイアした分岐命令から、正しいアドレスが手に入るまで待たなければならない。
+
+## 4.13 命令キャッシュスヌーピング
+
+
+命令キャッシュのスヌープインタフェースは、マルチプロセッサの環境において、自己書き換えコードのキャッシュコヒーレンシを制御するために利用される。
+他のプロセッサとキャッシュライン中の命令キャッシュを共有するプロセッサでは、共有キャッシュラインへ書き込みが行われると、システム全体にスヌープInvalidateが発行される。
+スヌープインタフェースは、スヌープInvalidateを受信し、命令キャッシュ中のキャッシュラインがヒットするかどうかをチェックし、ヒットすればそのラインを無効化する。
+スヌープインタフェースは、3.19節で説明したように、物理アドレスで動作する。
+
+命令キャッシュは、キャッシュラインを他のプロセッサと共有することができる。しかし自分自身のデータキャッシュとは共有することができない。
+なぜならばプロセッサは事故書き換えプログラムを正しく処理しなければならないからだ。
+命令とデータキャッシュは互いに排他的であり、L2キャッシュにて統合される。
+スヌープインタフェースは、もしキャッシュラインがデータキャッシュにロードされるのを検出すれば、命令キャッシュをチェックしヒットすればラインを無効化する。
+
+命令キャッシュは他のプロセッサのデータキャッシュとキャッシュラインを共有することがある。
+これはクロス自己書き換えコードと呼ばれ、あまり厳しくない状態である。
+他のプロセッサが命令コードを書き換えた時の厳密な動作は不定である。
+他のプロセッサに書き換えられた共有キャッシュラインの唯一の影響は、その変更が後になって反映されるということである。これは、プロセッサ間の通信が遅いことに起因する。
+
+Interesting is that the new ASN (Address Space Number) could make it possible for the instruction cache and data cache to share cache lines as long as they are assigned to different processes with different ASN's. This would be similar to the cross modifying case mentioned above. The hardware however does not support it because the ASN's are not stored together with the cache lines. It would not be worth the trouble anyway from a performance point of view.
+
+興味深いことに、新しいASN(Address Space Number)は命令キャッシュとデータキャッシュが、利用するプロセスが異なり、異なるASNが割り当てられていれば、共有することができる。
+これは上記のクロス自己書き換えコードと似たような状況である。
+しかしASNはキャッシュラインに保存されないため、ハードウェアは自己書き換えをサポートしない。
+しかし性能の観点を考えると問題が起きても多少は許されるレベルである。
