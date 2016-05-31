@@ -362,8 +362,6 @@ BTACは関節ジャンプについてはサポートしない。
 他のプロセッサが命令コードを書き換えた時の厳密な動作は不定である。
 他のプロセッサに書き換えられた共有キャッシュラインの唯一の影響は、その変更が後になって反映されるということである。これは、プロセッサ間の通信が遅いことに起因する。
 
-Interesting is that the new ASN (Address Space Number) could make it possible for the instruction cache and data cache to share cache lines as long as they are assigned to different processes with different ASN's. This would be similar to the cross modifying case mentioned above. The hardware however does not support it because the ASN's are not stored together with the cache lines. It would not be worth the trouble anyway from a performance point of view.
-
 興味深いことに、新しいASN(Address Space Number)は命令キャッシュとデータキャッシュが、利用するプロセスが異なり、異なるASNが割り当てられていれば、共有することができる。
 これは上記のクロス自己書き換えコードと似たような状況である。
 しかしASNはキャッシュラインに保存されないため、ハードウェアは自己書き換えをサポートしない。
