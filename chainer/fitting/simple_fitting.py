@@ -18,16 +18,24 @@ from chainer import serializers
 class Function3DimentionModel(chainer.FunctionSet):
     def __init__(self):
         super(Function3DimentionModel, self).__init__(
-            fc1=chainer.functions.Linear( 1,16),
-            fc2=chainer.functions.Linear(16,32),
-            fc3=chainer.functions.Linear(32, 1),
+            fc1=chainer.functions.Linear(1, 1),
+            fc2=chainer.functions.Linear(1, 1),
+            fc3=chainer.functions.Linear(1, 1),
+            fc4=chainer.functions.Linear(1, 1),
+            fc5=chainer.functions.Linear(1, 1),
+            fc6=chainer.functions.Linear(1, 1),
+            fc7=chainer.functions.Linear(1, 1),
     )
 
     def forward(self, x):
         h1 = self.fc1(x)
-        h2 = self.fc2(h1)
-        h3 = self.fc3(h2)
-        return h3
+        h2 = self.fc2(h1*x)
+        h3 = self.fc3(h2*x)
+        h4 = self.fc4(h3*x)
+        h5 = self.fc5(h4*x)
+        h6 = self.fc6(h5*x)
+        h7 = self.fc7(h6*x)
+        return h7
 
     def train(self, x_data, y_data):
         x = chainer.Variable(x_data.astype(np.float32), volatile=False)
@@ -45,7 +53,6 @@ class Function3DimentionModel(chainer.FunctionSet):
         # print("h_class: {}".format(h.data.argmax()))
 
 
-n_epoch = 1000
 n_units = 100
 
 # Prepare dataset
@@ -69,7 +76,7 @@ optimizer.setup(model)
 
 # n_epoch = N / batchsize
 batchsize = 100
-n_epoch = 100
+n_epoch = 500
 
 # Learning loop
 for epoch in six.moves.range(1, n_epoch + 1):
@@ -87,18 +94,21 @@ for epoch in six.moves.range(1, n_epoch + 1):
 sum_accuracy = 0
 sum_loss = 0
 for i in six.moves.range(0, 100, batchsize):
-    x_batch = x_train[i:i + batchsize].reshape(batchsize, 1)
-    y_batch = y_train[i:i + batchsize].reshape(batchsize, 1)
+
+    perm = np.random.permutation(N)
+
+    x_batch = x_train[perm[i:i + batchsize]].reshape(batchsize, 1)
+    y_batch = y_train[perm[i:i + batchsize]].reshape(batchsize, 1)
 
     y = model.forward(x_batch)
 
     for b in six.moves.range(0, batchsize):
         print (x_batch[b][0], y.data[b][0])
-    
+
     # x_test = chainer.Variable(np.asarray(x_batch))
     # loss = F.mean_squared_error(y.data, )
 
-    
+
     # print ('loss = {}'.format(loss.data / N_test))
 
     # print (x_batch)

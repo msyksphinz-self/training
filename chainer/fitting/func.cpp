@@ -6,7 +6,9 @@
 
 float function (float x)
 {
-  return -1.0f * sinf (x) + 0.2f;
+  if (x < 0.0) { return -1.0; }
+  else         { return  1.0; }
+  // return -1.0f * sinf (x) + 0.2f;
 }
 
 
@@ -21,7 +23,6 @@ int main()
     fp << float_rand << ", " << function(float_rand) << '\n';
   }
   fp.close();
-  
+
   return 0;
 }
-
