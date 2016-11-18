@@ -18,8 +18,7 @@ out_fp = File.open("output.txt", "w")
 while feed != nil do
   entry = feed.entries
   entry.each{|content|
-    out_fp.printf("%s\n", content.title)
-    # out_fp.printf("%s\n", content.content)
+    out_fp.printf("<ul><li><a href=\"%s\">%s</a></li></ul>\n", content.links[1].href, content.title)
   }
 
   if feed.next_link == nil then
