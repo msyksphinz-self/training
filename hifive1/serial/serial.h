@@ -1,4 +1,7 @@
 #pragma once
 
-void uart_print (uint8_t *str);
+#include <stdarg.h>
+#include <stdio.h>
+
+void uart_print (unsigned char *str);
 void uart_putchar (uint8_t a);

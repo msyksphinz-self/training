@@ -8,8 +8,9 @@ ARCH = $(TOOL_PATH)bin/riscv32-unknown-elf-
 CC  = $(ARCH)gcc
 CXX = $(ARCH)g++
 AR  = $(ARCH)ar
+OBJDUMP = $(ARCH)objdump
 
-OBJ_FILES = main.o start.o entry.o init.o wiring.o fe300prci_driver.o
+OBJ_FILES = main.o start.o entry.o init.o wiring.o fe300prci_driver.o bench.o printf.o
 
 PACKAGE_BASE = $(SIFIVE_PATH)/hardware/riscv/1.0.2
 LINKER = $(PACKAGE_BASE)/freedom-e-sdk/bsp/env/freedom-e300-hifive1/link.lds
@@ -35,7 +36,8 @@ DEFINE  = $(addprefix -D, $(DEF_PARAM))
 ASFLAGS += -march=rv32imac $(INCLUDE) $(DEFINE)
 ASFLAGS += -O2
 
-CFLAGS += -O2
+CFLAGS += -O3
+CFLAGS += -funroll-loops
 CFLAGS += -march=rv32imac
 CFLAGS += -fpeel-loops
 CFLAGS += -ffreestanding
@@ -86,6 +88,7 @@ fe300prci_driver.o:fe300prci_driver.c
 
 $(TARGET): $(TARGET).o $(OBJ_FILES)
 	$(CXX) -T$(LINKER) $(LFLAGS1) $^ $(LFLAGS2) -o $@
+	$(OBJDUMP) -D $@ > $@.dmp
 
 PATH := $(SIFIVE_PATH)/tools/openocd/9bab0782d313679bb0bfb634e6e87c757b8d5503/bin/:$(PATH)
 
