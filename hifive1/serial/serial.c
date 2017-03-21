@@ -18,7 +18,7 @@ void loop()
   return;
 }
 
-void uart_print (uint8_t *str)
+void uart_print (unsigned char *str)
 {
   while (*str != '\0') {
     uart_putchar(*str);

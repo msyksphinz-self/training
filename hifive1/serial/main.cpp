@@ -25,17 +25,11 @@
 #include "encoding.h"
 #include "fe300prci/fe300prci_driver.h"
 #include "./serial.h"
+#include "./bench.h"
 
 extern uint32_t trap_entry;
 
 #define cmb() __asm__ __volatile__ ("" ::: "memory")
-
-uint32_t mtime_lo(void)
-{
-  return *(volatile uint32_t *)(CLINT_BASE_ADDR + CLINT_MTIME);
-}
-
-
 
 static void freedom_e300_clock_setup () {
 
@@ -111,6 +105,8 @@ int main( void )
   setup();
 
   uart_print ("Hello World\r\n");
+
+  add_bench ();
 
   do {
     loop();
