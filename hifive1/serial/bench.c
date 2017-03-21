@@ -35,7 +35,7 @@ uint32_t inst_latency(void (*func)(int*,int,int), int init_src0, int init_src1)
   uint32_t start_time, end_time, wrap_time;
   int dst, src0 = init_src0, src1 = init_src1;
   rdmcycle (&start_time);
-  for(int i=0; i < 65565; i++) {
+  for(int i=0; i < 65536; i++) {
     func (&dst, src0, src1);
     func (&dst, dst,  src1);
     func (&dst, dst,  src1);
@@ -59,7 +59,7 @@ uint32_t inst_throughput(void (*func)(int*,int,int), int init_src0, int init_src
   int dst, src0 = init_src0, src1 = init_src1;
 
   rdmcycle (&start_time);
-  for(int i=0; i < 65565; i++) {
+  for(int i=0; i < 65536; i++) {
     func (&dst, src0, src1);
     func (&dst, src0, src1);
     func (&dst, src0, src1);
