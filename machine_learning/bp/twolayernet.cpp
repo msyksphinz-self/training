@@ -24,7 +24,8 @@ int getdata (double **in_data, double *ans);
 void olearn (double wo[HIDDENNO + 1],
 			 double hi[], double e[INPUTNO + 1], double o);
 
-double affine (double *o, double **wh, double *e,
+double affine (double *o, double *e,
+			   double **wh, double *b,
 			   int output_size, int input_size);
 double relu    (double *o, double *e, int input_size);
 double softmax (double *o, double *e, int input_size);
@@ -64,9 +65,10 @@ int main ()
 	err = 0.0;
 	for (int no_input = 0; no_input < n_of_e; no_input++) {
 	  double **wh0 = (double **)malloc(sizeof(double) * HIDDENNO * INPUTNO);
-	  double **wb0 = (double **)malloc(sizeof(double) * HIDDENNO);
+	  double  *wb0 = (double  *)malloc(sizeof(double) * HIDDENNO);
 
 	  double **wh1 = (double **)malloc(sizeof(double) * OUTPUTNO * HIDDENNO);
+	  double  *wb1 = (double  *)malloc(sizeof(double) * HIDDENNO);
 
 	  double af0[HIDDENNO];
 	  double af1[OUTPUTNO];
@@ -74,8 +76,8 @@ int main ()
 	  double rel1[HIDDENNO];
 	  affine (af0, in_data[no_input], wh0, wb0, HIDDENNO, INPUTNO);
 	  relu (rel0, af0, HIDDENNO);
-	  affine (af1, wh1, rel0, OUTPUTNO, HIDDENNO);
-	  relu (rel1, af1, OUTPUTNO);
+	  affine (af1, rel0, wh1, wb1, OUTPUTNO, HIDDENNO);
+	  softmax (rel1, af1, OUTPUTNO);
 	  
 	  // forward (o, e[no_input], OUTPUTNO, INPUTNO);
 	  for (int err_idx = 0; err_idx < OUTPUTNO; err_idx++) {
