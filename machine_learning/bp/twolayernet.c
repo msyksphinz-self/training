@@ -16,7 +16,7 @@
 #define HIDDENNO (50)    // No of hidden cell
 #define ALPHA    (10)   // Coefficient of learning
 #define SEED     (65535)  // Seed of random
-#define MAXINPUTNO (60000)  // Max number of learning data
+#define MAXINPUTNO (10000)  // Max number of learning data
 #define BIGNUM     (100)  // Initial value of error
 #define LEARNING_RATE (0.1)
 #define LIMIT      (0.001)   // Max number of error
@@ -99,13 +99,6 @@ int main ()
   initwb0 (wb0);
   initwb1 (wb1);
 
-  for (int y = 0; y < INPUTNO; y++) {
-    for (int x = 0; x < HIDDENNO; x++) {
-      printf ("%lf ", wh0[y][x]);
-    }
-    printf ("\n");
-  }
-
   // initwh (INPUTNO, HIDDENNO,  wh0);
   // initwh (HIDDENNO, OUTPUTNO, wh1);
   //
@@ -122,7 +115,7 @@ int main ()
   for (int no_input = 0; no_input < n_of_e; no_input++) {
 	getdata (fd_image, fd_label, in_data, &ans_data);
 
-    print_images (in_data, ans_data);
+    // print_images (in_data, ans_data);
 
 	double ans_label[OUTPUTNO] = {0.0};
 	ans_label[(int)ans_data] = 1.0;
@@ -135,13 +128,13 @@ int main ()
 	affine (HIDDENNO, INPUTNO,  af0, in_data, wh0, wb0);
 	relu (rel0, af0, HIDDENNO);
 
-    printf ("affine0 : "); for (int i = 0; i < HIDDENNO; i++) { printf ("%1.10lf ", af0[i]); if ((i%10) == 9) { printf ("\n"); }  } printf("\n");
+    // printf ("affine0 : "); for (int i = 0; i < HIDDENNO; i++) { printf ("%1.10lf ", af0[i]); if ((i%10) == 9) { printf ("\n"); }  } printf("\n");
     // printf ("relu0   : "); for (int i = 0; i < HIDDENNO; i++) { printf ("%1.3lf ", rel0[i]); } printf("\n");
 
-	affine (OUTPUTNO, HIDDENNO, af1, rel0,    wh1, wb1);
+    affine (OUTPUTNO, HIDDENNO, af1, rel0,    wh1, wb1);
 	// softmax (OUTPUTNO, rel1, af1);
 
-	// printf ("affine1 : "); for (int i = 0; i < OUTPUTNO; i++) { printf ("%1.5lf ", af1[i]); } printf("\n");
+    // printf ("affine1 : "); for (int i = 0; i < OUTPUTNO; i++) { printf ("%1.5lf ", af1[i]); } printf("\n");
     // printf ("softmax1: "); for (int i = 0; i < OUTPUTNO; i++) { printf ("%1.5lf ", rel1[i]);  } printf("\n");
 
 	int t = argmax (OUTPUTNO, af1);
@@ -150,48 +143,25 @@ int main ()
 	printf ("t = %d, ans_data=%d\n", t, (int)ans_data);
 
 	// Back ward
-	// double softmax_dx[OUTPUTNO];
-	// softmax_backward (softmax_dx, rel1, ans_label, OUTPUTNO);
-    //
-	// double affine1_dx[HIDDENNO];
-	// double affine1_dw[HIDDENNO][OUTPUTNO];
-	// double affine1_db[OUTPUTNO];
-	// affine_backward (OUTPUTNO, HIDDENNO,
-	// 				 affine1_dx, affine1_dw, affine1_db,
-	// 				 af1, rel0);
-	// double relu_dx[HIDDENNO];
-	// relu_backward (relu_dx, rel0, HIDDENNO);
-	// double affine0_dx[INPUTNO];
-	// double affine0_dw[INPUTNO][HIDDENNO];
-	// double affine0_db[HIDDENNO];
-	// affine_backward (OUTPUTNO, HIDDENNO,
-	// 				 affine0_dx, affine0_dw, affine0_db,
-	// 				 af0, in_data);
-    //
+	double softmax_dx[OUTPUTNO];
+	softmax_backward (softmax_dx, rel1, ans_label, OUTPUTNO);
+
+	double affine1_dx[HIDDENNO];
+	double affine1_dw[HIDDENNO][OUTPUTNO];
+	double affine1_db[OUTPUTNO];
+	affine_backward (OUTPUTNO, HIDDENNO,
+					 affine1_dx, affine1_dw, affine1_db,
+					 af1, rel0);
+	double relu_dx[HIDDENNO];
+	relu_backward (relu_dx, rel0, HIDDENNO);
+	double affine0_dx[INPUTNO];
+	double affine0_dw[INPUTNO][HIDDENNO];
+	double affine0_db[HIDDENNO];
+	affine_backward (OUTPUTNO, HIDDENNO,
+					 affine0_dx, affine0_dw, affine0_db,
+					 af0, in_data);
+
 	// printf ("affine1_db : "); for (int i = 0; i < OUTPUTNO; i++) printf ("%1.5lf ", affine1_db[i]); printf ("\n");
-
-
-
-	// for (int j = 0; j < OUTPUTNO; j++) {
-	//   for (int i = 0; i < HIDDENNO; i++) {
-	// 	printf ("%1.5lf ", affine0_dw[j][i]);
-	//   }
-	//   printf ("\n");
-	// }
-	// for (int i = 0; i < HIDDENNO; i++) wb1[i] = LEARNING_RATE * affine1_db[i];
-	// for (int j = 0; j < HIDDENNO; j++) {
-	//   for (int i = 0; i < INPUTNO; i++) wh1[j][i] = LEARNING_RATE * affine1_dw[j][i];
-	// }
-
-
-	// for (int i = 0; i < HIDDENNO; i++) wb0[i] = LEARNING_RATE * affine0_db[i];
-	// for (int j = 0; j < OUTPUTNO; j++) {
-	//   for (int i = 0; i < HIDDENNO; i++) wh0[j][i] = LEARNING_RATE * affine0_dw[j][i];
-	// }
-	// for (int i = 0; i < HIDDENNO; i++) wb1[i] = LEARNING_RATE * affine1_db[i];
-	// for (int j = 0; j < HIDDENNO; j++) {
-	//   for (int i = 0; i < INPUTNO; i++) wh1[j][i] = LEARNING_RATE * affine1_dw[j][i];
-	// }
 
 	err = (double)correct / no_input;
 	printf ("%d\t%lf\n", no_input, err);
@@ -289,7 +259,8 @@ void print_images (double data[INPUTNO], double label)
 {
   printf ("=== LABEL %d ===\n", (int)label);
   for (int j = 0; j < INPUTNO; j++) {
-	printf("%3d ", (int)(data[j] * 256.0));
+	// printf("%3d ", (int)(data[j] * 256.0));
+    printf("%1.5lf ", data[j]);
 	if ( (j+1) % 28 == 0 ){
 	  printf("\n");
 	}
@@ -299,12 +270,15 @@ void print_images (double data[INPUTNO], double label)
 
 double affine (const int output_size, const int input_size,
 			   double *o, const double *e,
-			   const double wh[output_size][input_size], const double *b)
+			   const double wh[input_size][output_size], const double *b)
 {
   for (int i = 0; i < output_size; i++) {
 	o[i] = 0.0;
 	for (int j = 0; j < input_size; j++) {
-	  o[i] += e[j] * wh[i][j];
+	  // o[i] += (e[j] * wh[j][i]);
+      double e_t = e[j] * 1.0;
+      double wh_t  = wh[j][i] * 1.0;
+      o[i] += (e_t * wh_t);
 	}
 	o[i] += b[i];
   }
@@ -412,7 +386,7 @@ void print (double wh[HIDDENNO][INPUTNO],
 
 void initwh0 (double wh[INPUTNO][HIDDENNO])
 {
-  FILE *fp = fopen("./dl_scratch/grad_w1.h", "r");
+  FILE *fp = fopen("./dl_scratch/w1.h", "r");
   for (int y = 0; y < INPUTNO; y++) {
     for (int x = 0; x < HIDDENNO; x++) {
       fscanf(fp, "%lf", &wh[y][x]);
@@ -423,7 +397,7 @@ void initwh0 (double wh[INPUTNO][HIDDENNO])
 
 void initwh1 (double wh[HIDDENNO][OUTPUTNO])
 {
-  FILE *fp = fopen("./dl_scratch/grad_w2.h", "r");
+  FILE *fp = fopen("./dl_scratch/w2.h", "r");
   for (int y = 0; y < HIDDENNO; y++) {
     for (int x = 0; x < OUTPUTNO; x++) {
       fscanf(fp, "%lf", &wh[y][x]);
@@ -434,7 +408,7 @@ void initwh1 (double wh[HIDDENNO][OUTPUTNO])
 
 void initwb0 (double wb[HIDDENNO])
 {
-  FILE *fp = fopen("./dl_scratch/grad_b1.h", "r");
+  FILE *fp = fopen("./dl_scratch/b1.h", "r");
   for (int x = 0; x < HIDDENNO; x++) {
     fscanf (fp, "%lf", &wb[x]);
   }
@@ -443,7 +417,7 @@ void initwb0 (double wb[HIDDENNO])
 
 void initwb1 (double wb[OUTPUTNO])
 {
-  FILE *fp = fopen("./dl_scratch/grad_b2.h", "r");
+  FILE *fp = fopen("./dl_scratch/b2.h", "r");
   for (int x = 0; x < OUTPUTNO; x++) {
     fscanf (fp, "%lf", &wb[x]);
   }
