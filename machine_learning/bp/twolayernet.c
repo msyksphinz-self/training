@@ -126,7 +126,7 @@ int main ()
   for (int no_input = 0; no_input < n_of_e; no_input++) {
 	getdata (fd_image, fd_label, in_data, ans_data);
 
-	print_images (in_data[0], ans_data[0]);
+	// print_images (in_data[0], ans_data[0]);
 
 	double ans_label[OUTPUTNO] = {1.0};
 	ans_label[(int)ans_data[0]] = 1.0;
@@ -257,8 +257,8 @@ int open_label ()
 int getdata (int fd_image, int fd_label, double in_data[BATCH_SIZE][INPUTNO], double *ans)
 {
   uint8_t image[INPUTNO];
-  read (fd_image, image, INPUTNO * sizeof(unsigned char));
   for (int b = 0; b < BATCH_SIZE; b++) {
+	read (fd_image, image, INPUTNO * sizeof(unsigned char));
 	for (int j = 0; j < INPUTNO; j++) {
 	  in_data[b][j] = (double)image[j] / 256.0;
 	}
