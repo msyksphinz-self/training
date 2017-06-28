@@ -17,6 +17,7 @@
 #define ALPHA    (10)   // Coefficient of learning
 #define SEED     (65535)  // Seed of random
 #define MAXINPUTNO (10000)  // Max number of learning data
+#define BATCH_SIZE (100)
 #define BIGNUM     (100)  // Initial value of error
 #define LEARNING_RATE (0.1)
 #define LIMIT      (0.001)   // Max number of error
@@ -25,7 +26,10 @@
 int open_image ();
 int open_label ();
 
-int getdata (int fd_image, int fd_label, double *in_data, double *ans);
+int getdata (int fd_image,
+			 int fd_label,
+			 double in_data[BATCH_SIZE][INPUTNO],
+			 double *ans);
 void hlearn (double **wh, // weight of hidden layer
 			 double *wo, // weight of output layer
 			 int output_size, int input_size,
@@ -40,14 +44,21 @@ void olearn (double *wo,
 			 double *ans,
 			 double *o);
 
-double affine (const int output_size, const int input_size,
-			   double *o, const double *e,
-			   const double wh[output_size][input_size], const double *b);
+double affine (const int output_size,
+			   const int input_size,
+			   const int batch_size,
+			   double o[batch_size][output_size],
+			   const double in_data[batch_size][input_size],
+			   const double wh[input_size][output_size],
+			   const double *b);
 double affine_backward (const int output_size, const int hidden_size,
 						double *dx, double dw[output_size][hidden_size], double *db,
 						double *dout, double *x);
 
-double relu    (double *o, const double *e, const int input_size);
+void relu (const int batch_size,
+		   const int size,
+		   double o[batch_size][size],
+		   const double e[batch_size][size]);
 double relu_backward (double *dx, double *dout, int size);
 
 double softmax (const int input_size, double *o, double *e);
@@ -83,8 +94,8 @@ int main ()
   double wb1[OUTPUTNO];
 
   double hi[HIDDENNO + 1];
-  double in_data[INPUTNO];
-  double ans_data;
+  double in_data[BATCH_SIZE][INPUTNO];
+  double ans_data[BATCH_SIZE];
   double o[OUTPUTNO];
   double err = BIGNUM;
   int i, j;
@@ -105,7 +116,7 @@ int main ()
   // initwb (HIDDENNO, wb0);
   // initwb (HIDDENNO, wb1);
 
-  n_of_e = MAXINPUTNO;
+  n_of_e = MAXINPUTNO / BATCH_SIZE;
   int fd_image = open_image ();
   int fd_label = open_label ();
 
@@ -113,57 +124,59 @@ int main ()
   err = 0.0;
   int correct = 0;
   for (int no_input = 0; no_input < n_of_e; no_input++) {
-	getdata (fd_image, fd_label, in_data, &ans_data);
+	getdata (fd_image, fd_label, in_data, ans_data);
 
-    // print_images (in_data, ans_data);
+	print_images (in_data[0], ans_data[0]);
 
-	double ans_label[OUTPUTNO] = {0.0};
-	ans_label[(int)ans_data] = 1.0;
+	double ans_label[OUTPUTNO] = {1.0};
+	ans_label[(int)ans_data[0]] = 1.0;
 
-	double af0[HIDDENNO];
-	double af1[OUTPUTNO];
-	double rel0[HIDDENNO];
-	double rel1[HIDDENNO];
+	double af0[BATCH_SIZE][HIDDENNO];
+	double af1[BATCH_SIZE][OUTPUTNO];
+	double rel0[BATCH_SIZE][HIDDENNO];
+	double rel1[BATCH_SIZE][HIDDENNO];
 
-	affine (HIDDENNO, INPUTNO,  af0, in_data, wh0, wb0);
-	relu (rel0, af0, HIDDENNO);
+	affine (HIDDENNO, INPUTNO, BATCH_SIZE, af0, in_data, wh0, wb0);
+	relu (BATCH_SIZE, HIDDENNO, rel0, af0);
 
     // printf ("affine0 : "); for (int i = 0; i < HIDDENNO; i++) { printf ("%1.10lf ", af0[i]); if ((i%10) == 9) { printf ("\n"); }  } printf("\n");
     // printf ("relu0   : "); for (int i = 0; i < HIDDENNO; i++) { printf ("%1.3lf ", rel0[i]); } printf("\n");
 
-    affine (OUTPUTNO, HIDDENNO, af1, rel0,    wh1, wb1);
+    affine (OUTPUTNO, HIDDENNO, BATCH_SIZE, af1, rel0,    wh1, wb1);
 	// softmax (OUTPUTNO, rel1, af1);
 
     // printf ("affine1 : "); for (int i = 0; i < OUTPUTNO; i++) { printf ("%1.5lf ", af1[i]); } printf("\n");
     // printf ("softmax1: "); for (int i = 0; i < OUTPUTNO; i++) { printf ("%1.5lf ", rel1[i]);  } printf("\n");
 
-	int t = argmax (OUTPUTNO, af1);
-	if (t == (int)ans_data) correct++;
+	for (int b = 0; b < BATCH_SIZE; b++) {
+	  int t = argmax (OUTPUTNO, af1[b]);
+	  if (t == (int)ans_data[b]) correct++;
+	}
 
-	printf ("t = %d, ans_data=%d\n", t, (int)ans_data);
+	// printf ("t = %d, ans_data=%d\n", t, (int)ans_data);
 
-	// Back ward
-	double softmax_dx[OUTPUTNO];
-	softmax_backward (softmax_dx, rel1, ans_label, OUTPUTNO);
-
-	double affine1_dx[HIDDENNO];
-	double affine1_dw[HIDDENNO][OUTPUTNO];
-	double affine1_db[OUTPUTNO];
-	affine_backward (OUTPUTNO, HIDDENNO,
-					 affine1_dx, affine1_dw, affine1_db,
-					 af1, rel0);
-	double relu_dx[HIDDENNO];
-	relu_backward (relu_dx, rel0, HIDDENNO);
-	double affine0_dx[INPUTNO];
-	double affine0_dw[INPUTNO][HIDDENNO];
-	double affine0_db[HIDDENNO];
-	affine_backward (OUTPUTNO, HIDDENNO,
-					 affine0_dx, affine0_dw, affine0_db,
-					 af0, in_data);
+	// // Back ward
+	// double softmax_dx[OUTPUTNO];
+	// softmax_backward (softmax_dx, rel1, ans_label, OUTPUTNO);
+	// 
+	// double affine1_dx[HIDDENNO];
+	// double affine1_dw[HIDDENNO][OUTPUTNO];
+	// double affine1_db[OUTPUTNO];
+	// affine_backward (OUTPUTNO, HIDDENNO,
+	// 				 affine1_dx, affine1_dw, affine1_db,
+	// 				 af1, rel0);
+	// double relu_dx[HIDDENNO];
+	// relu_backward (relu_dx, rel0, HIDDENNO);
+	// double affine0_dx[INPUTNO];
+	// double affine0_dw[INPUTNO][HIDDENNO];
+	// double affine0_db[HIDDENNO];
+	// affine_backward (OUTPUTNO, HIDDENNO,
+	// 				 affine0_dx, affine0_dw, affine0_db,
+	// 				 af0, in_data);
 
 	// printf ("affine1_db : "); for (int i = 0; i < OUTPUTNO; i++) printf ("%1.5lf ", affine1_db[i]); printf ("\n");
 
-	err = (double)correct / no_input;
+	err = (double)correct / (no_input * BATCH_SIZE);
 	printf ("%d\t%lf\n", no_input, err);
   }
 
@@ -241,17 +254,18 @@ int open_label ()
 }
 
 
-int getdata (int fd_image, int fd_label, double *in_data, double *ans)
+int getdata (int fd_image, int fd_label, double in_data[BATCH_SIZE][INPUTNO], double *ans)
 {
   uint8_t image[INPUTNO];
   read (fd_image, image, INPUTNO * sizeof(unsigned char));
-  for (int j = 0; j < INPUTNO; j++) {
-	in_data[j] = (double)image[j] / 256.0;
-    // printf ("%lf\n", in_data[j]);
+  for (int b = 0; b < BATCH_SIZE; b++) {
+	for (int j = 0; j < INPUTNO; j++) {
+	  in_data[b][j] = (double)image[j] / 256.0;
+	}
+	uint8_t label;
+	read (fd_label, &label, sizeof(uint8_t));
+	ans[b] = (double)label;
   }
-  uint8_t label;
-  read (fd_label, &label, sizeof(uint8_t));
-  *ans = (double)label;
 }
 
 
@@ -268,19 +282,22 @@ void print_images (double data[INPUTNO], double label)
 }
 
 
-double affine (const int output_size, const int input_size,
-			   double *o, const double *e,
-			   const double wh[input_size][output_size], const double *b)
+double affine (const int output_size,
+			   const int input_size,
+			   const int batch_size,
+			   double o[batch_size][output_size],
+			   const double in_data[batch_size][input_size],
+			   const double wh[input_size][output_size],
+			   const double wb[output_size])
 {
-  for (int i = 0; i < output_size; i++) {
-	o[i] = 0.0;
-	for (int j = 0; j < input_size; j++) {
-	  // o[i] += (e[j] * wh[j][i]);
-      double e_t = e[j] * 1.0;
-      double wh_t  = wh[j][i] * 1.0;
-      o[i] += (e_t * wh_t);
+  for (int b = 0; b < batch_size; b++) {
+	for (int i = 0; i < output_size; i++) {
+	  o[b][i] = 0.0;
+	  for (int j = 0; j < input_size; j++) {
+		o[b][i] += (in_data[b][j] * wh[j][i]);
+	  }
+	  o[b][i] += wb[i];
 	}
-	o[i] += b[i];
   }
 }
 
@@ -308,11 +325,17 @@ double affine_backward (const int output_size, const int hidden_size,
 }
 
 
-double relu (double *o, const double *e, int size)
+void relu (const int batch_size,
+		   const int size,
+		   double o[batch_size][size],
+		   const double e[batch_size][size])
 {
-  for (int i = 0; i < size; i++) {
-	o[i] = e[i] > 0.0 ? e[i] : 0.0;
+  for (int b = 0; b < batch_size; b++) {
+	for (int i = 0; i < size; i++) {
+	  o[b][i] = e[b][i] > 0.0 ? e[b][i] : 0.0;
+	}
   }
+  return;
 }
 
 
@@ -386,7 +409,7 @@ void print (double wh[HIDDENNO][INPUTNO],
 
 void initwh0 (double wh[INPUTNO][HIDDENNO])
 {
-  FILE *fp = fopen("./dl_scratch/w1.h", "r");
+  FILE *fp = fopen("./w1.h", "r");
   for (int y = 0; y < INPUTNO; y++) {
     for (int x = 0; x < HIDDENNO; x++) {
       fscanf(fp, "%lf", &wh[y][x]);
@@ -397,7 +420,7 @@ void initwh0 (double wh[INPUTNO][HIDDENNO])
 
 void initwh1 (double wh[HIDDENNO][OUTPUTNO])
 {
-  FILE *fp = fopen("./dl_scratch/w2.h", "r");
+  FILE *fp = fopen("./w2.h", "r");
   for (int y = 0; y < HIDDENNO; y++) {
     for (int x = 0; x < OUTPUTNO; x++) {
       fscanf(fp, "%lf", &wh[y][x]);
@@ -408,7 +431,7 @@ void initwh1 (double wh[HIDDENNO][OUTPUTNO])
 
 void initwb0 (double wb[HIDDENNO])
 {
-  FILE *fp = fopen("./dl_scratch/b1.h", "r");
+  FILE *fp = fopen("./b1.h", "r");
   for (int x = 0; x < HIDDENNO; x++) {
     fscanf (fp, "%lf", &wb[x]);
   }
@@ -417,14 +440,14 @@ void initwb0 (double wb[HIDDENNO])
 
 void initwb1 (double wb[OUTPUTNO])
 {
-  FILE *fp = fopen("./dl_scratch/b2.h", "r");
+  FILE *fp = fopen("./b2.h", "r");
   for (int x = 0; x < OUTPUTNO; x++) {
     fscanf (fp, "%lf", &wb[x]);
   }
 }
 
 
-initwh(const int y_size, const int x_size, double wh[y_size][x_size])
+void initwh (const int y_size, const int x_size, double wh[y_size][x_size])
 {
   for (int i = 0; i < y_size; i++) {
 	for (int j = 0; j < x_size; j++) {
@@ -434,7 +457,7 @@ initwh(const int y_size, const int x_size, double wh[y_size][x_size])
 }
 
 
-void initwb(const int x_size, double *wb)
+void initwb (const int x_size, double *wb)
 {
   for (int j = 0; j < x_size + 1; j++) {
 	wb[j] = 0.0;
