@@ -19,7 +19,7 @@
 #define ALPHA    (10)   // Coefficient of learning
 #define SEED     (65535)  // Seed of random
 #define MAXINPUTNO (60000)  // Max number of learning data
-#define BATCH_SIZE (1)
+#define BATCH_SIZE (100)
 #define BIGNUM     (100)  // Initial value of error
 #define LEARNING_RATE (0.1)
 #define LIMIT      (0.001)   // Max number of error
@@ -57,9 +57,10 @@ double affine_backward (const int output_size,
 						const int hidden_size,
 						const int batch_size,
 						double dx[batch_size][output_size],
-						double db[batch_size][output_size],
+						double db[output_size],
 						double dw[output_size][hidden_size],
 						const double dout[batch_size][output_size],
+						const double w[hidden_size][output_size],
 						const double x[batch_size][hidden_size]);
 
 void relu (const int batch_size,
@@ -69,6 +70,7 @@ void relu (const int batch_size,
 double relu_backward (const int batch_size,
 					  const int size,
 					  double dx[batch_size][size],
+					  const double x[batch_size][size],
 					  const double dout[batch_size][size]);
 
 double softmax (const int batch_size,
@@ -77,7 +79,7 @@ double softmax (const int batch_size,
 				double e[batch_size][size]);
 double softmax_backward (const int batch_size,
 						 const int size,
-						 double dx[batch_size],
+						 double dx[batch_size][size],
 						 const double y[batch_size][size],
 						 const double t[batch_size][size]);
 
@@ -148,7 +150,7 @@ int main ()
 	double af0[BATCH_SIZE][HIDDENNO];
 	double af1[BATCH_SIZE][OUTPUTNO];
 	double rel0[BATCH_SIZE][HIDDENNO];
-	double rel1[BATCH_SIZE][HIDDENNO];
+	double rel1[BATCH_SIZE][OUTPUTNO];
 
 	affine (HIDDENNO, INPUTNO, BATCH_SIZE, af0, in_data, wh0, wb0);
 	relu (BATCH_SIZE, HIDDENNO, rel0, af0);
@@ -160,7 +162,22 @@ int main ()
 	softmax (BATCH_SIZE, OUTPUTNO, rel1, af1);
 
     // printf ("affine1 : "); for (int i = 0; i < OUTPUTNO; i++) { printf ("%1.5lf ", af1[i]); } printf("\n");
-    // printf ("softmax1: "); for (int i = 0; i < OUTPUTNO; i++) { printf ("%1.5lf ", rel1[i]);  } printf("\n");
+
+	// printf ("affine1:\n");
+	// for (int b = 0; b < BATCH_SIZE; b++) {
+	//   for (int i = 0; i < OUTPUTNO; i++) { 
+	// 	printf ("%1.10lf ", af1[b][i]); 
+	//   } 
+	//   printf("\n");
+	// }
+	// 
+	// printf ("softmax1:\n");
+	// for (int b = 0; b < BATCH_SIZE; b++) {
+	//   for (int i = 0; i < OUTPUTNO; i++) { 
+	// 	printf ("%1.10lf ", rel1[b][i]); 
+	//   } 
+	//   printf("\n");
+	// }
 
 	for (int b = 0; b < BATCH_SIZE; b++) {
 	  int t = argmax (OUTPUTNO, af1[b]);
@@ -173,25 +190,84 @@ int main ()
 	  ans_label[b][(int)ans_data[b]] = 1.0;
 	}
 
-	double softmax_dx[OUTPUTNO];
+	double softmax_dx[BATCH_SIZE][OUTPUTNO];
 	softmax_backward (BATCH_SIZE, OUTPUTNO, softmax_dx, rel1, ans_label);
 	
+	// printf ("softmax_dx : \n"); 
+	// for (int b = 0; b < BATCH_SIZE; b++) {
+	//   for (int o = 0; o < OUTPUTNO; o++) {
+	// 	printf ("%1.10lf ", softmax_dx[b][o]);
+	//   }
+	//   printf ("\n");
+	// }
+
+	// printf ("wh1 : \n"); 
+	// for (int h = 0; h < HIDDENNO; h++) {
+	//   for (int o = 0; o < OUTPUTNO; o++) {
+	// 	printf ("%1.10lf ", wh1[h][o]);
+	//   }
+	//   printf ("\n");
+	// }
+	// 
+	// 
+	// printf ("rel0 : \n"); 
+	// for (int b = 0; b < BATCH_SIZE; b++) {
+	//   for (int h = 0; h < HIDDENNO; h++) {
+	// 	printf ("%1.10lf ", rel0[b][h]);
+	//   }
+	//   printf ("\n");
+	// }
+
+
 	double affine1_dx[BATCH_SIZE][HIDDENNO];
 	double affine1_dw[HIDDENNO][OUTPUTNO];
-	double affine1_db[BATCH_SIZE][OUTPUTNO];
+	double affine1_db[OUTPUTNO];
 	affine_backward (OUTPUTNO, HIDDENNO, BATCH_SIZE,
-					 affine1_dx, affine1_db,
-					 affine1_dw, af1, rel0);
+					 affine1_dx, affine1_db, affine1_dw, 
+					 softmax_dx, wh1, rel0);
+
+	// printf ("affine1_dw : "); 
+	// for (int h = 0; h < HIDDENNO; h++) {
+	//   for (int o = 0; o < OUTPUTNO; o++) {
+	// 	printf ("%1.10lf ", affine1_dw[h][o]);
+	//   }
+	//   printf ("\n");
+	// }
+
+	// printf ("affine1_dx : "); 
+	// for (int b = 0; b < BATCH_SIZE; b++) {
+	//   for (int h = 0; h < HIDDENNO; h++) {
+	// 	printf ("%1.10lf ", affine1_dx[b][h]);
+	//   }
+	//   printf ("\n");
+	// }
+
 	double relu_dx[BATCH_SIZE][HIDDENNO];
-	relu_backward (BATCH_SIZE, HIDDENNO, relu_dx, rel0);
+	relu_backward (BATCH_SIZE, HIDDENNO, relu_dx, af0, affine1_dx);
+
+	// printf ("relu_dx : \n");
+	// for (int b = 0; b < BATCH_SIZE; b++) {
+	//   for (int h = 0; h < HIDDENNO; h++) {
+	// 	printf ("%1.10lf ", relu_dx[b][h]);
+	//   }
+	//   printf ("\n");
+	// }
+
+
 	double affine0_dx[BATCH_SIZE][INPUTNO];
 	double affine0_dw[INPUTNO][HIDDENNO];
-	double affine0_db[BATCH_SIZE][HIDDENNO];
-	affine_backward (OUTPUTNO, HIDDENNO, BATCH_SIZE,
-					 affine0_dx, affine0_db,
-					 affine0_dw, af0, in_data);
+	double affine0_db[HIDDENNO];
+	affine_backward (HIDDENNO, INPUTNO, BATCH_SIZE,
+					 affine0_dx, affine0_db, affine0_dw, 
+					 relu_dx, wh0, in_data);
 
-	// printf ("affine1_db : "); for (int i = 0; i < OUTPUTNO; i++) printf ("%1.5lf ", affine1_db[i]); printf ("\n");
+	// printf ("affine0_dw : "); 
+	// for (int i = 0; i < INPUTNO; i++) {
+	//   for (int h = 0; h < HIDDENNO; h++) {
+	// 	printf ("%1.10lf ", affine0_dw[i][h]);
+	//   }
+	//   printf ("\n");
+	// }
 
 	err = (double)correct / (no_input * BATCH_SIZE);
 	printf ("%d\t%lf\n", no_input, err);
@@ -319,28 +395,33 @@ double affine (const int output_size,
 double affine_backward (const int output_size,
 						const int hidden_size,
 						const int batch_size,
-						double dx[batch_size][output_size],
-						double db[batch_size][output_size],
-						double dw[output_size][hidden_size],
+						double dx[batch_size][hidden_size],
+						double db[output_size],
+						double dw[hidden_size][output_size],
 						const double dout[batch_size][output_size],
+						const double w[hidden_size][output_size],
 						const double x[batch_size][hidden_size])
 {
   for (int b = 0; b < batch_size; b++) {
-	for (int x = 0;x < output_size; x++) {
-	  dx[b][x] = 0.0;
-	  for (int y = 0; y < hidden_size; y++) {
-		dx[b][x] += dout[b][y] * dw[x][y];  // dw is Transpose
+	for (int y = 0; y < hidden_size; y++) {
+	  dx[b][y] = 0.0;
+	  for (int x = 0;x < output_size; x++) {
+		dx[b][y] += (dout[b][x] * w[y][x]);  // w is Transpose
 	  }
 	}
-
-	for (int y_idx = 0; y_idx < hidden_size; y_idx++) {
-	  for (int x_idx = 0; x_idx < output_size; x_idx++) {
-		dw[y_idx][x_idx] = x[b][y_idx] * dout[b][x_idx];
+  }
+  for (int h = 0; h < hidden_size; h++) {
+	for (int o = 0; o < output_size; o++) {
+	  for (int b = 0; b < batch_size; b++) {
+		dw[h][o] += (x[b][h] * dout[b][o]);
 	  }
 	}
+  }
 
-	for (int y = 0; y < output_size; y++) {
-	  db[b][y] = dout[b][y];
+  for (int o = 0; o < output_size; o++) {
+	db[o] = 0.0;
+	for (int b = 0; b < batch_size; b++) {
+	  db[o] += dout[b][o];
 	}
   }
 }
@@ -363,11 +444,12 @@ void relu (const int batch_size,
 double relu_backward (const int batch_size,
 					  const int size,
 					  double dx[batch_size][size],
+					  const double x[batch_size][size],
 					  const double dout[batch_size][size])
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int i = 0; i < size; i++) {
-	  dx[b][i] = dout[b][i];
+	  dx[b][i] = (x[b][i] > 0.0) ? dout[b][i] : 0.0;
 	}
   }
 }
@@ -378,19 +460,23 @@ double softmax (const int batch_size,
 				double o[batch_size][size],
 				double e[batch_size][size])
 {
+  double *max = (double *)malloc(sizeof(double) * batch_size);
   for (int b = 0; b < batch_size; b++) {
-	double max = e[b][0];
+	max[b] = e[b][0];
 	for (int i = 1; i < size; i++) {
-	  max = max < e[b][i] ? e[b][i] : max;
+	  max[b] = max[b] < e[b][i] ? e[b][i] : max[b];
 	}
+  }
+
+  for (int b = 0; b < batch_size; b++) {
 	double exp_sum = 0.0;
-	double *exp_a = (double *)malloc(sizeof(double) * size);
+	double *a = (double *)malloc(sizeof(double) * size);
 	for (int i = 0; i < size; i++) {
-	  exp_a[i] = exp (e[b][i] - max);
-	  exp_sum += exp_a[i];
+	  a[i] = e[b][i] - max[b];
+	  exp_sum += exp(a[i]);
 	}
 	for (int i = 0; i < size; i++) {
-	  o[b][i] = exp_a[i] / exp_sum;
+	  o[b][i] = exp(a[i]) / exp_sum;
 	}
   }
 }
@@ -398,14 +484,21 @@ double softmax (const int batch_size,
 
 double softmax_backward (const int batch_size,
 						 const int size,
-						 double dx[batch_size],
+						 double dx[batch_size][size],
 						 const double y[batch_size][size],
 						 const double t[batch_size][size])
 {
+  // printf ("=== softmax_backward ===\n");
   for (int b = 0; b < batch_size; b++) {
+	// for (int y_idx = 0; y_idx < size; y_idx++) {
+	//   printf ("%1.10lf ", t[b][y_idx]);
+	// }
+	// printf ("\n");
 	for (int y_idx = 0; y_idx < size; y_idx++) {
-	  dx[y_idx] = (y[y_idx] - t[y_idx]) / batch_size;
+	  dx[b][y_idx] = (y[b][y_idx] - t[b][y_idx]) / batch_size;
+	  // printf ("%1.10lf ", dx[b][y_idx]);
 	}
+	// printf ("\n");
   }
 }
 
