@@ -30,7 +30,7 @@ int open_label ();
 
 int getdata (int fd_image,
 			 int fd_label,
-			 double in_data[BATCH_SIZE * INPUTNO],
+			 double *in_data,
 			 double *ans);
 void hlearn (double **wh, // weight of hidden layer
 			 double *wo, // weight of output layer
@@ -116,8 +116,8 @@ int main ()
   double wb1[OUTPUTNO];
 
   double hi[HIDDENNO + 1];
-  double in_data[BATCH_SIZE * INPUTNO];
-  double ans_data[BATCH_SIZE];
+  double in_data[MAXINPUTNO * INPUTNO];
+  double ans_data[MAXINPUTNO];
   double o[OUTPUTNO];
   int n_of_e;
 
@@ -134,15 +134,16 @@ int main ()
 
   const int epoch_size = 50;
 
+  getdata (fd_image, fd_label, in_data, ans_data);
+
   for (int no_input = 0; no_input < n_of_e; no_input++) {
-	getdata (fd_image, fd_label, in_data, ans_data);
 
 	double af0[BATCH_SIZE * HIDDENNO];
 	double af1[BATCH_SIZE * OUTPUTNO];
 	double rel0[BATCH_SIZE * HIDDENNO];
 	double rel1[BATCH_SIZE * OUTPUTNO];
 
-	affine (HIDDENNO, INPUTNO,  BATCH_SIZE, af0, in_data, wh0, wb0);
+	affine (HIDDENNO, INPUTNO,  BATCH_SIZE, af0, &in_data[INPUTNO * BATCH_SIZE * no_input] , wh0, wb0);
 	relu (BATCH_SIZE, HIDDENNO, rel0, af0);
 
     affine (OUTPUTNO, HIDDENNO, BATCH_SIZE, af1, rel0,    wh1, wb1);
@@ -151,7 +152,7 @@ int main ()
 	// Back ward
 	double ans_label[BATCH_SIZE * OUTPUTNO] = {0.0};
 	for (int b = 0; b < BATCH_SIZE; b++) {
-	  ans_label[b * OUTPUTNO + (int)ans_data[b]] = 1.0;
+	  ans_label[b * OUTPUTNO + (int)ans_data[no_input * BATCH_SIZE + b]] = 1.0;
 	}
 	double softmax_dx[BATCH_SIZE * OUTPUTNO];
 	softmax_backward (BATCH_SIZE, OUTPUTNO, softmax_dx, rel1, ans_label);
@@ -170,7 +171,7 @@ int main ()
 	double affine0_db[HIDDENNO];
 	affine_backward (HIDDENNO, INPUTNO, BATCH_SIZE,
 					 affine0_dx, affine0_db, affine0_dw,
-					 relu_dx, wh0, in_data, 0);
+					 relu_dx, wh0, &in_data[INPUTNO * BATCH_SIZE * no_input], 0);
 
 	for (int i = 0; i < INPUTNO; i++) {
 	  for (int h = 0; h < HIDDENNO; h++) {
@@ -333,10 +334,10 @@ int open_label ()
 }
 
 
-int getdata (int fd_image, int fd_label, double in_data[BATCH_SIZE * INPUTNO], double *ans)
+int getdata (int fd_image, int fd_label, double *in_data, double *ans)
 {
   uint8_t image[INPUTNO];
-  for (int b = 0; b < BATCH_SIZE; b++) {
+  for (int b = 0; b < MAXINPUTNO; b++) {
 	read (fd_image, image, INPUTNO * sizeof(unsigned char));
 	for (int i = 0; i < INPUTNO; i++) {
 	  in_data[b * INPUTNO + i] = (float)image[i] / 255.0;
