@@ -116,12 +116,12 @@ int main ()
   double wb1[OUTPUTNO];
 
   double hi[HIDDENNO + 1];
-  double in_data[MAXINPUTNO * INPUTNO];
+  double *in_data = malloc (sizeof(double) * MAXINPUTNO * INPUTNO);
   double ans_data[MAXINPUTNO];
   double o[OUTPUTNO];
   int n_of_e;
 
-  srand (SEED);
+  // srand (SEED);
 
   initwh (INPUTNO, HIDDENNO, wh0);
   initwb (HIDDENNO, wb0);
@@ -138,10 +138,10 @@ int main ()
 
   for (int no_input = 0; no_input < n_of_e; no_input++) {
 
-	double af0[BATCH_SIZE * HIDDENNO];
-	double af1[BATCH_SIZE * OUTPUTNO];
-	double rel0[BATCH_SIZE * HIDDENNO];
-	double rel1[BATCH_SIZE * OUTPUTNO];
+    double af0 [BATCH_SIZE * HIDDENNO];
+    double af1 [BATCH_SIZE * OUTPUTNO];
+    double rel0[BATCH_SIZE * HIDDENNO];
+    double rel1[BATCH_SIZE * OUTPUTNO];
 
 	affine (HIDDENNO, INPUTNO,  BATCH_SIZE, af0, &in_data[INPUTNO * BATCH_SIZE * no_input] , wh0, wb0);
 	relu (BATCH_SIZE, HIDDENNO, rel0, af0);
@@ -470,7 +470,9 @@ double softmax (const int batch_size,
 	for (int i = 0; i < size; i++) {
 	  o[b * size + i] = exp(a[i]) / exp_sum;
 	}
+    free (a);
   }
+  free (max);
 }
 
 
