@@ -30,7 +30,7 @@ int open_label ();
 
 int getdata (int fd_image,
 			 int fd_label,
-			 double in_data[BATCH_SIZE][INPUTNO],
+			 double in_data[BATCH_SIZE * INPUTNO],
 			 double *ans);
 void hlearn (double **wh, // weight of hidden layer
 			 double *wo, // weight of output layer
@@ -49,64 +49,58 @@ void olearn (double *wo,
 double affine (const int output_size,
 			   const int input_size,
 			   const int batch_size,
-			   double o[batch_size][output_size],
-			   const double in_data[batch_size][input_size],
-			   const double wh[input_size][output_size],
-			   const double *b);
+			   double *out,           // [batch_size][output_size],
+			   const double *in_data, // [batch_size][input_size],
+			   const double *wh,      // [input_size][output_size],
+			   const double *wb);      // [output_size]
 double affine_backward (const int output_size,
 						const int hidden_size,
 						const int batch_size,
-						double dx[batch_size][output_size],
-						double db[output_size],
-						double dw[output_size][hidden_size],
-						const double dout[batch_size][output_size],
-						const double w[hidden_size][output_size],
-						const double x[batch_size][hidden_size],
+						double *dx,  // [batch_size][output_size],
+						double *db,  // [output_size],
+						double *dw,  // [output_size][hidden_size],
+						const double *dout, // [batch_size][output_size],
+						const double *w,    // [hidden_size][output_size],
+						const double *x,    // [batch_size][hidden_size],
 						int debug);
 
 void relu (const int batch_size,
 		   const int size,
-		   double o[batch_size][size],
-		   const double e[batch_size][size]);
+		   double *o,         // [batch_size][size],
+		   const double *e);  // [batch_size][size]
 double relu_backward (const int batch_size,
 					  const int size,
-					  double dx[batch_size][size],
-					  const double x[batch_size][size],
-					  const double dout[batch_size][size]);
+					  double       *dx,  // [batch_size][size],
+					  const double *x,   // [batch_size][size],
+					  const double *dout); // [batch_size][size]);
 
 double softmax (const int batch_size,
 				const int size,
-				double o[batch_size][size],
-				double e[batch_size][size]);
+				double       *o,  // [batch_size][size],
+				const double *e); // [batch_size][size]
 double softmax_backward (const int batch_size,
 						 const int size,
-						 double dx[batch_size][size],
-						 const double y[batch_size][size],
-						 const double t[batch_size][size]);
+						 double       *dx,   // [batch_size][size],
+						 const double *y,    // [batch_size][size],
+						 const double *t);   // [batch_size][size])
 
 void forward (double *o, double *e, int input_size, int output_size);
 
 void TestNetwork (const int input_size,
 				  const int output_size,
 				  const int hidden_size,
-				  const double wh0[input_size][hidden_size],
-				  const double wb0[hidden_size],
-				  const double wh1[hidden_size][output_size],
-				  const double wb1[output_size]);
+				  const double *wh0,   // [input_size][hidden_size],
+				  const double *wb0,   // [hidden_size],
+				  const double *wh1,   // [hidden_size][output_size],
+				  const double *wb1);   // [output_size]
 
 int argmax (const int x_size, double *o);
 
 void print (double wh[HIDDENNO][INPUTNO],
 			double wo[HIDDENNO]);
 
-void initwh(const int y_size, const int x_size, double wh[y_size][x_size]);
+void initwh(const int y_size, const int x_size, double *wh);
 void initwb(const int x_size, double *wb);
-
-void initwh0 (double wh[INPUTNO][HIDDENNO]);
-void initwh1 (double wh[HIDDENNO][OUTPUTNO]);
-void initwb0 (double wb[HIDDENNO]);
-void initwb1 (double wb[HIDDENNO]);
-
 
 double rand_normal ( double mu, double sigma );
 double drnd ();
@@ -115,14 +109,14 @@ double f (double u);
 
 int main ()
 {
-  double wh0[INPUTNO][HIDDENNO];
+  double wh0[INPUTNO * HIDDENNO];
   double wb0[HIDDENNO];
 
-  double wh1[HIDDENNO][OUTPUTNO];
+  double wh1[HIDDENNO * OUTPUTNO];
   double wb1[OUTPUTNO];
 
   double hi[HIDDENNO + 1];
-  double in_data[BATCH_SIZE][INPUTNO];
+  double in_data[BATCH_SIZE * INPUTNO];
   double ans_data[BATCH_SIZE];
   double o[OUTPUTNO];
   int n_of_e;
@@ -139,64 +133,64 @@ int main ()
   int fd_label = open_label ();
 
   const int epoch_size = 50;
-  
+
   for (int no_input = 0; no_input < n_of_e; no_input++) {
 	getdata (fd_image, fd_label, in_data, ans_data);
 
-	double af0[BATCH_SIZE][HIDDENNO];
-	double af1[BATCH_SIZE][OUTPUTNO];
-	double rel0[BATCH_SIZE][HIDDENNO];
-	double rel1[BATCH_SIZE][OUTPUTNO];
+	double af0[BATCH_SIZE * HIDDENNO];
+	double af1[BATCH_SIZE * OUTPUTNO];
+	double rel0[BATCH_SIZE * HIDDENNO];
+	double rel1[BATCH_SIZE * OUTPUTNO];
 
-	affine (HIDDENNO, INPUTNO, BATCH_SIZE, af0, in_data, wh0, wb0);
+	affine (HIDDENNO, INPUTNO,  BATCH_SIZE, af0, in_data, wh0, wb0);
 	relu (BATCH_SIZE, HIDDENNO, rel0, af0);
 
-    affine (OUTPUTNO, HIDDENNO, BATCH_SIZE, af1, rel0, wh1, wb1);
+    affine (OUTPUTNO, HIDDENNO, BATCH_SIZE, af1, rel0,    wh1, wb1);
 	softmax (BATCH_SIZE, OUTPUTNO, rel1, af1);
 
 	// Back ward
-	double ans_label[BATCH_SIZE][OUTPUTNO] = {{0.0}};
+	double ans_label[BATCH_SIZE * OUTPUTNO] = {0.0};
 	for (int b = 0; b < BATCH_SIZE; b++) {
-	  ans_label[b][(int)ans_data[b]] = 1.0;
+	  ans_label[b * OUTPUTNO + (int)ans_data[b]] = 1.0;
 	}
-	double softmax_dx[BATCH_SIZE][OUTPUTNO];
+	double softmax_dx[BATCH_SIZE * OUTPUTNO];
 	softmax_backward (BATCH_SIZE, OUTPUTNO, softmax_dx, rel1, ans_label);
-	double affine1_dx[BATCH_SIZE][HIDDENNO];
-	double affine1_dw[HIDDENNO][OUTPUTNO];
+	double affine1_dx[BATCH_SIZE * HIDDENNO];
+	double affine1_dw[HIDDENNO * OUTPUTNO];
 	double affine1_db[OUTPUTNO];
 
 	affine_backward (OUTPUTNO, HIDDENNO, BATCH_SIZE,
-					 affine1_dx, affine1_db, affine1_dw, 
+					 affine1_dx, affine1_db, affine1_dw,
 					 softmax_dx, wh1, rel0, no_input == DUMP_IDX);
 
-	double relu_dx[BATCH_SIZE][HIDDENNO];
+	double relu_dx[BATCH_SIZE * HIDDENNO];
 	relu_backward (BATCH_SIZE, HIDDENNO, relu_dx, af0, affine1_dx);
-	double affine0_dx[BATCH_SIZE][INPUTNO];
-	double affine0_dw[INPUTNO][HIDDENNO];
+	double affine0_dx[BATCH_SIZE * INPUTNO];
+	double affine0_dw[INPUTNO * HIDDENNO];
 	double affine0_db[HIDDENNO];
 	affine_backward (HIDDENNO, INPUTNO, BATCH_SIZE,
-					 affine0_dx, affine0_db, affine0_dw, 
+					 affine0_dx, affine0_db, affine0_dw,
 					 relu_dx, wh0, in_data, 0);
 
 	for (int i = 0; i < INPUTNO; i++) {
 	  for (int h = 0; h < HIDDENNO; h++) {
-		wh0[i][h] -= (LEARNING_RATE * affine0_dw[i][h]);
+		wh0[i * HIDDENNO + h] -= (LEARNING_RATE * affine0_dw[i * HIDDENNO + h]);
 	  }
 	}
 
 	for (int h = 0; h < HIDDENNO; h++) {
 	  wb0[h] -= (LEARNING_RATE * affine0_db[h]);
 	}
-	
+
 	for (int h = 0; h < HIDDENNO; h++) {
 	  for (int o = 0; o < OUTPUTNO; o++) {
-		wh1[h][o] -= (LEARNING_RATE * affine1_dw[h][o]);
+		wh1[h * OUTPUTNO + o] -= (LEARNING_RATE * affine1_dw[h * OUTPUTNO + o]);
 	  }
 	}
 	for (int o = 0; o < OUTPUTNO; o++) {
 	  wb1[o] -= (LEARNING_RATE * affine1_db[o]);
 	}
-	
+
 	if ((no_input % epoch_size) == 0) {
 	  TestNetwork (INPUTNO, OUTPUTNO, HIDDENNO, wh0, wb0, wh1, wb1);
 	}
@@ -213,10 +207,10 @@ int main ()
 void TestNetwork (const int input_size,
 				  const int output_size,
 				  const int hidden_size,
-				  const double wh0[input_size][hidden_size],
-				  const double wb0[hidden_size],
-				  const double wh1[hidden_size][output_size],
-				  const double wb1[output_size])
+				  const double *wh0,  // [input_size][hidden_size],
+				  const double *wb0,  // [hidden_size],
+				  const double *wh1,  // [hidden_size][output_size],
+				  const double *wb1)  // [output_size]
 {
   printf ("=== TestNetwork ===\n");
   int image_fd;
@@ -227,7 +221,7 @@ void TestNetwork (const int input_size,
   unsigned char *ptr;
   static int num[10];
   read(image_fd, num, 4 * sizeof(int));
-  
+
   int label_fd;
   if ((label_fd = open("t10k-labels-idx1-ubyte", O_RDONLY)) == -1){
 	printf("couldn't open image file t10k-labels-idx1-ubyte");
@@ -239,7 +233,7 @@ void TestNetwork (const int input_size,
   double ans_data[BATCH_SIZE];
 
   int correct = 0;
-  
+
   for (int no_input = 0; no_input < 10000; no_input += BATCH_SIZE) {
 	for (int b = 0; b < BATCH_SIZE; b++) {
 	  uint8_t image[INPUTNO];
@@ -253,17 +247,17 @@ void TestNetwork (const int input_size,
 	}
 	// if (no_input == 10000-BATCH_SIZE) print_images (in_data[0], ans_data[0]);
 
-	double af0[BATCH_SIZE][HIDDENNO];
-	double af1[BATCH_SIZE][OUTPUTNO];
-	double rel0[BATCH_SIZE][HIDDENNO];
-	double rel1[BATCH_SIZE][OUTPUTNO];
+	double af0 [BATCH_SIZE * HIDDENNO];
+	double af1 [BATCH_SIZE * OUTPUTNO];
+	double rel0[BATCH_SIZE * HIDDENNO];
+	double rel1[BATCH_SIZE * OUTPUTNO];
 
-	affine (HIDDENNO, INPUTNO,  BATCH_SIZE, af0, in_data, wh0, wb0);
+	affine (HIDDENNO, INPUTNO,  BATCH_SIZE, af0, (const double *)in_data, wh0, wb0);
 	relu (BATCH_SIZE, HIDDENNO, rel0, af0);
 	affine (OUTPUTNO, HIDDENNO, BATCH_SIZE, af1, rel0,    wh1, wb1);
 
 	for (int b = 0; b < BATCH_SIZE; b++) {
-	  int t = argmax (OUTPUTNO, af1[b]);
+	  int t = argmax (OUTPUTNO, &af1[b * OUTPUTNO]);
 	  if (t == (int)ans_data[b]) correct++;
 	}
   }
@@ -339,13 +333,13 @@ int open_label ()
 }
 
 
-int getdata (int fd_image, int fd_label, double in_data[BATCH_SIZE][INPUTNO], double *ans)
+int getdata (int fd_image, int fd_label, double in_data[BATCH_SIZE * INPUTNO], double *ans)
 {
   uint8_t image[INPUTNO];
   for (int b = 0; b < BATCH_SIZE; b++) {
 	read (fd_image, image, INPUTNO * sizeof(unsigned char));
-	for (int j = 0; j < INPUTNO; j++) {
-	  in_data[b][j] = (float)image[j] / 255.0;
+	for (int i = 0; i < INPUTNO; i++) {
+	  in_data[b * INPUTNO + i] = (float)image[i] / 255.0;
 	}
 	uint8_t label;
 	read (fd_label, &label, sizeof(uint8_t));
@@ -370,18 +364,18 @@ void print_images (double data[INPUTNO], double label)
 double affine (const int output_size,
 			   const int input_size,
 			   const int batch_size,
-			   double out[batch_size][output_size],
-			   const double in_data[batch_size][input_size],
-			   const double wh[input_size][output_size],
-			   const double wb[output_size])
+			   double *out,            // [batch_size][output_size],
+			   const double *in_data,  // [batch_size][input_size],
+			   const double *wh,       // [input_size][output_size],
+			   const double *wb)       // [output_size]
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int o = 0; o < output_size; o++) {
-	  out[b][o] = 0.0;
+	  out[b * output_size + o] = 0.0;
 	  for (int i = 0; i < input_size; i++) {
-		out[b][o] += (in_data[b][i] * wh[i][o]);
+		out[b * output_size + o] += (in_data[b * input_size + i] * wh[i * output_size + o]);
 	  }
-	  out[b][o] += wb[o];
+	  out[b * output_size + o] += wb[o];
 	}
   }
 }
@@ -390,27 +384,27 @@ double affine (const int output_size,
 double affine_backward (const int output_size,
 						const int hidden_size,
 						const int batch_size,
-						double dx[batch_size][hidden_size],
-						double db[output_size],
-						double dw[hidden_size][output_size],
-						const double dout[batch_size][output_size],
-						const double w[hidden_size][output_size],
-						const double x[batch_size][hidden_size],
+						double *dx,  // [batch_size][hidden_size],
+						double *db,  // [output_size],
+						double *dw,  // [hidden_size][output_size],
+						const double *dout,  // [batch_size][output_size],
+						const double *w,     // [hidden_size][output_size],
+						const double *x,     // [batch_size][hidden_size],
 						const int debug)
 {
   for (int b = 0; b < batch_size; b++) {
-	for (int y = 0; y < hidden_size; y++) {
-	  dx[b][y] = 0.0;
-	  for (int x = 0;x < output_size; x++) {
-		dx[b][y] += (dout[b][x] * w[y][x]);  // w is Transpose
+	for (int h = 0; h < hidden_size; h++) {
+	  dx[b * hidden_size + h] = 0.0;
+	  for (int o = 0;o < output_size; o++) {
+		dx[b * hidden_size + h] += (dout[b * output_size + o] * w[h * output_size + o]);  // w is Transpose
 	  }
 	}
   }
   for (int h = 0; h < hidden_size; h++) {
 	for (int o = 0; o < output_size; o++) {
-	  dw[h][o] = 0.0;
+	  dw[h * output_size + o] = 0.0;
 	  for (int b = 0; b < batch_size; b++) {
-		dw[h][o] += (x[b][h] * dout[b][o]);
+		dw[h * output_size + o] += (x[b * hidden_size + h] * dout[b * output_size + o]);
 	  }
 	}
   }
@@ -418,7 +412,7 @@ double affine_backward (const int output_size,
   for (int o = 0; o < output_size; o++) {
 	db[o] = 0.0;
 	for (int b = 0; b < batch_size; b++) {
-	  db[o] += dout[b][o];
+	  db[o] += dout[b * output_size + o];
 	}
   }
 }
@@ -426,12 +420,12 @@ double affine_backward (const int output_size,
 
 void relu (const int batch_size,
 		   const int size,
-		   double o[batch_size][size],
-		   const double e[batch_size][size])
+		   double *o,        // [batch_size][size],
+		   const double *e)  // [batch_size][size]
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int i = 0; i < size; i++) {
-	  o[b][i] = e[b][i] > 0.0 ? e[b][i] : 0.0;
+	  o[b * size + i] = e[b * size + i] > 0.0 ? e[b * size + i] : 0.0;
 	}
   }
   return;
@@ -440,13 +434,13 @@ void relu (const int batch_size,
 
 double relu_backward (const int batch_size,
 					  const int size,
-					  double dx[batch_size][size],
-					  const double x[batch_size][size],
-					  const double dout[batch_size][size])
+					  double       *dx,     // [batch_size][size],
+					  const double *x,      // [batch_size][size],
+					  const double *dout)   // [batch_size][size])
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int i = 0; i < size; i++) {
-	  dx[b][i] = (x[b][i] > 0.0) ? dout[b][i] : 0.0;
+	  dx[b * size + i] = (x[b * size + i] > 0.0) ? dout[b * size + i] : 0.0;
 	}
   }
 }
@@ -454,14 +448,14 @@ double relu_backward (const int batch_size,
 
 double softmax (const int batch_size,
 				const int size,
-				double o[batch_size][size],
-				double e[batch_size][size])
+				double *o,       // [batch_size][size],
+				const double *e) // e[batch_size][size]
 {
   double *max = (double *)malloc(sizeof(double) * batch_size);
   for (int b = 0; b < batch_size; b++) {
-	max[b] = e[b][0];
+	max[b] = e[b * batch_size + 0];
 	for (int i = 1; i < size; i++) {
-	  max[b] = max[b] < e[b][i] ? e[b][i] : max[b];
+	  max[b] = max[b] < e[b * size + i] ? e[b * size + i] : max[b];
 	}
   }
 
@@ -469,11 +463,11 @@ double softmax (const int batch_size,
 	double exp_sum = 0.0;
 	double *a = (double *)malloc(sizeof(double) * size);
 	for (int i = 0; i < size; i++) {
-	  a[i] = e[b][i] - max[b];
+	  a[i] = e[b * size + i] - max[b];
 	  exp_sum += exp(a[i]);
 	}
 	for (int i = 0; i < size; i++) {
-	  o[b][i] = exp(a[i]) / exp_sum;
+	  o[b * size + i] = exp(a[i]) / exp_sum;
 	}
   }
 }
@@ -481,13 +475,13 @@ double softmax (const int batch_size,
 
 double softmax_backward (const int batch_size,
 						 const int size,
-						 double dx[batch_size][size],
-						 const double y[batch_size][size],
-						 const double t[batch_size][size])
+						 double        *dx,  // [batch_size][size],
+						 const double  *y,  // [batch_size][size],
+						 const double  *t)  // [batch_size][size]
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int y_idx = 0; y_idx < size; y_idx++) {
-	  dx[b][y_idx] = (y[b][y_idx] - t[b][y_idx]) / batch_size;
+	  dx[b * size + y_idx] = (y[b * size + y_idx] - t[b * size + y_idx]) / batch_size;
 	}
   }
 }
@@ -526,51 +520,11 @@ void print (double wh[HIDDENNO][INPUTNO],
 }
 
 
-void initwh0 (double wh[INPUTNO][HIDDENNO])
+void initwh (const int y_size, const int x_size, double *wh)
 {
-  FILE *fp = fopen("./w1_init.h", "r");
-  for (int y = 0; y < INPUTNO; y++) {
-    for (int x = 0; x < HIDDENNO; x++) {
-      fscanf(fp, "%lf", &wh[y][x]);
-    }
-  }
-}
-
-
-void initwh1 (double wh[HIDDENNO][OUTPUTNO])
-{
-  FILE *fp = fopen("./w2_init.h", "r");
-  for (int y = 0; y < HIDDENNO; y++) {
-    for (int x = 0; x < OUTPUTNO; x++) {
-      fscanf(fp, "%lf", &wh[y][x]);
-    }
-  }
-}
-
-
-void initwb0 (double wb[HIDDENNO])
-{
-  FILE *fp = fopen("./b1_init.h", "r");
-  for (int x = 0; x < HIDDENNO; x++) {
-    fscanf (fp, "%lf", &wb[x]);
-  }
-}
-
-
-void initwb1 (double wb[OUTPUTNO])
-{
-  FILE *fp = fopen("./b2_init.h", "r");
-  for (int x = 0; x < OUTPUTNO; x++) {
-    fscanf (fp, "%lf", &wb[x]);
-  }
-}
-
-
-void initwh (const int y_size, const int x_size, double wh[y_size][x_size])
-{
-  for (int i = 0; i < y_size; i++) {
-	for (int j = 0; j < x_size; j++) {
-	  wh[i][j] = WEIGHT_INIT * rand_normal (0.0, 1.0);
+  for (int y = 0; y < y_size; y++) {
+	for (int x = 0; x < x_size; x++) {
+	  wh[y * x_size + x] = WEIGHT_INIT * rand_normal (0.0, 1.0);
 	}
   }
 }
