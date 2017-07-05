@@ -13,18 +13,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-typedef union {
-  int32_t i;
-  struct {
-    unsigned int fraction: 16;
-    unsigned int decimal : 15;
-    unsigned int sign : 1;
-  } st_fix16;
-} fix16_t;
-
-#define FX16_RAW(fx16) (fx16.i)
-#define FX16_SIGN(fx16) (fx16.st_fix16.sign)
-#define FX16_MULT(a,b) (a.i * b.i / 65536))
+#include "./fix16.h"
 
 #define INPUTNO  (28*28)    // No of input cell
 #define OUTPUTNO (10)
@@ -115,10 +104,6 @@ void initwb(const int x_size, fix16_t *wb);
 double rand_normal ( double mu, double sigma );
 double drnd ();
 
-inline void dtofx16 (fix16_t *f16, double d);
-inline double fx16tod (fix16_t *f16);
-
-
 int main ()
 {
   fix16_t wh0[INPUTNO * HIDDENNO];
@@ -140,18 +125,19 @@ int main ()
   initwh (HIDDENNO, OUTPUTNO, wh0);
   initwb (OUTPUTNO, wb1);
 
-  for (int i = 0; i < INPUTNO; i++) {
-    for (int h = 0; h < HIDDENNO; h++) {
-      printf ("%-2.5f ", FX16_RAW (wh0[i * HIDDENNO + h]) / 65536.0);
-    }
-    printf ("\n");
-  }
+  // for (int i = 0; i < INPUTNO; i++) {
+  //   for (int h = 0; h < HIDDENNO; h++) {
+  //     printf ("%-2.5f ", FX16_RAW (wh0[i * HIDDENNO + h]) / 65536.0);
+  //   }
+  //   printf ("\n");
+  // }
 
   n_of_e = MAXINPUTNO / BATCH_SIZE;
   int fd_image = open_image ();
   int fd_label = open_label ();
 
   const int epoch_size = 50;
+  const fix16_t learn_rate_fix16 = fix16_from_dbl (LEARNING_RATE);
 
   getdata (fd_image, fd_label, in_data, ans_data);
 
@@ -173,7 +159,7 @@ int main ()
 	// Back ward
 	fix16_t ans_label[BATCH_SIZE * OUTPUTNO] = {0};
 	for (int b = 0; b < BATCH_SIZE; b++) {
-      dtofx16(&ans_label[b * OUTPUTNO + ans_data[no_input * BATCH_SIZE + b]], 1.0);
+      ans_label[b * OUTPUTNO + ans_data[no_input * BATCH_SIZE + b]] = fix16_from_dbl(1.0);
 	}
 	fix16_t softmax_dx[BATCH_SIZE * OUTPUTNO];
 	softmax_backward (BATCH_SIZE, OUTPUTNO, softmax_dx, rel1, ans_label);
@@ -196,41 +182,45 @@ int main ()
 
 	for (int i = 0; i < INPUTNO; i++) {
 	  for (int h = 0; h < HIDDENNO; h++) {
-		FX16_RAW (wh0[i * HIDDENNO + h]) -= (LEARNING_RATE * FX16_RAW (affine0_dw[i * HIDDENNO + h]));
+		wh0[i * HIDDENNO + h] = fix16_sub (wh0[i * HIDDENNO + h],
+                                           fix16_mul (learn_rate_fix16, affine0_dw[i * HIDDENNO + h]));
 	  }
 	}
 
 	for (int h = 0; h < HIDDENNO; h++) {
-	  FX16_RAW (wb0[h]) -= (LEARNING_RATE * FX16_RAW (affine0_db[h]));
+	  wb0[h] = fix16_sub (wb0[h],
+                          fix16_mul (learn_rate_fix16, affine0_db[h]));
 	}
 
 	for (int h = 0; h < HIDDENNO; h++) {
 	  for (int o = 0; o < OUTPUTNO; o++) {
-		FX16_RAW (wh1[h * OUTPUTNO + o]) -= (LEARNING_RATE * FX16_RAW (affine1_dw[h * OUTPUTNO + o]));
+		wh1[h * OUTPUTNO + o] = fix16_sub (wh1[h * OUTPUTNO + o],
+                                           fix16_mul (learn_rate_fix16, affine1_dw[h * OUTPUTNO + o]));
 	  }
 	}
 	for (int o = 0; o < OUTPUTNO; o++) {
-	  FX16_RAW (wb1[o]) -= (LEARNING_RATE * FX16_RAW (affine1_db[o]));
+	  wb1[o] = fix16_sub (wb1[o],
+                          fix16_mul (learn_rate_fix16, affine1_db[o]));
 	}
 
-    if (no_input == 0) {
+    if (no_input == 10) {
       for (int i = 0; i < INPUTNO; i++) {
         for (int h = 0; h < HIDDENNO; h++) {
-          printf ("%-2.5f ", FX16_RAW (wh0[i * HIDDENNO + h]) / 65536.0);
+          printf ("%-2.5f ", fix16_to_float (wh0[i * HIDDENNO + h]));
         }
         printf ("\n");
       }
       for (int h = 0; h < HIDDENNO; h++) {
-        printf ("%-2.5f\n", FX16_RAW (wb0[h]) / 65536.0);
+        printf ("%-2.5f\n", fix16_to_float (wb0[h]));
       }
       for (int h = 0; h < HIDDENNO; h++) {
         for (int o = 0; o < OUTPUTNO; o++) {
-          printf ("%-2.5f ", FX16_RAW (wh1[h * OUTPUTNO + o]) / 65536.0);
+          printf ("%-2.5f ", fix16_to_float (wh1[h * OUTPUTNO + o]));
         }
         printf ("\n");
       }
       for (int o = 0; o < OUTPUTNO; o++) {
-        printf ("%-2.5f\n", FX16_RAW (wb1[o]) / 65536.0);
+        printf ("%-2.5f\n", fix16_to_float (wb1[o]));
       }
     }
 
@@ -280,7 +270,7 @@ void TestNetwork (const int input_size,
 	  uint8_t image[INPUTNO];
 	  if (read (image_fd, image, INPUTNO * sizeof(unsigned char)) == -1)  { perror("read"); exit (EXIT_FAILURE); }
 	  for (int i = 0; i < INPUTNO; i++) {
-		FX16_RAW (in_data[b][i]) = image[i] / 255.0;
+		in_data[b][i] = fix16_from_dbl (image[i] / 255.0);
 	  }
 	  uint8_t label;
 	  if (read (label_fd, &label, sizeof(uint8_t)) == -1) { perror("read"); exit (EXIT_FAILURE); }
@@ -379,7 +369,7 @@ int getdata (int fd_image, int fd_label, fix16_t *in_data, int *ans)
   for (int b = 0; b < MAXINPUTNO; b++) {
 	if (read (fd_image, image, INPUTNO * sizeof(unsigned char)) == -1) { perror("read"); exit (EXIT_FAILURE); }
 	for (int i = 0; i < INPUTNO; i++) {
-	  FX16_RAW (in_data[b * INPUTNO + i]) = image[i];
+	  in_data[b * INPUTNO + i] = fix16_from_dbl (image[i] / 255.0);
 	}
 	uint8_t label;
 	if (read (fd_label, &label, sizeof(uint8_t)) == -1) { perror("read"); exit (EXIT_FAILURE); }
@@ -392,7 +382,7 @@ void print_images (fix16_t data[INPUTNO], int label)
 {
   printf ("=== LABEL %d ===\n", label);
   for (int j = 0; j < INPUTNO; j++) {
-    printf("%1.5lf ", fx16tod (&data[j]));
+    printf("%1.5lf ", fix16_to_dbl (data[j]));
 	if ( (j+1) % 28 == 0 ){
 	  printf("\n");
 	}
@@ -410,11 +400,12 @@ fix16_t affine (const int output_size,
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int o = 0; o < output_size; o++) {
-	  FX16_RAW(out[b * output_size + o]) = 0.0;
+	  out[b * output_size + o] = fix16_from_dbl (0.0);
 	  for (int i = 0; i < input_size; i++) {
-		FX16_RAW(out[b * output_size + o]) += (FX16_RAW(in_data[b * input_size + i]) * FX16_RAW(wh[i * output_size + o]));
+		out[b * output_size + o] = fix16_add (out[b * output_size + o],
+                                              fix16_mul (in_data[b * input_size + i], wh[i * output_size + o]));
 	  }
-	  FX16_RAW(out[b * output_size + o]) += FX16_RAW (wb[o]);
+	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
 	}
   }
 }
@@ -433,25 +424,27 @@ fix16_t affine_backward (const int output_size,
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int h = 0; h < hidden_size; h++) {
-	  FX16_RAW(dx[b * hidden_size + h]) = 0.0;
+	  dx[b * hidden_size + h] = fix16_from_dbl (0.0);
 	  for (int o = 0;o < output_size; o++) {
-		FX16_RAW(dx[b * hidden_size + h]) += (FX16_RAW(dout[b * output_size + o]) * FX16_RAW(w[h * output_size + o]) / 65536);  // w is Transpose
+		dx[b * hidden_size + h] = fix16_add (dx[b * hidden_size + h],
+                                             fix16_mul (dout[b * output_size + o], w[h * output_size + o]));
 	  }
 	}
   }
   for (int h = 0; h < hidden_size; h++) {
 	for (int o = 0; o < output_size; o++) {
-	  FX16_RAW(dw[h * output_size + o]) = 0.0;
+	  dw[h * output_size + o] = fix16_from_dbl (0.0);
 	  for (int b = 0; b < batch_size; b++) {
-		FX16_RAW(dw[h * output_size + o]) += (FX16_RAW(x[b * hidden_size + h]) * FX16_RAW(dout[b * output_size + o]) / 65536);
+		dw[h * output_size + o] = fix16_add (dw[h * output_size + o],
+                                             fix16_mul (x[b * hidden_size + h], dout[b * output_size + o]));
 	  }
 	}
   }
 
   for (int o = 0; o < output_size; o++) {
-	FX16_RAW(db[o]) = 0;
+	db[o] = fix16_from_dbl (0.0);
 	for (int b = 0; b < batch_size; b++) {
-	  FX16_RAW(db[o]) += FX16_RAW(dout[b * output_size + o]);
+	  db[o] = fix16_add (db[o], dout[b * output_size + o]);
 	}
   }
 }
@@ -464,7 +457,7 @@ void relu (const int batch_size,
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int i = 0; i < size; i++) {
-	  FX16_RAW(o[b * size + i]) = FX16_SIGN(e[b * size + i]) == 0 ? FX16_RAW(e[b * size + i]) : 0;
+	  o[b * size + i] = e[b * size + i] > 0 ? e[b * size + i] : 0;
 	}
   }
   return;
@@ -479,35 +472,35 @@ fix16_t relu_backward (const int batch_size,
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int i = 0; i < size; i++) {
-	  FX16_RAW(dx[b * size + i]) = FX16_SIGN(x[b * size + i]) == 0 ? FX16_RAW (dout[b * size + i]) : 0;
+	  dx[b * size + i] = x[b * size + i] > 0 ? dout[b * size + i] : 0;
 	}
   }
 }
 
 
 fix16_t softmax (const int batch_size,
-				const int size,
-				fix16_t *o,       // [batch_size][size],
-				const fix16_t *e) // e[batch_size][size]
+                 const int size,
+                 fix16_t *o,       // [batch_size][size],
+                 const fix16_t *e) // e[batch_size][size]
 {
   fix16_t *max = (fix16_t *)malloc(sizeof(fix16_t) * batch_size);
   for (int b = 0; b < batch_size; b++) {
-	FX16_RAW(max[b]) = FX16_RAW(e[b * batch_size + 0]);
+	max[b] = e[b * batch_size + 0];
 	for (int i = 1; i < size; i++) {
-	  FX16_RAW(max[b]) = FX16_RAW(max[b]) < FX16_RAW(e[b * size + i]) ? FX16_RAW(e[b * size + i]) : FX16_RAW(max[b]);
+	  max[b] = max[b] < e[b * size + i] ? e[b * size + i] : max[b];
 	}
   }
 
   for (int b = 0; b < batch_size; b++) {
 	fix16_t exp_sum;
-    FX16_RAW(exp_sum) = 0.0;
+    exp_sum = 0;
 	fix16_t *a = (fix16_t *)malloc(sizeof(fix16_t) * size);
 	for (int i = 0; i < size; i++) {
-	  FX16_RAW(a[i]) = FX16_RAW(e[b * size + i]) - FX16_RAW(max[b]);
-	  FX16_RAW(exp_sum) += exp(FX16_RAW(a[i]));
+      a[i] = fix16_sub (e[b * size + i], max[b]);
+	  exp_sum = fix16_add (exp_sum, fix16_exp(a[i]));
 	}
 	for (int i = 0; i < size; i++) {
-	  FX16_RAW(o[b * size + i]) = exp(FX16_RAW(a[i])) / FX16_RAW(exp_sum);
+	  o[b * size + i] = fix16_div (fix16_exp(a[i]), exp_sum);
 	}
     free (a);
   }
@@ -523,7 +516,8 @@ fix16_t softmax_backward (const int batch_size,
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int y_idx = 0; y_idx < size; y_idx++) {
-	  FX16_RAW(dx[b * size + y_idx]) = (FX16_RAW(y[b * size + y_idx]) - FX16_RAW(t[b * size + y_idx])) / batch_size;
+	  dx[b * size + y_idx] = fix16_div (fix16_sub (y[b * size + y_idx], t[b * size + y_idx]),
+                                        fix16_from_int (batch_size));
 	}
   }
 }
@@ -531,11 +525,11 @@ fix16_t softmax_backward (const int batch_size,
 
 int argmax (const int x_size, fix16_t *o)
 {
-  int    ret = FX16_RAW (o[0]);
+  fix16_t ret = o[0];
   int    max_idx = 0;
   for (int i = 1; i < x_size; i++) {
-	if (FX16_RAW(o[i]) > ret) {
-	  ret = FX16_RAW(o[i]);
+	if (o[i] > ret) {
+	  ret = o[i];
 	  max_idx = i;
 	}
   }
@@ -544,24 +538,11 @@ int argmax (const int x_size, fix16_t *o)
 }
 
 
-inline void dtofx16 (fix16_t *f16, double d)
-{
-  f16->i = (int)(d * 65536.0);
-}
-
-
-inline double fx16tod (fix16_t *f16)
-{
-  return (double)(f16->i) / 65536.0;
-}
-
-
-
 void initwh (const int y_size, const int x_size, fix16_t *wh)
 {
   for (int y = 0; y < y_size; y++) {
 	for (int x = 0; x < x_size; x++) {
-	  dtofx16 (&wh[y * x_size + x], WEIGHT_INIT * rand_normal (0.0, 1.0));
+	  wh[y * x_size + x] = fix16_from_dbl (WEIGHT_INIT * rand_normal (0.0, 1.0));
 	}
   }
 }
@@ -570,7 +551,7 @@ void initwh (const int y_size, const int x_size, fix16_t *wh)
 void initwb (const int x_size, fix16_t *wb)
 {
   for (int j = 0; j < x_size + 1; j++) {
-	dtofx16 (&wb[j], 0.0);
+    wb[j] = 0;
   }
 }
 
