@@ -156,13 +156,6 @@ int main ()
     affine (OUTPUTNO, HIDDENNO, BATCH_SIZE, af1, rel0,    wh1, wb1);
 	softmax (BATCH_SIZE, OUTPUTNO, rel1, af1);
 
-    for (int o = 0; o < OUTPUTNO; o++) {
-      printf ("%-2.10lf\n", af1[o]);
-    }
-    for (int o = 0; o < OUTPUTNO; o++) {
-      printf ("%-2.5f\n", rel1[o]);
-    }
-
 	// Back ward
 	double ans_label[BATCH_SIZE * OUTPUTNO] = {0.0};
 	for (int b = 0; b < BATCH_SIZE; b++) {
@@ -205,27 +198,6 @@ int main ()
 	for (int o = 0; o < OUTPUTNO; o++) {
 	  wb1[o] -= (LEARNING_RATE * affine1_db[o]);
 	}
-
-    if (no_input == 10) {
-      for (int i = 0; i < INPUTNO; i++) {
-        for (int h = 0; h < HIDDENNO; h++) {
-          printf ("%-2.5f ", wh0[i * HIDDENNO + h]);
-        }
-        printf ("\n");
-      }
-      for (int h = 0; h < HIDDENNO; h++) {
-        printf ("%-2.5f\n", wb0[h]);
-      }
-      for (int h = 0; h < HIDDENNO; h++) {
-        for (int o = 0; o < OUTPUTNO; o++) {
-          printf ("%-2.5f ", wh1[h * OUTPUTNO + o]);
-        }
-        printf ("\n");
-      }
-      for (int o = 0; o < OUTPUTNO; o++) {
-        printf ("%-2.5f\n", wb1[o]);
-      }
-    }
 
 	if ((no_input % epoch_size) == 0) {
 	  TestNetwork (INPUTNO, OUTPUTNO, HIDDENNO, wh0, wb0, wh1, wb1);
@@ -487,7 +459,7 @@ double softmax (const int batch_size,
 {
   double *max = (double *)malloc(sizeof(double) * batch_size);
   for (int b = 0; b < batch_size; b++) {
-	max[b] = e[b * batch_size + 0];
+	max[b] = e[b * size + 0];
 	for (int i = 1; i < size; i++) {
 	  max[b] = max[b] < e[b * size + i] ? e[b * size + i] : max[b];
 	}

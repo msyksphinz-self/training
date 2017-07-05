@@ -25,8 +25,6 @@
 #define LEARNING_RATE (0.1)
 #define WEIGHT_INIT (0.01)
 
-#define DUMP_IDX  (1)
-
 int open_image ();
 int open_label ();
 
@@ -63,8 +61,7 @@ fix16_t affine_backward (const int output_size,
                          fix16_t *dw,  // [output_size][hidden_size],
                          const fix16_t *dout, // [batch_size][output_size],
                          const fix16_t *w,    // [hidden_size][output_size],
-                         const fix16_t *x,    // [batch_size][hidden_size],
-                         int debug);
+                         const fix16_t *x);   // [batch_size][hidden_size],
 
 void relu (const int batch_size,
 		   const int size,
@@ -125,13 +122,6 @@ int main ()
   initwh (HIDDENNO, OUTPUTNO, wh0);
   initwb (OUTPUTNO, wb1);
 
-  // for (int i = 0; i < INPUTNO; i++) {
-  //   for (int h = 0; h < HIDDENNO; h++) {
-  //     printf ("%-2.5f ", FX16_RAW (wh0[i * HIDDENNO + h]) / 65536.0);
-  //   }
-  //   printf ("\n");
-  // }
-
   n_of_e = MAXINPUTNO / BATCH_SIZE;
   int fd_image = open_image ();
   int fd_label = open_label ();
@@ -154,9 +144,10 @@ int main ()
 	relu (BATCH_SIZE, HIDDENNO, rel0, af0);
 
     affine (OUTPUTNO, HIDDENNO, BATCH_SIZE, af1, rel0,    wh1, wb1);
-	softmax (BATCH_SIZE, OUTPUTNO, rel1, af1);
 
-	// Back ward
+    softmax (BATCH_SIZE, OUTPUTNO, rel1, af1);
+
+    // Back ward
 	fix16_t ans_label[BATCH_SIZE * OUTPUTNO] = {0};
 	for (int b = 0; b < BATCH_SIZE; b++) {
       ans_label[b * OUTPUTNO + ans_data[no_input * BATCH_SIZE + b]] = fix16_from_dbl(1.0);
@@ -169,7 +160,7 @@ int main ()
 
 	affine_backward (OUTPUTNO, HIDDENNO, BATCH_SIZE,
 					 affine1_dx, affine1_db, affine1_dw,
-					 softmax_dx, wh1, rel0, no_input == DUMP_IDX);
+					 softmax_dx, wh1, rel0);
 
 	fix16_t relu_dx[BATCH_SIZE * HIDDENNO];
 	relu_backward (BATCH_SIZE, HIDDENNO, relu_dx, af0, affine1_dx);
@@ -178,7 +169,7 @@ int main ()
 	fix16_t affine0_db[HIDDENNO];
 	affine_backward (HIDDENNO, INPUTNO, BATCH_SIZE,
 					 affine0_dx, affine0_db, affine0_dw,
-					 relu_dx, wh0, &in_data[INPUTNO * BATCH_SIZE * no_input], 0);
+					 relu_dx, wh0, &in_data[INPUTNO * BATCH_SIZE * no_input]);
 
 	for (int i = 0; i < INPUTNO; i++) {
 	  for (int h = 0; h < HIDDENNO; h++) {
@@ -202,27 +193,6 @@ int main ()
 	  wb1[o] = fix16_sub (wb1[o],
                           fix16_mul (learn_rate_fix16, affine1_db[o]));
 	}
-
-    if (no_input == 10) {
-      for (int i = 0; i < INPUTNO; i++) {
-        for (int h = 0; h < HIDDENNO; h++) {
-          printf ("%-2.5f ", fix16_to_float (wh0[i * HIDDENNO + h]));
-        }
-        printf ("\n");
-      }
-      for (int h = 0; h < HIDDENNO; h++) {
-        printf ("%-2.5f\n", fix16_to_float (wb0[h]));
-      }
-      for (int h = 0; h < HIDDENNO; h++) {
-        for (int o = 0; o < OUTPUTNO; o++) {
-          printf ("%-2.5f ", fix16_to_float (wh1[h * OUTPUTNO + o]));
-        }
-        printf ("\n");
-      }
-      for (int o = 0; o < OUTPUTNO; o++) {
-        printf ("%-2.5f\n", fix16_to_float (wb1[o]));
-      }
-    }
 
     if ((no_input % epoch_size) == 0) {
       TestNetwork (INPUTNO, OUTPUTNO, HIDDENNO, wh0, wb0, wh1, wb1);
@@ -419,12 +389,11 @@ fix16_t affine_backward (const int output_size,
 						fix16_t *dw,  // [hidden_size][output_size],
 						const fix16_t *dout,  // [batch_size][output_size],
 						const fix16_t *w,     // [hidden_size][output_size],
-						const fix16_t *x,     // [batch_size][hidden_size],
-						const int debug)
+						const fix16_t *x)     // [batch_size][hidden_size],
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int h = 0; h < hidden_size; h++) {
-	  dx[b * hidden_size + h] = fix16_from_dbl (0.0);
+	  dx[b * hidden_size + h] = 0;
 	  for (int o = 0;o < output_size; o++) {
 		dx[b * hidden_size + h] = fix16_add (dx[b * hidden_size + h],
                                              fix16_mul (dout[b * output_size + o], w[h * output_size + o]));
@@ -433,7 +402,7 @@ fix16_t affine_backward (const int output_size,
   }
   for (int h = 0; h < hidden_size; h++) {
 	for (int o = 0; o < output_size; o++) {
-	  dw[h * output_size + o] = fix16_from_dbl (0.0);
+	  dw[h * output_size + o] = 0;
 	  for (int b = 0; b < batch_size; b++) {
 		dw[h * output_size + o] = fix16_add (dw[h * output_size + o],
                                              fix16_mul (x[b * hidden_size + h], dout[b * output_size + o]));
@@ -442,7 +411,7 @@ fix16_t affine_backward (const int output_size,
   }
 
   for (int o = 0; o < output_size; o++) {
-	db[o] = fix16_from_dbl (0.0);
+	db[o] = 0;
 	for (int b = 0; b < batch_size; b++) {
 	  db[o] = fix16_add (db[o], dout[b * output_size + o]);
 	}
@@ -485,7 +454,7 @@ fix16_t softmax (const int batch_size,
 {
   fix16_t *max = (fix16_t *)malloc(sizeof(fix16_t) * batch_size);
   for (int b = 0; b < batch_size; b++) {
-	max[b] = e[b * batch_size + 0];
+	max[b] = e[b * size + 0];
 	for (int i = 1; i < size; i++) {
 	  max[b] = max[b] < e[b * size + i] ? e[b * size + i] : max[b];
 	}
@@ -504,15 +473,17 @@ fix16_t softmax (const int batch_size,
 	}
     free (a);
   }
+
+
   free (max);
 }
 
 
 fix16_t softmax_backward (const int batch_size,
-						 const int size,
-						 fix16_t        *dx,  // [batch_size][size],
-						 const fix16_t  *y,  // [batch_size][size],
-						 const fix16_t  *t)  // [batch_size][size]
+                          const int size,
+                          fix16_t        *dx,  // [batch_size][size],
+                          const fix16_t  *y,  // [batch_size][size],
+                          const fix16_t  *t)  // [batch_size][size]
 {
   for (int b = 0; b < batch_size; b++) {
 	for (int y_idx = 0; y_idx < size; y_idx++) {

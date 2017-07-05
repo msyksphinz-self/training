@@ -454,7 +454,7 @@ float softmax (const int batch_size,
 {
   float *max = (float *)malloc(sizeof(float) * batch_size);
   for (int b = 0; b < batch_size; b++) {
-	max[b] = e[b * batch_size + 0];
+	max[b] = e[b * size + 0];
 	for (int i = 1; i < size; i++) {
 	  max[b] = max[b] < e[b * size + i] ? e[b * size + i] : max[b];
 	}
