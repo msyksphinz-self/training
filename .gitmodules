@@ -1,3 +1,6 @@
 [submodule "deep-learning-from-scratch"]
 	path = deep-learning-from-scratch
 	url = https://github.com/oreilly-japan/deep-learning-from-scratch.git
+[submodule "machine_learning/bp/libfixmath"]
+	path = machine_learning/bp/libfixmath
+	url = https://github.com/PetteriAimonen/libfixmath.git
