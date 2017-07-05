@@ -128,12 +128,12 @@ int main ()
   initwh (HIDDENNO, OUTPUTNO, wh0);
   initwb (OUTPUTNO, wb1);
 
-  for (int i = 0; i < INPUTNO; i++) {
-    for (int h = 0; h < HIDDENNO; h++) {
-      printf ("%-2.5f ", wh0[i * HIDDENNO + h]);
-    }
-    printf ("\n");
-  }
+  // for (int i = 0; i < INPUTNO; i++) {
+  //   for (int h = 0; h < HIDDENNO; h++) {
+  //     printf ("%-2.5f ", wh0[i * HIDDENNO + h]);
+  //   }
+  //   printf ("\n");
+  // }
 
   n_of_e = MAXINPUTNO / BATCH_SIZE;
   int fd_image = open_image ();
@@ -155,6 +155,13 @@ int main ()
 
     affine (OUTPUTNO, HIDDENNO, BATCH_SIZE, af1, rel0,    wh1, wb1);
 	softmax (BATCH_SIZE, OUTPUTNO, rel1, af1);
+
+    for (int o = 0; o < OUTPUTNO; o++) {
+      printf ("%-2.10lf\n", af1[o]);
+    }
+    for (int o = 0; o < OUTPUTNO; o++) {
+      printf ("%-2.5f\n", rel1[o]);
+    }
 
 	// Back ward
 	double ans_label[BATCH_SIZE * OUTPUTNO] = {0.0};
@@ -199,7 +206,7 @@ int main ()
 	  wb1[o] -= (LEARNING_RATE * affine1_db[o]);
 	}
 
-    if (no_input == 0) {
+    if (no_input == 10) {
       for (int i = 0; i < INPUTNO; i++) {
         for (int h = 0; h < HIDDENNO; h++) {
           printf ("%-2.5f ", wh0[i * HIDDENNO + h]);
