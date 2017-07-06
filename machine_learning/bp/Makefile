@@ -1,3 +1,22 @@
+GPERF := off
+
+DEFINES :=
+COPTS := 
+
+ifeq ($(GPERF), on)
+	DEFINES += GPERF
+	COPTS += -fno-inline
+	COPTS += -g3
+	LOPTS += -lprofiler
+endif
+
+COPTS += -std=gnu11
+COPTS += -O3
+COPTS += -g
+COPTS += $(addprefix -D, $(DEFINES))
+
+LOPTS += -lm
+
 all: train_data t10k_data run
 
 run: train_twolayernet_run train_twolayernet_float_run train_twolayernet_fix16_run
@@ -13,13 +32,13 @@ train_twolayernet_fix16_run	: train_twolayernet_fix16
 	./$^ > $@
 
 train_twolayernet: train_twolayernet.c
-	gcc -std=gnu11 -O3 -g $^ -o $@ -lm
+	gcc $(COPTS) $^ -o $@ $(LOPTS)
 
 train_twolayernet_float: train_twolayernet_float.c
-	gcc -std=gnu11 -O3 -g $^ -o $@ -lm
+	gcc $(COPTS) $^ -o $@ $(LOPTS)
 
 train_twolayernet_fix16: train_twolayernet_fix16.c
-	gcc -std=gnu11 -O3 -g $^ -o $@ -lm -L./libfixmath/libfixmath -I./libfixmath/libfixmath -lfixmath
+	gcc $(COPTS) $^ -o $@ -L./libfixmath/libfixmath -I./libfixmath/libfixmath -lfixmath $(LOPTS)
 
 %-ubyte: %-ubyte.gz
 	gunzip $^
@@ -27,6 +46,18 @@ train_twolayernet_fix16: train_twolayernet_fix16.c
 %.gz:
 	wget "http://yann.lecun.com/exdb/mnist/$@"
 
+prof: train_twolayernet.prof train_twolayernet_float.prof train_twolayernet_fix16.prof
+
+train_twolayernet.prof: train_twolayernet_run
+	google-pprof --callgrind train_twolayernet $@ > train_twolayernet.cg
+train_twolayernet_float.prof: train_twolayernet_float_run
+	google-pprof --callgrind train_twolayernet_float $@ > train_twolayernet_float.cg
+train_twolayernet_fix16.prof: train_twolayernet_fix16_run
+	google-pprof --callgrind train_twolayernet_fix16 $@ > train_twolayernet_fix16.cg
+
 clean:
 	rm -rf train_twolayernet train_twolayernet_float train_twolayernet_fix16
 	rm -rf train_twolayernet_run train_twolayernet_float_run train_twolayernet_fix16_run
+	rm -rf *.prof *.cg
+
+

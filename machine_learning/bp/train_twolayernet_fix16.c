@@ -13,6 +13,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#ifdef GPERF
+#include <gperftools/profiler.h>
+#endif // GPERF
+
 #include "./fix16.h"
 
 #define INPUTNO  (28*28)    // No of input cell
@@ -131,6 +135,10 @@ int main ()
 
   getdata (fd_image, fd_label, in_data, ans_data);
 
+#ifdef GPERF
+  ProfilerStart("train_twolayernet_fix16.prof");
+#endif // GPERF
+  
   for (int no_input = 0; no_input < n_of_e; no_input++) {
 
     fix16_t af0 [BATCH_SIZE * HIDDENNO];
@@ -199,6 +207,10 @@ int main ()
 	}
   }
 
+#ifdef GPERF
+  ProfilerStop();
+#endif // GPERF
+  
   close(fd_image);
   close(fd_label);
 
