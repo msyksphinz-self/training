@@ -1,7 +1,7 @@
 GPERF := off
 
 DEFINES :=
-COPTS := 
+COPTS :=
 
 ifeq ($(GPERF), on)
 	DEFINES += GPERF
@@ -9,6 +9,8 @@ ifeq ($(GPERF), on)
 	COPTS += -g3
 	LOPTS += -lprofiler
 endif
+
+DEFINES += FIXMATH_NO_OVERFLOW
 
 COPTS += -std=gnu11
 COPTS += -O3
@@ -59,5 +61,3 @@ clean:
 	rm -rf train_twolayernet train_twolayernet_float train_twolayernet_fix16
 	rm -rf train_twolayernet_run train_twolayernet_float_run train_twolayernet_fix16_run
 	rm -rf *.prof *.cg
-
-
