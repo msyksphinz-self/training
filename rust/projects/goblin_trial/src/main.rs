@@ -14,18 +14,33 @@ fn run () -> error::Result<()> {
             fd.read_to_end(&mut buffer)?;
             match Object::parse(&buffer)? {
                 Object::Elf(elf) => {
-                    // println!("elf: {:#?}", &elf);
-                    for header in &elf.program_headers {
-                        println!("elf.program_headers = {:#?}", header);
-                    }
+                    // for i in 0..buffer.len() {
+                    //     print!("{:02x}", buffer[i]);
+                    //     if i % 4 == 3 {
+                    //         print!("\n");
+                    //     }
+                    // }
                     let shdr_strtab = &elf.shdr_strtab;
                     for section in &elf.section_headers {
-                        println!("elf.section_headers = {:#?}", &shdr_strtab[section.sh_name]);
+                        println!("elf.section_headers = {:#?}, file_offset = {:#x}, size = {:#x}",
+                                 &shdr_strtab[section.sh_name],
+                                 section.sh_offset,
+                                 section.sh_size
+                        );
+                        for idx in 0..section.sh_size {
+                            let mut offset = idx+section.sh_offset;
+                            print!("{:02x}", buffer[offset as usize]);
+                            if idx % 4 == 3 {
+                                print!("\n");
+                            }
+                        }
                     }
                     let sym_strtab = &elf.strtab;
                     for symbol in &elf.syms {
-                        println!("elf.symbol = {:#?} {:#x}", &sym_strtab[symbol.st_name], symbol.st_value);
+                        println!("elf.symbol = {:#?} {:#x}",
+                                 &sym_strtab[symbol.st_name], symbol.st_value);
                     }
+                    println!("pe: {:#?}", &elf);
                 }
                 Object::PE(pe) => {
                     println!("pe: {:#?}", &pe);
@@ -44,6 +59,9 @@ fn run () -> error::Result<()> {
 }
 
 fn main () {
-    run ();
+    match run() {
+        Ok(()) => (),
+        Err(err) => println!("{:#}", err)
+    }
 }
 
