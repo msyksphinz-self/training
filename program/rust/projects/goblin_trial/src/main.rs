@@ -14,12 +14,6 @@ fn run () -> error::Result<()> {
             fd.read_to_end(&mut buffer)?;
             match Object::parse(&buffer)? {
                 Object::Elf(elf) => {
-                    // for i in 0..buffer.len() {
-                    //     print!("{:02x}", buffer[i]);
-                    //     if i % 4 == 3 {
-                    //         print!("\n");
-                    //     }
-                    // }
                     let shdr_strtab = &elf.shdr_strtab;
                     for section in &elf.section_headers {
                         println!("elf.section_headers = {:#?}, file_offset = {:#x}, size = {:#x}",
