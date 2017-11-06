@@ -1,0 +1,10 @@
+[package]
+name = "sim_mem_elf"
+version = "0.1.0"
+authors = ["Masayuki Kimura <masayuki@pezy.co.jp>"]
+
+[dependencies]
+goblin = "0.0.12"
+lopdf  = "0.14.0"
+structopt = "0.0.5"
+structopt-derive = "0.0.5"
