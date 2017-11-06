@@ -28,7 +28,7 @@ fn run () -> error::Result<()> {
                                  section.sh_size
                         );
                         for idx in 0..section.sh_size {
-                            let mut offset = idx+section.sh_offset;
+                            let offset = idx+section.sh_offset;
                             print!("{:02x}", buffer[offset as usize]);
                             if idx % 4 == 3 {
                                 print!("\n");
