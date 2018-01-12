@@ -7,3 +7,6 @@
 [submodule "machine_learning/bp_riscv/libfixmath"]
 	path = machine_learning/bp_riscv/libfixmath
 	url = https://github.com/PetteriAimonen/libfixmath.git
+[submodule "risc-v/mnist/libfixmath"]
+	path = risc-v/mnist/libfixmath
+	url = https://github.com/msyksphinz/libfixmath.git
