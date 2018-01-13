@@ -3,9 +3,6 @@
 /* Neural network learning with back propagation */
 /*************************************************/
 
-#define IMAGE_FILE "train-images-idx3-ubyte"
-#define LABEL_FILE "train-labels-idx1-ubyte"
-
 #include "libfixmath/libfixmath/fix16.h"
 
 #define INPUTNO  (28*28)    // No of input cell
@@ -18,16 +15,22 @@
 #define LEARNING_RATE (0.1)
 #define WEIGHT_INIT (0.01)
 
-#define rdmcycle(hi_cycle, lo_cycle)  {							   \
-    uint32_t lo, hi, hi2;                              \
-    __asm__ __volatile__ ("1:\n\t"                     \
-                          "csrr %0, mcycleh\n\t"       \
-                          "csrr %1, mcycle\n\t"        \
-                          "csrr %2, mcycleh\n\t"       \
-                          "bne  %0, %2, 1b\n\t"                 \
-                          : "=r" (hi), "=r" (lo), "=r" (hi2)) ; \
-	hi_cycle = hi; lo_cycle = lo;								\
+//#define rdmcycle(hi_cycle, lo_cycle)  {							   \
+//    uint32_t lo, hi, hi2;                              \
+//    __asm__ __volatile__ ("1:\n\t"                     \
+//                          "csrr %0, mcycleh\n\t"       \
+//                          "csrr %1, mcycle\n\t"        \
+//                          "csrr %2, mcycleh\n\t"       \
+//                          "bne  %0, %2, 1b\n\t"                 \
+//                          : "=r" (hi), "=r" (lo), "=r" (hi2)) ; \
+//	hi_cycle = hi; lo_cycle = lo;								\
+//  }
+
+#define rdmcycle(cycle)  {                                      \
+    __asm__ __volatile__ ("csrr %0, mcycle"                 \
+                          : "=r" (cycle)) ;                     \
   }
+
 
 fix16_t affine (const int output_size,
                 const int input_size,
@@ -78,13 +81,12 @@ void TestNetwork (const int input_size,
 
 int argmax (const int x_size, fix16_t *o);
 
-// double rand_normal ( double mu, double sigma );
-// double drnd ();
-
-extern char _binary_train_images_idx3_ubyte_100_start[];
-extern char _binary_train_images_idx3_ubyte_100_end[];
-
+#ifdef IMAGE_SIZE_4000
+extern char _binary_t10k_images_idx3_ubyte_4000_start[];
+#else // IMAGE_SIZE_4000
 extern char _binary_t10k_images_idx3_ubyte_start[];
+#endif // IMAGE_SIZE_4000
+
 extern char _binary_t10k_images_idx3_ubyte_end[];
 
 extern char _binary_t10k_labels_idx1_ubyte_start[];
@@ -100,39 +102,20 @@ extern char _binary_wh1_bin_start[];
 extern char _binary_wh1_bin_end[];
 
 
-const char* hex_enum[] = {"0", "1", "2", "3", "4", "5", "6", "7",
-                          "8", "9", "a", "b", "c", "d", "e", "f"};
-
-// fix16_t wh0[INPUTNO * HIDDENNO];
-fix16_t wb0[HIDDENNO];
-fix16_t wh1[HIDDENNO * OUTPUTNO];
-fix16_t wb1[OUTPUTNO];
-
-const fix16_t *wh0   = (fix16_t *)_binary_wh0_bin_start;  // [INPUTNO * HIDDENNO];
-const fix16_t *c_wb0 = (fix16_t *)_binary_wb0_bin_start;  // [HIDDENNO];
-const fix16_t *c_wh1 = (fix16_t *)_binary_wh1_bin_start;  // [HIDDENNO * OUTPUTNO];
-const fix16_t *c_wb1 = (fix16_t *)_binary_wb1_bin_start;  // [OUTPUTNO];
-
 int main ()
 {
-  int i;
+  printf ("=== TestNetwork ===\n");
 
-  // for (i = 0; i < INPUTNO * HIDDENNO; i++)  wh0[i] = c_wh0[i];
-  for (i = 0; i < HIDDENNO; i++)            wb0[i] = c_wb0[i];
-  for (i = 0; i < HIDDENNO * OUTPUTNO; i++) wh1[i] = c_wh1[i];
-  for (i = 0; i < OUTPUTNO; i++)            wb1[i] = c_wb1[i];
+  const fix16_t *wh0 = (fix16_t *)_binary_wh0_bin_start;  // [INPUTNO * HIDDENNO];
+  const fix16_t *wb0 = (fix16_t *)_binary_wb0_bin_start;  // [HIDDENNO];
+  const fix16_t *wh1 = (fix16_t *)_binary_wh1_bin_start;  // [HIDDENNO * OUTPUTNO];
+  const fix16_t *wb1 = (fix16_t *)_binary_wb1_bin_start;  // [OUTPUTNO];
+
 
   TestNetwork (INPUTNO, OUTPUTNO, HIDDENNO, wh0, wb0, wh1, wb1);
 
   return 0;
 }
-
-fix16_t af0 [BATCH_SIZE * HIDDENNO];
-fix16_t fix16_in_data[BATCH_SIZE*INPUTNO];
-char *in_data;
-char *ans_data;
-fix16_t af1 [BATCH_SIZE * OUTPUTNO];
-fix16_t rel0[BATCH_SIZE * HIDDENNO];
 
 void TestNetwork (const int input_size,
 				  const int output_size,
@@ -144,16 +127,36 @@ void TestNetwork (const int input_size,
 {
   printf ("=== TestNetwork ===\n");
 
+  char *in_data;
+  char *ans_data;
+
+#ifdef IMAGE_SIZE_4000
+  in_data  = &_binary_t10k_images_idx3_ubyte_4000_start[0x10];
+#else // IMAGE_SIZE_4000
   in_data  = &_binary_t10k_images_idx3_ubyte_start[0x10];
+#endif // IMAGE_SIZE_4000
   ans_data = &_binary_t10k_labels_idx1_ubyte_start[0x08];
 
   int correct = 0;
-  uint32_t start_cycle[2], stop_cycle[2];
-  // rdmcycle(start_cycle[1], start_cycle[0]);
+  uint64_t start_cycle, stop_cycle;
+  rdmcycle(start_cycle);
 
   printf (" === start ===\n");
 
-  for (int no_input = 0; no_input < 100 * BATCH_SIZE; no_input += BATCH_SIZE) {
+  fix16_t af0 [BATCH_SIZE * HIDDENNO];
+  fix16_t fix16_in_data[BATCH_SIZE*INPUTNO];
+
+  fix16_t af1 [BATCH_SIZE * OUTPUTNO];
+  fix16_t rel0[BATCH_SIZE * HIDDENNO];
+
+#ifdef IMAGE_SIZE_4000
+  int max_try = BATCH_SIZE * 3;
+#else // IMAGE_SIZE_4000
+  int max_try = BATCH_SIZE * 100;
+#endif // IMAGE_SIZE_4000
+
+
+  for (int no_input = 0; no_input < max_try; no_input += BATCH_SIZE) {
 	for (int i = 0; i < 28 * 28 * BATCH_SIZE; i++) {
 	  fix16_in_data[i] = (in_data[i] << 8);
 	}
@@ -165,7 +168,10 @@ void TestNetwork (const int input_size,
 	for (int b = 0; b < BATCH_SIZE; b++) {
 	  int t = argmax (OUTPUTNO, &af1[b * OUTPUTNO]);
 	  if (t == ans_data[b]) {
+        printf ("Correct = %d\n", correct);
         correct++;
+      } else {
+        printf ("Fail = %d\n", correct);
       }
 	}
 
@@ -173,10 +179,10 @@ void TestNetwork (const int input_size,
 	ans_data += BATCH_SIZE;
   }
 
-  // rdmcycle(stop_cycle[1], stop_cycle[0]);
+  rdmcycle(stop_cycle);
 
-  printf ("Correct = %d\n", correct);
-  printf ("Time = %08x%08x - %08x%08x\n", stop_cycle[1], stop_cycle[0], start_cycle[1], start_cycle[0]);
+  printf ("Final Result : Correct = %d / %d\n", correct, max_try);
+  printf ("Time = %08x - %08x = %08x\n", stop_cycle, start_cycle, stop_cycle - start_cycle);
 
   return;
 }
@@ -330,19 +336,3 @@ int argmax (const int x_size, fix16_t *o)
 
   return max_idx;
 }
-
-
-// double rand_normal (double mu, double sigma)
-// {
-//   // double z = sqrt( -2.0 * log(drnd()) ) * sin( 2.0 * M_PI * drnd() );
-//   // return mu + sigma*z;
-//   return drnd ();
-// }
-//
-//
-// double drnd ()
-// {
-//   double rndno;
-//   while ((rndno = (double)rand() / RAND_MAX) == 1.0);
-//   return rndno;
-// }
