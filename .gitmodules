@@ -7,3 +7,6 @@
 [submodule "machine_learning/bp_riscv/libfixmath"]
 	path = machine_learning/bp_riscv/libfixmath
 	url = https://github.com/PetteriAimonen/libfixmath.git
+[submodule "program/DNN"]
+	path = program/DNN
+	url = https://github.com/takezo5096/DNN.git
