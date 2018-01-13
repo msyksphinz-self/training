@@ -10,3 +10,6 @@
 [submodule "program/DNN"]
 	path = program/DNN
 	url = https://github.com/takezo5096/DNN.git
+[submodule "program/cuMat"]
+	path = program/cuMat
+	url = https://github.com/takezo5096/cuMat.git
