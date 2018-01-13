@@ -13,3 +13,9 @@
 [submodule "program/cuMat"]
 	path = program/cuMat
 	url = https://github.com/takezo5096/cuMat.git
+[submodule "program/estimate-cnn"]
+	path = program/estimate-cnn
+	url = https://github.com/tom01h/estimate-cnn.git
+[submodule "machine_learning/tiny-dnn"]
+	path = machine_learning/tiny-dnn
+	url = https://github.com/tiny-dnn/tiny-dnn.git
