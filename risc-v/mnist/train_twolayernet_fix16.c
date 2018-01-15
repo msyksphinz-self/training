@@ -5,6 +5,8 @@
 
 #include "libfixmath/libfixmath/fix16.h"
 
+#include "rocc_matrix16.h"
+
 #define INPUTNO  (28*28)    // No of input cell
 #define OUTPUTNO (10)
 #define HIDDENNO (50)    // No of hidden cell
@@ -199,12 +201,21 @@ fix16_t affine (const int output_size,
 {
   for (int b = 0; b < batch_size; b++) {
   	for (int o = 0; o < output_size; o++) {
+#ifdef ROCC_MATRIX16
+      rocc_dot (out[b * output_size + o],
+                &in_data[b * input_size],
+                &wh[o],
+                output_size,
+                input_size);
+  	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
+#else // ROCC_MATRIX16
   	  out[b * output_size + o] = 0;
   	  for (int i = 0; i < input_size; i++) {
   	  	out[b * output_size + o] = fix16_add (out[b * output_size + o],
                                               fix16_mul (in_data[b * input_size + i], wh[i * output_size + o]));
   	  }
   	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
+#endif // ROCC_MATRIX16
   	}
   }
 }

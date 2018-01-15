@@ -35,7 +35,7 @@ CLEAN_OBJS += wh1_init.o
 CLEAN_OBJS += ./libfixmath/libfixmath/libfixmath.a
 
 
-all: train_twolayernet_fix16 train_twolayernet_fix16_full
+all: train_twolayernet_fix16 train_twolayernet_fix16_full train_twolayernet_fix16_hw
 
 $(DHRY_OBJS): %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) $(DHRY_CFLAGS) -c -o $@ $<
@@ -114,6 +114,29 @@ train_twolayernet_fix16_full: train_twolayernet_fix16.c syscalls.c crt.S wh0_ini
 	-Wl,--wrap=malloc \
 	-Wl,--wrap=sbrk \
 	-Wl,--wrap=free
+
+train_twolayernet_fix16_hw: train_twolayernet_fix16.c syscalls.c crt.S wh0_init.o wh1_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.o
+	riscv64-unknown-elf-gcc \
+	-mabi=lp64 \
+	-DPREALLOCATE=1 \
+	-DROCC_MATRIX16 \
+	-mcmodel=medany \
+	-std=gnu99 \
+	-O2 \
+	-ffast-math \
+	-fno-common \
+	-fno-builtin-printf \
+	-static \
+	-nostartfiles \
+	-nostdlib \
+	-T ./test.ld \
+	-o $@ \
+	$^ \
+	-lfixmath -L. \
+	-Wl,--wrap=malloc \
+	-Wl,--wrap=sbrk \
+	-Wl,--wrap=free
+
 
 %-ubyte: %-ubyte.gz
 	gunzip $^
