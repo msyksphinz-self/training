@@ -141,7 +141,6 @@ void TestNetwork (const int input_size,
 
   int correct = 0;
   uint64_t start_cycle, stop_cycle;
-  rdmcycle(start_cycle);
 
   printf (" === start ===\n");
 
@@ -158,6 +157,8 @@ void TestNetwork (const int input_size,
 #endif // IMAGE_SIZE_4000
 
 
+  rdmcycle(start_cycle);
+
   for (int no_input = 0; no_input < max_try; no_input += BATCH_SIZE) {
 	for (int i = 0; i < 28 * 28 * BATCH_SIZE; i++) {
 	  fix16_in_data[i] = (in_data[i] << 8);
@@ -170,10 +171,10 @@ void TestNetwork (const int input_size,
 	for (int b = 0; b < BATCH_SIZE; b++) {
 	  int t = argmax (OUTPUTNO, &af1[b * OUTPUTNO]);
 	  if (t == ans_data[b]) {
-        printf ("Correct = %d\n", correct);
+        // printf ("Correct = %d\n", correct);
         correct++;
       } else {
-        printf ("Fail = %d\n", correct);
+        // printf ("Fail = %d\n", correct);
       }
 	}
 
@@ -184,7 +185,7 @@ void TestNetwork (const int input_size,
   rdmcycle(stop_cycle);
 
   printf ("Final Result : Correct = %d / %d\n", correct, max_try);
-  printf ("Time = %08x - %08x = %08x\n", stop_cycle, start_cycle, stop_cycle - start_cycle);
+  printf ("Time = %d - %d = %d\n", stop_cycle, start_cycle, stop_cycle - start_cycle);
 
   return;
 }
