@@ -35,7 +35,7 @@ CLEAN_OBJS += wh1_init.o
 CLEAN_OBJS += ./libfixmath/libfixmath/libfixmath.a
 
 
-all: train_twolayernet_fix16
+all: train_twolayernet_fix16 train_twolayernet_fix16_full train_twolayernet_fix16_hw
 
 $(DHRY_OBJS): %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) $(DHRY_CFLAGS) -c -o $@ $<
@@ -49,8 +49,12 @@ libfixmath.a:
 IMAGE_SIZE = 4000
 
 train-images-idx3-ubyte.100.o: train-images-idx3-ubyte
-	head -c $(IMAGE_SIZE) $< > $<.100
-	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.rodata $<.100 $@
+	head -c $(IMAGE_SIZE) $< > $<.$(IMAGE_SIZE)
+	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.rodata $<.$(IMAGE_SIZE) $@
+
+t10k-images-idx3-ubyte.$(IMAGE_SIZE).o: t10k-images-idx3-ubyte
+	head -c $(IMAGE_SIZE) $< > $<.$(IMAGE_SIZE)
+	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.rodata $<.$(IMAGE_SIZE) $@
 
 t10k-images-idx3-ubyte.o: t10k-images-idx3-ubyte
 	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.rodata $< $@
@@ -67,7 +71,30 @@ malloc.o: malloc.c
 	riscv64-unknown-elf-gcc -mabi=lp64 -c -shared -fpic $^
 
 
-train_twolayernet_fix16: train_twolayernet_fix16.c syscalls.c crt.S wh1_init.o wh0_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.o
+# train_twolayernet_fix16: train_twolayernet_fix16.c syscalls.c crt.S wh1_init.o wh0_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.o
+train_twolayernet_fix16: train_twolayernet_fix16.c syscalls.c crt.S wh0_init.o wh1_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.4000.o
+	riscv64-unknown-elf-gcc \
+	-mabi=lp64 \
+	-DPREALLOCATE=1 \
+	-DIMAGE_SIZE_4000 \
+	-mcmodel=medany \
+	-std=gnu99 \
+	-O2 \
+	-ffast-math \
+	-fno-common \
+	-fno-builtin-printf \
+	-static \
+	-nostartfiles \
+	-nostdlib \
+	-T ./test.ld \
+	-o $@ \
+	$^ \
+	-lfixmath -L. \
+	-Wl,--wrap=malloc \
+	-Wl,--wrap=sbrk \
+	-Wl,--wrap=free
+
+train_twolayernet_fix16_full: train_twolayernet_fix16.c syscalls.c crt.S wh0_init.o wh1_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.o
 	riscv64-unknown-elf-gcc \
 	-mabi=lp64 \
 	-DPREALLOCATE=1 \
@@ -88,6 +115,29 @@ train_twolayernet_fix16: train_twolayernet_fix16.c syscalls.c crt.S wh1_init.o w
 	-Wl,--wrap=sbrk \
 	-Wl,--wrap=free
 
+train_twolayernet_fix16_hw: train_twolayernet_fix16.c syscalls.c crt.S wh0_init.o wh1_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.o
+	riscv64-unknown-elf-gcc \
+	-mabi=lp64 \
+	-DPREALLOCATE=1 \
+	-DROCC_MATRIX16 \
+	-mcmodel=medany \
+	-std=gnu99 \
+	-O2 \
+	-ffast-math \
+	-fno-common \
+	-fno-builtin-printf \
+	-static \
+	-nostartfiles \
+	-nostdlib \
+	-T ./test.ld \
+	-o $@ \
+	$^ \
+	-lfixmath -L. \
+	-Wl,--wrap=malloc \
+	-Wl,--wrap=sbrk \
+	-Wl,--wrap=free
+
+
 %-ubyte: %-ubyte.gz
 	gunzip $^
 
@@ -96,6 +146,8 @@ train_twolayernet_fix16: train_twolayernet_fix16.c syscalls.c crt.S wh1_init.o w
 
 %_init.o: %.bin
 	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.rodata $< $@
+# %_init.o: %.bin
+# 	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv $< $@
 
 clean:
 	rm *.o train_twolayernet_fix16
