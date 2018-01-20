@@ -214,6 +214,7 @@ fix16_t affine (const int output_size,
   	  for (int i = 0; i < input_size; i++) {
   	  	out[b * output_size + o] = fix16_add (out[b * output_size + o],
                                               fix16_mul (in_data[b * input_size + i], wh[i * output_size + o]));
+        printf("in_data=%08x, wh=%08x, r_total=%08x\n", in_data[b * input_size + i], wh[i * output_size + o], out[b * output_size + o]);
   	  }
   	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
 #endif // ROCC_MATRIX16
