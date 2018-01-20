@@ -35,7 +35,7 @@ CLEAN_OBJS += wh1_init.o
 CLEAN_OBJS += ./libfixmath/libfixmath/libfixmath.a
 
 
-all: train_twolayernet_fix16 train_twolayernet_fix16_full train_twolayernet_fix16_hw
+all: train_twolayernet_fix16 train_twolayernet_fix16_full train_twolayernet_fix16_hw_full train_twolayernet_fix16_hw
 
 $(DHRY_OBJS): %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) $(DHRY_CFLAGS) -c -o $@ $<
@@ -71,72 +71,49 @@ malloc.o: malloc.c
 	riscv64-unknown-elf-gcc -mabi=lp64 -c -shared -fpic $^
 
 
-# train_twolayernet_fix16: train_twolayernet_fix16.c syscalls.c crt.S wh1_init.o wh0_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.o
-train_twolayernet_fix16: train_twolayernet_fix16.c syscalls.c crt.S wh0_init.o wh1_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.4000.o
-	riscv64-unknown-elf-gcc \
-	-mabi=lp64 \
-	-DPREALLOCATE=1 \
-	-DIMAGE_SIZE_4000 \
-	-mcmodel=medany \
-	-std=gnu99 \
-	-O2 \
-	-ffast-math \
-	-fno-common \
-	-fno-builtin-printf \
-	-static \
-	-nostartfiles \
-	-nostdlib \
-	-T ./test.ld \
-	-o $@ \
-	$^ \
-	-lfixmath -L. \
-	-Wl,--wrap=malloc \
-	-Wl,--wrap=sbrk \
-	-Wl,--wrap=free
+TRAIN_FLAGS :=
+TRAIN_FLAGS += -mabi=lp64
+TRAIN_FLAGS += -DPREALLOCATE=1
+TRAIN_FLAGS += -mcmodel=medany
+TRAIN_FLAGS += -std=gnu99
+TRAIN_FLAGS += -O2
+TRAIN_FLAGS += -ffast-math
+TRAIN_FLAGS += -fno-common
+TRAIN_FLAGS += -fno-builtin-printf
+TRAIN_FLAGS += -static
+TRAIN_FLAGS += -nostartfiles
+TRAIN_FLAGS += -nostdlib
+TRAIN_FLAGS += -T ./test.ld
 
-train_twolayernet_fix16_full: train_twolayernet_fix16.c syscalls.c crt.S wh0_init.o wh1_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.o
-	riscv64-unknown-elf-gcc \
-	-mabi=lp64 \
-	-DPREALLOCATE=1 \
-	-mcmodel=medany \
-	-std=gnu99 \
-	-O2 \
-	-ffast-math \
-	-fno-common \
-	-fno-builtin-printf \
-	-static \
-	-nostartfiles \
-	-nostdlib \
-	-T ./test.ld \
-	-o $@ \
-	$^ \
-	-lfixmath -L. \
-	-Wl,--wrap=malloc \
-	-Wl,--wrap=sbrk \
-	-Wl,--wrap=free
+TRAIN_FLAGS2 += -lfixmath -L.
+TRAIN_FLAGS2 += -Wl,--wrap=malloc
+TRAIN_FLAGS2 += -Wl,--wrap=sbrk
+TRAIN_FLAGS2 += -Wl,--wrap=free
 
-train_twolayernet_fix16_hw: train_twolayernet_fix16.c syscalls.c crt.S wh0_init.o wh1_init.o wb0_init.o wb1_init.o sbrk.o malloc.o t10k-labels-idx1-ubyte.o t10k-images-idx3-ubyte.o
-	riscv64-unknown-elf-gcc \
-	-mabi=lp64 \
-	-DPREALLOCATE=1 \
-	-DROCC_MATRIX16 \
-	-mcmodel=medany \
-	-std=gnu99 \
-	-O2 \
-	-ffast-math \
-	-fno-common \
-	-fno-builtin-printf \
-	-static \
-	-nostartfiles \
-	-nostdlib \
-	-T ./test.ld \
-	-o $@ \
-	$^ \
-	-lfixmath -L. \
-	-Wl,--wrap=malloc \
-	-Wl,--wrap=sbrk \
-	-Wl,--wrap=free
+TRAIN_SRC_FILES :=
+TRAIN_SRC_FILES += train_twolayernet_fix16.c
+TRAIN_SRC_FILES += syscalls.c
+TRAIN_SRC_FILES += crt.S
+TRAIN_SRC_FILES += wh0_init.o
+TRAIN_SRC_FILES += wh1_init.o
+TRAIN_SRC_FILES += wb0_init.o
+TRAIN_SRC_FILES += wb1_init.o
+TRAIN_SRC_FILES += sbrk.o
+TRAIN_SRC_FILES += malloc.o
+TRAIN_SRC_FILES += t10k-labels-idx1-ubyte.o
 
+
+train_twolayernet_fix16: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.4000.o
+	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DIMAGE_SIZE_4000 $^ $(TRAIN_FLAGS2)
+
+train_twolayernet_fix16_full: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.o
+	riscv64-unknown-elf-gcc -o $@$(TRAIN_FLAGS) $^ $(TRAIN_FLAGS2)
+
+train_twolayernet_fix16_hw: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.4000.o
+	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DROCC_MATRIX16 -DIMAGE_SIZE_4000 $^ $(TRAIN_FLAGS2)
+
+train_twolayernet_fix16_hw_full: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.o
+	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DROCC_MATRIX16 $^ $(TRAIN_FLAGS2)
 
 %-ubyte: %-ubyte.gz
 	gunzip $^
@@ -150,4 +127,4 @@ train_twolayernet_fix16_hw: train_twolayernet_fix16.c syscalls.c crt.S wh0_init.
 # 	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv $< $@
 
 clean:
-	rm *.o train_twolayernet_fix16
+	rm -rf *.o train_twolayernet_fix16 train_twolayernet_fix16_full train_twolayernet_fix16_hw train_twolayernet_fix16_hw_full
