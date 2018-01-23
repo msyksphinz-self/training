@@ -209,12 +209,21 @@ fix16_t affine (const int output_size,
                 output_size,
                 input_size);
   	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
+#ifdef DEBUG
+      for (int log_idx = 0; log_idx < 128; log_idx++) {
+        uint32_t data;
+        ROCC_READ_LOG(data, log_idx);
+        printf ("MEM[%d] = %08x\n", log_idx, data);
+      }
+#endif // DEBUG
 #else // ROCC_MATRIX16
   	  out[b * output_size + o] = 0;
   	  for (int i = 0; i < input_size; i++) {
   	  	out[b * output_size + o] = fix16_add (out[b * output_size + o],
                                               fix16_mul (in_data[b * input_size + i], wh[i * output_size + o]));
+#ifdef DEBUG
         printf("in_data=%08x, wh=%08x, r_total=%08x\n", in_data[b * input_size + i], wh[i * output_size + o], out[b * output_size + o]);
+#endif // DEBUG
   	  }
   	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
 #endif // ROCC_MATRIX16

@@ -1,4 +1,10 @@
-TARGET = mnist
+TARGET = 
+TARGET += train_twolayernet_fix16
+TARGET += train_twolayernet_fix16_full
+TARGET += train_twolayernet_fix16_hw_full
+TARGET += train_twolayernet_fix16_hw
+TARGET += train_twolayernet_fix16_debug
+TARGET += train_twolayernet_fix16_hw_debug
 
 C_SRCS := train_twolayernet_fix16.c
 CFLAGS += -O3 -fno-builtin-printf
@@ -35,7 +41,7 @@ CLEAN_OBJS += wh1_init.o
 CLEAN_OBJS += ./libfixmath/libfixmath/libfixmath.a
 
 
-all: train_twolayernet_fix16 train_twolayernet_fix16_full train_twolayernet_fix16_hw_full train_twolayernet_fix16_hw
+all: $(TARGET)
 
 $(DHRY_OBJS): %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) $(DHRY_CFLAGS) -c -o $@ $<
@@ -114,6 +120,12 @@ train_twolayernet_fix16_hw: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.4000.o
 
 train_twolayernet_fix16_hw_full: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.o
 	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DROCC_MATRIX16 $^ $(TRAIN_FLAGS2)
+
+train_twolayernet_fix16_debug: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.4000.o
+	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DDEBUG -DIMAGE_SIZE_4000 $^ $(TRAIN_FLAGS2)
+
+train_twolayernet_fix16_hw_debug: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.4000.o
+	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DDEBUG -DROCC_MATRIX16 -DIMAGE_SIZE_4000 $^ $(TRAIN_FLAGS2)
 
 %-ubyte: %-ubyte.gz
 	gunzip $^

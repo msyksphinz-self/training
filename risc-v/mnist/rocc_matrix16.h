@@ -13,4 +13,15 @@
   y = 0;                                                \
   ROCC_INSTRUCTION(XCUSTOM_DOT, y, mat_A, mat_B, 2);
 
+#define ROCC_READ_LOG(y, addr)                      \
+  ROCC_INSTRUCTION(XCUSTOM_DOT, y, addr,  0,     3)
+
+uint32_t dot_read_log(uint32_t addr)
+{
+  uint32_t ret;
+  ROCC_READ_LOG (ret, addr);
+  return ret;
+}
+
+
 #endif // SORC_ROCC_MATRIX16_H
