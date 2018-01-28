@@ -16,6 +16,12 @@
 #define ROCC_READ_LOG(y, addr)                      \
   ROCC_INSTRUCTION(XCUSTOM_DOT, y, addr,  0,     3)
 
+#define ROCC_INPUT_LOG(y, addr)                      \
+  ROCC_INSTRUCTION(XCUSTOM_DOT, y, addr,  0,     4)
+
+#define ROCC_WEIGHT_LOG(y, addr)                      \
+  ROCC_INSTRUCTION(XCUSTOM_DOT, y, addr,  0,     5)
+
 uint32_t dot_read_log(uint32_t addr)
 {
   uint32_t ret;

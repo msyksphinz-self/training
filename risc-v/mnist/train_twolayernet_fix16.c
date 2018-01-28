@@ -106,8 +106,6 @@ extern char _binary_wh1_bin_end[];
 
 int main ()
 {
-  printf ("=== TestNetwork ===\n");
-
   const fix16_t *wh0 = (fix16_t *)_binary_wh0_bin_start;  // [INPUTNO * HIDDENNO];
   const fix16_t *wb0 = (fix16_t *)_binary_wb0_bin_start;  // [HIDDENNO];
   const fix16_t *wh1 = (fix16_t *)_binary_wh1_bin_start;  // [HIDDENNO * OUTPUTNO];
@@ -140,7 +138,7 @@ void TestNetwork (const int input_size,
   ans_data = &_binary_t10k_labels_idx1_ubyte_start[0x08];
 
   int correct = 0;
-  uint64_t start_cycle, stop_cycle;
+  uint64_t start_cycle, stop_cycle, total_cycle = 0;
 
   printf (" === start ===\n");
 
@@ -156,25 +154,29 @@ void TestNetwork (const int input_size,
   int max_try = BATCH_SIZE * 100;
 #endif // IMAGE_SIZE_4000
 
-
-  rdmcycle(start_cycle);
-
   for (int no_input = 0; no_input < max_try; no_input += BATCH_SIZE) {
 	for (int i = 0; i < 28 * 28 * BATCH_SIZE; i++) {
 	  fix16_in_data[i] = (in_data[i] << 8);
 	}
 
+    rdmcycle(start_cycle);
+
 	affine (HIDDENNO, INPUTNO,  BATCH_SIZE, af0, (const fix16_t *)fix16_in_data, wh0, wb0);
 	relu (BATCH_SIZE, HIDDENNO, rel0, af0);
 	affine (OUTPUTNO, HIDDENNO, BATCH_SIZE, af1, rel0,    wh1, wb1);
 
+    rdmcycle(stop_cycle);
+
+    total_cycle += (stop_cycle - start_cycle);
+
 	for (int b = 0; b < BATCH_SIZE; b++) {
 	  int t = argmax (OUTPUTNO, &af1[b * OUTPUTNO]);
+      printf ("%3d : expect=%d, actual= %d", no_input + b, t, ans_data[b]);
 	  if (t == ans_data[b]) {
-        // printf ("Correct = %d\n", correct);
+        printf (" CORRECT\n");
         correct++;
       } else {
-        // printf ("Fail = %d\n", correct);
+        printf (" FAIL\n");
       }
 	}
 
@@ -182,10 +184,8 @@ void TestNetwork (const int input_size,
 	ans_data += BATCH_SIZE;
   }
 
-  rdmcycle(stop_cycle);
-
   printf ("Final Result : Correct = %d / %d\n", correct, max_try);
-  printf ("Time = %d - %d = %d\n", stop_cycle, start_cycle, stop_cycle - start_cycle);
+  printf ("Time = %d\n", total_cycle);
 
   return;
 }
@@ -210,21 +210,28 @@ fix16_t affine (const int output_size,
                 input_size);
   	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
 #ifdef DEBUG
-      for (int log_idx = 0; log_idx < 128; log_idx++) {
-        uint32_t data;
+      for (int log_idx = 0; log_idx < 300; log_idx++) {
+        uint32_t data, input, weight;
         ROCC_READ_LOG(data, log_idx);
-        printf ("MEM[%d] = %08x\n", log_idx, data);
+        ROCC_INPUT_LOG(input, log_idx);
+        ROCC_WEIGHT_LOG(weight, log_idx);
+        printf ("MEM[%03d]=%08x,INPUT=%08x,WEIGHT=%08x\n", log_idx, data, input, weight);
       }
 #endif // DEBUG
 #else // ROCC_MATRIX16
   	  out[b * output_size + o] = 0;
   	  for (int i = 0; i < input_size; i++) {
-  	  	out[b * output_size + o] = fix16_add (out[b * output_size + o],
-                                              fix16_mul (in_data[b * input_size + i], wh[i * output_size + o]));
+		fix16_t tmp = fix16_mul (in_data[b * input_size + i], wh[i * output_size + o]);
+  	  	out[b * output_size + o] = fix16_add (out[b * output_size + o], tmp);
 #ifdef DEBUG
-        printf("in_data=%08x, wh=%08x, r_total=%08x\n", in_data[b * input_size + i], wh[i * output_size + o], out[b * output_size + o]);
+		if (i < 300) {
+		  printf("MEM[%03d]=%08x,INPUT=%08x,WEIGHT=%08x\n", i, tmp, in_data[b * input_size + i], wh[i * output_size + o]);
+		}
 #endif // DEBUG
   	  }
+#ifdef DEBUG
+	  printf("out = %08x\n", out[b * output_size + o]);
+#endif // DEBUG
   	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
 #endif // ROCC_MATRIX16
   	}
