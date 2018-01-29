@@ -212,7 +212,7 @@ fix16_t affine (const int output_size,
                 input_size);
 	  rdmcycle (stop_cycle);
   	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
-	  printf ("rocc_dot(input=%03d) : %d\n", input_size, stop_cycle - stop_cycle);
+	  printf ("rocc_dot(input=%03d) : %d\n", input_size, stop_cycle - start_cycle);
 	  
 // #ifdef DEBUG
 //       for (int log_idx = 0; log_idx < 300; log_idx++) {
