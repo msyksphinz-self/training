@@ -204,13 +204,13 @@ fix16_t affine (const int output_size,
   	for (int o = 0; o < output_size; o++) {
 #ifdef ROCC_MATRIX16
 	  uint64_t start_cycle, stop_cycle;
-	  start_cycle = rdmcycle (start_cycle);
+	  rdmcycle (start_cycle);
       rocc_dot (out[b * output_size + o],
                 &in_data[b * input_size],
                 &wh[o],
                 output_size,
                 input_size);
-	  stop_cycle = rdmcycle (stop_cycle);
+	  rdmcycle (stop_cycle);
   	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
 	  printf ("rocc_dot(input=%03d) : %d\n", input_size, stop_cycle - stop_cycle);
 	  
