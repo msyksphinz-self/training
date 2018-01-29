@@ -203,31 +203,36 @@ fix16_t affine (const int output_size,
   for (int b = 0; b < batch_size; b++) {
   	for (int o = 0; o < output_size; o++) {
 #ifdef ROCC_MATRIX16
+	  uint64_t start_cycle, stop_cycle;
+	  start_cycle = rdmcycle (start_cycle);
       rocc_dot (out[b * output_size + o],
                 &in_data[b * input_size],
                 &wh[o],
                 output_size,
                 input_size);
+	  stop_cycle = rdmcycle (stop_cycle);
   	  out[b * output_size + o] = fix16_add (out[b * output_size + o], wb[o]);
-#ifdef DEBUG
-      for (int log_idx = 0; log_idx < 300; log_idx++) {
-        uint32_t data, input, weight;
-        ROCC_READ_LOG(data, log_idx);
-        ROCC_INPUT_LOG(input, log_idx);
-        ROCC_WEIGHT_LOG(weight, log_idx);
-        printf ("MEM[%03d]=%08x,INPUT=%08x,WEIGHT=%08x\n", log_idx, data, input, weight);
-      }
-#endif // DEBUG
+	  printf ("rocc_dot(input=%03d) : %d\n", input_size, stop_cycle - stop_cycle);
+	  
+// #ifdef DEBUG
+//       for (int log_idx = 0; log_idx < 300; log_idx++) {
+//         uint32_t data, input, weight;
+//         ROCC_READ_LOG(data, log_idx);
+//         ROCC_INPUT_LOG(input, log_idx);
+//         ROCC_WEIGHT_LOG(weight, log_idx);
+//         printf ("MEM[%03d]=%08x,INPUT=%08x,WEIGHT=%08x\n", log_idx, data, input, weight);
+//       }
+// #endif // DEBUG
 #else // ROCC_MATRIX16
   	  out[b * output_size + o] = 0;
   	  for (int i = 0; i < input_size; i++) {
 		fix16_t tmp = fix16_mul (in_data[b * input_size + i], wh[i * output_size + o]);
   	  	out[b * output_size + o] = fix16_add (out[b * output_size + o], tmp);
-#ifdef DEBUG
-		if (i < 300) {
-		  printf("MEM[%03d]=%08x,INPUT=%08x,WEIGHT=%08x\n", i, tmp, in_data[b * input_size + i], wh[i * output_size + o]);
-		}
-#endif // DEBUG
+// #ifdef DEBUG
+// 		if (i < 300) {
+// 		  printf("MEM[%03d]=%08x,INPUT=%08x,WEIGHT=%08x\n", i, tmp, in_data[b * input_size + i], wh[i * output_size + o]);
+// 		}
+// #endif // DEBUG
   	  }
 #ifdef DEBUG
 	  printf("out = %08x\n", out[b * output_size + o]);
