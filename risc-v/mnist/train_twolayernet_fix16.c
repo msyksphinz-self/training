@@ -84,7 +84,7 @@ void TestNetwork (const int input_size,
 int argmax (const int x_size, fix16_t *o);
 
 #ifdef IMAGE_SIZE_4000
-extern char _binary_t10k_images_idx3_ubyte_4000_start[];
+extern char _binary_t10k_images_idx3_ubyte_small_start[];
 #else // IMAGE_SIZE_4000
 extern char _binary_t10k_images_idx3_ubyte_start[];
 #endif // IMAGE_SIZE_4000
@@ -131,7 +131,7 @@ void TestNetwork (const int input_size,
   char *ans_data;
 
 #ifdef IMAGE_SIZE_4000
-  in_data  = &_binary_t10k_images_idx3_ubyte_4000_start[0x10];
+  in_data  = &_binary_t10k_images_idx3_ubyte_small_start[0x10];
 #else // IMAGE_SIZE_4000
   in_data  = &_binary_t10k_images_idx3_ubyte_start[0x10];
 #endif // IMAGE_SIZE_4000

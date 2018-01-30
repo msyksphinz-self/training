@@ -54,13 +54,9 @@ libfixmath.a:
 # IMAGE_SIZE = 4000000
 IMAGE_SIZE = 4000
 
-train-images-idx3-ubyte.100.o: train-images-idx3-ubyte
-	head -c $(IMAGE_SIZE) $< > $<.$(IMAGE_SIZE)
-	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.rodata $<.$(IMAGE_SIZE) $@
-
-t10k-images-idx3-ubyte.$(IMAGE_SIZE).o: t10k-images-idx3-ubyte
-	head -c $(IMAGE_SIZE) $< > $<.$(IMAGE_SIZE)
-	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.rodata $<.$(IMAGE_SIZE) $@
+t10k-images-idx3-ubyte.small.o: t10k-images-idx3-ubyte
+	head -c $(IMAGE_SIZE) $< > $<.small
+	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.rodata $<.small $@
 
 t10k-images-idx3-ubyte.o: t10k-images-idx3-ubyte
 	riscv64-unknown-elf-objcopy -I binary -O elf64-littleriscv -B riscv --rename-section .data=.rodata $< $@
@@ -109,22 +105,22 @@ TRAIN_SRC_FILES += malloc.o
 TRAIN_SRC_FILES += t10k-labels-idx1-ubyte.o
 
 
-train_twolayernet_fix16: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.4000.o
+train_twolayernet_fix16: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.small.o
 	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DIMAGE_SIZE_4000 $^ $(TRAIN_FLAGS2)
 
 train_twolayernet_fix16_full: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.o
 	riscv64-unknown-elf-gcc -o $@$(TRAIN_FLAGS) $^ $(TRAIN_FLAGS2)
 
-train_twolayernet_fix16_hw: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.4000.o
+train_twolayernet_fix16_hw: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.small.o
 	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DROCC_MATRIX16 -DIMAGE_SIZE_4000 $^ $(TRAIN_FLAGS2)
 
 train_twolayernet_fix16_hw_full: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.o
 	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DROCC_MATRIX16 $^ $(TRAIN_FLAGS2)
 
-train_twolayernet_fix16_debug: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.4000.o
+train_twolayernet_fix16_debug: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.small.o
 	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DDEBUG -DIMAGE_SIZE_4000 $^ $(TRAIN_FLAGS2)
 
-train_twolayernet_fix16_hw_debug: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.4000.o
+train_twolayernet_fix16_hw_debug: $(TRAIN_SRC_FILES) t10k-images-idx3-ubyte.small.o
 	riscv64-unknown-elf-gcc -o $@ $(TRAIN_FLAGS) -DDEBUG -DROCC_MATRIX16 -DIMAGE_SIZE_4000 $^ $(TRAIN_FLAGS2)
 
 %-ubyte: %-ubyte.gz
