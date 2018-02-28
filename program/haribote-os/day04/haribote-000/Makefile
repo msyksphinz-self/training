@@ -13,10 +13,10 @@ helloos.img: ipl10.bin haribote.sys
 bootpack.bin: naskfunc.o bootpack.o 
 	ld -m elf_i386 -e HariMain $^ -o $@
 
-naskfunc.o: naskfunc.nas
-	nasm $^ -o $@ -l naskfunc.lst
+%.o: %.nas
+	nasm $^ -o $@ -l %.lst
 
-haribote.sys: naskfunc.o bootpack.o
+haribote.sys: asmhead.o bootpack.o naskfunc.o 
 	cat $^ > $@
 
 ipl10.bin: ipl10.nas
