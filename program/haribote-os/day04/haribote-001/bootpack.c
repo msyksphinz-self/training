@@ -54,9 +54,9 @@ void set_palette (int start, int end, unsigned char *rgb)
   io_cli ();                  /* clear interrupt flag */
   io_out8 (0x03c8, start);
   for (i = start; i <= end; i++) {
-	io_out8(0x03c9, rgb[0]);
-	io_out8(0x03c9, rgb[1]);
-	io_out8(0x03c9, rgb[2]);
+	io_out8(0x03c9, rgb[0] / 4);
+	io_out8(0x03c9, rgb[1] / 4);
+	io_out8(0x03c9, rgb[2] / 4);
 	rgb += 3;
   }
   io_store_eflags (eflags);
