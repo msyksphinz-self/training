@@ -31,4 +31,4 @@ ipl10.bin: ipl10.nas
 	nasm -fbin -o $@ $^ -l ipl10.lst
 
 clean:
-	rm -rf *.sys haribote.img *.o *.bin *.lst *.name *~
+	rm -rf *.sys helloos.img *.o *.bin *.lst *.name *~
