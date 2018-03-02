@@ -16,3 +16,6 @@
 [submodule "machine_learning/tiny-dnn"]
 	path = machine_learning/tiny-dnn
 	url = https://github.com/tiny-dnn/tiny-dnn.git
+[submodule "program/linux-in-practice"]
+	path = program/linux-in-practice
+	url = https://github.com/satoru-takeuchi/linux-in-practice.git
