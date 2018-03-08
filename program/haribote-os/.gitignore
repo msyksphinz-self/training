@@ -1,0 +1,9 @@
+# Ignore Files
+*.o
+*.dmp
+*.bin
+*.lst
+*.sys
+*.name
+*.img
+*.diff
