@@ -19,3 +19,6 @@
 [submodule "program/linux-in-practice"]
 	path = program/linux-in-practice
 	url = https://github.com/satoru-takeuchi/linux-in-practice.git
+[submodule "program/deep-learning-from-scratch"]
+	path = program/deep-learning-from-scratch
+	url = https://github.com/oreilly-japan/deep-learning-from-scratch.git
