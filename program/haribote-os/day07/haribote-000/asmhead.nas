@@ -53,27 +53,6 @@ VRAM	EQU		0x0ff8			; グラフィックバッファの開始番地
 		OUT		0x60,AL
 		CALL	waitkbdout
 
-;; error:
-;; 		MOV		SI,msg
-;; putloop:
-;; 		MOV		AL,[SI]
-;; 		ADD		SI,1			; SIに1を足す
-;; 		CMP		AL,0
-;; 		JE		fin
-;; 		MOV		AH,0x0e			; 一文字表示ファンクション
-;; 		MOV		BX,15			; カラーコード
-;; 		INT		0x10			; ビデオBIOS呼び出し
-;; 		JMP		putloop
-;; fin:
-;; 		HLT						; 何かあるまでCPUを停止させる
-;; 		JMP		fin				; 無限ループ
-;; 
-;; msg:
-;; 		DB		0x0a, 0x0a		; 改行を2つ
-;; 		DB		"load error"
-;; 		DB		0x0a			; 改行
-;; 		DB		0
-
 ; プロテクトモード移行
 
 ; [INSTRSET "i486p"]				; 486の命令まで使いたいという記述

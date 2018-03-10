@@ -106,33 +106,33 @@ asm_inthandler21:
 		iretd
 
 asm_inthandler27:
-		PUSH	ES
-		PUSH	DS
-		PUSHAD
-		MOV		EAX,ESP
-		PUSH	EAX
-		MOV		AX,SS
-		MOV		DS,AX
-		MOV		ES,AX
-		CALL	inthandler27
-		POP		EAX
-		POPAD
-		POP		DS
-		POP		ES
-		IRETD
+		push	es
+		push	ds
+		pushad
+		mov		eax,esp
+		push	eax
+		mov		ax,ss
+		mov		ds,ax
+		mov		es,ax
+		call	inthandler27
+		pop		eax
+		popad
+		pop		ds
+		pop		es
+		iretd
 
 asm_inthandler2c:
-		PUSH	ES
-		PUSH	DS
-		PUSHAD
-		MOV		EAX,ESP
-		PUSH	EAX
-		MOV		AX,SS
-		MOV		DS,AX
-		MOV		ES,AX
-		CALL	inthandler2c
-		POP		EAX
-		POPAD
-		POP		DS
-		POP		ES
-		IRETD
+		push	es
+		push	ds
+		pushad
+		mov		eax,esp
+		push	eax
+		mov		ax,ss
+		mov		ds,ax
+		mov		es,ax
+		call	inthandler2c
+		pop		eax
+		popad
+		pop		ds
+		pop		es
+		iretd
