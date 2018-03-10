@@ -29,7 +29,7 @@ asmhead.o: asmhead.nas
 naskfunc.o: naskfunc.nas
 	nasm -felf32 $^ -o $@ -l $^.lst
 
-$(TARGET).bin: bootpack.o graphic.o dsctbl.o int.o naskfunc.o hankaku.o
+$(TARGET).bin: bootpack.o graphic.o dsctbl.o int.o naskfunc.o hankaku.o sprintf.o
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $(TARGET).bin $^
 	hexdump -C $(TARGET).bin > $(TARGET).bin.dmp
 
