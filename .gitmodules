@@ -22,3 +22,6 @@
 [submodule "program/deep-learning-from-scratch"]
 	path = program/deep-learning-from-scratch
 	url = https://github.com/oreilly-japan/deep-learning-from-scratch.git
+[submodule "program/deep-learning-from-scratch-msyksphinz"]
+	path = program/deep-learning-from-scratch-msyksphinz
+	url = https://github.com/msyksphinz/deep-learning-from-scratch.git
