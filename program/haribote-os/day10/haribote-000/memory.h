@@ -1,3 +1,6 @@
+#ifndef __MEMORY_H__
+#define __MEMORY_H__
+
 #define MEMMAN_FREES (4090)
 
 struct FREEINFO {
@@ -15,3 +18,4 @@ int memman_free (struct MEMMAN *man, unsigned int addr, unsigned int size);
 unsigned int memman_alloc_4k (struct MEMMAN *man, unsigned int size);
 int memman_free_4k (struct MEMMAN *man, unsigned int addr, unsigned int size);
 
+#endif // __MEMORY_H__

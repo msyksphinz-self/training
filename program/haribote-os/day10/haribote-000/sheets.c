@@ -80,7 +80,7 @@ void sheet_updown (struct SHTCTL *ctl, struct SHEET *sht, int height)
       }
       ctl->sheets[height] = sht;
     } else {
-      for (h = old; h < height; h++) {
+      for (h = ctl->top; h>= height; h--) {
         ctl->sheets[h+1] = ctl->sheets[h];
         ctl->sheets[h+1]-> height = h + 1;
       }
