@@ -9,6 +9,21 @@ run: $(TARGET).img
 target_size = $(shell wc -c $(TARGET).sys | cut -f1 -d' ')
 target_byte_size = $(shell expr $(target_size) / 512 + 1)
 
+OBJ_FILES =
+OBJ_FILES += bootpack.o
+OBJ_FILES += graphic.o
+OBJ_FILES += dsctbl.o
+OBJ_FILES += int.o
+OBJ_FILES += naskfunc.o
+OBJ_FILES += hankaku.o
+OBJ_FILES += sprintf.o
+OBJ_FILES += fifo.o
+OBJ_FILES += keyboard.o
+OBJ_FILES += mouse.o
+OBJ_FILES += memory.o
+OBJ_FILES += memtest.o
+OBJ_FILES += sheets.o
+
 $(TARGET).img: ipl10.bin $(TARGET).sys
 	echo $(TARGET).sys > $(TARGET).name
 	dd if=ipl10.bin     of=$(TARGET).img count=2880 bs=512 conv=notrunc
@@ -29,7 +44,7 @@ asmhead.o: asmhead.nas
 naskfunc.o: naskfunc.nas
 	nasm -felf32 $^ -o $@ -l $^.lst
 
-$(TARGET).bin: bootpack.o graphic.o dsctbl.o int.o naskfunc.o hankaku.o sprintf.o fifo.o keyboard.o mouse.o memory.o
+$(TARGET).bin: $(OBJ_FILES)
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $(TARGET).bin $^
 	hexdump -C $(TARGET).bin > $(TARGET).bin.dmp
 

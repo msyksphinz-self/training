@@ -6,66 +6,6 @@ extern struct FIFO8 mousefifo;
 #define EFLAGS_AC_BIT      0x00040000
 #define CR0_CACHE_DISABLE  0x60000000
 
-unsigned int memtest_sub(unsigned int start, unsigned int end);
-
-unsigned int memtest (unsigned int start, unsigned int end)
-{
-  char flg486 = 0;
-  unsigned int eflg, cr0, i;
-
-  /* check i386 or i486 */
-  eflg = io_load_eflags();
-  eflg |= EFLAGS_AC_BIT;
-  io_store_eflags (eflg);
-  eflg = io_load_eflags();
-  if ((eflg & EFLAGS_AC_BIT) != 0) {
-    flg486 = 1;
-  }
-  eflg &= ~EFLAGS_AC_BIT;
-  io_store_eflags(eflg);
-
-  if (flg486 != 0) {
-    cr0 = load_cr0();
-    cr0 |= CR0_CACHE_DISABLE;  /* diasble cache */
-    store_cr0 (cr0);
-  }
-
-  i = memtest_sub(start, end);
-
-  if (flg486 != 0) {
-    cr0 = load_cr0();
-    cr0 &= ~CR0_CACHE_DISABLE;  /* enable cache */
-    store_cr0(cr0);
-  }
-
-  return i;
-}
-
-
-unsigned int memtest_sub(unsigned int start, unsigned int end)
-{
-  unsigned int i, old, pat0 = 0xaa55aa55, pat1 = 0x55aa55aa;
-  volatile unsigned int *p;
-  for (i = start; i <= end; i += 0x1000) {
-    p = (volatile unsigned int *)i;
-    old = *p;
-    *p = pat0;
-    *p ^= 0xffffffff;
-    if (*p != pat1) {
-    not_memory:
-      *p = old;
-      break;
-    }
-    *p ^= 0xffffffff;
-    if (*p != pat0) {
-      goto not_memory;
-    }
-    *p = old;
-  }
-  return i;
-}
-
-
 void HariMain(void)
 {
   int i;
@@ -82,6 +22,10 @@ void HariMain(void)
   unsigned int memtotal;
   struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
 
+  struct SHTCTL *shtctl;
+  struct SHEET *sht_back, *sht_mouse;
+  unsigned char *buf_back, buf_mouse[256];
+  
   init_gdtidt ();
   init_pic ();
   io_sti ();
@@ -89,34 +33,40 @@ void HariMain(void)
   fifo8_init(&keyfifo, 32, keybuf);
   fifo8_init(&mousefifo, 32, mousebuf);
   
-  init_pallete();
-  init_screen (vram, xsize, ysize);
-
-  // putfonts8_asc (binfo->vram, binfo->scrnx, 8, 8, COL8_FFFFFF, "ABC 123");
-  // 
-  // putfonts8_asc (binfo->vram, binfo->scrnx, 31, 31, COL8_000000, "Haribote OS.");
-  // putfonts8_asc (binfo->vram, binfo->scrnx, 30, 30, COL8_FFFFFF, "Haribote OS.");
-
-  // sprintf(msg, "scrnx = %d", binfo->scrnx);
-  // putfonts8_asc (binfo->vram, binfo->scrnx, 30, 48, COL8_FFFFFF, msg);
-
-  init_mouse_cursor8 (mcursor, COL8_008484);
-  putblock8_8 (binfo->vram, binfo->scrnx, 16, 16, mx,my, mcursor, 16);
-
   io_out8(PIC0_IMR, 0xf9); /* PIC1とキーボードを許可(11111001) */
   io_out8(PIC1_IMR, 0xef); /* マウスを許可(11101111) */
-
-  memtotal = memtest(0x00400000, 0xbfffffff);
-  memman_init (memman);
-  memman_free (memman, 0x00001000, 0x0009e00);   /* 0x00001000 - 0x00009eff */
-  memman_free (memman, 0x00400000, memtotal - 0x00400000);
-
-  sprintf (s, "Memory %dMB, free : %dKB", 
-           memtotal / (1024 * 1024), memman_total(memman) / 1024);
-  putfonts8_asc(binfo->vram, binfo->scrnx, 0, 32, COL8_FFFFFF, s);
-
   init_keyboad ();
   enable_mouse (&mdec);
+  
+  memtotal = memtest(0x00400000, 0xbfffffff);
+  memman_init (memman);
+  memman_free (memman, 0x00001000, 0x009e000);   /* 0x00001000 - 0x0009efff */
+  memman_free (memman, 0x00400000, memtotal - 0x00400000);
+
+  init_pallete();
+  shtctl = shtctl_init (memman, binfo->vram, binfo->scrnx, binfo->scrny);
+  sht_back = sheet_alloc(shtctl);
+  sht_mouse = sheet_alloc(shtctl);
+  buf_back = (unsigned char *)memman_alloc_4k (memman, binfo->scrnx * binfo->scrny);
+  sheet_setbuf (sht_back, buf_back, binfo->scrnx, binfo->scrny, -1);
+  sheet_setbuf (sht_mouse, buf_mouse, 16, 16, 99);
+  init_screen (buf_back, xsize, ysize);
+  init_mouse_cursor8 (buf_mouse, COL8_008484);
+
+  sprintf (s, "(%d, %d)", mx, my);
+  putfonts8_asc (buf_back, binfo->scrnx, 0, 0, COL8_FFFFFF, s);
+  sprintf (s, "Memory %dMB, free : %dKB", 
+           memtotal / (1024 * 1024), memman_total(memman) / 1024);
+  putfonts8_asc(buf_back, binfo->scrnx, 0, 32, COL8_FFFFFF, s);
+  sprintf (s, "buf_back = %x", buf_back);
+  putfonts8_asc(buf_back, binfo->scrnx, 0, 64, COL8_FFFFFF, s);
+
+  sheet_slide (shtctl, sht_back, 0, 0);
+  sheet_slide (shtctl, sht_mouse, mx, my);
+  sheet_updown (shtctl, sht_back, 0);
+  sheet_updown (shtctl, sht_mouse, 1);
+
+  sheet_refresh (shtctl);
   
   for (;;) {
 	io_cli();
@@ -127,8 +77,9 @@ void HariMain(void)
 		i = fifo8_get(&keyfifo);
 		io_sti();
 		sprintf (s, "%x", i);
-		boxfill8(binfo->vram, binfo->scrnx, COL8_008484, 0, 48, 15, 48+31);
-		putfonts8_asc(binfo->vram, binfo->scrnx, 0, 48, COL8_FFFFFF, s);
+		boxfill8(buf_back, binfo->scrnx, COL8_008484, 0, 48, 15, 48+31);
+		putfonts8_asc(buf_back, binfo->scrnx, 0, 48, COL8_FFFFFF, s);
+        sheet_refresh (shtctl);
 	  } else if (fifo8_status(&mousefifo) != 0) {
 		i = fifo8_get(&mousefifo);
 		io_sti();
@@ -137,10 +88,10 @@ void HariMain(void)
           if ((mdec.btn & 0x01) != 0) { s[1] = 'L'; }
           if ((mdec.btn & 0x02) != 0) { s[3] = 'R'; }
           if ((mdec.btn & 0x04) != 0) { s[2] = 'C'; }
-          boxfill8(binfo->vram, binfo->scrnx, COL8_008484, 32, 16, 32 + 15 * 16 -1, 31);
-          putfonts8_asc(binfo->vram, binfo->scrnx, 32, 16, COL8_FFFFFF, s);
+          boxfill8(buf_back, binfo->scrnx, COL8_008484, 32, 16, 32 + 15 * 16 -1, 31);
+          putfonts8_asc(buf_back, binfo->scrnx, 32, 16, COL8_FFFFFF, s);
           
-          boxfill8(binfo->vram, binfo->scrnx, COL8_008484, mx, my, mx + 15, my + 15);
+          // boxfill8(buf_back, binfo->scrnx, COL8_008484, mx, my, mx + 15, my + 15);
 
           mx += mdec.x;
           my += mdec.y;
@@ -148,9 +99,9 @@ void HariMain(void)
           if (my < 0) { my = 0; } if (my > binfo->scrny - 16) { my = binfo->scrny - 16; }
 
           sprintf(s, "(%d, %d)", mx, my);
-          boxfill8(binfo->vram, binfo->scrnx, COL8_008484, 0, 0, 79, 15);
-          putfonts8_asc(binfo->vram, binfo->scrnx, 0, 0, COL8_FFFFFF, s);
-          putblock8_8(binfo->vram, binfo->scrnx, 16, 16, mx, my, mcursor, 16);
+          boxfill8(buf_back, binfo->scrnx, COL8_008484, 0, 0, 79, 15);
+          putfonts8_asc(buf_back, binfo->scrnx, 0, 0, COL8_FFFFFF, s);
+          sheet_slide (shtctl, sht_mouse, mx, my);
         }
 	  }
 	}

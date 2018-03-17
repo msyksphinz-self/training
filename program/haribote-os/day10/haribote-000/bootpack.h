@@ -1,3 +1,8 @@
+#ifndef __BOOTPACK_H__
+#define __BOOTPACK_H__
+
+#include "memtest.h"
+
 #define COL8_000000  0
 #define COL8_FF0000  1
 #define COL8_00FF00  2
@@ -121,3 +126,5 @@ int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 #define MEMMAN_ADDR  0x003c0000
 
 #include "memory.h"
+
+#endif // __BOOTPACK_H__
