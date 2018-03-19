@@ -101,33 +101,33 @@ class ExampleTemplate < CpuBaseTemplate
     # Random values vi the 'rand' function.
     # Values can be shared via a variable, for example 'ri'.
     mov reg(ri = rand(0, 15)), imm(5)
-    add reg(4), reg(ri)
+    add reg(4), reg(4), reg(ri)
     newline
 
     # Random values via a test situation.
     # Values to be generated are specified as '_'.
     #mov reg(ri = 7), imm(_) do situation('imm_random', :min => 0, :max => 15) end
-    add reg(5), reg(ri)
+    add reg(5), reg(5), reg(ri)
     newline
 
     ############################################################################
     # Data generation
 
     # All registers are filled with zeros.
-    add reg(1), reg(2) do situation('zero', :size => 8) end
+    add reg(1), reg(1), reg(2) do situation('zero', :size => 8) end
 
     # Random registers are filled with random values.
     # add reg(_), reg(_) do situation('random', :size => 8, :min_imm => 0, :max_imm => 15) end
     # newline
 
     # 'Normal' and 'Overflow' situations for integer addition.
-    add reg(3), reg(4) do situation('add', :case => 'normal', :size => 8) end
-    add reg(5), reg(6) do situation('add', :case => 'overflow', :size => 8) end
+    add reg(3), reg(3), reg(4) do situation('add', :case => 'normal', :size => 8) end
+    add reg(5), reg(5), reg(6) do situation('add', :case => 'overflow', :size => 8) end
     newline
 
     # 'Normal' and 'Overflow' situations for integer addition.
-    sub reg(7), reg(8) do situation('sub', :case => 'normal', :size => 8) end
-    sub reg(9), reg(10) do situation('sub', :case => 'overflow', :size => 8) end
+    sub reg(7), reg(7), reg(8) do situation('sub', :case => 'normal', :size => 8) end
+    sub reg(9), reg(7), reg(10) do situation('sub', :case => 'overflow', :size => 8) end
     newline
 
     ############################################################################
@@ -142,7 +142,7 @@ class ExampleTemplate < CpuBaseTemplate
     label :start
     trace "GPR[11] = %d", location('GPR', 11)
     jz reg(11), :end
-    sub reg(11), reg(12)
+    sub reg(11), reg(11), reg(12)
     j :start
     label :end
     mov reg(12), imm(0)
@@ -159,13 +159,13 @@ class ExampleTemplate < CpuBaseTemplate
     # Randomized sequences of 2 instuctions
     block(:compositor => 'random', :combinator => 'product') {
       iterate {
-        sub reg(6), reg(5)
+        sub reg(6), reg(6), reg(5)
         mov reg(7), reg(6)
       }
 
       iterate {
-        add reg(3), reg(4) do situation('add', :case => 'overflow', :size => 8) end
-        sub reg(3), reg(4) do situation('sub', :case => 'overflow', :size => 8) end
+        add reg(3), reg(3), reg(4) do situation('add', :case => 'overflow', :size => 8) end
+        sub reg(3), reg(3), reg(4) do situation('sub', :case => 'overflow', :size => 8) end
         mov reg(4), reg(3)
       }
     }.run
