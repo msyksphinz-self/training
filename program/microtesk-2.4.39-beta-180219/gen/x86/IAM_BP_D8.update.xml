@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Constraint version="1.0">
-    <Name>IAM_BP_D8.update</Name>
-    <Kind>FORMULA_BASED</Kind>
-    <Description/>
-    <Signature/>
-    <InnerRep/>
-</Constraint>

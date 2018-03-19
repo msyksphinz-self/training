@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Constraint version="1.0">
-    <Name>mov_r16r16.init</Name>
-    <Kind>FORMULA_BASED</Kind>
-    <Description/>
-    <Signature/>
-    <InnerRep/>
-</Constraint>
