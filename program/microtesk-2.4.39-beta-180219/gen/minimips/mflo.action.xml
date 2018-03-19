@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>mflo.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="LO!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="mflo.rd" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="UPDATE">
+                    <VariableRef name="mflo.rd"/>
+                </Operation>
+                <VariableRef name="LO!1"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

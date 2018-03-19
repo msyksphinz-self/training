@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>j.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="BRANCH!2" type="(BIT_VECTOR 1)" value=""/>
+        <Variable name="JMPADDR!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="j.addr" type="(BIT_VECTOR 26)" value=""/>
+        <Variable name="nia!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="CIA!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="temp_jump!2" type="(BIT_VECTOR 28)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="nia!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <VariableRef name="CIA!1"/>
+                    <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000100"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="temp_jump!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVLSHL">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSIGNEXT">
+                        <Value type="LOGIC_INTEGER" value="2"/>
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                            <VariableRef name="j.addr"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 28)" value="0000000000000000000000000010"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="BRANCH!2"/>
+                <Value type="(BIT_VECTOR 1)" value="1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="JMPADDR!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVCONCAT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                        <Value type="LOGIC_INTEGER" value="31"/>
+                        <Value type="LOGIC_INTEGER" value="28"/>
+                        <VariableRef name="nia!2"/>
+                    </Operation>
+                    <VariableRef name="temp_jump!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>addiu.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="addiu.rt" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="addiu.rs" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="addiu.imm!1" type="(BIT_VECTOR 16)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="UPDATE">
+                    <VariableRef name="addiu.rt"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="addiu.rs"/>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSIGNEXT">
+                        <Value type="LOGIC_INTEGER" value="16"/>
+                        <VariableRef name="addiu.imm!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

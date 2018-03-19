@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>srlv.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="srlv.rd" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="srlv.rt" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="srlv.rs" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="UPDATE">
+                    <VariableRef name="srlv.rd"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVLSHR">
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="srlv.rt"/>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                        <Value type="LOGIC_INTEGER" value="4"/>
+                        <Value type="LOGIC_INTEGER" value="0"/>
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                            <VariableRef name="srlv.rs"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

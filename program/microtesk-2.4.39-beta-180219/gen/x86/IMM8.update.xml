@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>IMM8.update</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="IMM8.tmp_0!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="IMM8.i!2" type="(BIT_VECTOR 8)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="IMM8.i!2"/>
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="SUBSTITUTE">
+                    <VariableRef name="IMM8.tmp_0!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>LA_ADDR.expand</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="LA_ADDR.value!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="LA_ADDR.tmp_0!2" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="LA_ADDR.value!1"/>
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="SUBSTITUTE">
+                    <VariableRef name="LA_ADDR.tmp_0!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

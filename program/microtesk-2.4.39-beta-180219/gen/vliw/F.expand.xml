@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>F.expand</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="F.i!1" type="(BIT_VECTOR 5)" value=""/>
+        <Variable name="FPR.read.value.0!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="F.tmp_1!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="FPR!1" type="(MAP (BIT_VECTOR 5) (BIT_VECTOR 32))" value=""/>
+        <Variable name="FPR.read.index.0!2" type="(BIT_VECTOR 5)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="FPR.read.index.0!2"/>
+                <VariableRef name="F.i!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="FPR.read.value.0!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="FPR!1"/>
+                    <VariableRef name="F.i!1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="FPR!1"/>
+                    <VariableRef name="F.i!1"/>
+                </Operation>
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="SUBSTITUTE">
+                    <VariableRef name="F.tmp_1!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>MUL_S.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="MUL_S.fd" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="MUL_S.ft" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="MUL_S.fs" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="UPDATE">
+                    <VariableRef name="MUL_S.fd"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="MUL">
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="MUL_S.fs"/>
+                    </Operation>
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="MUL_S.ft"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

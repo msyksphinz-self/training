@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>jb.parameters</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="rel" type="(BIT_VECTOR 8)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="PARAMETERS">
+                <VariableRef name="rel"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

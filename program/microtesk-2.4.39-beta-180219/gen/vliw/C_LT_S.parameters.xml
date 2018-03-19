@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>C_LT_S.parameters</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="cc" type="(BIT_VECTOR 3)" value=""/>
+        <Variable name="fs" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="ft" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="PARAMETERS">
+                <VariableRef name="ft"/>
+                <VariableRef name="fs"/>
+                <VariableRef name="cc"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

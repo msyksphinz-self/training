@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>xor_r8m8.action.block_3</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="op2" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="action" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="xor_r8m8.action.block_4" type="LOGIC_BOOLEAN" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="CALL">
+                <VariableRef name="op2"/>
+                <VariableRef name="action"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="xor_r8m8.action.block_4"/>
+                <Value type="LOGIC_BOOLEAN" value="true"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

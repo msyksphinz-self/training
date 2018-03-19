@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>cmp_r16m16.action.block_3</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="instruction_image_size!2" type="(BIT_VECTOR 4)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="instruction_image_size!2"/>
+                <Value type="(BIT_VECTOR 4)" value="0011"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

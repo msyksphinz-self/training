@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>BFT.parameters</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="cc" type="(BIT_VECTOR 3)" value=""/>
+        <Variable name="offset" type="(BIT_VECTOR 16)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="PARAMETERS">
+                <VariableRef name="cc"/>
+                <VariableRef name="offset"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

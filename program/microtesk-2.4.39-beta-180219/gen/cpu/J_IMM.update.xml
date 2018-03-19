@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>J_IMM.update</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="J_IMM.tmp_0!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="J_IMM.value!2" type="(BIT_VECTOR 8)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="J_IMM.value!2"/>
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="SUBSTITUTE">
+                    <VariableRef name="J_IMM.tmp_0!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

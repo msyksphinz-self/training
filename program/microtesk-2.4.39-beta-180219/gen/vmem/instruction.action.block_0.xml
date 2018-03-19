@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>instruction.action.block_0</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="branch.address.0!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="PC!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="PC!1" type="(BIT_VECTOR 16)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="PC!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <VariableRef name="PC!1"/>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000000010"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="branch.address.0!2"/>
+                <VariableRef name="PC!2"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

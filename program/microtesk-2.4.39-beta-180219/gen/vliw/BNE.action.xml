@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>BNE.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="BNE.action.block_0" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="BNE.action.block_0!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="BNE.action.block_1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="BNE.rt" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="BNE.rs" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="BNE.action.block_0!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOTEQ">
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="BNE.rs"/>
+                    </Operation>
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="BNE.rt"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="BNE.action.block_0"/>
+                <VariableRef name="BNE.action.block_0!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="BNE.action.block_1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                        <VariableRef name="BNE.action.block_0!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>BIDAM_BX_DI_D16.expand</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="GPR!1" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR.read.index.0!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.value.0!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.1!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="BIDAM_BX_DI_D16.disp!1" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.1!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="BIDAM_BX_DI_D16.tmp_2!2" type="(BIT_VECTOR 20)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.0!2"/>
+                <Value type="LOGIC_INTEGER" value="3"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.0!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="LOGIC_INTEGER" value="3"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.1!2"/>
+                <Value type="LOGIC_INTEGER" value="7"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.1!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSIGNEXT">
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!1"/>
+                                <Value type="LOGIC_INTEGER" value="3"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!1"/>
+                                <Value type="LOGIC_INTEGER" value="7"/>
+                            </Operation>
+                        </Operation>
+                        <VariableRef name="BIDAM_BX_DI_D16.disp!1"/>
+                    </Operation>
+                </Operation>
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="SUBSTITUTE">
+                    <VariableRef name="BIDAM_BX_DI_D16.tmp_2!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

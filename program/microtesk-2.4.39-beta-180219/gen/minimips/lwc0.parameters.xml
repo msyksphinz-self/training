@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>lwc0.parameters</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="cs" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="address" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="offset" type="(BIT_VECTOR 16)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="PARAMETERS">
+                <VariableRef name="cs"/>
+                <VariableRef name="offset"/>
+                <VariableRef name="address"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

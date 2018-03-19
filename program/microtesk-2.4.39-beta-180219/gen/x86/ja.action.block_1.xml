@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>ja.action.block_1</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="ja.action.block_3" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="instruction_image_size!2" type="(BIT_VECTOR 4)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="instruction_image_size!2"/>
+                <Value type="(BIT_VECTOR 4)" value="0010"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="ja.action.block_3"/>
+                <Value type="LOGIC_BOOLEAN" value="true"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

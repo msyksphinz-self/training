@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>sll.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="sll.sa!1" type="(BIT_VECTOR 5)" value=""/>
+        <Variable name="sll.rd" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="sll.rt" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="UPDATE">
+                    <VariableRef name="sll.rd"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVLSHL">
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="sll.rt"/>
+                    </Operation>
+                    <VariableRef name="sll.sa!1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

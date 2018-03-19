@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>mult.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="mult_result!2" type="(BIT_VECTOR 64)" value=""/>
+        <Variable name="HI!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="mult.rt" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="LO!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="mult.rs" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mult_result!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVMUL">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSIGNEXT">
+                        <Value type="LOGIC_INTEGER" value="32"/>
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                            <VariableRef name="mult.rs"/>
+                        </Operation>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSIGNEXT">
+                        <Value type="LOGIC_INTEGER" value="32"/>
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                            <VariableRef name="mult.rt"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="HI!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="63"/>
+                    <Value type="LOGIC_INTEGER" value="32"/>
+                    <VariableRef name="mult_result!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="LO!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="31"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="mult_result!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

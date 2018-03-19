@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>div_m8.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="init" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="div_m8.action.block_0" type="LOGIC_BOOLEAN" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="THIS_CALL">
+                <VariableRef name="init"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="div_m8.action.block_0"/>
+                <Value type="LOGIC_BOOLEAN" value="true"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

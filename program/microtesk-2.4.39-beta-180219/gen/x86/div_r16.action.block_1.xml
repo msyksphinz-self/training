@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>div_r16.action.block_1</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="div_r16.action.block_0" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="div_r16.action.block_2" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="div_r16.op1" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="div_r16.action.block_0!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="instruction_image_size!2" type="(BIT_VECTOR 4)" value=""/>
+        <Variable name="tmpdw_op1!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="tmpdw_op1!3" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="tmpdw_op2!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="tmpdw_op1!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="GPR!1" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR.read.index.0!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.value.0!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.1!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.value.1!2" type="(BIT_VECTOR 16)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.0!2"/>
+                <Value type="LOGIC_INTEGER" value="0"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.0!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="31"/>
+                    <Value type="LOGIC_INTEGER" value="16"/>
+                    <VariableRef name="tmpdw_op1!2"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="31"/>
+                    <Value type="LOGIC_INTEGER" value="16"/>
+                    <VariableRef name="tmpdw_op1!1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="tmpdw_op1!2"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.1!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.1!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="tmpdw_op1!3"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="tmpdw_op1!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="31"/>
+                    <Value type="LOGIC_INTEGER" value="16"/>
+                    <VariableRef name="tmpdw_op1!3"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="tmpdw_op2!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVUDIV">
+                    <VariableRef name="tmpdw_op1!3"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVZEROEXT">
+                        <Value type="LOGIC_INTEGER" value="16"/>
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                            <VariableRef name="div_r16.op1"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="instruction_image_size!2"/>
+                <Value type="(BIT_VECTOR 4)" value="0010"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="div_r16.action.block_0!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVULE">
+                    <VariableRef name="tmpdw_op1!3"/>
+                    <Value type="(BIT_VECTOR 32)" value="00000000000000001111111111111111"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="div_r16.action.block_0"/>
+                <VariableRef name="div_r16.action.block_0!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="div_r16.action.block_2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                        <VariableRef name="div_r16.action.block_0!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

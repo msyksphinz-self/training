@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>la.action.block_0</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="lui" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="rd" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="la.addr.value!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="instruction" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="action" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="la.action.block_1" type="LOGIC_BOOLEAN" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="CALL">
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="CLOSURE">
+                    <VariableRef name="instruction"/>
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="CLOSURE">
+                        <VariableRef name="lui"/>
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="ARGUMENT_LINK">
+                            <VariableRef name="rd"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                            <Value type="LOGIC_INTEGER" value="31"/>
+                            <Value type="LOGIC_INTEGER" value="16"/>
+                            <VariableRef name="la.addr.value!1"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+                <VariableRef name="action"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="la.action.block_1"/>
+                <Value type="LOGIC_BOOLEAN" value="true"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

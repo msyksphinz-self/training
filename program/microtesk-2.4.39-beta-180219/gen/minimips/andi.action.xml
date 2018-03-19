@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>andi.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="andi.imm!1" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="andi.rt" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="andi.rs" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="UPDATE">
+                    <VariableRef name="andi.rt"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVAND">
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="andi.rs"/>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVZEROEXT">
+                        <Value type="LOGIC_INTEGER" value="16"/>
+                        <VariableRef name="andi.imm!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

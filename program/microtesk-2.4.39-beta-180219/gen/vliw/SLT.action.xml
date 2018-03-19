@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>SLT.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="SLT.rs" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="SLT.rd" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="SLT.rt" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="UPDATE">
+                    <VariableRef name="SLT.rd"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="ITE">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSLT">
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                            <VariableRef name="SLT.rs"/>
+                        </Operation>
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                            <VariableRef name="SLT.rt"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="LOGIC_INTEGER" value="1"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

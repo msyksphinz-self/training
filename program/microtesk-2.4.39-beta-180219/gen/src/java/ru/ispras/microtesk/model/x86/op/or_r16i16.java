@@ -1,0 +1,121 @@
+/*
+ * Copyright (c) Institute for System Programming of the Russian Academy of Sciences
+ * All Rights Reserved
+ *
+ * Institute for System Programming of the Russian Academy of Sciences (ISP RAS)
+ * 25 Alexander Solzhenitsyn st., Moscow, 109004, Russia
+ * http://www.ispras.ru
+ *
+ * The present file was automatically generated on the basis of formal specifications.
+ * It is distributed under the same terms and conditions as the derived specifications.
+ *
+ * N.B. PLEASE DO NOT MODIFY THIS FILE.
+ */
+
+package ru.ispras.microtesk.model.x86.op;
+
+import java.util.Map;
+import java.math.BigInteger;
+import ru.ispras.microtesk.model.Execution;
+import ru.ispras.microtesk.model.ProcessingElement;
+import ru.ispras.microtesk.model.data.*;
+import ru.ispras.microtesk.model.memory.*;
+import ru.ispras.microtesk.model.*;
+import ru.ispras.microtesk.model.x86.PE;
+import ru.ispras.microtesk.model.x86.TempVars;
+import ru.ispras.microtesk.model.x86.mode.*;
+
+import static ru.ispras.microtesk.model.x86.TypeDefs.*;
+
+public final class or_r16i16 extends IsaPrimitive {
+  private static final class Info extends IsaPrimitiveInfoAnd {
+    Info() {
+      super(
+          IsaPrimitiveKind.OP,
+          "or_r16i16",
+          or_r16i16.class,
+          null
+          );
+      addArgument("op1", R16.INFO);
+      addArgument("op2", IMM16.INFO);
+      addShortcut(new Info_instruction(), "#root");
+    }
+
+    @Override
+    public IsaPrimitive create(final Map<String, IsaPrimitive> args) {
+      final R16 op1 = (R16) getArgument("op1", args);
+      final IMM16 op2 = (IMM16) getArgument("op2", args);
+
+      return new or_r16i16(op1, op2);
+    }
+  }
+  private static final class Info_instruction extends IsaPrimitiveInfoAnd {
+    Info_instruction() {
+      super(
+          IsaPrimitiveKind.OP,
+          "or_r16i16",
+          instruction.class,
+          null
+          );
+      addArgument("op1", R16.INFO);
+      addArgument("op2", IMM16.INFO);
+    }
+
+    @Override
+    public IsaPrimitive create(final Map<String, IsaPrimitive> args) {
+      final R16 op1 = (R16) getArgument("op1", args);
+      final IMM16 op2 = (IMM16) getArgument("op2", args);
+
+      return new instruction(
+        new or_r16i16(
+          op1,
+          op2
+        )
+      );
+    }
+  }
+  public static final IsaPrimitiveInfoAnd INFO = new Info();
+
+  public final R16 op1;
+  public final IMM16 op2;
+
+  public or_r16i16(final R16 op1, final IMM16 op2) {
+    assert R16.INFO.isSupported(op1);
+    assert IMM16.INFO.isSupported(op2);
+
+    this.op1 = op1;
+    this.op2 = op2;
+
+    addArgument("op1", op1);
+    addArgument("op2", op2);
+  }
+
+  @Override
+  public void init(final TemporaryVariables tempVars) {
+    final TempVars vars__ = (TempVars) tempVars;
+  }
+
+  @Override
+  public String syntax(final TemporaryVariables tempVars) {
+    final TempVars vars__ = (TempVars) tempVars;
+    init(vars__);
+    return String.format("or %s, %s", op1.text(vars__), op2.text(vars__));
+  }
+
+  @Override
+  public String image(final TemporaryVariables tempVars) {
+    final TempVars vars__ = (TempVars) tempVars;
+    init(vars__);
+    return String.format("1000000111001%s%s", op1.image(vars__), op2.image(vars__));
+  }
+
+  @Override
+  public void action(final ProcessingElement procElem, final TemporaryVariables tempVars) {
+    final PE pe__ = (PE) procElem;
+    final TempVars vars__ = (TempVars) tempVars;
+    init(vars__);
+    new or_proc_word(new Immediate(op1.access(pe__, vars__).load().add(Data.valueOf(WORD, 0x0))), new Immediate(op2.access(pe__, vars__).load().add(Data.valueOf(WORD, 0x0)))).execute(pe__, vars__);
+    op1.access(pe__, vars__).store(vars__.tmpw_res.access().bitField(15, 0).load());
+    vars__.instruction_image_size.access().store(Data.valueOf(SIZE, 0x4));
+  }
+}

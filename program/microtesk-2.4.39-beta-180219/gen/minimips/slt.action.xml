@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>slt.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="slt.rs" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="slt.rt" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="slt.action.block_1!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="slt.action.block_0!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="slt.action.block_1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="slt.action.block_0" type="LOGIC_BOOLEAN" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="slt.action.block_0!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSLT">
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="slt.rs"/>
+                    </Operation>
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="slt.rt"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="slt.action.block_1!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                        <VariableRef name="slt.action.block_0!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="slt.action.block_0"/>
+                <VariableRef name="slt.action.block_0!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="slt.action.block_1"/>
+                <VariableRef name="slt.action.block_1!1"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

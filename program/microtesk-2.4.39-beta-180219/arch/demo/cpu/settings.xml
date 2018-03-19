@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+
+  <allocation>
+    <mode name="REG">
+      <strategy name="random" free-bias="50" used-bias="50"/>
+      <range min="0" max="15"/>
+    </mode>
+    <mode name="MEM">
+      <strategy name="free"/>
+      <range min="0" max="255"/>
+    </mode>
+    <mode name="IMM">
+      <strategy name="random"/>
+      <range min="0" max="255"/>
+    </mode>
+  </allocation>
+
+  <delaySlot size="0" />
+  
+</settings>

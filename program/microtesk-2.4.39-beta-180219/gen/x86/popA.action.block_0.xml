@@ -1,0 +1,1774 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>popA.action.block_0</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="GPR.write.value.59!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.index.34!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.index.42!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.66!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.index.19!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.value.26!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="popA.action.tmp_71!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.index.65!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="popA.action.tmp_33!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.value.25!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.31!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="popA.action.tmp_18!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.value.40!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.value.67!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="GPR.write.index.64!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.index.27!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.index.12!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.16!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.value.37!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="MEM.read.value.7!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="GPR.write.value.44!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.index.69!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.value.29!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.56!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.value.55!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="popA.action.tmp_63!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="popA.action.tmp_48!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.index.15!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="RSEG.read.index.0!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.index.4!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.value.52!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="GPR.read.index.61!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="RSEG.read.index.30!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.index.72!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.index.47!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.value.47!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="GPR.write.index.14!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.index.46!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.value.14!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.46!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.index.20!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="RSEG.read.value.20!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.value.9!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="popA.action.tmp_13!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.index.62!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.value.62!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="RSEG.read.value.5!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR!10" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="MEM.read.value.17!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="GPR.write.value.49!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.index.49!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.index.11!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.index.32!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.value.64!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.11!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR!16" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!15" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="MEM.read.value.2!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="GPR!12" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!11" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!14" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!13" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!6" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!7" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!4" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!5" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="popA.action.tmp_43!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR!2" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="RSEG.read.index.35!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR!3" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!1" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="RSEG.read.value.35!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.41!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="popA.action.tmp_28!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.1!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.index.41!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.value.32!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="RSEG.read.index.50!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="RSEG.read.value.50!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.index.17!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.value.34!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.26!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.value.27!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="GPR.write.index.59!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.value.19!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.66!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG!1" type="(MAP (BIT_VECTOR 2) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!8" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR!9" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="popA.action.tmp_3!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="popA.action.tmp_58!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.index.25!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="RSEG.read.value.0!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.value.65!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.31!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.value.4!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.1!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.value.42!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="MEM.read.index.7!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.index.67!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.index.40!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.index.44!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.value.69!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.value.12!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="GPR.read.value.16!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.index.52!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.56!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.index.29!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.index.6!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="RSEG.read.value.30!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.index.55!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="popA.action.tmp_23!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.61!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.value.15!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.value.72!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.21!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.index.37!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.index.22!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.index.54!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.value.54!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.index.39!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.index.2!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.21!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.value.39!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="instruction_image_size!2" type="(BIT_VECTOR 4)" value=""/>
+        <Variable name="GPR.read.value.70!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.70!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="RSEG.read.index.45!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="popA.action.tmp_53!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="popA.action.tmp_8!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.51!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.value.45!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="popA.action.tmp_38!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.index.51!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.value.22!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="RSEG.read.index.60!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="RSEG.read.value.60!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.6!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM.read.index.57!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.index.24!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.index.36!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.write.value.24!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.read.value.36!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="RSEG.read.value.10!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="GPR.write.index.9!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="popA.action.tmp_68!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="MEM!1" type="(MAP (BIT_VECTOR 20) (BIT_VECTOR 8))" value=""/>
+        <Variable name="RSEG.read.index.5!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="RSEG.read.index.10!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="MEM.read.value.57!2" type="(BIT_VECTOR 8)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.0!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.0!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.1!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.1!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.2!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!1"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000001111"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.2!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!1"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001111"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="popA.action.tmp_3!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.4!2"/>
+                <Value type="LOGIC_INTEGER" value="0"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.4!2"/>
+                <VariableRef name="popA.action.tmp_3!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_3!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!1"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001111"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.5!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.5!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.6!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.6!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!2"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.7!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!2"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000001110"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.7!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!2"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001110"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!3"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!2"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="popA.action.tmp_8!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.9!2"/>
+                <Value type="LOGIC_INTEGER" value="0"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.9!2"/>
+                <VariableRef name="popA.action.tmp_8!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_8!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!2"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001110"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.10!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.10!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.11!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.11!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!3"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.12!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!3"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000001101"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.12!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!3"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001101"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!4"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!3"/>
+                    <Value type="LOGIC_INTEGER" value="1"/>
+                    <VariableRef name="popA.action.tmp_13!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.14!2"/>
+                <Value type="LOGIC_INTEGER" value="1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.14!2"/>
+                <VariableRef name="popA.action.tmp_13!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_13!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!3"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001101"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.15!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.15!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.16!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.16!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!4"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.17!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!4"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000001100"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.17!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!4"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001100"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!5"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!4"/>
+                    <Value type="LOGIC_INTEGER" value="1"/>
+                    <VariableRef name="popA.action.tmp_18!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.19!2"/>
+                <Value type="LOGIC_INTEGER" value="1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.19!2"/>
+                <VariableRef name="popA.action.tmp_18!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_18!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!4"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001100"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.20!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.20!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.21!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.21!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!5"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.22!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!5"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000001011"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.22!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!5"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001011"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!6"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!5"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                    <VariableRef name="popA.action.tmp_23!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.24!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.24!2"/>
+                <VariableRef name="popA.action.tmp_23!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_23!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!5"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001011"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.25!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.25!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.26!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.26!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!6"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.27!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!6"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000001010"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.27!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!6"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001010"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!7"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!6"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                    <VariableRef name="popA.action.tmp_28!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.29!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.29!2"/>
+                <VariableRef name="popA.action.tmp_28!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_28!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!6"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001010"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.30!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.30!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.31!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.31!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!7"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.32!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!7"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000001001"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.32!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!7"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001001"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!8"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!7"/>
+                    <Value type="LOGIC_INTEGER" value="3"/>
+                    <VariableRef name="popA.action.tmp_33!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.34!2"/>
+                <Value type="LOGIC_INTEGER" value="3"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.34!2"/>
+                <VariableRef name="popA.action.tmp_33!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_33!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!7"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001001"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.35!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.35!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.36!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.36!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!8"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.37!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!8"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000001000"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.37!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!8"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001000"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!9"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!8"/>
+                    <Value type="LOGIC_INTEGER" value="3"/>
+                    <VariableRef name="popA.action.tmp_38!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.39!2"/>
+                <Value type="LOGIC_INTEGER" value="3"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.39!2"/>
+                <VariableRef name="popA.action.tmp_38!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_38!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!8"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000001000"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.40!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.40!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.41!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.41!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!9"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.42!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!9"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000000101"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.42!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!9"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000101"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!10"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!9"/>
+                    <Value type="LOGIC_INTEGER" value="5"/>
+                    <VariableRef name="popA.action.tmp_43!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.44!2"/>
+                <Value type="LOGIC_INTEGER" value="5"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.44!2"/>
+                <VariableRef name="popA.action.tmp_43!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_43!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!9"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000101"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.45!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.45!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.46!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.46!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!10"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.47!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!10"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000000100"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.47!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!10"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000100"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!11"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!10"/>
+                    <Value type="LOGIC_INTEGER" value="5"/>
+                    <VariableRef name="popA.action.tmp_48!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.49!2"/>
+                <Value type="LOGIC_INTEGER" value="5"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.49!2"/>
+                <VariableRef name="popA.action.tmp_48!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_48!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!10"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000100"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.50!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.50!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.51!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.51!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!11"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.52!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!11"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000000011"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.52!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!11"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000011"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!12"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!11"/>
+                    <Value type="LOGIC_INTEGER" value="6"/>
+                    <VariableRef name="popA.action.tmp_53!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.54!2"/>
+                <Value type="LOGIC_INTEGER" value="6"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.54!2"/>
+                <VariableRef name="popA.action.tmp_53!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_53!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!11"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000011"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.55!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.55!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.56!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.56!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!12"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.57!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!12"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000000010"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.57!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!12"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000010"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!13"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!12"/>
+                    <Value type="LOGIC_INTEGER" value="6"/>
+                    <VariableRef name="popA.action.tmp_58!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.59!2"/>
+                <Value type="LOGIC_INTEGER" value="6"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.59!2"/>
+                <VariableRef name="popA.action.tmp_58!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_58!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!12"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000010"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.60!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.60!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.61!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.61!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!13"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.62!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!13"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000000001"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.62!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!13"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000001"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!14"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!13"/>
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                    <VariableRef name="popA.action.tmp_63!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.64!2"/>
+                <Value type="LOGIC_INTEGER" value="7"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.64!2"/>
+                <VariableRef name="popA.action.tmp_63!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_63!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="RSEG!1"/>
+                                <Value type="LOGIC_INTEGER" value="2"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                                <VariableRef name="GPR!13"/>
+                                <Value type="LOGIC_INTEGER" value="4"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 16)" value="0000000000000001"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.index.65!2"/>
+                <Value type="LOGIC_INTEGER" value="2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="RSEG.read.value.65!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="RSEG!1"/>
+                    <Value type="LOGIC_INTEGER" value="2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.66!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.66!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!14"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.index.67!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                        <VariableRef name="RSEG!1"/>
+                        <Value type="LOGIC_INTEGER" value="2"/>
+                    </Operation>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                        <VariableRef name="GPR!14"/>
+                        <Value type="LOGIC_INTEGER" value="4"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.read.value.67!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!14"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!15"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!14"/>
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                    <VariableRef name="popA.action.tmp_68!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.69!2"/>
+                <Value type="LOGIC_INTEGER" value="7"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.69!2"/>
+                <VariableRef name="popA.action.tmp_68!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_68!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="RSEG!1"/>
+                            <Value type="LOGIC_INTEGER" value="2"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                            <VariableRef name="GPR!14"/>
+                            <Value type="LOGIC_INTEGER" value="4"/>
+                        </Operation>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.70!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.70!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!15"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!16"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!15"/>
+                    <Value type="LOGIC_INTEGER" value="4"/>
+                    <VariableRef name="popA.action.tmp_71!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.72!2"/>
+                <Value type="LOGIC_INTEGER" value="4"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.72!2"/>
+                <VariableRef name="popA.action.tmp_71!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="popA.action.tmp_71!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                        <VariableRef name="GPR!15"/>
+                        <Value type="LOGIC_INTEGER" value="4"/>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 16)" value="0000000000010000"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="instruction_image_size!2"/>
+                <Value type="(BIT_VECTOR 4)" value="0001"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

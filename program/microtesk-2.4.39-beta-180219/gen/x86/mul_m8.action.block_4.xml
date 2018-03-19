@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>mul_m8.action.block_4</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="mul_m8.action.block_2" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="mul_m8.action.block_3" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="GPR!1" type="(MAP (BIT_VECTOR 3) (BIT_VECTOR 16))" value=""/>
+        <Variable name="GPR.read.index.0!2" type="LOGIC_INTEGER" value=""/>
+        <Variable name="GPR.read.value.0!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="mul_m8.action.block_2!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="mul_m8.action.block_3!1" type="LOGIC_BOOLEAN" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.index.0!2"/>
+                <Value type="LOGIC_INTEGER" value="0"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.read.value.0!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="GPR!1"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mul_m8.action.block_2!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOTEQ">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                        <VariableRef name="GPR!1"/>
+                        <Value type="LOGIC_INTEGER" value="0"/>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 8)" value="00000000"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mul_m8.action.block_3!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                        <VariableRef name="mul_m8.action.block_2!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="mul_m8.action.block_2"/>
+                <VariableRef name="mul_m8.action.block_2!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="mul_m8.action.block_3"/>
+                <VariableRef name="mul_m8.action.block_3!1"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

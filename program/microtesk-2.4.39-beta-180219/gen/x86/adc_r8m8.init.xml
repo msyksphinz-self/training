@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>adc_r8m8.init</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="mod!2" type="(BIT_VECTOR 2)" value=""/>
+        <Variable name="adc_r8m8.init.block_0" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="rm!2" type="(BIT_VECTOR 3)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mod!2"/>
+                <Value type="(BIT_VECTOR 2)" value="00"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="rm!2"/>
+                <Value type="(BIT_VECTOR 3)" value="000"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="adc_r8m8.init.block_0"/>
+                <Value type="LOGIC_BOOLEAN" value="true"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

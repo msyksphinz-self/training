@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>instantiate.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="PID!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="instantiate.pid!1" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="PID!2"/>
+                <VariableRef name="instantiate.pid!1"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

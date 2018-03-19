@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>blez.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="blez.action.block_0!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="blez.rs" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="blez.action.block_1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="blez.action.block_0" type="LOGIC_BOOLEAN" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="blez.action.block_0!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSLE">
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="blez.rs"/>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000000"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="blez.action.block_0"/>
+                <VariableRef name="blez.action.block_0!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="blez.action.block_1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                        <VariableRef name="blez.action.block_0!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

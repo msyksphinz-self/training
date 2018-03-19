@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>MOVZ.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="MOVZ.action.block_0!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="MOVZ.action.block_1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="MOVZ.action.block_0" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="MOVZ.rt" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MOVZ.action.block_0!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="MOVZ.rt"/>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000000"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="MOVZ.action.block_0"/>
+                <VariableRef name="MOVZ.action.block_0!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="MOVZ.action.block_1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                        <VariableRef name="MOVZ.action.block_0!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

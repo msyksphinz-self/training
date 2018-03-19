@@ -1,0 +1,547 @@
+/*
+ * Copyright 2014 ISP RAS (http://www.ispras.ru)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+// Constants
+
+let REG_INDEX_SIZE = 5 // in bits
+let INSTRUCTION_WORD_SIZE = 4 // in bytes
+
+// Informs that CIA is a program counter. This information
+// is needed to handle control transfer instructions.
+let PC = "CIA"
+
+////////////////////////////////////////////////////////////////////////////////
+// Types
+
+type  WORD = int(32)
+type SHORT = int(16)
+type HWORD = card(16)
+type SBYTE = int(8)
+type  BYTE = card(8)
+type   BIT = card(1)
+type INDEX = card(REG_INDEX_SIZE)
+
+// IEEE 754 single(32 bits): 23-bit fraction, 8-bit exponent + implicit sign bit
+type SINGLE = float(23, 8)
+
+type COND_CODE = card(3)
+
+////////////////////////////////////////////////////////////////////////////////
+// Registers and Memory
+
+reg GPR[2 ** REG_INDEX_SIZE, WORD]
+reg FPR[2 ** REG_INDEX_SIZE, SINGLE]
+shared mem M[2 ** 30, WORD] // or 2**32 bytes
+
+reg  CIA[WORD] // Current instruction address
+reg FCCR[1, WORD] // FP Condition Codes register
+
+////////////////////////////////////////////////////////////////////////////////
+// Temporary Variables (Branch-Related)
+
+var     NIA[WORD] // Next instruction address
+var JMPADDR[WORD] // Jump address
+
+// Flag that specifies whether control is to be transferred to the jump address
+var BRANCH[BIT]
+
+////////////////////////////////////////////////////////////////////////////////
+// Temporary Variables (For Storing Intermediate Calculation Results)
+
+var temp[card(33)]
+
+////////////////////////////////////////////////////////////////////////////////
+// Addressing Modes
+
+mode R (i : INDEX) = GPR[i]
+  syntax = format("%d", i)
+  image  = format("%5s", i)
+  action = {
+    if i == 0 then
+      GPR[i] = coerce(WORD, 0);
+    endif;
+  }
+
+mode F (i : INDEX) = FPR[i]
+  syntax = format("%d", i)
+  image  = format("%5s", i)
+
+////////////////////////////////////////////////////////////////////////////////
+// Special-Purpose Instructions
+
+pseudo op NOP()
+  syntax = "NOP"
+  image  = "00000000000000000000000000000000"
+  action = {}
+
+////////////////////////////////////////////////////////////////////////////////
+// Arithmetical Instructions
+
+op ADD (rd : R, rs : R, rt : R)
+  syntax = format("ADD %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image  = format("000000%s%s%s00000100000", rs.image, rt.image, rd.image)
+  action = {
+    temp = rs<31>::rs + rt<31>::rt;
+    if temp<32> != temp<31> then
+      exception("IntegerOverflow");
+    else
+      rd = temp<31..0>;
+    endif;
+  }
+
+op ADDI (rt : R, rs : R, imm : SHORT)
+  syntax = format("ADDI %s, %s, 0x%x", rt.syntax, rs.syntax, imm)
+  image  = format("001000%s%s%s", rs.image, rt.image, imm)
+  action = {
+    temp = rs<31>::rs + coerce(int(33), imm);
+    if (temp<32> != temp<31>) then
+      exception("IntegerOverflow");
+    else
+      rt = temp<31..0>;
+    endif;
+  }
+
+op SUB (rd : R, rs : R, rt : R)
+  syntax = format("SUB %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image  = format("000000%s%s%s00000100010", rs.image, rt.image, rd.image)
+  action = {
+    temp = rs<31>::rs - rt<31>::rt;
+    if temp<32> != temp<31> then
+      exception("IntegerOverflow");
+    else
+      rd = temp<31..0>;
+    endif;
+  }
+
+op MUL (rd : R, rs : R, rt : R)
+  syntax = format("MUL %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image  = format("011100%s%s%s00000000010", rs.image, rt.image, rd.image)
+  action = {
+    rd = rs * rt;
+  }
+
+op SLL (rd : R, rt : R, sa : INDEX)
+  syntax = format("SLL %s, %s, %d", rd.syntax, rt.syntax, sa)
+  image  = format("00000000000%s%s%s000000", rt.image, rd.image, sa)
+  action = {
+    rd = rt << sa;
+  }
+
+op SRL (rd : R, rt : R, sa : INDEX)
+  syntax = format("SRL %s, %s, %d", rd.syntax, rt.syntax, sa)
+  image  = format("00000000000%s%s%s000010", rt.image, rd.image, sa)
+  action = {
+    rd = rt >> sa;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Move Instructions
+
+op MOVN (rd : R, rs : R, rt : R)
+  syntax = format("MOVN %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image  = format("000000%s%s%s00000001011", rs.image, rt.image, rd.image)
+  action = {
+    if (rt != 0) then
+      rd = rs;
+    endif;
+  }
+
+op MOVZ (rd : R, rs : R, rt : R)
+  syntax = format("MOVZ %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image  = format("000000%s%s%s00000001010", rs.image, rt.image, rd.image)
+  action = {
+    if (rt == 0) then
+      rd = rs;
+    endif;
+  }
+
+op MOVE (rd : R, rs : R)
+  syntax = format("MOVE %s, %s", rd.syntax, rs.syntax)
+  image  = format("000000%s00000%s00000100001", rd.image, rs.image)
+  action = {
+    rd = rs;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Logical Instructions
+
+op AND (rd : R, rs : R, rt : R)
+  syntax = format("AND %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image  = format("000000%s%s%s00000100100", rs.image, rt.image, rd.image)
+  action = {
+    rd = rs & rt;
+  }
+
+op OR (rd : R, rs : R, rt : R)
+  syntax = format("OR %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image  = format("000000%s%s%s00000100101", rs.image, rt.image, rd.image)
+  action = {
+    rd = rs | rt;
+  }
+
+op XOR (rd : R, rs : R, rt : R)
+  syntax = format("XOR %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image  = format("000000%s%s%s00000100110", rs.image, rt.image, rd.image)
+  action = {
+    rd = rs ^ rt;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Comparison Instructions
+
+op SLT (rd : R, rs : R, rt : R)
+  syntax = format("SLT %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image  = format("000000%s%s%5s00000101010", rs.image, rt.image, rd.image)
+  action = {
+    rd = if rs < rt then 1 else 0 endif;
+  }
+
+op SLTI (rt : R, rs : R, imm : SHORT)
+  syntax = format("SLTI %s, %s, 0x%x", rt.syntax, rs.syntax, imm)
+  image  = format("001010%s%s%s", rs.image, rt.image, imm)
+  action = {
+    rt = if rs < sign_extend(WORD, imm) then 1 else 0 endif;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Load Store Instructions
+
+op LUI (rt : R, offset : SHORT)
+  syntax = format("LUI %s, 0x%x", rt.syntax, offset)
+  image  = format("00111100000%s%s", rt.image, offset)
+  action = {
+    rt = coerce(WORD, offset) << 16;
+  }
+
+op LW (base : R, rt : R, offset : SHORT)
+  syntax = format("LW %s, %d(%s)", rt.syntax, offset, base.syntax)
+  image  = format("100011%s%s%s", base.image, rt.image, offset)
+  action = {
+    rt = M[(base + sign_extend(WORD, offset)) >> 2];
+  }
+
+op SW (base : R, rt : R, offset : SHORT)
+  syntax = format("SW %s, %d(%s)", rt.syntax, offset, base.syntax)
+  image  = format("101011%s%s%s", base.image, rt.image, offset)
+  action = {
+    M[(base + sign_extend(WORD, offset)) >> 2] = rt;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Branch Instructions
+
+label mode BRANCH_LABEL(target: WORD, current: WORD) = target<18..3> - current<18..3> - 1
+  syntax = ""
+  image = format("%s", target<18..3> - current<18..3> - 1)
+
+mode BRANCH_IMM(imm: SHORT) = imm
+  syntax = format("0x%X", imm)
+  image = format("%s", imm)
+
+mode BRANCH_OFFSET = BRANCH_LABEL | BRANCH_IMM
+
+op B (offset: BRANCH_OFFSET)
+  syntax = format("B %s", offset.syntax)
+  image  = format("0001000000000000%s", offset.image)
+  action = {
+    // Informs that control transfer is to be performed
+    BRANCH = 1;
+    // Calculates the jump address and saves it to a temporary variable
+    JMPADDR = NIA + (sign_extend(WORD, offset) << 3);
+  }
+
+op BEQ (rs: R, rt: R, offset: BRANCH_OFFSET)
+  syntax = format("BEQ %s, %s, %s", rs.syntax, rt.syntax, offset.syntax)
+  image  = format("000010%s%s%s", rs.image, rt.image, offset.image)
+  action = {
+    if rs == rt then
+      // Informs that control transfer is to be performed
+      BRANCH = 1;
+      // Calculates the jump address and saves it to a temporary variable
+      JMPADDR = NIA + (sign_extend(WORD, offset) << 3);
+    endif;
+  }
+
+op BNE (rs: R, rt: R, offset: BRANCH_OFFSET)
+  syntax = format("BNE %s, %s, %s", rs.syntax, rt.syntax, offset.syntax)
+  image  = format("000101%s%s%s", rs.image, rt.image, offset.image)
+  action = {
+    if rs != rt then
+      // Informs that control transfer is to be performed
+      BRANCH = 1;
+      // Calculates the jump address and saves it to a temporary variable
+      JMPADDR = NIA + (sign_extend(WORD, offset) << 3);
+    endif;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Arithmetical Instructions for Floating Point
+
+op ADD_S (fd : F, fs : F, ft : F)
+  syntax = format("ADD_S %s, %s, %s", fd.syntax, fs.syntax, ft.syntax)
+  image  = format("01000110000%s%s%s000000", ft.image, fs.image, fd.image)
+  action = {
+    fd = fs + ft;
+  }
+
+op SUB_S (fd : F, fs : F, ft : F)
+  syntax = format("SUB_S %s, %s, %s", fd.syntax, fs.syntax, ft.syntax)
+  image  = format("01000110000%s%s%s000001", ft.image, fs.image, fd.image)
+  action = {
+    fd = fs - ft;
+  }
+
+op MUL_S (fd : F, fs : F, ft : F)
+  syntax = format("MUL_S %s, %s, %s", fd.syntax, fs.syntax, ft.syntax)
+  image  = format("01000110000%s%s%s000010", ft.image, fs.image, fd.image)
+  action = {
+    fd = fs * ft;
+  }
+
+op NEG_S (fd : F, fs : F)
+  syntax = format("NEG_S %s, %s", fd.syntax, fs.syntax)
+  image  = format("0100011000000000%s%s000111", fs.image, fd.image)
+  action = {
+    fd = -fs;
+  }
+
+op ABS_S (fd : F, fs : F)
+  syntax = format("ABS_S %s, %s", fd.syntax, fs.syntax)
+  image  = format("0100011000000000%s%s000101", fs.image, fd.image)
+  action = {
+    if (fs < 0) then
+      fd = - fs;
+    else
+      fd = fs;
+    endif;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Comparison Instructions for Floating Point
+
+op C_EQ_S (ft : F, fs : F, cc : COND_CODE)
+  syntax = format("C_EQ_S %d, %s, %s", cc, fs.syntax, ft.syntax)
+  image  = format("01000110000%s%s%s00110010", ft.image, fs.image, cc)
+  action = {
+    if (fs == ft) then
+      FCCR<cc> = 1;
+    else
+      FCCR<cc> = 0;
+    endif;
+  }
+
+op C_LT_S (ft : F, fs : F, cc : COND_CODE)
+  syntax = format("C_LT_S %d, %s, %s", cc, fs.syntax, ft.syntax)
+  image  = format("01000110000%s%s%s00111100", ft.image, fs.image, cc)
+  action = {
+    if (fs < ft) then
+      FCCR<cc> = 1;
+    else
+      FCCR<cc> = 0;
+    endif;
+  }
+
+op C_LE_S (ft : F, fs : F, cc : COND_CODE)
+  syntax = format("C_LE_S %d, %s, %s", cc, fs.syntax, ft.syntax)
+  image  = format("01000110000%s%s%s00111110", ft.image, fs.image, cc)
+  action = {
+     if (fs <= ft) then
+       FCCR<cc> = 1;
+     else
+       FCCR<cc> = 0;
+     endif;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Move Instructions for Floating Point
+
+op MOV_S (fd : F, fs : F)
+  syntax = format("MOV_S %s, %s", fd.syntax, fs.syntax)
+  image  = format("0100011000000000%s%s000110", fs.image, fd.image)
+  action = {
+    fd = fs;
+  }
+
+op MTF (rt : R, fs : F)
+  syntax = format("MTF %s, %s", rt.syntax, fs.syntax)
+  image  = format("01000100100%s%s00000000000", rt.image, fs.image)
+  action = {
+    fs = rt;
+  }
+
+op MFF (rt : R, fs : F)
+  syntax = format("MFF %s, %s", rt.syntax, fs.syntax)
+  image  = format("01000100000%s%s00000000000", rt.image, fs.image)
+  action = {
+    rt = fs;
+  }
+
+op MOVT_S (fd : F, fs : F, cc : COND_CODE)
+  syntax = format("MOVT_S %s, %s", fd.syntax, fs.syntax)
+  image  = format("01000110000%s01%s%s010001", cc, fs.image, fd.image)
+  action = {
+    if (FCCR<cc> == 1) then
+      fd = fs;
+    endif;
+  }
+
+op MOVF_S (fd : F, fs : F, cc : COND_CODE)
+  syntax = format("MOVF_S %s, %s, %d", fd.syntax, fs.syntax, cc)
+  image  = format("01000110000%s00%s%s010001", cc, fs.image, fd.image)
+  action = {
+    if (FCCR<cc> == 0) then
+      fd = fs;
+    endif;
+  }
+
+op MOVN_S (fd : F, fs : F, rt : R)
+  syntax = format("MOVN_S %s, %s, %s", fd.syntax, fs.syntax, rt.syntax)
+  image  = format("01000110000%s%s%s010011", rt.image, fs.image, fd.image)
+  action = {
+    if (rt != 0) then
+      fd = fs;
+    endif;
+  }
+
+op MOVZ_S (fd : F, fs : F, rt : R)
+  syntax = format("MOVZ_S %s, %s, %s", fd.syntax, fs.syntax, rt.syntax)
+  image  = format("01000110000%s%s%s010010", rt.image, fs.image, fd.image)
+  action = {
+    if (rt == 0) then
+      fd = fs;
+    endif;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Branch Instructions for Floating Point
+
+op BFF (cc: COND_CODE, offset: BRANCH_OFFSET)
+  syntax = format("BFF %d, %s", cc, offset.syntax)
+  image  = format("01000101000%s00%s", cc, offset.image)
+  action = {
+    if (FCCR<cc> == 0) then
+      // Informs that control transfer is to be performed
+      BRANCH = 1;
+      // Calculates the jump address and saves it to a temporary variable
+      JMPADDR = NIA + (sign_extend(WORD, offset) << 3);
+    endif;
+  }
+
+op BFT (cc: COND_CODE, offset: BRANCH_OFFSET)
+  syntax = format("BFT %d, %s", cc, offset.syntax)
+  image  = format("01000101000%s01%s", cc, offset.image)
+  action = {
+    if (FCCR<cc> == 1) then
+      // Informs that control transfer is to be performed
+      BRANCH = 1;
+      // Calculates the jump address and saves it to a temporary variable
+      JMPADDR = NIA + (sign_extend(WORD, offset) << 3);
+    endif;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Instruction Groups
+
+op ALU       = ADD  // Arithmetical instructions
+             | ADDI
+             | SUB
+             | MUL
+             | SLL
+             | SRL
+             | MOVN // Move instructions
+             | MOVZ
+             | MOVE
+             | AND  // Logical instructions
+             | OR
+             | XOR
+             | SLT  // Comparison instructions
+             | SLTI
+
+op LoadStore = LUI
+             | LW
+             | SW
+
+op Branch    = B
+             | BEQ
+             | BNE
+
+op FP        = ADD_S  // Arithmetical instructions
+             | SUB_S
+             | MUL_S
+             | NEG_S
+             | ABS_S
+             | C_EQ_S // Comparison instructions
+             | C_LT_S
+             | C_LE_S
+             | MOV_S  // Move instructions
+             | MTF
+             | MFF
+             | MOVT_S
+             | MOVF_S
+             | MOVN_S
+             | MOVZ_S
+
+op FPBranch  = BFF
+             | BFT
+
+////////////////////////////////////////////////////////////////////////////////
+// Channels
+
+// All supported instructions except for NOP
+op channel1 = ALU
+            | LoadStore
+            | Branch
+            | FP
+            | FPBranch
+
+// All supported instructions except for branching instructions
+op channel2 = ALU
+            | LoadStore
+            | FP
+            | NOP
+
+////////////////////////////////////////////////////////////////////////////////
+// Very Long Instruction Word
+
+op vliw (c1: channel1, c2: channel2)
+  syntax = format("%s; %s;", c1.syntax, c2.syntax)
+  image  = format("%s%s", c1.image, c2.image)
+  action = {
+    NIA = CIA + 2 * INSTRUCTION_WORD_SIZE;
+    BRANCH = 0;
+
+    // Invariant: register GPR[0] always holds zero
+    GPR[0] = coerce(WORD, 0);
+    c1.action;
+
+    // Invariant: register GPR[0] always holds zero
+    GPR[0] = coerce(WORD, 0);
+    c2.action;
+
+    if BRANCH == 0 then
+      // If the flag is not set, proceeds to the next instruction
+      CIA = CIA + 2 * INSTRUCTION_WORD_SIZE;
+    else
+      // Otherwise, transfers control to the jump address
+      CIA = JMPADDR;
+    endif;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Entry Point
+
+op instruction = vliw

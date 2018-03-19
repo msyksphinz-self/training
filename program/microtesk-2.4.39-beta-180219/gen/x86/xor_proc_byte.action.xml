@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>xor_proc_byte.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="FLAGS!3" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="FLAGS!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="FLAGS!5" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="FLAGS!4" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="xor_proc_byte.op1!1" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="xor_proc_byte.op2!1" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="tmpb_res!2" type="(BIT_VECTOR 9)" value=""/>
+        <Variable name="FLAGS!1" type="(BIT_VECTOR 16)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="tmpb_res!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVZEROEXT">
+                    <Value type="LOGIC_INTEGER" value="1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVXOR">
+                        <VariableRef name="xor_proc_byte.op1!1"/>
+                        <VariableRef name="xor_proc_byte.op2!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="1"/>
+                    <VariableRef name="FLAGS!2"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="1"/>
+                    <VariableRef name="FLAGS!1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!2"/>
+                </Operation>
+                <Value type="(BIT_VECTOR 1)" value="0"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="10"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!3"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="10"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="12"/>
+                    <VariableRef name="FLAGS!3"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="12"/>
+                    <VariableRef name="FLAGS!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="11"/>
+                    <Value type="LOGIC_INTEGER" value="11"/>
+                    <VariableRef name="FLAGS!3"/>
+                </Operation>
+                <Value type="(BIT_VECTOR 1)" value="0"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="6"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!4"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="6"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!3"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="8"/>
+                    <VariableRef name="FLAGS!4"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="8"/>
+                    <VariableRef name="FLAGS!3"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                    <VariableRef name="FLAGS!4"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                    <VariableRef name="tmpb_res!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="5"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!5"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="5"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                    <VariableRef name="FLAGS!5"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                    <VariableRef name="FLAGS!4"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="6"/>
+                    <Value type="LOGIC_INTEGER" value="6"/>
+                    <VariableRef name="FLAGS!5"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                        <Value type="LOGIC_INTEGER" value="7"/>
+                        <Value type="LOGIC_INTEGER" value="0"/>
+                        <VariableRef name="tmpb_res!2"/>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 8)" value="00000000"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>sub.parameters</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="rs" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="rd" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="rt" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="PARAMETERS">
+                <VariableRef name="rd"/>
+                <VariableRef name="rs"/>
+                <VariableRef name="rt"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

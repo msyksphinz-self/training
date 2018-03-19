@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>vliw.action.block_4</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="JMPADDR!1" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="branch.address.0!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="vliw.action.block_6" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="CIA!2" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="CIA!2"/>
+                <VariableRef name="JMPADDR!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="branch.address.0!2"/>
+                <VariableRef name="CIA!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="vliw.action.block_6"/>
+                <Value type="LOGIC_BOOLEAN" value="true"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

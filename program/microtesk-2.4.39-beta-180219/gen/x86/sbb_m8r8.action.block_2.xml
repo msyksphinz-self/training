@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>sbb_m8r8.action.block_2</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="sbb_m8r8.op1" type="(BIT_VECTOR 20)" value=""/>
+        <Variable name="base!1" type="(BIT_VECTOR 20)" value=""/>
+        <Variable name="sbb_m8r8.action.tmp_0!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="MEM!1" type="(MAP (BIT_VECTOR 20) (BIT_VECTOR 8))" value=""/>
+        <Variable name="MEM.write.index.1!2" type="(BIT_VECTOR 20)" value=""/>
+        <Variable name="MEM.write.value.1!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="MEM!2" type="(MAP (BIT_VECTOR 20) (BIT_VECTOR 8))" value=""/>
+        <Variable name="tmpb_res!1" type="(BIT_VECTOR 9)" value=""/>
+        <Variable name="sbb_m8r8.action.block_3" type="LOGIC_BOOLEAN" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="MEM!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <VariableRef name="base!1"/>
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                            <VariableRef name="sbb_m8r8.op1"/>
+                        </Operation>
+                    </Operation>
+                    <VariableRef name="sbb_m8r8.action.tmp_0!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.write.index.1!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <VariableRef name="base!1"/>
+                    <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                        <VariableRef name="sbb_m8r8.op1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="MEM.write.value.1!2"/>
+                <VariableRef name="sbb_m8r8.action.tmp_0!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="sbb_m8r8.action.tmp_0!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="7"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="tmpb_res!1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="sbb_m8r8.action.block_3"/>
+                <Value type="LOGIC_BOOLEAN" value="true"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

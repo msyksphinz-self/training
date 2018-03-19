@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>swc0.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="swc0.address" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="swc0.offset!1" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="M.write.index.1!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="M.write.value.1!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="swc0.cs" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="M!1" type="(MAP (BIT_VECTOR 30) (BIT_VECTOR 32))" value=""/>
+        <Variable name="M!2" type="(MAP (BIT_VECTOR 30) (BIT_VECTOR 32))" value=""/>
+        <Variable name="swc0.action.tmp_0!2" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="M!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="M!1"/>
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVASHR">
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                                <VariableRef name="swc0.address"/>
+                            </Operation>
+                            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSIGNEXT">
+                                <Value type="LOGIC_INTEGER" value="16"/>
+                                <VariableRef name="swc0.offset!1"/>
+                            </Operation>
+                        </Operation>
+                        <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000010"/>
+                    </Operation>
+                    <VariableRef name="swc0.action.tmp_0!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="M.write.index.1!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVASHR">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                        <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                            <VariableRef name="swc0.address"/>
+                        </Operation>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVSIGNEXT">
+                            <Value type="LOGIC_INTEGER" value="16"/>
+                            <VariableRef name="swc0.offset!1"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000010"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="M.write.value.1!2"/>
+                <VariableRef name="swc0.action.tmp_0!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="swc0.action.tmp_0!2"/>
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="EXPAND">
+                    <VariableRef name="swc0.cs"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

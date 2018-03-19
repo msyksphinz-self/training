@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>R.action.block_0</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="GPR!2" type="(MAP (BIT_VECTOR 5) (BIT_VECTOR 32))" value=""/>
+        <Variable name="R.i!1" type="(BIT_VECTOR 5)" value=""/>
+        <Variable name="R.action.block_1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="GPR!1" type="(MAP (BIT_VECTOR 5) (BIT_VECTOR 32))" value=""/>
+        <Variable name="R.action.tmp_0!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="GPR.write.index.1!2" type="(BIT_VECTOR 5)" value=""/>
+        <Variable name="GPR.write.value.1!2" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="STORE">
+                    <VariableRef name="GPR!1"/>
+                    <VariableRef name="R.i!1"/>
+                    <VariableRef name="R.action.tmp_0!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.index.1!2"/>
+                <VariableRef name="R.i!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="GPR.write.value.1!2"/>
+                <VariableRef name="R.action.tmp_0!2"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="R.action.tmp_0!2"/>
+                <Value type="(BIT_VECTOR 32)" value="00000000000000000000000000000000"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="R.action.block_1"/>
+                <Value type="LOGIC_BOOLEAN" value="true"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

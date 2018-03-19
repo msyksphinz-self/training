@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>not_r8.init</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature/>
+    <InnerRep/>
+</Constraint>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>RCOP0.expand</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="COP0_R!1" type="(MAP (BIT_VECTOR 5) (BIT_VECTOR 32))" value=""/>
+        <Variable name="COP0_R.read.value.0!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="COP0_R.read.index.0!2" type="(BIT_VECTOR 5)" value=""/>
+        <Variable name="RCOP0.tmp_1!2" type="(BIT_VECTOR 32)" value=""/>
+        <Variable name="RCOP0.i!1" type="(BIT_VECTOR 5)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="COP0_R.read.index.0!2"/>
+                <VariableRef name="RCOP0.i!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="COP0_R.read.value.0!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="COP0_R!1"/>
+                    <VariableRef name="RCOP0.i!1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="SELECT">
+                    <VariableRef name="COP0_R!1"/>
+                    <VariableRef name="RCOP0.i!1"/>
+                </Operation>
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="SUBSTITUTE">
+                    <VariableRef name="RCOP0.tmp_1!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

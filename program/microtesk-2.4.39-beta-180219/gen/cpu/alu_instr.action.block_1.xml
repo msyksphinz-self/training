@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>alu_instr.action.block_1</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="branch.address.0!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="PC!2" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="alu_instr.op1" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="PC!1" type="(BIT_VECTOR 8)" value=""/>
+        <Variable name="DEST!1" type="(BIT_VECTOR 8)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="UPDATE">
+                    <VariableRef name="alu_instr.op1"/>
+                </Operation>
+                <VariableRef name="DEST!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="PC!2"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVADD">
+                    <VariableRef name="PC!1"/>
+                    <Value type="(BIT_VECTOR 8)" value="00000010"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="branch.address.0!2"/>
+                <VariableRef name="PC!2"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

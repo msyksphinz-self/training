@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>BIDAM_BX_SI_D16.init</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="mod!2" type="(BIT_VECTOR 2)" value=""/>
+        <Variable name="rm!2" type="(BIT_VECTOR 3)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="mod!2"/>
+                <Value type="(BIT_VECTOR 2)" value="11"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="rm!2"/>
+                <Value type="(BIT_VECTOR 3)" value="000"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

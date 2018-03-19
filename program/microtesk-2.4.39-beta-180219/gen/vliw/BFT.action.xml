@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>BFT.action</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="BFT.cc!1" type="(BIT_VECTOR 3)" value=""/>
+        <Variable name="BFT.action.block_0!1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="BFT.action.block_0" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="BFT.action.block_1" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="FCCR!1" type="(BIT_VECTOR 32)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <VariableRef name="BFT.action.block_0!1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                        <Value type="LOGIC_INTEGER" value="1"/>
+                        <Value type="LOGIC_INTEGER" value="0"/>
+                        <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVLSHR">
+                            <VariableRef name="FCCR!1"/>
+                            <VariableRef name="BFT.cc!1"/>
+                        </Operation>
+                    </Operation>
+                    <Value type="(BIT_VECTOR 1)" value="1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="BFT.action.block_0"/>
+                <VariableRef name="BFT.action.block_0!1"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="BFT.action.block_1"/>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="NOT">
+                    <Operation family="ru.ispras.fortress.expression.StandardOperation" id="OR">
+                        <VariableRef name="BFT.action.block_0!1"/>
+                    </Operation>
+                </Operation>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>

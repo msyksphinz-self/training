@@ -1,0 +1,750 @@
+/*
+ * Copyright 2014-2017 ISP RAS (http://www.ispras.ru)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+////////////////////////////////////////////////////////////////////////////////
+// Constants
+
+let REGISTER_INDEX_SIZE = 5
+let PC = "CIA"
+
+////////////////////////////////////////////////////////////////////////////////
+// Types
+
+type  BYTE = card(8)
+type  WORD = int(32)
+type SHORT = int(16)
+type INDEX = card(5)
+type   BIT = card(1)
+
+////////////////////////////////////////////////////////////////////////////////
+// Registers and Memory
+
+reg GPR [32, WORD]
+reg COP0_R[32, WORD]
+reg HI [WORD]
+reg LO [WORD]
+
+// Current instruction address (program counter)
+reg CIA[WORD]
+
+// Copy of current instruction address (program counter)
+reg CIA_COPY[WORD]
+
+// Stores processing element identifier
+reg PID[WORD]
+
+// Physical memory. Shared between PEs, word-addressable
+shared mem M[2 ** 30, WORD] // or 2**32 bytes
+
+////////////////////////////////////////////////////////////////////////////////
+// Addressing Modes
+
+mode REG (i: INDEX) = GPR[i]
+  syntax = format("$%d", i)
+  image  = format("%s", i)
+
+mode RCOP0 (i: INDEX) = COP0_R[i]
+  syntax = format("$%d", i)
+  image  = format("%s", i)
+
+////////////////////////////////////////////////////////////////////////////////
+// Variables
+
+// Flag that specifies whether control transfer should be performed. It is set
+// by branch and jump instructions. It is saved across instruction calls as the
+// control transfer is performed during the execution of the next instruction
+// (delay slot)
+reg BRANCH[BIT]
+
+// Address to jump (future PC value) which is set by branch and jump
+// instructions. It is saved across instruction calls as the control transfer
+// is performed during the execution of the next instruction (delay slot).
+reg JMPADDR[WORD]
+
+// Physical address of the most recent read memory access (needed to cache
+// decoded instructions inside MicroTESK).
+reg MMU_PA[WORD]
+
+// Flag that says whether the current instruction is in the delay slot
+var is_delay_slot[BIT]
+
+// Address to jump after executing instruction in delay slot (a copy of JMPADDR
+// needed in case its value is corrupted by the instruction in the delay slot)
+var jump_address[WORD]
+
+// Next instruction address
+var nia[WORD]
+
+// Variables to store intermediate calculation results
+var temp[int(33)]
+var temp_jump[card(28)]
+var mult_result[int(64)]
+var mult_result_unsigned[card(64)]
+
+////////////////////////////////////////////////////////////////////////////////
+// Arithmetical Instructions
+
+op add (rd: REG, rs: REG, rt: REG)
+  syntax = format("add %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000100000", rs.image, rt.image, rd.image)
+  action = {
+    temp = rs<31>::rs + rt<31>::rt;
+    if temp<32> != temp<31> then
+      mark("overflow");
+      COP0_R[14] = CIA;
+      exception("IntegerOverflow");
+    else
+      mark("normal");
+      rd = temp<31..0>;
+    endif;
+  }
+
+op addi (rt: REG, rs: REG, imm: SHORT)
+  syntax = format("addi %s, %s, 0x%x", rt.syntax, rs.syntax, imm)
+  image= format("001000%s%s%s", rs.image, rt.image, imm)
+  action = {
+    temp = rs<31>::rs + coerce(int(33), imm);
+    if temp<32> != temp<31> then
+      mark("overflow");
+      COP0_R[14] = CIA;
+      exception("IntegerOverflow");
+    else
+      mark("normal");
+      rt = temp<31..0>;
+    endif;
+  }
+
+op addu (rd: REG, rs: REG, rt: REG) //unchecked addition
+  syntax = format("addu %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000100001", rs.image, rt.image, rd.image)
+  action = {
+    rd = rs + rt;
+  }
+
+op addiu (rt: REG, rs: REG, imm: SHORT)
+  syntax = format("addiu %s, %s, 0x%x", rt.syntax, rs.syntax, imm)
+  image = format("001001%s%s%s", rs.image, rt.image, imm)
+  action = {
+    rt = rs + sign_extend(int(32), imm);
+  }
+
+op sub (rd: REG, rs: REG, rt: REG)
+  syntax = format("sub %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000100010", rs.image, rt.image, rd.image)
+  action = {
+    temp = rs<31>::rs - rt<31>::rt;
+    if temp<32> != temp<31> then
+      COP0_R[14] = CIA;
+      exception("IntegerOverflow");
+    else
+      rd = temp<31..0>;
+    endif;
+  }
+
+op subu (rd: REG, rs: REG, rt: REG)
+  syntax = format("subu %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000100011", rs.image, rt.image, rd.image)
+  action = {
+    rd = rs - rt;
+  }
+
+op mult (rs: REG, rt: REG)
+  syntax = format("mult %s, %s", rs.syntax, rt.syntax)
+  image = format("000000%s%s0000000000011000", rs.image, rt.image)
+  action = {
+    mult_result = sign_extend(int(64), rs) * sign_extend(int(64), rt);
+    HI[0] = mult_result<63..32>;
+    LO[0] = mult_result<31..0>;
+  }
+
+op multu (rs: REG, rt: REG)
+  syntax = format("multu %s, %s", rs.syntax, rt.syntax)
+  image = format("000000%s%s0000000000011001", rs.image, rt.image)
+  action = {
+    mult_result_unsigned = zero_extend(card(64), rs) * zero_extend(card(64), rt);
+    HI[0] = mult_result_unsigned<63..32>;
+    LO[0] = mult_result_unsigned<31..0>;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Bitwise Instructions
+
+op and (rd: REG, rs: REG, rt: REG)
+  syntax = format("and %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000100100", rs.image, rt.image, rd.image)
+  action = {
+    rd = rs & rt;
+  }
+
+op andi (rt: REG, rs: REG, imm: SHORT)
+  syntax = format("andi %s, %s, 0x%x", rt.syntax, rs.syntax, imm)
+  image = format("001100%s%s%s", rs.image, rt.image, imm)
+  action = {
+    rt = rs & zero_extend(WORD, imm);
+  }
+
+op or (rd: REG, rs: REG, rt: REG)
+  syntax = format("or %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000100101", rs.image, rt.image, rd.image)
+  action = {
+    rd = rs | rt;
+  }
+
+op ori (rt: REG, rs: REG, imm: SHORT)
+  syntax = format("ori %s, %s, 0x%x", rt.syntax, rs.syntax, imm)
+  image = format("001101%s%s%s", rs.image, rt.image, imm)
+  action = {
+    rt = rs | zero_extend(WORD, imm);
+  }
+
+op nor (rd: REG, rs: REG, rt: REG)
+  syntax = format("nor %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000100111", rs.image, rt.image, rd.image)
+  action = {
+    rd = ~(rs | rt);
+  }
+
+op xor (rd: REG, rs: REG, rt: REG)
+  syntax = format("xor %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000100110", rs.image, rt.image, rd.image)
+  action = {
+    rd = rs ^ rt;
+  }
+
+op xori (rt: REG, rs: REG, imm: SHORT)
+  syntax = format("xori %s, %s, 0x%x", rt.syntax, rs.syntax, imm)
+  image = format("001110%s%s%s", rs.image, rt.image, imm)
+  action = {
+    rt = rs ^ zero_extend(WORD, imm);
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Shift Instructions
+
+op sll (rd: REG, rt: REG, sa: card(5))
+  syntax = format("sll %s, %s, %d", rd.syntax, rt.syntax, sa)
+  image = format("00000000000%s%s%s000000", rt.image, rd.image, sa)
+  action = {
+    rd = rt << sa;
+  }
+
+op sllv (rd: REG, rt: REG, rs: REG)
+  syntax = format("sllv %s, %s, %s", rd.syntax, rt.syntax, rs.syntax)
+  image = format("00000000000%s%s%s000100", rt.image, rd.image, rs.image)
+  action = {
+    rd = rt << rs<4..0>;
+  }
+
+op sra (rd: REG, rt: REG, sa: card(5))
+  syntax = format("sra %s, %s, %d", rd.syntax, rt.syntax, sa)
+  image = format("00000000000%s%s%s000011", rt.image, rd.image, sa)
+  action = {
+    rd = coerce(int(32), rt) >> sa;
+  }
+
+op srav (rd: REG, rt: REG, rs: REG)
+  syntax = format("srav %s, %s, %s", rd.syntax, rt.syntax, rs.syntax)
+  image = format("00000000000%s%s%s000111", rt.image, rd.image, rs.image)
+  action = {
+    rd = coerce(int(32), rt) >> rs<4..0>;
+  }
+
+op srl (rd: REG, rt: REG, sa: card(5))
+  syntax = format("srl %s, %s, %d", rd.syntax, rt.syntax, sa)
+  image = format("00000000000%s%s%s000010", rt.image, rd.image, sa)
+  action = {
+    rd = coerce(card(32), rt) >> sa;
+  }
+
+op srlv (rd: REG, rt: REG, rs: REG)
+  syntax = format("srlv %s, %s, %s", rd.syntax, rt.syntax, rs.syntax)
+  image = format("00000000000%s%s%s000110", rs.image, rt.image, rd.image)
+  action = {
+    rd = coerce(card(32), rt) >> rs<4..0>;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Memory Instructions
+
+op lui (rt: REG, imm: SHORT)
+  syntax = format("lui %s, 0x%x", rt.syntax, imm)
+  image = format("00111100000%s%s", rt.image, imm)
+  action = {
+    rt = coerce(WORD, imm) << 16;
+  }
+
+op lw (rt: REG, offset: SHORT, address: REG)
+  syntax = format("lw %s, %d(%s)", rt.syntax, offset, address.syntax)
+  image = format("100011%s%s%s", address.image, rt.image, offset)
+  action = {
+    rt = M[(address + sign_extend(WORD, offset)) >> 2];
+  }
+
+op sw (rd: REG, offset: SHORT, address: REG)
+  syntax = format("sw %s, %d(%s)", rd.syntax, offset, address.syntax)
+  image = format("101011%s%s%s", address.image, rd.image, offset)
+  action = {
+    M[(address + sign_extend(WORD, offset)) >> 2] = rd;
+  }
+
+op mfhi (rd: REG)
+  syntax = format("mfhi %s", rd.syntax)
+  image = format("0000000000000000%s00000010000", rd.image)
+  action = {
+    rd = HI[0];
+  }
+
+op mflo (rd: REG)
+  syntax = format("mflo %s", rd.syntax)
+  image = format("0000000000000000%s00000010010", rd.image)
+  action = {
+    rd = LO[0];
+  }
+
+op mthi (rs: REG)
+  syntax = format("mthi %s", rs.syntax)
+  image = format("0000000000000000%s00000010001", rs.image)
+  action = {
+    HI[0] = rs;
+  }
+
+op mtlo (rs: REG)
+  syntax = format("mtlo %s", rs.syntax)
+  image = format("0000000000000000%s00000010011", rs.image)
+  action = {
+    LO[0] = rs;
+  }
+
+op swc0 (cs: RCOP0, offset: SHORT, address: REG)
+  syntax = format("swc0 %s, %d(%s)", cs.syntax, offset, address.syntax)
+  image = format("111000%s%s%s", address.image, cs.image, offset)
+  action = {
+    M[(address + sign_extend(WORD, offset)) >> 2] = cs;
+  }
+
+op lwc0 (cs: RCOP0, offset: SHORT, address: REG)
+  syntax = format("lwc0 %s, %d(%s)", cs.syntax, offset, address.syntax)
+  image = format("110000%s%s%s", address.image, cs.image, offset)
+  action = {
+    cs = M[(address + sign_extend(WORD, offset)) >> 2];
+  }
+
+op mfc0 (rt: REG, cs: RCOP0)
+  syntax = format("mfc0 %s, %s", rt.syntax, cs.syntax)
+  image = format("01000000000%s%s00000000000", rt.image, cs.image)
+  action = {
+    rt = cs;
+  }
+
+op mtc0 (rt: REG, cs: RCOP0)
+  syntax = format("mtc0 %s, %s", rt.syntax, cs.syntax)
+  image = format("01000000100%s%s00000000000", rt.image, cs.image)
+  action = {
+    cs = rt;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Branching Instructions
+
+label mode BRANCH_LABEL(target: WORD, current: WORD) = target<17..2> - current<17..2> - 1
+  syntax = ""
+  image = format("%s", target<17..2> - current<17..2> - 1)
+
+mode BRANCH_IMM(imm: SHORT) = imm
+  syntax = format("0x%X", imm)
+  image = format("%s", imm)
+
+mode BRANCH_OFFSET = BRANCH_LABEL | BRANCH_IMM
+
+op beq (rs: REG, rt: REG, offset: BRANCH_OFFSET)
+  syntax = format("beq %s, %s, %s", rs.syntax, rt.syntax, offset.syntax)
+  image = format("000100%s%s%s", rs.image, rt.image, offset.image)
+  action = {
+    if rs == rt then
+      BRANCH = 1;
+      JMPADDR = CIA + 4 + (sign_extend(WORD, offset) << 2);
+    endif;
+  }
+
+op bgez (rs: REG, offset: BRANCH_OFFSET)
+  syntax = format("bgez %s, %s", rs.syntax, offset.syntax)
+  image = format("000001%s00001%s", rs.image, offset.image)
+  action = {
+    if rs >= 0 then
+      BRANCH = 1;
+      JMPADDR = CIA + 4 + (sign_extend(WORD, offset) << 2);
+    endif;
+  }
+
+op bgezal (rs: REG, offset: BRANCH_OFFSET)
+  syntax = format("bgezal %s, %s", rs.syntax, offset.syntax)
+  image = format("000001%s10001%s", rs.image, offset.image)
+  action = {
+    if rs >= 0 then
+      GPR[31] = CIA + 4 + 4;
+      BRANCH = 1;
+      JMPADDR = CIA + 4 + (sign_extend(WORD, offset) << 2);
+    endif;
+  }
+
+op bgtz (rs: REG, offset: BRANCH_OFFSET)
+  syntax = format("bgtz %s, %s", rs.syntax, offset.syntax)
+  image = format("000111%s00000%s", rs.image, offset.image)
+  action = {
+    if rs > 0 then
+      BRANCH = 1;
+      JMPADDR = CIA + 4 + (sign_extend(WORD, offset) << 2);
+    endif;
+  }
+
+op blez (rs: REG, offset: BRANCH_OFFSET)
+  syntax = format("blez %s, %s", rs.syntax, offset.syntax)
+  image = format("000110%s00000%s", rs.image, offset.image)
+  action = {
+    if rs <= 0 then
+      BRANCH = 1;
+      JMPADDR = CIA + 4 + (sign_extend(WORD, offset) << 2);
+    endif;
+  }
+
+op bltz (rs: REG, offset: BRANCH_OFFSET)
+  syntax = format("bltz %s, %s", rs.syntax, offset.syntax)
+  image = format("000001%s00000%s", rs.image, offset.image)
+  action = {
+    if rs < 0 then
+      BRANCH = 1;
+      JMPADDR = CIA + 4 + (sign_extend(WORD, offset) << 2);
+    endif;
+  }
+
+op bltzal (rs: REG, offset: BRANCH_OFFSET)
+  syntax = format("bltzal %s, %s", rs.syntax, offset.syntax)
+  image = format("000001%s10000%s", rs.image, offset.image)
+  action = {
+    if rs < 0 then
+      GPR[31] = CIA + 4 + 4;
+      BRANCH = 1;
+      JMPADDR = CIA + 4 + (sign_extend(WORD, offset) << 2);
+    endif;
+  }
+
+op bne (rs: REG, rt: REG, offset: BRANCH_OFFSET)
+  syntax = format("bne %s, %s, %s", rs.syntax, rt.syntax, offset.syntax)
+  image = format("000101%s%s%s", rs.image, rt.image, offset.image)
+  action = {
+    if rs != rt then
+      BRANCH = 1;
+      JMPADDR = CIA + 4 + (sign_extend(WORD, offset) << 2);
+    endif;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Comparison Instructions
+
+op slt (rd: REG, rs: REG, rt: REG)
+  syntax = format("slt %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000101010", rs.image, rt.image, rd.image)
+  action = {
+    if rs < rt then
+      rd = coerce(WORD, 1);
+    else
+      rd = coerce(WORD, 0);
+    endif;
+  }
+
+op slti (rt: REG, rs: REG, imm: SHORT)
+  syntax = format("slti %s, %s, 0x%x", rt.syntax, rs.syntax, imm)
+  image = format("001010%s%s%s", rs.image, rt.image, imm)
+  action = {
+    if rs < sign_extend(WORD, imm) then
+      rt = coerce(WORD, 1);
+    else
+      rt = coerce(WORD, 0);
+    endif;
+  }
+
+op sltiu (rt: REG, rs: REG, imm: SHORT)
+  syntax = format("sltiu %s, %s, 0x%x", rt.syntax, rs.syntax, imm)
+  image = format("001011%s%s%s", rs.image, rt.image, imm)
+  action = {
+    if coerce(card(32), rs) < coerce(card(32), imm) then
+      rt = coerce(WORD, 1);
+    else
+      rt = coerce(WORD, 0);
+    endif;
+  }
+
+op sltu (rd: REG, rs: REG, rt: REG)
+  syntax = format("sltu %s, %s, %s", rd.syntax, rs.syntax, rt.syntax)
+  image = format("000000%s%s%s00000101011", rs.image, rt.image, rd.image)
+  action = {
+    if coerce(card(32), rs) < coerce(card(32), rt) then
+      rd = coerce(WORD, 1);
+    else
+      rd = coerce(WORD, 0);
+    endif;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Jump Instructions
+
+label mode JUMP_LABEL(target: WORD) = target<27..2>
+  syntax = ""
+  image = format("%s", target<27..2>)
+
+mode JUMP_IMM(imm: int(26)) = imm
+  syntax = format("0x%X", imm)
+  image = format("%s", imm)
+
+mode JUMP_ADDR = JUMP_LABEL | JUMP_IMM
+
+op j (addr: JUMP_ADDR)
+  syntax = format("j %s", addr.syntax)
+  image = format("000010%s", addr.image)
+  action = {
+    nia = CIA + 4;
+    temp_jump = coerce(card(28), addr) << 2;
+    BRANCH = 1;
+    JMPADDR = nia<31..28>::temp_jump;
+  }
+
+op jr (addr: REG)
+  syntax = format("jr %s", addr.syntax)
+  image = format("000000%s000000000000000001000", addr.image)
+  action = {
+    BRANCH = 1;
+    JMPADDR = addr;
+  }
+
+op jal (addr: JUMP_ADDR)
+  syntax = format("jal %s", addr.syntax)
+  image = format("000011%s", addr.image)
+  action = {
+    GPR[31] = CIA + 4 + 4;
+    nia = CIA + 4;
+    temp_jump = coerce(card(28), addr) << 2;
+    BRANCH = 1;
+    JMPADDR = nia<31..28>::temp_jump;
+  }
+
+op jalr (rd: REG, rs: REG)
+  syntax = format("jalr %s, %s", rd.syntax, rs.syntax)
+  image = format("000000%s00000%s00000001001", rs.image, rd.image)
+  action = {
+    rd = CIA + 4 + 4;
+    BRANCH = 1;
+    JMPADDR = rs;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// System Instructions
+
+op syscall ()
+  syntax = format("syscall")
+  image = format("00000000000000000000000000001100")
+  action = {
+    COP0_R[14] = CIA;
+    exception("SystemCall");
+  }
+
+op cop0 (cop_fun: card(21))
+  syntax = format("cop0 %s", cop_fun)
+  image = format("01000000001%s", cop_fun)
+  action = {
+    //TO BE DEFINED
+  }
+
+op mips_break ()
+  syntax = format("break")
+  image = format("00000000000000000000000000001101")
+  action = {
+    COP0_R[14] = CIA;
+    exception("Breakpoint");
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Pseudoinstruction NOP
+
+pseudo op nop()
+  syntax = "nop"
+  image = format("%s", sll(REG(0), REG(0), 0).image)
+  action = {
+    sll(REG(0), REG(0), 0).action;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Instruction Groups (must have compatible parameter sets)
+
+op arithm   = add  | addu | sub | subu
+op arithmi  = addi | addiu
+op multiply = mult | multu
+
+op bitwise  = and  | or  | nor  | xor
+op bitwisei = andi | ori | xori
+
+op shift  = sllv | srav | srlv
+op shifti = sll  | sra  | srl
+
+op alu  = arithm  | bitwise  | shift
+op alui = arithmi | bitwisei
+
+////////////////////////////////////////////////////////////////////////////////
+
+op Operations =  add
+                |addi
+                |addiu
+                |addu
+                |and
+                |andi
+                |beq
+                |bgez
+                |bgezal
+                |bgtz
+
+                |blez
+                |bltz
+                |bltzal
+                |bne
+                |mips_break
+                |cop0
+                |j
+                |jal
+                |jalr
+                |jr
+
+                |lui
+                |lw
+                |lwc0
+                |mfc0
+                |mfhi
+                |mflo
+                |mtc0
+                |mthi
+                |mtlo
+                |mult
+
+                |multu
+                |nor
+                |or
+                |ori
+                |sll
+                |sllv
+                |slt
+                |slti
+                |sltiu
+                |sltu
+
+                |sra
+                |srav
+                |srl
+                |srlv
+                |sub
+                |subu
+                |sw
+                |swc0
+                |syscall
+                |xor
+                |xori
+
+                | nop
+
+////////////////////////////////////////////////////////////////////////////////
+// Entry Point
+
+internal op instruction (command: Operations)
+  syntax = command.syntax
+  image  = command.image
+  action = {
+    GPR[0] = 0;
+
+    // This code is responsible for updating the value of the program counter.
+    //
+    // Explanation based on the MIPS architecture manual:
+    //
+    // The Program Counter value. During the instruction time of an instruction,
+    // this is the address of the instruction word. The address of the
+    // instruction that occurs during the next instruction time is determined by
+    // assigning a value to PC (JMPADDR and BRANCH are used signal that PC is
+    // to be assigned a new value) during an instruction time. If no value is
+    // assigned to PC during an instruction time by any pseudocode statement,
+    // it is automatically incremented 4 before the next instruction time.
+    // A taken branch assigns the target address to the PC during the instruction
+    // time of the instruction in the branch delay slot.
+    //
+    // Restriction: Processor operation is UNPREDICTABLE if a branch or jump
+    // instruction is placed in the delay slot of a branch or jump.
+
+    // Prevents making a jump when the context has been switched to executing
+    // some other code between executing a branch instruction and its delay
+    // slot (this can happen during presimulation when initialization code
+    // is executed in the middle).
+    if CIA == CIA_COPY then
+      is_delay_slot = BRANCH;
+      jump_address = JMPADDR;
+    else
+      is_delay_slot = 0;
+      jump_address = 0;
+    endif;
+
+    BRANCH = 0;
+    JMPADDR = 0;
+
+    command.action;
+
+    if is_delay_slot == 1 && BRANCH == 1 then
+      unpredicted;
+    endif;
+
+    if is_delay_slot == 1 then
+      CIA = jump_address;
+    else
+      CIA = CIA + 4;
+    endif;
+
+    CIA_COPY = CIA;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Pseudo Instructions
+
+label mode LA_ADDR(value: WORD) = value
+  syntax = format("0x%X", value)
+  image = format("%s", value)
+
+pseudo op la(rd : REG, addr : LA_ADDR)
+  syntax = format("la %s, %s", rd.syntax, addr.syntax)
+  image  = format("%s%s", lui(rd, addr.value<16..31>).image,
+                          ori(rd, rd, addr.value<0..15>).image)
+  action = {
+    instruction(lui(rd, addr.value<16..31>)).action;
+    instruction(ori(rd, rd, addr.value<0..15>)).action;
+  }
+
+////////////////////////////////////////////////////////////////////////////////
+// Internal Operation to Handle Exceptions
+
+internal op exception()
+action = {
+  CIA = 0x380;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Internal Operation to Initialize Processing Element Instances
+
+op instantiate(pid: WORD)
+action = {
+  PID = pid;
+}

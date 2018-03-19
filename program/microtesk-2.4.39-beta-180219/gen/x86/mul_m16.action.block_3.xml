@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Constraint version="1.0">
+    <Name>mul_m16.action.block_3</Name>
+    <Kind>FORMULA_BASED</Kind>
+    <Description/>
+    <Signature>
+        <Variable name="FLAGS!3" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="FLAGS!2" type="(BIT_VECTOR 16)" value=""/>
+        <Variable name="mul_m16.action.block_5" type="LOGIC_BOOLEAN" value=""/>
+        <Variable name="FLAGS!1" type="(BIT_VECTOR 16)" value=""/>
+    </Signature>
+    <InnerRep>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="10"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!2"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="10"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="12"/>
+                    <VariableRef name="FLAGS!2"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="12"/>
+                    <VariableRef name="FLAGS!1"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="11"/>
+                    <Value type="LOGIC_INTEGER" value="11"/>
+                    <VariableRef name="FLAGS!2"/>
+                </Operation>
+                <Value type="(BIT_VECTOR 1)" value="0"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="1"/>
+                    <VariableRef name="FLAGS!3"/>
+                </Operation>
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="15"/>
+                    <Value type="LOGIC_INTEGER" value="1"/>
+                    <VariableRef name="FLAGS!2"/>
+                </Operation>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.fortress.expression.StandardOperation" id="EQ">
+                <Operation family="ru.ispras.fortress.expression.StandardOperation" id="BVEXTRACT">
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <Value type="LOGIC_INTEGER" value="0"/>
+                    <VariableRef name="FLAGS!3"/>
+                </Operation>
+                <Value type="(BIT_VECTOR 1)" value="0"/>
+            </Operation>
+        </Formula>
+        <Formula>
+            <Operation family="ru.ispras.microtesk.translator.nml.coverage.SsaOperation" id="BLOCK">
+                <VariableRef name="mul_m16.action.block_5"/>
+                <Value type="LOGIC_BOOLEAN" value="true"/>
+            </Operation>
+        </Formula>
+    </InnerRep>
+</Constraint>
