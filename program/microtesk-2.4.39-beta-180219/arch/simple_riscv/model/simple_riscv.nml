@@ -25,27 +25,26 @@
 // Constants
 
 let   MEM_SIZE = 2 ** 8 // Memory size, 2 to the power of 8
-let REG_NUMBER = 32     // Number of general-purpose registers
+let REG_NUMBER = 16     // Number of general-purpose registers
 
 ////////////////////////////////////////////////////////////////////////////////
 // Types
 
-type Addr_t    = card(32) // 32-bit unsigned integer
-type Word_t    = int(32)  // 32-bit signed integer
-type HWord_t   = int(16)  // 16-bit unsigned integer
-type RegAddr_t = card(5)  // 5-bit unsigned integer
+type  INDEX = card(32) // 16-bit unsigned integer
+type NIBBLE = card(4) // 4-bit unsigned integer
+type   BYTE = int(32)  // 16-bit signed integer
 
 ////////////////////////////////////////////////////////////////////////////////
 // Registers and Memory
 
 // General-purpose registers.
-reg GPR[REG_NUMBER, Word_t] // Format: <name>[<number>, <type>]
+reg GPR[REG_NUMBER, BYTE] // Format: <name>[<number>, <type>]
 
 // A register for storing the program counter.
-reg PC[Addr_t] // This format means that there is 1 register of type Addr_t
+reg PC[INDEX] // This format means that there is 1 register of type INDEX
 
 // A memory line
-mem M[MEM_SIZE, Word_t]
+mem M[MEM_SIZE, BYTE]
 
 ////////////////////////////////////////////////////////////////////////////////
 // Temporary Variables
@@ -53,22 +52,22 @@ mem M[MEM_SIZE, Word_t]
 // They are not preserved across instruction calls and serve to exchange data
 // between operations that make up an instruction.
 
-var SRC1[Word_t]
-var SRC2[Word_t]
-var DEST[Word_t]
+var SRC1[BYTE]
+var SRC2[BYTE]
+var DEST[BYTE]
 
 ////////////////////////////////////////////////////////////////////////////////
 // Addressing Modes
 
 // An addressing mode for an immediate value.
-mode IMM(i: int(16)) = sign_extend(HWord_t, i) // Value expression
-  syntax = format("%x", i) // Textual format
-  image  = format("%16s", i)  // Binary format
+mode IMM(i: int(6)) = sign_extend(BYTE, i) // Value expression
+  syntax = format("[%d]", i) // Textual format
+  image  = format("%6s", i)  // Binary format
 
 // An addressing mode for a register access.
-mode REG(i: RegAddr_t) = GPR[i]
-  syntax = format("x%d", i)
-  image  = format("00%5s", i)
+mode REG(i: NIBBLE) = GPR[i]
+  syntax = format("R%d", i)
+  image  = format("00%4s", i)
 
 // An addressing mode for a memory access.
 mode MEM(i: card(6)) = M[i]
@@ -76,13 +75,13 @@ mode MEM(i: card(6)) = M[i]
   image  = format("%6s", i)
 
 // Addressing modes are united into groups.
-mode OPRNDL = REG
-mode OPRNDR = OPRNDL
+mode OPRNDL = MEM | REG
+mode OPRNDR = OPRNDL | IMM
 
 ////////////////////////////////////////////////////////////////////////////////
 // Arithmetic and Logic Instructions
 
-op RISCV_ADD()
+op ADD()
   syntax = "add"
   image  = "00"
   action = {
@@ -91,33 +90,34 @@ op RISCV_ADD()
     trace("%d + %d = %d", SRC1, SRC2, DEST);
   }
 
-op RISCV_SUB()
+op SUB()
   syntax = "sub"
   image  = "01"
   action = { DEST = SRC1 - SRC2; }
 
-// op RISCV_MOV()
-//   syntax = "mov"
-//   image  = "10"
-//   action = { DEST = SRC2; }
+op MOV()
+  syntax = "mov"
+  image  = "10"
+  action = { DEST = SRC2; }
 
 // A common alias for ADD, SUB and MOV
-op ALU = RISCV_ADD | RISCV_SUB
+op ALU = ADD | SUB | MOV
 
 // A common specification of all ALU instructions that describes their common
 // format, performs all common actions and delegates unique responsibilities
 // to specific operations (or subinstructions).
 
-op alu_instr(command: ALU, dst: OPRNDL, op1: OPRNDR, op2: OPRNDR)
-  syntax = format("%s %s %s %s", command.syntax, dst.syntax, op1.syntax, op2.syntax)
-  image  = format("%s%s00%s%s", command.image, dst.image, op1.image, op2.image)
+op alu_instr(command: ALU, op1: OPRNDL, op2: OPRNDR)
+  syntax = format("%s %s %s", command.syntax, op1.syntax, op2.syntax)
+  image  = format("%s%s00%s", command.image, op1.image, op2.image)
   action = {
     SRC1 = op1;
     SRC2 = op2;
     command.action;
     op1 = DEST;
-    PC = PC + 4;
+    PC = PC + 2;
   }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Control Transfer Instructions
@@ -129,11 +129,11 @@ op alu_instr(command: ALU, dst: OPRNDL, op1: OPRNDR, op2: OPRNDR)
 // program, special label-based addressing modes must be described in
 // the specifications.
 
-label mode J_LABEL(value: Addr_t) = value
+label mode J_LABEL(value: INDEX) = value
   syntax = ""
   image  = format("%s", value)
 
-mode J_IMM(value: Addr_t) = value
+mode J_IMM(value: INDEX) = value
   syntax =  format("0x%X", value)
   image  = format("%s", value)
 
