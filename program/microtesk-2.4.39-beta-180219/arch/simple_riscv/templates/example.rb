@@ -164,7 +164,7 @@ class ExampleTemplate < CpuBaseTemplate
       }
 
       iterate {
-        add reg(3), reg(3), reg(4) do situation('add', :case => 'overflow', :size => 8) end
+        add reg(3), reg(3), reg(4) # do situation('add', :case => 'overflow', :size => 8) end
         sub reg(3), reg(3), reg(4) do situation('sub', :case => 'overflow', :size => 8) end
         mov reg(4), reg(3)
       }

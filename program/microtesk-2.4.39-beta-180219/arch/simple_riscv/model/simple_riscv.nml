@@ -110,24 +110,24 @@ op ALU_op1 = MOV
 
 op alu_instr(command: ALU, dst: OPRNDL, op1: OPRNDR, op2: OPRNDR)
   syntax = format("%s %s %s %s", command.syntax, dst.syntax, op1.syntax, op2.syntax)
-  image  = format("%s%s00%s", command.image, op1.image, op2.image)
+  image  = format("%s%s00%s0001000100010001", command.image, op1.image, op2.image)
   action = {
     SRC1 = op1;
     SRC2 = op2;
     command.action;
     op1 = DEST;
-    PC = PC + 2;
+    PC = PC + 4;
   }
 
 
 op op1_instr (command: ALU_op1, dst: OPRNDL, op1: OPRNDR)
   syntax = format("%s %s %s", command.syntax, dst.syntax, op1.syntax)
-  image  = format("%s%s00%s", command.image, dst.image, op1.image)
+  image  = format("%s%s00%s0010001000100010", command.image, dst.image, op1.image)
   action = {
     SRC1 = op1;
     command.action;
     dst = DEST;
-    PC = PC + 2;
+    PC = PC + 4;
   }
 
 
@@ -146,25 +146,25 @@ label mode J_LABEL(value: INDEX) = value
   image  = format("%s", value)
 
 mode J_IMM(value: INDEX) = value
-  syntax =  format("0x%X", value)
+  syntax = format("0x%X", value)
   image  = format("%s", value)
 
 mode J_ADDR = J_LABEL | J_IMM
 
 op J (target : J_ADDR)
   syntax = format("j %s", target.syntax)
-  image  = format("01%s", target.image)
+  image  = format("01%s001001100110011", target.image)
   action = { PC = target; }
 
 // Transfers control to the specified address if source equals 0.
 op JZ (source: OPRNDL, target: J_ADDR)
   syntax = format("jz %s", target.syntax)
-  image  = format("11%s%s", source.image, target.image)
+  image  = format("11%s%s0100010001000100", source.image, target.image)
   action = {
     if source == 0 then
       PC = target;
     else
-      PC = PC + 2;
+      PC = PC + 4;
     endif;
   }
 
