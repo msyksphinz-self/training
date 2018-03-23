@@ -66,9 +66,9 @@ class CpuBaseTemplate < Template
       comment 'Initializer for REG: %d', value
 
       mov target, imm(value(2, 7))
-      add target, target
-      add target, target
-      add target, imm(value(0, 1))
+      # add target, target
+      # add target, target
+      # add target, imm(value(0, 1))
     }
 
     preparator(:target => 'REG', :mask => "'b00XX_XXXX") {

@@ -24,15 +24,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Constants
 
-let   MEM_SIZE = 2 ** 8 // Memory size, 2 to the power of 8
+let   MEM_SIZE = 2 ** 16 // Memory size, 2 to the power of 8
 let REG_NUMBER = 16     // Number of general-purpose registers
 
 ////////////////////////////////////////////////////////////////////////////////
 // Types
 
-type  INDEX = card(8) // 8-bit unsigned integer
+type  INDEX = card(16) // 8-bit unsigned integer
 type NIBBLE = card(4) // 4-bit unsigned integer
-type   BYTE = int(8)  // 8-bit signed integer
+type   BYTE = int(16)  // 8-bit signed integer
 
 ////////////////////////////////////////////////////////////////////////////////
 // Registers and Memory
@@ -153,13 +153,13 @@ mode J_ADDR = J_LABEL | J_IMM
 
 op J (target : J_ADDR)
   syntax = format("j %s", target.syntax)
-  image  = format("01%s001001100110011", target.image)
+  image  = format("01%s0110011", target.image)
   action = { PC = target; }
 
 // Transfers control to the specified address if source equals 0.
 op JZ (source: OPRNDL, target: J_ADDR)
   syntax = format("jz %s", target.syntax)
-  image  = format("11%s%s0100010001000100", source.image, target.image)
+  image  = format("11%s%s01000100", source.image, target.image)
   action = {
     if source == 0 then
       PC = target;
