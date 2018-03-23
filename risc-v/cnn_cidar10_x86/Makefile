@@ -9,7 +9,6 @@ TARGET += cnn_cifar10_hw
 TARGET += cnn_cifar10_debug
 TARGET += cnn_cifar10_hw_debug
 
-C_SRCS := cnn_cifar10.c
 CFLAGS += -O3 -fno-builtin-printf
 CFLAGS += -I$(abspath libfixmath/libfixmath/)
 CFLAGS += -DFIXMATH_NO_OVERFLOW
@@ -57,6 +56,7 @@ ifeq ($(ARCH_GNU_TOOLS), x64)
 endif
 
 OBJCPY_FLAGS    += -I binary
+TRAIN_SRC_FILES += conv_weight.c
 TRAIN_SRC_FILES += cnn_cifar10.c
 TRAIN_SRC_FILES += layers.c
 

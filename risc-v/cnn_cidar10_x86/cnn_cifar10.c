@@ -33,29 +33,11 @@ void TestNetwork (const int input_size,
 				  const double *wh1,   // [hidden_size][output_size],
 				  const double *wb1);   // [output_size]
 
-extern char _binary_t10k_images_idx3_ubyte_end[];
-
-extern char _binary_t10k_labels_idx1_ubyte_start[];
-extern char _binary_t10k_labels_idx1_ubyte_end[];
-
-extern char _binary_wb0_bin_start[];
-extern char _binary_wb0_bin_end[];
-extern char _binary_wb1_bin_start[];
-extern char _binary_wb1_bin_end[];
-extern char _binary_wh0_bin_start[];
-extern char _binary_wh0_bin_end[];
-extern char _binary_wh1_bin_start[];
-extern char _binary_wh1_bin_end[];
-
+extern double conv1_w[][][][];
+extern double conv1_b[][][][];
 
 int main ()
 {
-  const double *wh0 = (double *)_binary_wh0_bin_start;  // [INPUTNO * HIDDENNO];
-  const double *wb0 = (double *)_binary_wb0_bin_start;  // [HIDDENNO];
-  const double *wh1 = (double *)_binary_wh1_bin_start;  // [HIDDENNO * OUTPUTNO];
-  const double *wb1 = (double *)_binary_wb1_bin_start;  // [OUTPUTNO];
-
-
   TestNetwork (INPUTNO, OUTPUTNO, HIDDENNO, wh0, wb0, wh1, wb1);
 
   return 0;
