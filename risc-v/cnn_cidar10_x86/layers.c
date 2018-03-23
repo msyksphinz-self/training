@@ -8,6 +8,16 @@
 #include <math.h>
 #include "layers.h"
 
+
+double convolution (const int const int output_size,
+					const int input_size,
+					const int batch_size,
+					double *out,            // [batch_size][output_size],
+					const double *in_data,  // [batch_size][input_size],
+					const double *wh,       // [input_size][output_size],
+					const double *wb)       // [output_size]
+
+
 double affine (const int output_size,
 			   const int input_size,
 			   const int batch_size,
