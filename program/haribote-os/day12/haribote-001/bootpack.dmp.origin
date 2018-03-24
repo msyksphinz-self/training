@@ -1,0 +1,570 @@
+
+bootpack.o:     ファイル形式 elf32-i386
+
+
+セクション .text の逆アセンブル:
+
+00000000 <memtest>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 18             	sub    $0x18,%esp
+   6:	c6 45 f7 00          	movb   $0x0,-0x9(%ebp)
+   a:	e8 fc ff ff ff       	call   b <memtest+0xb>
+   f:	89 45 f0             	mov    %eax,-0x10(%ebp)
+  12:	81 4d f0 00 00 04 00 	orl    $0x40000,-0x10(%ebp)
+  19:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  1c:	83 ec 0c             	sub    $0xc,%esp
+  1f:	50                   	push   %eax
+  20:	e8 fc ff ff ff       	call   21 <memtest+0x21>
+  25:	83 c4 10             	add    $0x10,%esp
+  28:	e8 fc ff ff ff       	call   29 <memtest+0x29>
+  2d:	89 45 f0             	mov    %eax,-0x10(%ebp)
+  30:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  33:	25 00 00 04 00       	and    $0x40000,%eax
+  38:	85 c0                	test   %eax,%eax
+  3a:	74 04                	je     40 <memtest+0x40>
+  3c:	c6 45 f7 01          	movb   $0x1,-0x9(%ebp)
+  40:	81 65 f0 ff ff fb ff 	andl   $0xfffbffff,-0x10(%ebp)
+  47:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  4a:	83 ec 0c             	sub    $0xc,%esp
+  4d:	50                   	push   %eax
+  4e:	e8 fc ff ff ff       	call   4f <memtest+0x4f>
+  53:	83 c4 10             	add    $0x10,%esp
+  56:	80 7d f7 00          	cmpb   $0x0,-0x9(%ebp)
+  5a:	74 1d                	je     79 <memtest+0x79>
+  5c:	e8 fc ff ff ff       	call   5d <memtest+0x5d>
+  61:	89 45 ec             	mov    %eax,-0x14(%ebp)
+  64:	81 4d ec 00 00 00 60 	orl    $0x60000000,-0x14(%ebp)
+  6b:	83 ec 0c             	sub    $0xc,%esp
+  6e:	ff 75 ec             	pushl  -0x14(%ebp)
+  71:	e8 fc ff ff ff       	call   72 <memtest+0x72>
+  76:	83 c4 10             	add    $0x10,%esp
+  79:	83 ec 08             	sub    $0x8,%esp
+  7c:	ff 75 0c             	pushl  0xc(%ebp)
+  7f:	ff 75 08             	pushl  0x8(%ebp)
+  82:	e8 fc ff ff ff       	call   83 <memtest+0x83>
+  87:	83 c4 10             	add    $0x10,%esp
+  8a:	89 45 e8             	mov    %eax,-0x18(%ebp)
+  8d:	80 7d f7 00          	cmpb   $0x0,-0x9(%ebp)
+  91:	74 1d                	je     b0 <memtest+0xb0>
+  93:	e8 fc ff ff ff       	call   94 <memtest+0x94>
+  98:	89 45 ec             	mov    %eax,-0x14(%ebp)
+  9b:	81 65 ec ff ff ff 9f 	andl   $0x9fffffff,-0x14(%ebp)
+  a2:	83 ec 0c             	sub    $0xc,%esp
+  a5:	ff 75 ec             	pushl  -0x14(%ebp)
+  a8:	e8 fc ff ff ff       	call   a9 <memtest+0xa9>
+  ad:	83 c4 10             	add    $0x10,%esp
+  b0:	8b 45 e8             	mov    -0x18(%ebp),%eax
+  b3:	c9                   	leave  
+  b4:	c3                   	ret    
+
+000000b5 <memtest_sub>:
+  b5:	55                   	push   %ebp
+  b6:	89 e5                	mov    %esp,%ebp
+  b8:	83 ec 20             	sub    $0x20,%esp
+  bb:	c7 45 f8 55 aa 55 aa 	movl   $0xaa55aa55,-0x8(%ebp)
+  c2:	c7 45 f4 aa 55 aa 55 	movl   $0x55aa55aa,-0xc(%ebp)
+  c9:	8b 45 08             	mov    0x8(%ebp),%eax
+  cc:	89 45 fc             	mov    %eax,-0x4(%ebp)
+  cf:	eb 62                	jmp    133 <memtest_sub+0x7e>
+  d1:	8b 45 fc             	mov    -0x4(%ebp),%eax
+  d4:	89 45 f0             	mov    %eax,-0x10(%ebp)
+  d7:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  da:	8b 00                	mov    (%eax),%eax
+  dc:	89 45 ec             	mov    %eax,-0x14(%ebp)
+  df:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  e2:	8b 55 f8             	mov    -0x8(%ebp),%edx
+  e5:	89 10                	mov    %edx,(%eax)
+  e7:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  ea:	8b 00                	mov    (%eax),%eax
+  ec:	f7 d0                	not    %eax
+  ee:	89 c2                	mov    %eax,%edx
+  f0:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  f3:	89 10                	mov    %edx,(%eax)
+  f5:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  f8:	8b 00                	mov    (%eax),%eax
+  fa:	3b 45 f4             	cmp    -0xc(%ebp),%eax
+  fd:	74 0d                	je     10c <memtest_sub+0x57>
+  ff:	eb 01                	jmp    102 <memtest_sub+0x4d>
+ 101:	90                   	nop
+ 102:	8b 45 f0             	mov    -0x10(%ebp),%eax
+ 105:	8b 55 ec             	mov    -0x14(%ebp),%edx
+ 108:	89 10                	mov    %edx,(%eax)
+ 10a:	eb 2f                	jmp    13b <memtest_sub+0x86>
+ 10c:	8b 45 f0             	mov    -0x10(%ebp),%eax
+ 10f:	8b 00                	mov    (%eax),%eax
+ 111:	f7 d0                	not    %eax
+ 113:	89 c2                	mov    %eax,%edx
+ 115:	8b 45 f0             	mov    -0x10(%ebp),%eax
+ 118:	89 10                	mov    %edx,(%eax)
+ 11a:	8b 45 f0             	mov    -0x10(%ebp),%eax
+ 11d:	8b 00                	mov    (%eax),%eax
+ 11f:	3b 45 f8             	cmp    -0x8(%ebp),%eax
+ 122:	75 dd                	jne    101 <memtest_sub+0x4c>
+ 124:	8b 45 f0             	mov    -0x10(%ebp),%eax
+ 127:	8b 55 ec             	mov    -0x14(%ebp),%edx
+ 12a:	89 10                	mov    %edx,(%eax)
+ 12c:	81 45 fc 00 10 00 00 	addl   $0x1000,-0x4(%ebp)
+ 133:	8b 45 fc             	mov    -0x4(%ebp),%eax
+ 136:	3b 45 0c             	cmp    0xc(%ebp),%eax
+ 139:	76 96                	jbe    d1 <memtest_sub+0x1c>
+ 13b:	8b 45 fc             	mov    -0x4(%ebp),%eax
+ 13e:	c9                   	leave  
+ 13f:	c3                   	ret    
+
+00000140 <HariMain>:
+ 140:	55                   	push   %ebp
+ 141:	89 e5                	mov    %esp,%ebp
+ 143:	53                   	push   %ebx
+ 144:	81 ec c4 01 00 00    	sub    $0x1c4,%esp
+ 14a:	c7 45 ec f0 0f 00 00 	movl   $0xff0,-0x14(%ebp)
+ 151:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 154:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 158:	98                   	cwtl   
+ 159:	89 45 e8             	mov    %eax,-0x18(%ebp)
+ 15c:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 15f:	0f b7 40 06          	movzwl 0x6(%eax),%eax
+ 163:	98                   	cwtl   
+ 164:	89 45 e4             	mov    %eax,-0x1c(%ebp)
+ 167:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 16a:	8b 40 08             	mov    0x8(%eax),%eax
+ 16d:	89 45 e0             	mov    %eax,-0x20(%ebp)
+ 170:	8b 45 e8             	mov    -0x18(%ebp),%eax
+ 173:	89 c2                	mov    %eax,%edx
+ 175:	c1 ea 1f             	shr    $0x1f,%edx
+ 178:	01 d0                	add    %edx,%eax
+ 17a:	d1 f8                	sar    %eax
+ 17c:	89 45 f4             	mov    %eax,-0xc(%ebp)
+ 17f:	8b 45 e4             	mov    -0x1c(%ebp),%eax
+ 182:	89 c2                	mov    %eax,%edx
+ 184:	c1 ea 1f             	shr    $0x1f,%edx
+ 187:	01 d0                	add    %edx,%eax
+ 189:	d1 f8                	sar    %eax
+ 18b:	89 45 f0             	mov    %eax,-0x10(%ebp)
+ 18e:	e8 fc ff ff ff       	call   18f <HariMain+0x4f>
+ 193:	e8 fc ff ff ff       	call   194 <HariMain+0x54>
+ 198:	e8 fc ff ff ff       	call   199 <HariMain+0x59>
+ 19d:	83 ec 04             	sub    $0x4,%esp
+ 1a0:	8d 85 94 fe ff ff    	lea    -0x16c(%ebp),%eax
+ 1a6:	50                   	push   %eax
+ 1a7:	6a 20                	push   $0x20
+ 1a9:	68 00 00 00 00       	push   $0x0
+ 1ae:	e8 fc ff ff ff       	call   1af <HariMain+0x6f>
+ 1b3:	83 c4 10             	add    $0x10,%esp
+ 1b6:	83 ec 04             	sub    $0x4,%esp
+ 1b9:	8d 85 74 fe ff ff    	lea    -0x18c(%ebp),%eax
+ 1bf:	50                   	push   %eax
+ 1c0:	6a 20                	push   $0x20
+ 1c2:	68 00 00 00 00       	push   $0x0
+ 1c7:	e8 fc ff ff ff       	call   1c8 <HariMain+0x88>
+ 1cc:	83 c4 10             	add    $0x10,%esp
+ 1cf:	e8 fc ff ff ff       	call   1d0 <HariMain+0x90>
+ 1d4:	83 ec 04             	sub    $0x4,%esp
+ 1d7:	ff 75 e4             	pushl  -0x1c(%ebp)
+ 1da:	ff 75 e8             	pushl  -0x18(%ebp)
+ 1dd:	ff 75 e0             	pushl  -0x20(%ebp)
+ 1e0:	e8 fc ff ff ff       	call   1e1 <HariMain+0xa1>
+ 1e5:	83 c4 10             	add    $0x10,%esp
+ 1e8:	83 ec 08             	sub    $0x8,%esp
+ 1eb:	6a 0e                	push   $0xe
+ 1ed:	8d 85 b4 fe ff ff    	lea    -0x14c(%ebp),%eax
+ 1f3:	50                   	push   %eax
+ 1f4:	e8 fc ff ff ff       	call   1f5 <HariMain+0xb5>
+ 1f9:	83 c4 10             	add    $0x10,%esp
+ 1fc:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 1ff:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 203:	0f bf d0             	movswl %ax,%edx
+ 206:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 209:	8b 40 08             	mov    0x8(%eax),%eax
+ 20c:	6a 10                	push   $0x10
+ 20e:	8d 8d b4 fe ff ff    	lea    -0x14c(%ebp),%ecx
+ 214:	51                   	push   %ecx
+ 215:	ff 75 f0             	pushl  -0x10(%ebp)
+ 218:	ff 75 f4             	pushl  -0xc(%ebp)
+ 21b:	6a 10                	push   $0x10
+ 21d:	6a 10                	push   $0x10
+ 21f:	52                   	push   %edx
+ 220:	50                   	push   %eax
+ 221:	e8 fc ff ff ff       	call   222 <HariMain+0xe2>
+ 226:	83 c4 20             	add    $0x20,%esp
+ 229:	83 ec 08             	sub    $0x8,%esp
+ 22c:	68 f9 00 00 00       	push   $0xf9
+ 231:	6a 21                	push   $0x21
+ 233:	e8 fc ff ff ff       	call   234 <HariMain+0xf4>
+ 238:	83 c4 10             	add    $0x10,%esp
+ 23b:	83 ec 08             	sub    $0x8,%esp
+ 23e:	68 ef 00 00 00       	push   $0xef
+ 243:	68 a1 00 00 00       	push   $0xa1
+ 248:	e8 fc ff ff ff       	call   249 <HariMain+0x109>
+ 24d:	83 c4 10             	add    $0x10,%esp
+ 250:	83 ec 08             	sub    $0x8,%esp
+ 253:	68 ff ff ff bf       	push   $0xbfffffff
+ 258:	68 00 00 40 00       	push   $0x400000
+ 25d:	e8 fc ff ff ff       	call   25e <HariMain+0x11e>
+ 262:	83 c4 10             	add    $0x10,%esp
+ 265:	c1 e8 14             	shr    $0x14,%eax
+ 268:	89 45 dc             	mov    %eax,-0x24(%ebp)
+ 26b:	83 ec 04             	sub    $0x4,%esp
+ 26e:	ff 75 dc             	pushl  -0x24(%ebp)
+ 271:	68 00 00 00 00       	push   $0x0
+ 276:	8d 85 44 fe ff ff    	lea    -0x1bc(%ebp),%eax
+ 27c:	50                   	push   %eax
+ 27d:	e8 fc ff ff ff       	call   27e <HariMain+0x13e>
+ 282:	83 c4 10             	add    $0x10,%esp
+ 285:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 288:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 28c:	0f bf d0             	movswl %ax,%edx
+ 28f:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 292:	8b 40 08             	mov    0x8(%eax),%eax
+ 295:	83 ec 08             	sub    $0x8,%esp
+ 298:	8d 8d 44 fe ff ff    	lea    -0x1bc(%ebp),%ecx
+ 29e:	51                   	push   %ecx
+ 29f:	6a 07                	push   $0x7
+ 2a1:	6a 20                	push   $0x20
+ 2a3:	6a 00                	push   $0x0
+ 2a5:	52                   	push   %edx
+ 2a6:	50                   	push   %eax
+ 2a7:	e8 fc ff ff ff       	call   2a8 <HariMain+0x168>
+ 2ac:	83 c4 20             	add    $0x20,%esp
+ 2af:	e8 fc ff ff ff       	call   2b0 <HariMain+0x170>
+ 2b4:	83 ec 0c             	sub    $0xc,%esp
+ 2b7:	8d 85 64 fe ff ff    	lea    -0x19c(%ebp),%eax
+ 2bd:	50                   	push   %eax
+ 2be:	e8 fc ff ff ff       	call   2bf <HariMain+0x17f>
+ 2c3:	83 c4 10             	add    $0x10,%esp
+ 2c6:	e8 fc ff ff ff       	call   2c7 <HariMain+0x187>
+ 2cb:	83 ec 0c             	sub    $0xc,%esp
+ 2ce:	68 00 00 00 00       	push   $0x0
+ 2d3:	e8 fc ff ff ff       	call   2d4 <HariMain+0x194>
+ 2d8:	83 c4 10             	add    $0x10,%esp
+ 2db:	89 c3                	mov    %eax,%ebx
+ 2dd:	83 ec 0c             	sub    $0xc,%esp
+ 2e0:	68 00 00 00 00       	push   $0x0
+ 2e5:	e8 fc ff ff ff       	call   2e6 <HariMain+0x1a6>
+ 2ea:	83 c4 10             	add    $0x10,%esp
+ 2ed:	01 d8                	add    %ebx,%eax
+ 2ef:	85 c0                	test   %eax,%eax
+ 2f1:	75 07                	jne    2fa <HariMain+0x1ba>
+ 2f3:	e8 fc ff ff ff       	call   2f4 <HariMain+0x1b4>
+ 2f8:	eb cc                	jmp    2c6 <HariMain+0x186>
+ 2fa:	83 ec 0c             	sub    $0xc,%esp
+ 2fd:	68 00 00 00 00       	push   $0x0
+ 302:	e8 fc ff ff ff       	call   303 <HariMain+0x1c3>
+ 307:	83 c4 10             	add    $0x10,%esp
+ 30a:	85 c0                	test   %eax,%eax
+ 30c:	0f 84 88 00 00 00    	je     39a <HariMain+0x25a>
+ 312:	83 ec 0c             	sub    $0xc,%esp
+ 315:	68 00 00 00 00       	push   $0x0
+ 31a:	e8 fc ff ff ff       	call   31b <HariMain+0x1db>
+ 31f:	83 c4 10             	add    $0x10,%esp
+ 322:	89 45 dc             	mov    %eax,-0x24(%ebp)
+ 325:	e8 fc ff ff ff       	call   326 <HariMain+0x1e6>
+ 32a:	83 ec 04             	sub    $0x4,%esp
+ 32d:	ff 75 dc             	pushl  -0x24(%ebp)
+ 330:	68 0c 00 00 00       	push   $0xc
+ 335:	8d 85 44 fe ff ff    	lea    -0x1bc(%ebp),%eax
+ 33b:	50                   	push   %eax
+ 33c:	e8 fc ff ff ff       	call   33d <HariMain+0x1fd>
+ 341:	83 c4 10             	add    $0x10,%esp
+ 344:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 347:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 34b:	0f bf d0             	movswl %ax,%edx
+ 34e:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 351:	8b 40 08             	mov    0x8(%eax),%eax
+ 354:	83 ec 04             	sub    $0x4,%esp
+ 357:	6a 4f                	push   $0x4f
+ 359:	6a 0f                	push   $0xf
+ 35b:	6a 30                	push   $0x30
+ 35d:	6a 00                	push   $0x0
+ 35f:	6a 0e                	push   $0xe
+ 361:	52                   	push   %edx
+ 362:	50                   	push   %eax
+ 363:	e8 fc ff ff ff       	call   364 <HariMain+0x224>
+ 368:	83 c4 20             	add    $0x20,%esp
+ 36b:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 36e:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 372:	0f bf d0             	movswl %ax,%edx
+ 375:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 378:	8b 40 08             	mov    0x8(%eax),%eax
+ 37b:	83 ec 08             	sub    $0x8,%esp
+ 37e:	8d 8d 44 fe ff ff    	lea    -0x1bc(%ebp),%ecx
+ 384:	51                   	push   %ecx
+ 385:	6a 07                	push   $0x7
+ 387:	6a 30                	push   $0x30
+ 389:	6a 00                	push   $0x0
+ 38b:	52                   	push   %edx
+ 38c:	50                   	push   %eax
+ 38d:	e8 fc ff ff ff       	call   38e <HariMain+0x24e>
+ 392:	83 c4 20             	add    $0x20,%esp
+ 395:	e9 2c ff ff ff       	jmp    2c6 <HariMain+0x186>
+ 39a:	83 ec 0c             	sub    $0xc,%esp
+ 39d:	68 00 00 00 00       	push   $0x0
+ 3a2:	e8 fc ff ff ff       	call   3a3 <HariMain+0x263>
+ 3a7:	83 c4 10             	add    $0x10,%esp
+ 3aa:	85 c0                	test   %eax,%eax
+ 3ac:	0f 84 14 ff ff ff    	je     2c6 <HariMain+0x186>
+ 3b2:	83 ec 0c             	sub    $0xc,%esp
+ 3b5:	68 00 00 00 00       	push   $0x0
+ 3ba:	e8 fc ff ff ff       	call   3bb <HariMain+0x27b>
+ 3bf:	83 c4 10             	add    $0x10,%esp
+ 3c2:	89 45 dc             	mov    %eax,-0x24(%ebp)
+ 3c5:	e8 fc ff ff ff       	call   3c6 <HariMain+0x286>
+ 3ca:	8b 45 dc             	mov    -0x24(%ebp),%eax
+ 3cd:	0f b6 c0             	movzbl %al,%eax
+ 3d0:	83 ec 08             	sub    $0x8,%esp
+ 3d3:	50                   	push   %eax
+ 3d4:	8d 85 64 fe ff ff    	lea    -0x19c(%ebp),%eax
+ 3da:	50                   	push   %eax
+ 3db:	e8 fc ff ff ff       	call   3dc <HariMain+0x29c>
+ 3e0:	83 c4 10             	add    $0x10,%esp
+ 3e3:	85 c0                	test   %eax,%eax
+ 3e5:	0f 84 db fe ff ff    	je     2c6 <HariMain+0x186>
+ 3eb:	8b 95 6c fe ff ff    	mov    -0x194(%ebp),%edx
+ 3f1:	8b 85 68 fe ff ff    	mov    -0x198(%ebp),%eax
+ 3f7:	52                   	push   %edx
+ 3f8:	50                   	push   %eax
+ 3f9:	68 0f 00 00 00       	push   $0xf
+ 3fe:	8d 85 44 fe ff ff    	lea    -0x1bc(%ebp),%eax
+ 404:	50                   	push   %eax
+ 405:	e8 fc ff ff ff       	call   406 <HariMain+0x2c6>
+ 40a:	83 c4 10             	add    $0x10,%esp
+ 40d:	8b 85 70 fe ff ff    	mov    -0x190(%ebp),%eax
+ 413:	83 e0 01             	and    $0x1,%eax
+ 416:	85 c0                	test   %eax,%eax
+ 418:	74 07                	je     421 <HariMain+0x2e1>
+ 41a:	c6 85 45 fe ff ff 4c 	movb   $0x4c,-0x1bb(%ebp)
+ 421:	8b 85 70 fe ff ff    	mov    -0x190(%ebp),%eax
+ 427:	83 e0 02             	and    $0x2,%eax
+ 42a:	85 c0                	test   %eax,%eax
+ 42c:	74 07                	je     435 <HariMain+0x2f5>
+ 42e:	c6 85 47 fe ff ff 52 	movb   $0x52,-0x1b9(%ebp)
+ 435:	8b 85 70 fe ff ff    	mov    -0x190(%ebp),%eax
+ 43b:	83 e0 04             	and    $0x4,%eax
+ 43e:	85 c0                	test   %eax,%eax
+ 440:	74 07                	je     449 <HariMain+0x309>
+ 442:	c6 85 46 fe ff ff 43 	movb   $0x43,-0x1ba(%ebp)
+ 449:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 44c:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 450:	0f bf d0             	movswl %ax,%edx
+ 453:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 456:	8b 40 08             	mov    0x8(%eax),%eax
+ 459:	83 ec 04             	sub    $0x4,%esp
+ 45c:	6a 1f                	push   $0x1f
+ 45e:	68 0f 01 00 00       	push   $0x10f
+ 463:	6a 10                	push   $0x10
+ 465:	6a 20                	push   $0x20
+ 467:	6a 0e                	push   $0xe
+ 469:	52                   	push   %edx
+ 46a:	50                   	push   %eax
+ 46b:	e8 fc ff ff ff       	call   46c <HariMain+0x32c>
+ 470:	83 c4 20             	add    $0x20,%esp
+ 473:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 476:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 47a:	0f bf d0             	movswl %ax,%edx
+ 47d:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 480:	8b 40 08             	mov    0x8(%eax),%eax
+ 483:	83 ec 08             	sub    $0x8,%esp
+ 486:	8d 8d 44 fe ff ff    	lea    -0x1bc(%ebp),%ecx
+ 48c:	51                   	push   %ecx
+ 48d:	6a 07                	push   $0x7
+ 48f:	6a 10                	push   $0x10
+ 491:	6a 20                	push   $0x20
+ 493:	52                   	push   %edx
+ 494:	50                   	push   %eax
+ 495:	e8 fc ff ff ff       	call   496 <HariMain+0x356>
+ 49a:	83 c4 20             	add    $0x20,%esp
+ 49d:	8b 45 f0             	mov    -0x10(%ebp),%eax
+ 4a0:	8d 58 0f             	lea    0xf(%eax),%ebx
+ 4a3:	8b 45 f4             	mov    -0xc(%ebp),%eax
+ 4a6:	8d 48 0f             	lea    0xf(%eax),%ecx
+ 4a9:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 4ac:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 4b0:	0f bf d0             	movswl %ax,%edx
+ 4b3:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 4b6:	8b 40 08             	mov    0x8(%eax),%eax
+ 4b9:	83 ec 04             	sub    $0x4,%esp
+ 4bc:	53                   	push   %ebx
+ 4bd:	51                   	push   %ecx
+ 4be:	ff 75 f0             	pushl  -0x10(%ebp)
+ 4c1:	ff 75 f4             	pushl  -0xc(%ebp)
+ 4c4:	6a 0e                	push   $0xe
+ 4c6:	52                   	push   %edx
+ 4c7:	50                   	push   %eax
+ 4c8:	e8 fc ff ff ff       	call   4c9 <HariMain+0x389>
+ 4cd:	83 c4 20             	add    $0x20,%esp
+ 4d0:	8b 85 68 fe ff ff    	mov    -0x198(%ebp),%eax
+ 4d6:	01 45 f4             	add    %eax,-0xc(%ebp)
+ 4d9:	8b 85 6c fe ff ff    	mov    -0x194(%ebp),%eax
+ 4df:	01 45 f0             	add    %eax,-0x10(%ebp)
+ 4e2:	83 7d f4 00          	cmpl   $0x0,-0xc(%ebp)
+ 4e6:	79 07                	jns    4ef <HariMain+0x3af>
+ 4e8:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+ 4ef:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 4f2:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 4f6:	98                   	cwtl   
+ 4f7:	83 e8 10             	sub    $0x10,%eax
+ 4fa:	3b 45 f4             	cmp    -0xc(%ebp),%eax
+ 4fd:	7d 0e                	jge    50d <HariMain+0x3cd>
+ 4ff:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 502:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 506:	98                   	cwtl   
+ 507:	83 e8 10             	sub    $0x10,%eax
+ 50a:	89 45 f4             	mov    %eax,-0xc(%ebp)
+ 50d:	83 7d f0 00          	cmpl   $0x0,-0x10(%ebp)
+ 511:	79 07                	jns    51a <HariMain+0x3da>
+ 513:	c7 45 f0 00 00 00 00 	movl   $0x0,-0x10(%ebp)
+ 51a:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 51d:	0f b7 40 06          	movzwl 0x6(%eax),%eax
+ 521:	98                   	cwtl   
+ 522:	83 e8 10             	sub    $0x10,%eax
+ 525:	3b 45 f0             	cmp    -0x10(%ebp),%eax
+ 528:	7d 0e                	jge    538 <HariMain+0x3f8>
+ 52a:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 52d:	0f b7 40 06          	movzwl 0x6(%eax),%eax
+ 531:	98                   	cwtl   
+ 532:	83 e8 10             	sub    $0x10,%eax
+ 535:	89 45 f0             	mov    %eax,-0x10(%ebp)
+ 538:	ff 75 f0             	pushl  -0x10(%ebp)
+ 53b:	ff 75 f4             	pushl  -0xc(%ebp)
+ 53e:	68 1b 00 00 00       	push   $0x1b
+ 543:	8d 85 44 fe ff ff    	lea    -0x1bc(%ebp),%eax
+ 549:	50                   	push   %eax
+ 54a:	e8 fc ff ff ff       	call   54b <HariMain+0x40b>
+ 54f:	83 c4 10             	add    $0x10,%esp
+ 552:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 555:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 559:	0f bf d0             	movswl %ax,%edx
+ 55c:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 55f:	8b 40 08             	mov    0x8(%eax),%eax
+ 562:	83 ec 04             	sub    $0x4,%esp
+ 565:	6a 0f                	push   $0xf
+ 567:	6a 4f                	push   $0x4f
+ 569:	6a 00                	push   $0x0
+ 56b:	6a 00                	push   $0x0
+ 56d:	6a 0e                	push   $0xe
+ 56f:	52                   	push   %edx
+ 570:	50                   	push   %eax
+ 571:	e8 fc ff ff ff       	call   572 <HariMain+0x432>
+ 576:	83 c4 20             	add    $0x20,%esp
+ 579:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 57c:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 580:	0f bf d0             	movswl %ax,%edx
+ 583:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 586:	8b 40 08             	mov    0x8(%eax),%eax
+ 589:	83 ec 08             	sub    $0x8,%esp
+ 58c:	8d 8d 44 fe ff ff    	lea    -0x1bc(%ebp),%ecx
+ 592:	51                   	push   %ecx
+ 593:	6a 07                	push   $0x7
+ 595:	6a 00                	push   $0x0
+ 597:	6a 00                	push   $0x0
+ 599:	52                   	push   %edx
+ 59a:	50                   	push   %eax
+ 59b:	e8 fc ff ff ff       	call   59c <HariMain+0x45c>
+ 5a0:	83 c4 20             	add    $0x20,%esp
+ 5a3:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 5a6:	0f b7 40 04          	movzwl 0x4(%eax),%eax
+ 5aa:	0f bf d0             	movswl %ax,%edx
+ 5ad:	8b 45 ec             	mov    -0x14(%ebp),%eax
+ 5b0:	8b 40 08             	mov    0x8(%eax),%eax
+ 5b3:	6a 10                	push   $0x10
+ 5b5:	8d 8d b4 fe ff ff    	lea    -0x14c(%ebp),%ecx
+ 5bb:	51                   	push   %ecx
+ 5bc:	ff 75 f0             	pushl  -0x10(%ebp)
+ 5bf:	ff 75 f4             	pushl  -0xc(%ebp)
+ 5c2:	6a 10                	push   $0x10
+ 5c4:	6a 10                	push   $0x10
+ 5c6:	52                   	push   %edx
+ 5c7:	50                   	push   %eax
+ 5c8:	e8 fc ff ff ff       	call   5c9 <HariMain+0x489>
+ 5cd:	83 c4 20             	add    $0x20,%esp
+ 5d0:	e9 f1 fc ff ff       	jmp    2c6 <HariMain+0x186>
+
+セクション .rodata の逆アセンブル:
+
+00000000 <.rodata>:
+   0:	4d                   	dec    %ebp
+   1:	65 6d                	gs insl (%dx),%es:(%edi)
+   3:	6f                   	outsl  %ds:(%esi),(%dx)
+   4:	72 79                	jb     7f <memtest+0x7f>
+   6:	20 25 64 4d 42 00    	and    %ah,0x424d64
+   c:	25 78 00 5b 6c       	and    $0x6c5b0078,%eax
+  11:	63 72 20             	arpl   %si,0x20(%edx)
+  14:	25 64 20 25 64       	and    $0x64252064,%eax
+  19:	5d                   	pop    %ebp
+  1a:	00 28                	add    %ch,(%eax)
+  1c:	25 64 2c 20 25       	and    $0x25202c64,%eax
+  21:	64 29 00             	sub    %eax,%fs:(%eax)
+
+セクション .comment の逆アセンブル:
+
+00000000 <.comment>:
+   0:	00 47 43             	add    %al,0x43(%edi)
+   3:	43                   	inc    %ebx
+   4:	3a 20                	cmp    (%eax),%ah
+   6:	28 55 62             	sub    %dl,0x62(%ebp)
+   9:	75 6e                	jne    79 <memtest+0x79>
+   b:	74 75                	je     82 <memtest+0x82>
+   d:	20 35 2e 34 2e 30    	and    %dh,0x302e342e
+  13:	2d 36 75 62 75       	sub    $0x75627536,%eax
+  18:	6e                   	outsb  %ds:(%esi),(%dx)
+  19:	74 75                	je     90 <memtest+0x90>
+  1b:	31 7e 31             	xor    %edi,0x31(%esi)
+  1e:	36 2e 30 34 2e       	ss xor %dh,%cs:(%esi,%ebp,1)
+  23:	39 29                	cmp    %ebp,(%ecx)
+  25:	20 35 2e 34 2e 30    	and    %dh,0x302e342e
+  2b:	20 32                	and    %dh,(%edx)
+  2d:	30 31                	xor    %dh,(%ecx)
+  2f:	36 30 36             	xor    %dh,%ss:(%esi)
+  32:	30 39                	xor    %bh,(%ecx)
+	...
+
+セクション .eh_frame の逆アセンブル:
+
+00000000 <.eh_frame>:
+   0:	14 00                	adc    $0x0,%al
+   2:	00 00                	add    %al,(%eax)
+   4:	00 00                	add    %al,(%eax)
+   6:	00 00                	add    %al,(%eax)
+   8:	01 7a 52             	add    %edi,0x52(%edx)
+   b:	00 01                	add    %al,(%ecx)
+   d:	7c 08                	jl     17 <.eh_frame+0x17>
+   f:	01 1b                	add    %ebx,(%ebx)
+  11:	0c 04                	or     $0x4,%al
+  13:	04 88                	add    $0x88,%al
+  15:	01 00                	add    %eax,(%eax)
+  17:	00 1c 00             	add    %bl,(%eax,%eax,1)
+  1a:	00 00                	add    %al,(%eax)
+  1c:	1c 00                	sbb    $0x0,%al
+  1e:	00 00                	add    %al,(%eax)
+  20:	00 00                	add    %al,(%eax)
+  22:	00 00                	add    %al,(%eax)
+  24:	b5 00                	mov    $0x0,%ch
+  26:	00 00                	add    %al,(%eax)
+  28:	00 41 0e             	add    %al,0xe(%ecx)
+  2b:	08 85 02 42 0d 05    	or     %al,0x50d4202(%ebp)
+  31:	02 b1 c5 0c 04 04    	add    0x4040cc5(%ecx),%dh
+  37:	00 1c 00             	add    %bl,(%eax,%eax,1)
+  3a:	00 00                	add    %al,(%eax)
+  3c:	3c 00                	cmp    $0x0,%al
+  3e:	00 00                	add    %al,(%eax)
+  40:	b5 00                	mov    $0x0,%ch
+  42:	00 00                	add    %al,(%eax)
+  44:	8b 00                	mov    (%eax),%eax
+  46:	00 00                	add    %al,(%eax)
+  48:	00 41 0e             	add    %al,0xe(%ecx)
+  4b:	08 85 02 42 0d 05    	or     %al,0x50d4202(%ebp)
+  51:	02 87 c5 0c 04 04    	add    0x4040cc5(%edi),%al
+  57:	00 18                	add    %bl,(%eax)
+  59:	00 00                	add    %al,(%eax)
+  5b:	00 5c 00 00          	add    %bl,0x0(%eax,%eax,1)
+  5f:	00 40 01             	add    %al,0x1(%eax)
+  62:	00 00                	add    %al,(%eax)
+  64:	95                   	xchg   %eax,%ebp
+  65:	04 00                	add    $0x0,%al
+  67:	00 00                	add    %al,(%eax)
+  69:	41                   	inc    %ecx
+  6a:	0e                   	push   %cs
+  6b:	08 85 02 42 0d 05    	or     %al,0x50d4202(%ebp)
+  71:	47                   	inc    %edi
+  72:	83                   	.byte 0x83
+  73:	03                   	.byte 0x3
