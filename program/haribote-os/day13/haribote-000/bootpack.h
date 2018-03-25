@@ -4,6 +4,7 @@
 #include "sheets.h"
 #include "memtest.h"
 #include "timer.h"
+#include "graphic.h"
 
 #define COL8_000000  0
 #define COL8_FF0000  1
@@ -62,15 +63,6 @@ void io_cli(void);
 void io_out8(int port, int data);
 int io_load_eflags(void);
 void io_store_eflags(int eflags);
-
-void init_palette(void);
-void set_palette(int start, int end, unsigned char *rgb);
-void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
-void init_screen(char *vram, int x, int y);
-void putfonts8_asc (char *vram, int xsize, int x, int y, char c, unsigned char *s);
-
-void init_mouse_cursor8 (char *mouse, char bc);
-void putblock8_8(char *vram, int vxsize, int pxsize, int pysize, int px0, int py, char *buf, int bxsize);
 
 void init_gdtidt (void);
 void set_segmdesc (struct SEGMENT_DESCRIPTOR *sd, unsigned int limit, int base, int ar);
