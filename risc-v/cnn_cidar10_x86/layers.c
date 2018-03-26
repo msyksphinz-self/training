@@ -8,14 +8,46 @@
 #include <math.h>
 #include "layers.h"
 
+inline double VAL_IN (const double *in, const int CH, const int H, const int W,
+                      int ch, int h, int w)
+{
+  return (in[ch * H * W + h * W + w]);
+}
 
-double convolution (const int const int output_size,
-					const int input_size,
-					const int batch_size,
-					double *out,            // [batch_size][output_size],
-					const double *in_data,  // [batch_size][input_size],
-					const double *wh,       // [input_size][output_size],
-					const double *wb)       // [output_size]
+
+void convolution (const int FN_size,
+                  const int CH_size,
+                  const int H_size,
+                  const int W_size,
+                  const int FH_size,
+                  const int FW_size,
+                  const int batch_size,
+                  double *out,            // [FN_size][y_size-4][x_size-4]
+                  const double *in_data,  // [ch_size][y_size][x_size],
+                  const double *wh,       // [FN_size][ch_size][FH_size][FW_size],
+                  const double *wb)       // [output_size]
+{
+  
+  for (int fn = 0; fn < FN_size; fn++) {
+    for (int h = 2; h < H_size-2; h++) {
+      for (int w = 2; w < W_size-2; w++) {
+        double ch_val = 0.0;
+        for (int ch = 0; ch < CH_size; ch++) {
+          double val = 0.0;
+          for (int filter_y = -2; filter_y <= 2; filter_y++) {
+            for (int filter_x = -2; filter_x <= 2; filter_x++) {
+              val += VAL_IN(in_data, CH_SIZE, H_SIZE, W_SIZE, ch, h, w) * wh[fn][ch][h-filter_y][w-filter_x];
+            }
+          }
+          ch_val += val;
+        }
+        ch_val += wb[fn];
+        out[fn][h-2][w-2] = ch_val;
+      }
+    }
+  }
+  return;
+}
 
 
 double affine (const int output_size,
