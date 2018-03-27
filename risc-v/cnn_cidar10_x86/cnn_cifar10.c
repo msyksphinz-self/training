@@ -33,9 +33,6 @@ void TestNetwork (const int input_size,
 				  const double *wh1,   // [hidden_size][output_size],
 				  const double *wb1);   // [output_size]
 
-extern double conv1_w[][][][];
-extern double conv1_b[][][][];
-
 int main ()
 {
   TestNetwork (INPUTNO, OUTPUTNO, HIDDENNO, wh0, wb0, wh1, wb1);
