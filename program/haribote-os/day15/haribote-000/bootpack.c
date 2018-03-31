@@ -13,6 +13,31 @@ void putfonts8_asc_sht (struct SHEET *sht, int x, int y, int c, int b, char *s, 
   return;
 }
 
+void task_b_main (void)
+{
+  struct FIFO32 fifo;
+  struct TIMER *timer;
+  int i, fifobuf[128];
+
+  fifo32_init(&fifo, 128, fifobuf);
+  timer = timer_alloc();
+  timer_init(timer, &fifo, 1);
+  timer_settime(timer, 500);
+  
+  for (;;) {
+    io_cli();
+    if (fifo32_status(&fifo) == 0) {
+      io_stihlt();
+    } else {
+      i = fifo32_get(&fifo);
+      io_sti();
+      if (i == 1) {  // timeout 5 sec
+        taskswitch3();
+      }
+    }
+  }
+}
+
 
 void HariMain(void)
 {
@@ -45,7 +70,7 @@ void HariMain(void)
     0,   0,   0,   0,   0,   0,   0,   '7', '8', '9', '-', '4', '5', '6', '+', '1',
     '2', '3', '0', '.'
   };
-  
+
   init_gdtidt ();
   init_pic ();
   io_sti ();
@@ -107,6 +132,43 @@ void HariMain(void)
   sheet_updown (sht_mouse, 2);
 
   sheet_refresh (sht_back, 0, 0, binfo->scrnx, 48);
+
+  //=====================
+  // Task Settings
+  //=====================
+  
+  struct TSS32 tas_a, tas_b;
+
+  tas_a.ldtr = 0;
+  tas_a.iomap = 0x40000000;
+  tas_b.ldtr = 0;
+  tas_b.iomap = 0x40000000;
+
+  struct SEGMENT_DESCRIPTOR *gdt = (struct SEGMENT_DESCRIPTOR *)ADR_GDT;
+  set_segmdesc (gdt + 3, 103, (int)&tas_a, AR_TSS32);
+  set_segmdesc (gdt + 4, 103, (int)&tas_b, AR_TSS32);
+
+  load_tr(3 * 8);
+  
+  int tas_b_esp;
+  tas_b_esp = memman_alloc_4k (memman, 64 * 1024) + 64 * 1024;
+  
+  tas_b.eip = (int)&task_b_main;
+  tas_b.eflags = 0x00000202;
+  tas_b.eax = 0;
+  tas_b.ecx = 0;
+  tas_b.edx = 0;
+  tas_b.ebx = 0;
+  tas_b.esp = tas_b_esp;
+  tas_b.ebp = 0;
+  tas_b.esi = 0;
+  tas_b.edi = 0;
+  tas_b.es = 1 * 8;
+  tas_b.cs = 2 * 8;
+  tas_b.ss = 1 * 8;
+  tas_b.ds = 1 * 8;
+  tas_b.fs = 1 * 8;
+  tas_b.gs = 1 * 8;
   
   for (;;) {
 	count ++;
@@ -157,6 +219,7 @@ void HariMain(void)
         }
       } else if (i == 10) {
         putfonts8_asc_sht (sht_back, 0, 64, COL8_FFFFFF, COL8_008484, "10[sec]", 7);
+        taskswitch4();
       } else if (i == 3) {
         putfonts8_asc_sht (sht_back, 0, 80, COL8_FFFFFF, COL8_008484, "3[sec]", 6);
         count = 0;

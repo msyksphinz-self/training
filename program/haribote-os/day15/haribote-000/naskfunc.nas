@@ -10,6 +10,7 @@
 		GLOBAL	load_gdtr, load_idtr
 		GLOBAL	load_cr0, store_cr0
 		GLOBAL	asm_inthandler20, asm_inthandler21, asm_inthandler27, asm_inthandler2c
+        GLOBAL  load_tr, taskswitch4, taskswitch3
 		EXTERN	inthandler20, inthandler21, inthandler27, inthandler2c
 		
 [SECTION .text]
@@ -97,6 +98,18 @@ load_cr0:       ; int load_cr0 (void);
 store_cr0:      ; void store_cr0 (int cr0);
     mov     eax,[esp+4]
     mov     cr0, eax
+    ret
+
+load_tr:        ; void load_tr(int tr);
+    ltr         [esp+4]
+    ret
+
+taskswitch3:    ; void taskswitch3(void);
+    jmp         3*8:0
+    ret
+
+taskswitch4:    ; void taskswitch4(void);
+    jmp         4*8:0
     ret
     
 
