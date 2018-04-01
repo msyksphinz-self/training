@@ -14,6 +14,12 @@ inline double VAL_IN (const double *in, const int CH, const int H, const int W,
   return (in[ch * H * W + h * W + w]);
 }
 
+inline double WH_IN (const double *wh, const int CH, const int H, const int W,
+					 int fn, int ch, int h, int w)
+{
+  return (wh[(fn * CH * H * W) + (ch * H * W) + (h * W) + w]);
+}
+
 
 void convolution (const int FN_size,
                   const int CH_size,
@@ -36,7 +42,8 @@ void convolution (const int FN_size,
           double val = 0.0;
           for (int filter_y = -2; filter_y <= 2; filter_y++) {
             for (int filter_x = -2; filter_x <= 2; filter_x++) {
-              val += VAL_IN(in_data, CH_SIZE, H_SIZE, W_SIZE, ch, h, w) * wh[fn][ch][h-filter_y][w-filter_x];
+              val += VAL_IN(in_data, CH_size, H_size, W_size, ch, h, w) * 
+				WH_IN(wh, CH_size, H_size, W_size, fn, ch, h-filter_y, w-filter_x);
             }
           }
           ch_val += val;
