@@ -28,10 +28,11 @@ OBJ_FILES += mtask.o
 OBJ_FILES += console.o
 OBJ_FILES += file.o
 
-$(TARGET).img: ipl10.bin $(TARGET).sys
+$(TARGET).img: ipl10.bin $(TARGET).sys hlt.hrb
 	mformat -f 1440 -C -B ipl10.bin -i $(TARGET).img ::
 	mcopy $(TARGET).sys -i $(TARGET).img ::
 	mcopy ipl10.nas -i $(TARGET).img ::
+	mcopy hlt.hrb -i $(TARGET).img ::
 	mcopy Makefile  -i $(TARGET).img ::
 
 %.o:%.c
@@ -40,6 +41,9 @@ $(TARGET).img: ipl10.bin $(TARGET).sys
 
 %.bin: %.oT
 	objcopy -O binary $^ $@ 
+
+hlt.hrb: hlt.nas
+	nasm $^ -o $@ -l $^.lst
 
 asmhead.o: asmhead.nas
 	nasm $^ -o $@ -l $^.lst
