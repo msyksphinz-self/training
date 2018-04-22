@@ -64,3 +64,10 @@ int strcmp(const char *a,const char *b)
   if (! (*a | *b)) return 0;
   return (*a!=*b) ? *a-*b : strcmp(++a,++b);
 }
+
+
+int strncmp(const char *a, const char *b, const int n)
+{
+  if (*a == 0 || *b == 0 || (n == 0)) return 0;
+  return (*a!=*b) ? *a-*b : strncmp(++a,++b, n-1);
+}

@@ -27,19 +27,20 @@ OBJ_FILES += mtask.o
 OBJ_FILES += console.o
 OBJ_FILES += file.o
 
-$(TARGET).img: ipl10.bin $(TARGET).sys hello.hrb hello2.hrb
+$(TARGET).img: ipl10.bin $(TARGET).sys hello.hrb hello2.hrb a.hrb
 	mformat -f 1440 -C -B ipl10.bin -i $(TARGET).img ::
 	mcopy $(TARGET).sys -i $(TARGET).img ::
 	mcopy ipl10.nas -i $(TARGET).img ::
 	mcopy hello.hrb -i $(TARGET).img ::
 	mcopy hello2.hrb -i $(TARGET).img ::
+	mcopy a.hrb -i $(TARGET).img ::
 	mcopy Makefile  -i $(TARGET).img ::
 
-%.o:%.c
+%.o:%.c Makefile
 	gcc -Wall -m32 -O3 -c -fno-pic -nostdlib -fno-builtin -o $@ $<
 	objdump -D $@ > $@.dmp
 
-%.bin: %.oT
+%.bin: %.o
 	objcopy -O binary $^ $@ 
 
 hello.hrb: hello.nas
@@ -47,6 +48,12 @@ hello.hrb: hello.nas
 
 hello2.hrb: hello2.nas
 	nasm $^ -o $@ -l $^.lst
+
+a.hrb: a.o a_nask.o
+	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
+
+a_nask.o: a_nask.nas
+	nasm -felf32 $^ -o $@ -l $^.lst
 
 asmhead.o: asmhead.nas
 	nasm $^ -o $@ -l $^.lst
@@ -77,4 +84,5 @@ run: $(TARGET).img
 	qemu-system-i386 -m 32M -fda $^
 
 clean:
-	rm -rf *.sys $(TARGET).img *.o *.bin *.lst *.name *~ *.dmp
+	rm -rf *.sys $(TARGET).img *.o *.bin *.lst *.name *~ *.dmp *.hrb
+
