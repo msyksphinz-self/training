@@ -27,12 +27,13 @@ OBJ_FILES += mtask.o
 OBJ_FILES += console.o
 OBJ_FILES += file.o
 
-$(TARGET).img: ipl10.bin $(TARGET).sys hello.hrb hello2.hrb a.hrb crack1.hrb crack2.hrb
+$(TARGET).img: ipl10.bin $(TARGET).sys hello.hrb hello2.hrb a.hrb crack1.hrb crack2.hrb hello3.hrb
 	mformat -f 1440 -C -B ipl10.bin -i $(TARGET).img ::
 	mcopy $(TARGET).sys -i $(TARGET).img ::
 	mcopy ipl10.nas -i $(TARGET).img ::
 	mcopy hello.hrb -i $(TARGET).img ::
 	mcopy hello2.hrb -i $(TARGET).img ::
+	mcopy hello3.hrb -i $(TARGET).img ::
 	mcopy a.hrb -i $(TARGET).img ::
 	mcopy crack1.hrb -i $(TARGET).img ::
 	mcopy crack2.hrb -i $(TARGET).img ::
@@ -46,10 +47,15 @@ $(TARGET).img: ipl10.bin $(TARGET).sys hello.hrb hello2.hrb a.hrb crack1.hrb cra
 	objcopy -O binary $^ $@ 
 
 hello.hrb: hello.nas
-	nasm $^ -o $@ -l $^.lst
+	nasm -felf32 $^ -o tmp.o -l $@.lst
+	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
 
-hello2.hrb: hello2.nas
-	nasm $^ -o $@ -l $^.lst
+hello2.hrb: hello2.nas 
+	nasm -felf32 $^ -o tmp.o -l $@.lst
+	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
+
+hello3.hrb: hello3.o a_nask.o
+	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
 
 a.hrb: a.o a_nask.o
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
@@ -57,11 +63,12 @@ a.hrb: a.o a_nask.o
 a_nask.o: a_nask.nas
 	nasm -felf32 $^ -o $@ -l $^.lst
 
-crack1.hrb: crack1.o
+crack1.hrb: crack1.o a_nask.o
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
 
 crack2.hrb: crack2.nas
-	nasm $^ -o $@ -l $^.lst
+	nasm $^ -o tmp.o -l $^.lst
+	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
 
 asmhead.o: asmhead.nas
 	nasm $^ -o $@ -l $^.lst

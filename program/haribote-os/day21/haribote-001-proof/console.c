@@ -338,7 +338,7 @@ int cmd_app (struct CONSOLE *cons, int *fat, char *cmdline)
 }
 
 
-void hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax)
+int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax)
 {
   int cs_base = *((int *) 0xfe8);
   struct TASK *task = task_now();
@@ -352,8 +352,7 @@ void hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
   } else if (edx == 4) {
 	return &(task->tss.esp0);
   }
-
-  return;
+  return 0;
 }
 
 
