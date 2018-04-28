@@ -95,7 +95,6 @@ void timer_settime (struct TIMER *timer, unsigned int timeout)
 
 void inthandler20(int *esp)
 {
-  int i;
   char ts = 0;
   io_out8 (PIC0_OCW2, 0x60);
   timerctl.count ++;

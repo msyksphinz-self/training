@@ -25,12 +25,12 @@ struct TASK *task_init (struct MEMMAN *memman)
   task = task_alloc();
   task->flags = 2;  // Running
   task->priority = 2;  // 0.02 second 
-  task->level = 1;
+  task->level = 0;     // Highest priority
   task_add(task);
   task_switchsub();
   load_tr(task->sel);
   task_timer = timer_alloc();
-  timer_settime (task_timer, 2);
+  timer_settime (task_timer, task->priority);
 
   idle = task_alloc ();
   idle->tss.esp = memman_alloc_4k (memman, 64 * 1024) + 64 * 1024;

@@ -1,6 +1,7 @@
 #include "console.h"
 #include "fifo.h"
 #include "file.h"
+#include "dsctbl.h"
 
 void console_task (struct SHEET *sheet, unsigned int memtotal)
 {
@@ -356,7 +357,7 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 }
 
 
-int inthandler0c (int *esp)
+int *inthandler0c (int *esp)
 {
   struct CONSOLE *cons = (struct CONSOLE *) *((int *) 0x0fec);
   struct TASK *task = task_now();
@@ -368,7 +369,7 @@ int inthandler0c (int *esp)
 }
 
 
-int inthandler0d (int *esp)
+int *inthandler0d (int *esp)
 {
   struct CONSOLE *cons = (struct CONSOLE *) *((int *) 0x0fec);
   struct TASK *task = task_now();

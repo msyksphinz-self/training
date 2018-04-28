@@ -16,8 +16,6 @@ void HariMain(void)
   struct BOOTINFO *binfo = (struct BOOTINFO *)0x0ff0;
   int xsize = (*binfo).scrnx;
   int ysize = (*binfo).scrny;
-  char *vram = (*binfo).vram;
-  char msg[40], mcursor[256];
   int mx = xsize/2;
   int my = ysize/2;
   int fifobuf[128], keycmd_buf[32];
@@ -26,7 +24,7 @@ void HariMain(void)
   unsigned int memtotal;
   struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
   int cursor_x, cursor_c;
-  int key_to = 0, key_shift = 0, key_leds = (binfo->leds >> 4) & 7, keycmd_wait;
+  int key_to = 0, key_shift = 0, key_leds = (binfo->leds >> 4) & 7, keycmd_wait = -1;
   
   struct SHTCTL *shtctl;
   struct SHEET *sht_back, *sht_mouse, *sht_win, *sht_cons;

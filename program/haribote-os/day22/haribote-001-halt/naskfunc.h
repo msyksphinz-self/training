@@ -23,6 +23,10 @@ void load_idtr(int limit, int addr);
 int load_cr0 (void);
 void store_cr0 (int cr0);
 
+void farcall(int eip, int cs);
+void farjmp(int eip, int cs);
+
+void start_app(int eip, int cs, int esp, int ds, int *tss_esp0);
 void asm_end_app ();
 
 #endif // __NASKFUNC_H__
