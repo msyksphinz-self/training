@@ -46,17 +46,7 @@ $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
 	mformat -f 1440 -C -B ipl10.bin -i $(TARGET).img ::
 	mcopy $(TARGET).sys -i $(TARGET).img ::
 	mcopy ipl10.nas  -i $(TARGET).img ::
-	mcopy hello.hrb  -i $(TARGET).img ::
-	mcopy hello2.hrb -i $(TARGET).img ::
-	mcopy hello3.hrb -i $(TARGET).img ::
-	mcopy hello4.hrb hello5.hrb -i $(TARGET).img ::
-	mcopy a.hrb      -i $(TARGET).img ::
-	mcopy crack1.hrb -i $(TARGET).img ::
-	mcopy crack2.hrb -i $(TARGET).img ::
-	mcopy bug1.hrb   -i $(TARGET).img ::
-	mcopy bug2.hrb   -i $(TARGET).img ::
-	mcopy bug3.hrb   -i $(TARGET).img ::
-	mcopy winhelo.hrb -i $(TARGET).img ::
+	mcopy $(HRB_FILES) -i $(TARGET).img ::
 	mcopy Makefile   -i $(TARGET).img ::
 
 %.o:%.c Makefile
@@ -66,41 +56,15 @@ $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
 %.bin: %.o
 	objcopy -O binary $^ $@ 
 
-hello.hrb: hello.nas
-	nasm -felf32 $^ -o tmp.o -l $@.lst
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
-
-hello2.hrb: hello2.nas 
-	nasm -felf32 $^ -o tmp.o -l $@.lst
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
-
 %.hrb: %.o a_nask.o
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
 %.hrb: %.nas
 	nasm -felf32 $^ -o tmp.o -l $@.lst
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
 
-a.hrb: a.o a_nask.o
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
-
 a_nask.o: a_nask.nas
 	nasm -felf32 $^ -o $@ -l $^.lst
 
-crack1.hrb: crack1.o a_nask.o
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
-
-crack2.hrb: crack2.nas
-	nasm -felf32 $^ -o tmp.o -l $^.lst
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
-
-bug1.hrb: bug1.o a_nask.o
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
-
-bug2.hrb: bug2.o a_nask.o
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
-
-bug3.hrb: bug3.o a_nask.o
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
 
 asmhead.o: asmhead.nas
 	nasm $^ -o $@ -l $^.lst
