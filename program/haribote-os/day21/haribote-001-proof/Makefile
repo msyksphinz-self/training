@@ -67,8 +67,8 @@ crack1.hrb: crack1.o a_nask.o
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
 
 crack2.hrb: crack2.nas
-	nasm $^ -o tmp.o -l $^.lst
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
+	nasm -felf32 $^ -o tmp.o -l $^.lst
+	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
 
 asmhead.o: asmhead.nas
 	nasm $^ -o $@ -l $^.lst
