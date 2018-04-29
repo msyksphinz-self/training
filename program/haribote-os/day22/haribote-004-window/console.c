@@ -316,7 +316,6 @@ int cmd_app (struct CONSOLE *cons, int *fat, char *cmdline)
 
   if (finfo != 0) {  // File Found
     char *p = (char *)memman_alloc_4k (memman, finfo->size);
-    *((int *) 0xfe8) = (int) p;
     file_loadfile (finfo->clustno, finfo->size, p, fat, (char *) (ADR_DISKIMG + 0x003e00));
     if (finfo->size >= 8 && strncmp (p + 4, "Hari", 4) == 0 && *p == 0x00) {
 	  segsiz = *((int *)(p + 0x0000));
@@ -346,7 +345,7 @@ int cmd_app (struct CONSOLE *cons, int *fat, char *cmdline)
 
 int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax)
 {
-  int ds_base = *((int *) 0xfe8);
+  int ds_base = *((int *) 0x0fe8);
   struct TASK *task = task_now();
   struct CONSOLE *cons = (struct CONSOLE *) *((int *)0x0fec);
   struct SHTCTL *shtctl = (struct SHTCTL *) *((int *)0x0fe4);
@@ -367,26 +366,13 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
     make_window8 ((char *) ebx + ds_base, esi, edi, (char *)ecx + ds_base, 0);
     sheet_slide (sht, 100, 50);
     sheet_updown (sht, 3);
-    
-    char str[30];
-    sprintf (str, "EDX5 = %x\n", sht);
-    cons_putstr0 (cons, str);
-
     reg[7] = (int)sht;
-  } else if (edx == 6) { // api_boxfilwin
+  } else if (edx == 6) {  // api_putstrwin
     sht = (struct SHEET *)ebx;
-    
-    char str[30];
-    sprintf (str, "EDX6 = %x\n", sht);
-    cons_putstr0 (cons, str);
 
-    putfonts8_asc (sht->buf, sht->bxsize, esi, edi, eax, (char *) ebp + ds_base);
-    sheet_refresh (sht, esi, edi, esi + ecx * 8, edi + 16);
-  } else if (edx == 7) {
-    char str[30];
-    sprintf (str, "EDX7 = %x\n", sht);
-    cons_putstr0 (cons, str);
-
+	putfonts8_asc (sht->buf, sht->bxsize, esi, edi, eax, (char *) ebp + ds_base);
+	sheet_refresh (sht, esi, edi, esi + ecx * 8, edi + 16);
+  } else if (edx == 7) { // api_boxfilwin
     sht = (struct SHEET *)ebx;
     boxfill8 (sht->buf, sht->bxsize, ebp, eax, ecx, esi, edi);
     sheet_refresh (sht, eax, ecx, esi + 1, edi + 1);
