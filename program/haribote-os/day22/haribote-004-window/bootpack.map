@@ -12,21 +12,21 @@ keydata0            0x4               keyboard.o
 
 破棄された入力セクション
 
- .eh_frame      0x0000000000000000      0x5cc bootpack.o
- .eh_frame      0x0000000000000000      0x338 graphic.o
- .eh_frame      0x0000000000000000       0x90 dsctbl.o
- .eh_frame      0x0000000000000000       0xdc int.o
- .eh_frame      0x0000000000000000      0x15c sprintf.o
- .eh_frame      0x0000000000000000       0x9c fifo.o
- .eh_frame      0x0000000000000000       0x9c keyboard.o
- .eh_frame      0x0000000000000000       0xbc mouse.o
- .eh_frame      0x0000000000000000      0x190 memory.o
- .eh_frame      0x0000000000000000       0x90 memtest.o
- .eh_frame      0x0000000000000000      0x2a4 sheets.o
- .eh_frame      0x0000000000000000      0x12c timer.o
- .eh_frame      0x0000000000000000      0x218 mtask.o
- .eh_frame      0x0000000000000000      0xdc4 console.o
- .eh_frame      0x0000000000000000       0xd4 file.o
+ .eh_frame      0x0000000000000000       0x34 bootpack.o
+ .eh_frame      0x0000000000000000      0x1b4 graphic.o
+ .eh_frame      0x0000000000000000       0x78 dsctbl.o
+ .eh_frame      0x0000000000000000       0x58 int.o
+ .eh_frame      0x0000000000000000       0xbc sprintf.o
+ .eh_frame      0x0000000000000000       0x98 fifo.o
+ .eh_frame      0x0000000000000000       0x78 keyboard.o
+ .eh_frame      0x0000000000000000       0x78 mouse.o
+ .eh_frame      0x0000000000000000       0xe4 memory.o
+ .eh_frame      0x0000000000000000       0x58 memtest.o
+ .eh_frame      0x0000000000000000      0x15c sheets.o
+ .eh_frame      0x0000000000000000       0xd8 timer.o
+ .eh_frame      0x0000000000000000      0x154 mtask.o
+ .eh_frame      0x0000000000000000      0x204 console.o
+ .eh_frame      0x0000000000000000       0x7c file.o
 
 メモリ設定
 
@@ -41,236 +41,185 @@ keydata0            0x4               keyboard.o
                 0x0000000000000004        0x4 LONG 0x69726148
                 0x0000000000000008        0x4 LONG 0x0
                 0x000000000000000c        0x4 LONG 0x310000
-                0x0000000000000010        0x4 LONG 0x1462 SIZEOF (.data)
-                0x0000000000000014        0x4 LONG 0x9ce0 LOADADDR (.data)
+                0x0000000000000010        0x4 LONG 0x1446 SIZEOF (.data)
+                0x0000000000000014        0x4 LONG 0x4f34 LOADADDR (.data)
                 0x0000000000000018        0x4 LONG 0xe9000000
                 0x000000000000001c        0x4 LONG 0x10 (HariMain - 0x20)
                 0x0000000000000020        0x4 LONG 0x0
 
-.text           0x0000000000000030     0x9cb0
+.text           0x0000000000000030     0x4f04
  *(.text)
- .text          0x0000000000000030      0xb2a bootpack.o
+ .text          0x0000000000000030      0xbd5 bootpack.o
                 0x0000000000000030                HariMain
- *fill*         0x0000000000000b5a        0x6 
- .text          0x0000000000000b60     0x2727 graphic.o
-                0x0000000000000b60                putfonts8_asc_sht
-                0x0000000000000e00                putfonts8_asc
-                0x0000000000000ec0                putfonts8
-                0x0000000000000f40                init_pallete
-                0x0000000000000fe0                set_palette
-                0x0000000000001080                init_screen
-                0x0000000000001d40                boxfill8
-                0x0000000000001ee0                init_mouse_cursor8
-                0x0000000000001f40                putblock8_8
-                0x00000000000020e0                make_wtitle8
-                0x0000000000002380                make_window8
-                0x0000000000002ac0                make_textbox8
- *fill*         0x0000000000003287        0x9 
- .text          0x0000000000003290      0x2bc dsctbl.o
-                0x0000000000003290                init_gdtidt
-                0x00000000000034c0                set_segmdesc
-                0x0000000000003520                set_gatedesc
- *fill*         0x000000000000354c        0x4 
- .text          0x0000000000003550       0xc0 int.o
-                0x0000000000003550                init_pic
-                0x0000000000003600                inthandler27
- .text          0x0000000000003610      0x19f naskfunc.o
-                0x0000000000003610                io_hlt
-                0x0000000000003612                io_cli
-                0x0000000000003614                io_sti
-                0x0000000000003616                io_stihlt
-                0x0000000000003619                io_in8
-                0x0000000000003624                io_in16
-                0x0000000000003630                io_in32
-                0x0000000000003636                io_out8
-                0x0000000000003640                io_out16
-                0x000000000000364c                io_out32
-                0x0000000000003656                io_load_eflags
-                0x0000000000003659                io_store_eflags
-                0x0000000000003660                load_gdtr
-                0x0000000000003670                load_idtr
-                0x0000000000003680                load_cr0
-                0x0000000000003684                store_cr0
-                0x000000000000368c                load_tr
-                0x0000000000003692                farjmp
-                0x0000000000003697                asm_inthandler20
-                0x00000000000036ae                asm_inthandler21
-                0x00000000000036c5                asm_inthandler27
-                0x00000000000036dc                asm_inthandler2c
-                0x00000000000036f3                asm_inthandler0c
-                0x0000000000003717                asm_inthandler0d
-                0x0000000000003751                farcall
-                0x0000000000003756                asm_hrb_api
-                0x0000000000003773                start_app
-                0x00000000000037a4                asm_end_app
- .text          0x00000000000037af        0x0 hankaku.o
- *fill*         0x00000000000037af        0x1 
- .text          0x00000000000037b0      0xe60 sprintf.o
-                0x00000000000037b0                dec2asc
-                0x0000000000003ae0                hex2asc
-                0x0000000000003cf0                sprintf
-                0x0000000000004570                strcmp
-                0x00000000000045b0                strncmp
- .text          0x0000000000004610      0x10b fifo.o
-                0x0000000000004610                fifo32_init
-                0x0000000000004650                fifo32_put
-                0x00000000000046d0                fifo32_get
-                0x0000000000004710                fifo32_status
- *fill*         0x000000000000471b        0x5 
- .text          0x0000000000004720       0xc0 keyboard.o
-                0x0000000000004720                wait_KBC_sendready
-                0x0000000000004740                init_keyboard
-                0x00000000000047b0                inthandler21
- .text          0x00000000000047e0      0x14e mouse.o
-                0x00000000000047e0                enable_mouse
-                0x0000000000004830                mouse_decode
-                0x00000000000048f0                inthandler2c
- *fill*         0x000000000000492e        0x2 
- .text          0x0000000000004930      0x46c memory.o
-                0x0000000000004930                memman_init
-                0x0000000000004950                memman_total
-                0x0000000000004970                memman_alloc
-                0x00000000000049f0                memman_free
-                0x0000000000004b70                memman_alloc_4k
-                0x0000000000004c00                memman_free_4k
- *fill*         0x0000000000004d9c        0x4 
- .text          0x0000000000004da0      0x127 memtest.o
-                0x0000000000004da0                memtest
-                0x0000000000004e80                memtest_sub
- *fill*         0x0000000000004ec7        0x9 
- .text          0x0000000000004ed0      0x6a7 sheets.o
-                0x0000000000004ed0                shtctl_init
-                0x0000000000004f60                sheet_alloc
-                0x0000000000004fc0                sheet_setbuf
-                0x0000000000004fe0                sheet_refreshsub
-                0x0000000000005170                sheet_refresh
-                0x00000000000051b0                sheet_refreshmap
-                0x0000000000005330                sheet_updown
-                0x00000000000054b0                sheet_free
-                0x00000000000054d0                sheet_slide
- *fill*         0x0000000000005577        0x9 
- .text          0x0000000000005580      0x26a timer.o
-                0x0000000000005580                init_pit
-                0x0000000000005630                timer_alloc
-                0x0000000000005680                timer_free
-                0x0000000000005690                timer_init
-                0x00000000000056b0                timer_settime
-                0x0000000000005740                inthandler20
- *fill*         0x00000000000057ea        0x6 
- .text          0x00000000000057f0      0xd0a mtask.o
-                0x00000000000057f0                task_idle
-                0x0000000000005800                task_init
-                0x0000000000005dd0                task_alloc
-                0x0000000000005ec0                task_run
-                0x0000000000005fb0                task_switch
-                0x0000000000006160                task_sleep
-                0x0000000000006300                task_now
-                0x0000000000006320                task_add
-                0x0000000000006350                task_remove
-                0x00000000000063e0                task_switchsub
- *fill*         0x00000000000064fa        0x6 
- .text          0x0000000000006500     0x3448 console.o
-                0x0000000000006790                cons_newline
-                0x0000000000006880                cmd_mem
-                0x0000000000006ba0                cmd_cls
-                0x0000000000006c10                cmd_dir
-                0x0000000000007050                cmd_type
-                0x00000000000074a0                cmd_hlt
-                0x0000000000007700                cons_putchar
-                0x00000000000079b0                cons_putstr0
-                0x0000000000007c90                cons_putstr1
-                0x0000000000007f80                cmd_app
-                0x00000000000086e0                cons_runcmd
-                0x0000000000008890                console_task
-                0x0000000000008e40                hrb_api
-                0x0000000000009310                inthandler0c
-                0x0000000000009630                inthandler0d
- *fill*         0x0000000000009948        0x8 
- .text          0x0000000000009950      0x390 file.o
-                0x0000000000009950                file_readfat
-                0x00000000000099a0                file_loadfile
-                0x0000000000009b60                file_search
+ .text          0x0000000000000c05      0xac8 graphic.o
+                0x0000000000000c05                putfonts8_asc_sht
+                0x0000000000000ca4                putfonts8_asc
+                0x0000000000000cf6                putfonts8
+                0x0000000000000df8                init_pallete
+                0x0000000000000e15                set_palette
+                0x0000000000000ec1                init_screen
+                0x000000000000110b                boxfill8
+                0x000000000000115d                init_mouse_cursor8
+                0x0000000000001233                putblock8_8
+                0x000000000000129d                make_window8
+                0x00000000000013f4                make_wtitle8
+                0x00000000000014e9                make_textbox8
+ .text          0x00000000000016cd      0x269 dsctbl.o
+                0x00000000000016cd                init_gdtidt
+                0x000000000000187a                set_segmdesc
+                0x00000000000018f1                set_gatedesc
+ .text          0x0000000000001936       0xf3 int.o
+                0x0000000000001936                init_pic
+                0x0000000000001a11                inthandler27
+ *fill*         0x0000000000001a29        0x7 
+ .text          0x0000000000001a30      0x19f naskfunc.o
+                0x0000000000001a30                io_hlt
+                0x0000000000001a32                io_cli
+                0x0000000000001a34                io_sti
+                0x0000000000001a36                io_stihlt
+                0x0000000000001a39                io_in8
+                0x0000000000001a44                io_in16
+                0x0000000000001a50                io_in32
+                0x0000000000001a56                io_out8
+                0x0000000000001a60                io_out16
+                0x0000000000001a6c                io_out32
+                0x0000000000001a76                io_load_eflags
+                0x0000000000001a79                io_store_eflags
+                0x0000000000001a80                load_gdtr
+                0x0000000000001a90                load_idtr
+                0x0000000000001aa0                load_cr0
+                0x0000000000001aa4                store_cr0
+                0x0000000000001aac                load_tr
+                0x0000000000001ab2                farjmp
+                0x0000000000001ab7                asm_inthandler20
+                0x0000000000001ace                asm_inthandler21
+                0x0000000000001ae5                asm_inthandler27
+                0x0000000000001afc                asm_inthandler2c
+                0x0000000000001b13                asm_inthandler0c
+                0x0000000000001b37                asm_inthandler0d
+                0x0000000000001b71                farcall
+                0x0000000000001b76                asm_hrb_api
+                0x0000000000001b93                start_app
+                0x0000000000001bc4                asm_end_app
+ .text          0x0000000000001bcf        0x0 hankaku.o
+ .text          0x0000000000001bcf      0x27d sprintf.o
+                0x0000000000001bcf                dec2asc
+                0x0000000000001c61                hex2asc
+                0x0000000000001cd7                sprintf
+                0x0000000000001d79                strcmp
+                0x0000000000001ddb                strncmp
+ .text          0x0000000000001e4c      0x178 fifo.o
+                0x0000000000001e4c                fifo32_init
+                0x0000000000001e93                fifo32_put
+                0x0000000000001f40                fifo32_get
+                0x0000000000001faf                fifo32_status
+ .text          0x0000000000001fc4       0xad keyboard.o
+                0x0000000000001fc4                wait_KBC_sendready
+                0x0000000000001fe4                init_keyboard
+                0x0000000000002025                inthandler21
+ .text          0x0000000000002071      0x1e4 mouse.o
+                0x0000000000002071                enable_mouse
+                0x00000000000020bf                mouse_decode
+                0x00000000000021fe                inthandler2c
+ .text          0x0000000000002255      0x3fa memory.o
+                0x0000000000002255                memman_init
+                0x0000000000002282                memman_total
+                0x00000000000022bb                memman_alloc
+                0x00000000000023a4                memman_free
+                0x00000000000025f4                memman_alloc_4k
+                0x0000000000002620                memman_free_4k
+ .text          0x000000000000264f      0x142 memtest.o
+                0x000000000000264f                memtest
+                0x0000000000002706                memtest_sub
+ .text          0x0000000000002791      0xa56 sheets.o
+                0x0000000000002791                shtctl_init
+                0x0000000000002874                sheet_alloc
+                0x00000000000028eb                sheet_setbuf
+                0x0000000000002914                sheet_updown
+                0x0000000000002c9d                sheet_refresh
+                0x0000000000002d11                sheet_refreshsub
+                0x0000000000002edc                sheet_slide
+                0x0000000000003006                sheet_free
+                0x0000000000003033                sheet_refreshmap
+ .text          0x00000000000031e7      0x2a5 timer.o
+                0x00000000000031e7                init_pit
+                0x000000000000328f                timer_alloc
+                0x00000000000032f9                timer_free
+                0x0000000000003309                timer_init
+                0x0000000000003321                timer_settime
+                0x00000000000033d9                inthandler20
+ .text          0x000000000000348c      0x646 mtask.o
+                0x000000000000348c                task_init
+                0x0000000000003691                task_alloc
+                0x00000000000037ab                task_run
+                0x0000000000003821                task_switch
+                0x00000000000038f0                task_sleep
+                0x0000000000003943                task_now
+                0x0000000000003973                task_add
+                0x00000000000039bc                task_remove
+                0x0000000000003a79                task_switchsub
+                0x0000000000003ac5                task_idle
+ .text          0x0000000000003ad2     0x1195 console.o
+                0x0000000000003ad2                console_task
+                0x0000000000003ed4                cons_newline
+                0x0000000000003fdb                cons_runcmd
+                0x00000000000040ee                cmd_mem
+                0x000000000000413c                cmd_cls
+                0x00000000000041bc                cmd_dir
+                0x00000000000042f0                cmd_type
+                0x00000000000043c5                cmd_hlt
+                0x00000000000044d8                cons_putchar
+                0x00000000000045e0                cons_putstr0
+                0x0000000000004613                cons_putstr1
+                0x0000000000004650                cmd_app
+                0x000000000000490b                hrb_api
+                0x0000000000004ba3                inthandler0c
+                0x0000000000004c05                inthandler0d
+ .text          0x0000000000004c67      0x2cd file.o
+                0x0000000000004c67                file_readfat
+                0x0000000000004d1c                file_loadfile
+                0x0000000000004dc4                file_search
 
-.text.unlikely  0x0000000000009ce0        0x0
- .text.unlikely
-                0x0000000000009ce0        0x0 bootpack.o
- .text.unlikely
-                0x0000000000009ce0        0x0 graphic.o
- .text.unlikely
-                0x0000000000009ce0        0x0 dsctbl.o
- .text.unlikely
-                0x0000000000009ce0        0x0 int.o
- .text.unlikely
-                0x0000000000009ce0        0x0 sprintf.o
- .text.unlikely
-                0x0000000000009ce0        0x0 fifo.o
- .text.unlikely
-                0x0000000000009ce0        0x0 keyboard.o
- .text.unlikely
-                0x0000000000009ce0        0x0 mouse.o
- .text.unlikely
-                0x0000000000009ce0        0x0 memory.o
- .text.unlikely
-                0x0000000000009ce0        0x0 memtest.o
- .text.unlikely
-                0x0000000000009ce0        0x0 sheets.o
- .text.unlikely
-                0x0000000000009ce0        0x0 timer.o
- .text.unlikely
-                0x0000000000009ce0        0x0 mtask.o
- .text.unlikely
-                0x0000000000009ce0        0x0 console.o
- .text.unlikely
-                0x0000000000009ce0        0x0 file.o
-
-.data           0x0000000000310000     0x1462 ロードアドレス 0x0000000000009ce0
+.data           0x0000000000310000     0x1446 ロードアドレス 0x0000000000004f34
  *(.data)
- .data          0x0000000000310000        0x0 bootpack.o
- .data          0x0000000000310000       0x30 graphic.o
- .data          0x0000000000310030        0x0 dsctbl.o
- .data          0x0000000000310030        0x0 int.o
- *fill*         0x0000000000310030       0x10 
- .data          0x0000000000310040     0x1000 hankaku.o
-                0x0000000000310040                hankaku
- .data          0x0000000000311040        0x0 sprintf.o
- .data          0x0000000000311040        0x0 fifo.o
- .data          0x0000000000311040        0x0 keyboard.o
- .data          0x0000000000311040        0x0 mouse.o
- .data          0x0000000000311040        0x0 memory.o
- .data          0x0000000000311040        0x0 memtest.o
- .data          0x0000000000311040        0x0 sheets.o
- .data          0x0000000000311040        0x0 timer.o
- .data          0x0000000000311040        0x0 mtask.o
- .data          0x0000000000311040        0x0 console.o
- .data          0x0000000000311040        0x0 file.o
+ .data          0x0000000000310000      0x100 bootpack.o
+ .data          0x0000000000310100      0x220 graphic.o
+ .data          0x0000000000310320        0x0 dsctbl.o
+ .data          0x0000000000310320        0x0 int.o
+ .data          0x0000000000310320     0x1000 hankaku.o
+                0x0000000000310320                hankaku
+ .data          0x0000000000311320        0x0 sprintf.o
+ .data          0x0000000000311320        0x0 fifo.o
+ .data          0x0000000000311320        0x0 keyboard.o
+ .data          0x0000000000311320        0x0 mouse.o
+ .data          0x0000000000311320        0x0 memory.o
+ .data          0x0000000000311320        0x0 memtest.o
+ .data          0x0000000000311320        0x0 sheets.o
+ .data          0x0000000000311320        0x0 timer.o
+ .data          0x0000000000311320        0x0 mtask.o
+ .data          0x0000000000311320        0x0 console.o
+ .data          0x0000000000311320        0x0 file.o
  *(.rodata*)
- .rodata.str1.1
-                0x0000000000311040       0x21 bootpack.o
- *fill*         0x0000000000311061       0x1f 
- .rodata        0x0000000000311080      0x100 bootpack.o
- .rodata        0x0000000000311180      0x1e0 graphic.o
- .rodata.str1.1
-                0x0000000000311360       0xd6 console.o
- *fill*         0x0000000000311436        0x2 
- .rodata.str1.4
-                0x0000000000311438       0x2a console.o
+ .rodata        0x0000000000311320       0x21 bootpack.o
+ *fill*         0x0000000000311341        0x3 
+ .rodata        0x0000000000311344      0x102 console.o
  *(.bss)
- .bss           0x0000000000311462        0x0 bootpack.o
- .bss           0x0000000000311462        0x0 graphic.o
- .bss           0x0000000000311462        0x0 dsctbl.o
- .bss           0x0000000000311462        0x0 int.o
- .bss           0x0000000000311462        0x0 hankaku.o
- .bss           0x0000000000311462        0x0 sprintf.o
- .bss           0x0000000000311462        0x0 fifo.o
- .bss           0x0000000000311462        0x0 keyboard.o
- .bss           0x0000000000311462        0x0 mouse.o
- .bss           0x0000000000311462        0x0 memory.o
- .bss           0x0000000000311462        0x0 memtest.o
- .bss           0x0000000000311462        0x0 sheets.o
- .bss           0x0000000000311462        0x0 timer.o
- .bss           0x0000000000311462        0x0 mtask.o
- .bss           0x0000000000311462        0x0 console.o
- .bss           0x0000000000311462        0x0 file.o
+ .bss           0x0000000000311446        0x0 bootpack.o
+ .bss           0x0000000000311446        0x0 graphic.o
+ .bss           0x0000000000311446        0x0 dsctbl.o
+ .bss           0x0000000000311446        0x0 int.o
+ .bss           0x0000000000311446        0x0 hankaku.o
+ .bss           0x0000000000311446        0x0 sprintf.o
+ .bss           0x0000000000311446        0x0 fifo.o
+ .bss           0x0000000000311446        0x0 keyboard.o
+ .bss           0x0000000000311446        0x0 mouse.o
+ .bss           0x0000000000311446        0x0 memory.o
+ .bss           0x0000000000311446        0x0 memtest.o
+ .bss           0x0000000000311446        0x0 sheets.o
+ .bss           0x0000000000311446        0x0 timer.o
+ .bss           0x0000000000311446        0x0 mtask.o
+ .bss           0x0000000000311446        0x0 console.o
+ .bss           0x0000000000311446        0x0 file.o
 
 /DISCARD/
  *(.eh_frame)
@@ -293,23 +242,23 @@ LOAD console.o
 LOAD file.o
 OUTPUT(haribote.bin binary)
 
-.comment        0x0000000000000000      0x350
- .comment       0x0000000000000000       0x35 bootpack.o
- .comment       0x0000000000000035       0x35 graphic.o
- .comment       0x000000000000006a       0x35 dsctbl.o
- .comment       0x000000000000009f       0x35 int.o
- .comment       0x00000000000000d4       0x35 hankaku.o
- .comment       0x0000000000000109       0x35 sprintf.o
- .comment       0x000000000000013e       0x35 fifo.o
- .comment       0x0000000000000173       0x35 keyboard.o
- .comment       0x00000000000001a8       0x35 mouse.o
- .comment       0x00000000000001dd       0x35 memory.o
- .comment       0x0000000000000212       0x35 memtest.o
- .comment       0x0000000000000247       0x35 sheets.o
- .comment       0x000000000000027c       0x35 timer.o
- .comment       0x00000000000002b1       0x35 mtask.o
- .comment       0x00000000000002e6       0x35 console.o
- .comment       0x000000000000031b       0x35 file.o
+.comment        0x0000000000000000      0x120
+ .comment       0x0000000000000000       0x12 bootpack.o
+ .comment       0x0000000000000012       0x12 graphic.o
+ .comment       0x0000000000000024       0x12 dsctbl.o
+ .comment       0x0000000000000036       0x12 int.o
+ .comment       0x0000000000000048       0x12 hankaku.o
+ .comment       0x000000000000005a       0x12 sprintf.o
+ .comment       0x000000000000006c       0x12 fifo.o
+ .comment       0x000000000000007e       0x12 keyboard.o
+ .comment       0x0000000000000090       0x12 mouse.o
+ .comment       0x00000000000000a2       0x12 memory.o
+ .comment       0x00000000000000b4       0x12 memtest.o
+ .comment       0x00000000000000c6       0x12 sheets.o
+ .comment       0x00000000000000d8       0x12 timer.o
+ .comment       0x00000000000000ea       0x12 mtask.o
+ .comment       0x00000000000000fc       0x12 console.o
+ .comment       0x000000000000010e       0x12 file.o
 
 .note.GNU-stack
                 0x0000000000000000        0x0
@@ -346,16 +295,16 @@ OUTPUT(haribote.bin binary)
  .note.GNU-stack
                 0x0000000000000000        0x0 file.o
 
-.bss            0x0000000000311480     0x2744 ロードアドレス 0x000000000000b160
- COMMON         0x0000000000311480        0x8 keyboard.o
-                0x0000000000311480                keyfifo
-                0x0000000000311484                keydata0
- COMMON         0x0000000000311488        0x8 mouse.o
-                0x0000000000311488                mousedata0
-                0x000000000031148c                mousefifo
- *fill*         0x0000000000311490       0x10 
- COMMON         0x00000000003114a0     0x271c timer.o
-                0x00000000003114a0                timerctl
- COMMON         0x0000000000313bbc        0x8 mtask.o
-                0x0000000000313bbc                taskctl
-                0x0000000000313bc0                task_timer
+.bss            0x0000000000311460     0x2744 ロードアドレス 0x00000000000063a0
+ COMMON         0x0000000000311460        0x8 keyboard.o
+                0x0000000000311460                keyfifo
+                0x0000000000311464                keydata0
+ COMMON         0x0000000000311468        0x8 mouse.o
+                0x0000000000311468                mousedata0
+                0x000000000031146c                mousefifo
+ *fill*         0x0000000000311470       0x10 
+ COMMON         0x0000000000311480     0x271c timer.o
+                0x0000000000311480                timerctl
+ COMMON         0x0000000000313b9c        0x8 mtask.o
+                0x0000000000313b9c                taskctl
+                0x0000000000313ba0                task_timer

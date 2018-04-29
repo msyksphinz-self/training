@@ -33,7 +33,7 @@ $(TARGET).img: ipl10.bin $(TARGET).sys
 
 
 %.o:%.c
-	gcc -m32 -O3 -c -fno-pic -nostdlib -fno-builtin -o $@ $<
+	gcc -m32 -c -fno-pic -nostdlib -fno-builtin -o $@ $<
 	objdump -D $@ > $@.dmp
 
 %.bin: %.oT

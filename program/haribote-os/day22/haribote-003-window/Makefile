@@ -50,7 +50,7 @@ $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
 	mcopy Makefile   -i $(TARGET).img ::
 
 %.o:%.c Makefile
-	gcc -Wall -m32 -O3 -c -fno-pic -nostdlib -fno-builtin -o $@ $<
+	gcc -Wall -m32 -c -fno-pic -nostdlib -fno-builtin -o $@ $<
 	objdump -D $@ > $@.dmp
 
 %.bin: %.o
