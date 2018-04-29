@@ -4,7 +4,7 @@ TOOLPATH=/home/msyksphinz/work/haribote_os/z_tools/
 MAKEFONT = $(TOOLPATH)makefont
 
 run: $(TARGET).img
-	qemu-system-i386 -m 32M -fda $^
+	qemu-system-i386 -fda $^
 
 target_size = $(shell wc -c $(TARGET).sys | cut -f1 -d' ')
 target_byte_size = $(shell expr $(target_size) / 512 + 1)
@@ -17,7 +17,7 @@ $(TARGET).img: ipl10.bin $(TARGET).sys
 
 
 %.o:%.c
-	gcc -m32 -O3 -c -fno-pic -nostdlib -fno-builtin -o $@ $<
+	gcc -m32 -c -fno-pic -nostdlib -o $@ $<
 	objdump -D $@ > $@.dmp
 
 %.bin: %.oT
