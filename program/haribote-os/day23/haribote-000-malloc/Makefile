@@ -46,6 +46,7 @@ HRB_FILES += star1.hrb
 HRB_FILES += stars.hrb
 HRB_FILES += stars2.hrb
 HRB_FILES += lines.hrb
+HRB_FILES += walk.hrb
 
 $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
 	mformat -f 1440 -C -B ipl10.bin -i $(TARGET).img ::
