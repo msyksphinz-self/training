@@ -4,7 +4,6 @@ void HariMain (void)
 {
   char *buf;
   int win, i;
-  unsigned int x, y;
 
   api_initmalloc();
   buf = api_malloc (160 * 100);
@@ -14,6 +13,11 @@ void HariMain (void)
 	api_linewin (win + 1, 88, 26, i * 9 + 88, 89, i);
   }
   api_refreshwin (win, 6, 26, 154, 90);
+  for (;;) {
+	if (api_getkey(1) == 0x0a) {
+	  break;   /* Break when Enter */
+	}
+  }
   api_closewin (win);
   api_end ();
 }
