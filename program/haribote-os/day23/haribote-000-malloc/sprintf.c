@@ -35,7 +35,7 @@ int hex2asc (char *str, unsigned int dec) { //10で割れた回数（つまり�
  
 void sprintf (char *str, char *fmt, ...) {
   va_list list;
-  int i, len;
+  int len;
   va_start (list, 2);
  
   while (*fmt) {
@@ -71,3 +71,5 @@ int strncmp(const char *a, const char *b, const int n)
   if (*a == 0 || *b == 0 || (n == 0)) return 0;
   return (*a!=*b) ? *a-*b : strncmp(++a,++b, n-1);
 }
+
+
