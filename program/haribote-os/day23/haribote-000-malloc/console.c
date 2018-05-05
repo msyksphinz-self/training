@@ -376,8 +376,18 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
     sht = (struct SHEET *)ebx;
     boxfill8 (sht->buf, sht->bxsize, ebp, eax, ecx, esi, edi);
     sheet_refresh (sht, eax, ecx, esi + 1, edi + 1);
+  } else if (edx == 8) { // initialize memman
+	memman_init ((struct MEMMAN *) (edx + ds_base));
+	ecx &= 0xfffffff0;
+	memman_free ((struct MEMMAN *) (edx + ds_base), eax, ecx);
+  } else if (edx == 9) { // malloc
+	ecx = (ecx + 0x0f) & 0xfffffff0;
+	reg[7] = memman_alloc ((struct MEMMAN *) (ebx + ds_base), ecx);
+  } else if (edx == 10) {  // free
+	ecx = (ecx + 0x0f) & 0xfffffff0;
+	memman_free ((struct MEMMAN *) (ebx + ds_base), eax, ecx);
   }
-  
+
   return 0;
 }
 

@@ -41,6 +41,7 @@ HRB_FILES += bug2.hrb
 HRB_FILES += bug3.hrb
 HRB_FILES += winhelo.hrb
 HRB_FILES += winhelo2.hrb
+HRB_FILES += winhelo3.hrb
 
 
 $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
