@@ -22,6 +22,8 @@ void cons_putstr0 (struct CONSOLE *cons, char *s);
 void cons_putstr1 (struct CONSOLE *cons, char *s, int l);
 
 int cmd_app (struct CONSOLE *cons, int *fat, char *cmdline);
-    
+
+void hrb_api_linewin (struct SHEET *sht, int x0, int y0, int x1, int y1, int col);
+
 #endif // __CONSOLE_H__
 
