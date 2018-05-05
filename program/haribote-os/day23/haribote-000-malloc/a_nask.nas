@@ -13,6 +13,7 @@ GLOBAL  api_free
 GLOBAL  api_point
 GLOBAL	api_refreshwin
 GLOBAL  api_linewin
+GLOBAL  api_closewin
 
 [SECTION .text]
 
@@ -172,4 +173,11 @@ api_linewin: ; void api_linewin (int win, int x0, int y0, int x1, int y1, int co
     pop     esi
     pop     edi
 	ret
-	
+
+api_closewin: ; void api_closewin (int win);
+	push	ebx
+	mov		edx, 14
+	mov		ebx, [esp + 8] ; win
+	int		0x40
+	pop		ebx
+	ret
