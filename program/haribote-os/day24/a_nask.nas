@@ -15,6 +15,7 @@ GLOBAL	api_refreshwin
 GLOBAL  api_linewin
 GLOBAL  api_closewin
 GLOBAL  api_getkey
+GLOBAL	api_alloctimer, api_inittimer, api_settimer, api_freetimer
 
 
 [SECTION .text]
@@ -75,7 +76,7 @@ api_putstrwin: ; void api_putstrwin (int win, int x, int y, int col, int len, ch
     ret
 
 
-api_boxfilwin ; void api_boxfilwin (int win, int x0, int y0, int x1, int y1, int col);
+api_boxfilwin: ; void api_boxfilwin (int win, int x0, int y0, int x1, int y1, int col);
     push    edi
     push    esi
     push    ebp
@@ -188,5 +189,37 @@ api_getkey: ; int api_getkey (int mode);
     mov		edx, 15
 	mov		eax, [esp + 4];  mode
 	int		0x40
+	ret
+
+
+api_alloctimer: ; int api_alloctimer (void);
+	mov		edx, 16
+	int		0x40
+	ret
+
+api_inittimer: ; void api_inittimer (int timer, int data);
+	push	ebx
+	mov		edx, 17
+	mov		ebx, [esp +  8]
+	mov		eax, [esp + 12]
+	int		0x40
+	pop 	ebx
+	ret
+
+api_settimer: ; void api_settimer (int timer, int time);
+	push	ebx
+	mov		edx, 18
+	mov		ebx, [esp +  8]
+	mov		eax, [esp + 12]
+	int		0x40
+	pop		ebx
+	ret
+
+api_freetimer: ; void api_freetimer (int timer);
+	push	ebx
+	mov		edx, 19
+	mov		ebx, [esp + 8]
+	int		0x40
+	pop		ebx
 	ret
 

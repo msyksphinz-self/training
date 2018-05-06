@@ -47,6 +47,7 @@ HRB_FILES += stars.hrb
 HRB_FILES += stars2.hrb
 HRB_FILES += lines.hrb
 HRB_FILES += walk.hrb
+HRB_FILES += noodle.hrb
 
 $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
 	mformat -f 1440 -C -B ipl10.bin -i $(TARGET).img ::
@@ -63,6 +64,8 @@ $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
 	objcopy -O binary $^ $@ 
 
 winhelo2.hrb: winhelo2.o a_nask.o sprintf.o
+	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
+noodle.hrb: noodle.o a_nask.o sprintf.o
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
 
 %.hrb: %.o a_nask.o

@@ -420,6 +420,7 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
   } else if (edx == 14) {  // close window
 	sheet_free ((struct SHEET *) ebx);
   } else if (edx == 15) {  // input key
+	char s[50];
 	for (;;) {
 	  io_cli ();
 	  if (fifo32_status (&task->fifo) == 0) {
@@ -443,11 +444,19 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 	  if (i == 3) {   // Cursor OFF
 		cons->cur_c = -1;
 	  }
-	  if (256 <= i && i <= 511) {
+	  if (i >= 256) {
 		reg[7] = i - 256;
 		return 0;
 	  }
 	}
+  } else if (edx == 16) { 
+	reg[7] = (int) timer_alloc ();
+  } else if (edx == 17) {
+	timer_init ((struct TIMER *) ebx, &task->fifo, eax + 256);
+  } else if (edx == 18) {
+	timer_settime ((struct TIMER *)ebx, eax);
+  } else if (edx == 19) {
+	timer_free ((struct TIMER *) ebx);
   }
 
   return 0;
