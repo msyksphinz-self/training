@@ -265,6 +265,9 @@ void HariMain(void)
           task_cons->tss.eip = (int) asm_end_app;
           io_sti ();
         }
+		if (i == 256 + 0x57 && shtctl->top > 2) {   /* F11 */
+		  sheet_updown (shtctl->sheets[1], shtctl->top-1);
+		}
         // Redraw cursor
         if (cursor_c >= 0) { 
           boxfill8 (sht_win->buf, sht_win->bxsize, cursor_c, cursor_x, 28, cursor_x + 7, 43);
