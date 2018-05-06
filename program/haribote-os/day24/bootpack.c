@@ -14,7 +14,7 @@ void HariMain(void)
 {
   int i;
   int mmx = -1, mmy = -1;
-  struct SHEET *sht = 0;
+  struct SHEET *sht = 0, *key_win;
   struct BOOTINFO *binfo = (struct BOOTINFO *)0x0ff0;
   int xsize = (*binfo).scrnx;
   int ysize = (*binfo).scrny;
@@ -26,7 +26,7 @@ void HariMain(void)
   unsigned int memtotal;
   struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
   int cursor_x, cursor_c;
-  int key_to = 0, key_shift = 0, key_leds = (binfo->leds >> 4) & 7, keycmd_wait = -1;
+  int key_shift = 0, key_leds = (binfo->leds >> 4) & 7, keycmd_wait = -1;
   
   struct SHTCTL *shtctl;
   struct SHEET *sht_back, *sht_mouse, *sht_win, *sht_cons;
@@ -149,6 +149,10 @@ void HariMain(void)
 
   fifo32_put (&keycmd, KEYCMD_LED);
   fifo32_put (&keycmd, key_leds);
+
+  key_win = sht_win;
+  sht_cons->task = task_cons;
+  sht_cons->flags |= 0x20;
   
   for (;;) {
 	if (fifo32_status(&keycmd) > 0 && keycmd_wait < 0) {
@@ -163,6 +167,10 @@ void HariMain(void)
 	} else {
       i = fifo32_get(&fifo);
       io_sti();
+	  if (key_win->flags == 0) {   // input Window is closed
+		key_win = shtctl->sheets[shtctl->top - 1];
+		cursor_c = keywin_on (key_win, sht_win, cursor_c);
+	  }
       if (256 <= i && i <= 511) {  // Keyboard Data
 		// sprintf (s, "%x", i - 256);
         // putfonts8_asc_sht (sht_back, 0, 16, COL8_FFFFFF, COL8_008484, s, 2);
@@ -182,18 +190,18 @@ void HariMain(void)
 		  }
 		}
 		if (s[0] != 0) {
-		  if (key_to == 0) {
+		  if (key_win == sht_win) { /* To Task-A */
 			if (cursor_x < 128) {
 			  s[1] = 0;
-			  putfonts8_asc_sht (sht_win, cursor_x, 28, COL8_000000, COL8_FFFFFF, s, 1);
+			  putfonts8_asc_sht(sht_win, cursor_x, 28, COL8_000000, COL8_FFFFFF, s, 1);
 			  cursor_x += 8;
 			}
-		  } else {   // To Console
-			fifo32_put (&task_cons->fifo, s[0] + 256);
+		  } else { /* To Console */
+			fifo32_put(&key_win->task->fifo, s[0] + 256);
 		  }
-        }
+		}
         if (i == 256 + 0x0e) {  // Backspace
-		  if (key_to == 0) { // To Task-A
+		  if (key_win == sht_win) { // To Task-A
 			if (cursor_x > 8) {
 			  putfonts8_asc_sht(sht_win, cursor_x, 28, COL8_000000, COL8_FFFFFF, " ", 1);
 			  cursor_x -= 8;
@@ -203,25 +211,16 @@ void HariMain(void)
 		  }
         }
 		if (i == 256 + 0x0f) { // Tab
-		  if (key_to == 0) {
-			key_to = 1;
-			make_wtitle8 (buf_win,  sht_win->bxsize,  "task_a",  0);
-			make_wtitle8 (buf_cons, sht_cons->bxsize, "console", 1);
-            cursor_c = -1;   // Delete cursor
-            boxfill8 (sht_win->buf, sht_win->bxsize, COL8_FFFFFF, cursor_x, 28, cursor_x + 7, 43);
-            fifo32_put (&task_cons->fifo, 2);  // cursor ON console
-		  } else {
-			key_to = 0;
-			make_wtitle8 (buf_win,  sht_win->bxsize,  "task_a",  1);
-			make_wtitle8 (buf_cons, sht_cons->bxsize, "console", 0);
-            cursor_c = COL8_000000;   // Delete cursor
-            fifo32_put (&task_cons->fifo, 3);  // cursor OFF console
+		  cursor_c = keywin_off (key_win, sht_win, cursor_c, cursor_x);
+		  int j = key_win->height - 1;
+		  if (j == 0) {
+			j = shtctl->top - 1;
 		  }
-		  sheet_refresh (sht_win,  0, 0, sht_win->bxsize,  21);
-		  sheet_refresh (sht_cons, 0, 0, sht_cons->bxsize, 21);
+		  key_win = shtctl->sheets[j];
+		  cursor_c = keywin_on (key_win, sht_win, cursor_c);
 		}
-		if (i == 256 + 0x1c) {
-		  if (key_to != 0) {
+		if (i == 256 + 0x1c) {  // Enter
+		  if (key_win != sht_win) {
 			fifo32_put (&task_cons->fifo, 10 + 256);
 		  }
 		}
@@ -308,7 +307,7 @@ void HariMain(void)
 					  mmy = my;
 					}
 					if (sht->bxsize - 21 <= x && x < sht->bxsize - 5 && 5 <= y && y < 19) {
-					  if (sht->task != 0) {
+					  if (sht->flags & 0x10 != 0) {
 						cons = (struct CONSOLE *) *((int *) 0xfec);
 						cons_putstr0 (cons, "\nBreak(mouse) :\n");
 						io_cli ();
@@ -354,4 +353,32 @@ void HariMain(void)
   }
 }
 
+
+int keywin_off (struct SHEET *key_win, struct SHEET *sht_win, int cur_c, int cur_x)
+{
+  change_wtitle8(key_win, 0);
+  if (key_win == sht_win) {
+	cur_c = -1; /* Remove Cursor */
+	boxfill8(sht_win->buf, sht_win->bxsize, COL8_FFFFFF, cur_x, 28, cur_x + 7, 43);
+  } else {
+	if ((key_win->flags & 0x20) != 0) {
+	  fifo32_put(&key_win->task->fifo, 3); /* Cursor OFF on Console */
+	}
+  }
+  return cur_c;
+}
+
+
+int keywin_on (struct SHEET *key_win, struct SHEET *sht_win, int cur_c)
+{
+  change_wtitle8(key_win, 1);
+  if (key_win == sht_win) {
+	cur_c = COL8_000000; /* Show Cursor */
+  } else {
+	if ((key_win->flags & 0x20) != 0) {
+	  fifo32_put(&key_win->task->fifo, 2); /* Consor ON on Console */
+	}
+  }
+  return cur_c;
+}
 
