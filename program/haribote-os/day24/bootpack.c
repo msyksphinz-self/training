@@ -291,7 +291,18 @@ void HariMain(void)
 
           sheet_slide (sht_mouse, mx, my);
           if ((mdec.btn & 0x01) != 0) {
-            sheet_slide (sht_win, mx - 80, my - 8);
+			/* Left Mouse Button is down */
+			for (int j = shtctl->top - 1; j > 0; j--) {
+			  struct SHEET *sht = shtctl->sheets[j];
+			  int x = mx - sht->vx0;
+			  int y = my - sht->vy0;
+			  if (0 <= x && x < sht->bxsize && 0 <= y && y < sht->bysize) {
+				if (sht->buf[y * sht->bxsize + x] != sht->col_inv) {
+				  sheet_updown (sht, shtctl->top - 1);
+				  break;
+				}
+			  }
+			}
           }
         }
       } else if (i <= 1) {
