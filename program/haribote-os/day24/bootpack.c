@@ -13,6 +13,8 @@ extern void console_task (struct SHEET *sheet, unsigned int memtotal);
 void HariMain(void)
 {
   int i;
+  int mmx = -1, mmy = -1;
+  struct SHEET *sht = 0;
   struct BOOTINFO *binfo = (struct BOOTINFO *)0x0ff0;
   int xsize = (*binfo).scrnx;
   int ysize = (*binfo).scrny;
@@ -292,17 +294,32 @@ void HariMain(void)
           sheet_slide (sht_mouse, mx, my);
           if ((mdec.btn & 0x01) != 0) {
 			/* Left Mouse Button is down */
-			for (int j = shtctl->top - 1; j > 0; j--) {
-			  struct SHEET *sht = shtctl->sheets[j];
-			  int x = mx - sht->vx0;
-			  int y = my - sht->vy0;
-			  if (0 <= x && x < sht->bxsize && 0 <= y && y < sht->bysize) {
-				if (sht->buf[y * sht->bxsize + x] != sht->col_inv) {
-				  sheet_updown (sht, shtctl->top - 1);
-				  break;
+			if (mmx < 0) {
+			  /* Normal Mode */
+			  for (int j = shtctl->top - 1; j > 0; j--) {
+				sht = shtctl->sheets[j];
+				int x = mx - sht->vx0;
+				int y = my - sht->vy0;
+				if (0 <= x && x < sht->bxsize && 0 <= y && y < sht->bysize) {
+				  if (sht->buf[y * sht->bxsize + x] != sht->col_inv) {
+					sheet_updown (sht, shtctl->top - 1);
+					if (3 <= x && x < sht->bxsize - 3 && 3 <= y && y < 21) {
+					  mmx = mx;
+					  mmy = my;
+					}
+					break;
+				  }
 				}
 			  }
+			} else {
+			  int x = mx - mmx;
+			  int y = my - mmy;
+			  sheet_slide (sht, sht->vx0 + x, sht->vy0 + y);
+			  mmx = mx;
+			  mmy = my;
 			}
+		  } else {
+			mmx = -1;
           }
         }
       } else if (i <= 1) {
