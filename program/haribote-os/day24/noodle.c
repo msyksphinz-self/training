@@ -11,9 +11,9 @@ void HariMain(void)
   timer = api_alloctimer();
   api_inittimer(timer, 128);
   for (;;) {
-	// sprintf(s, "%d:%d:%d", hou, min, sec);
-	// api_boxfilwin (win, 28, 27, 115, 41, 7 /* White */);
-	// api_putstrwin (win, 28, 27, 0 /* Black */, 11, s);
+	sprintf(s, "%d:%d:%d", hou, min, sec);
+	api_boxfilwin (win, 28, 27, 115, 41, 7 /* White */);
+	api_putstrwin (win, 28, 27, 0 /* Black */, 11, s);
 	api_settimer (timer, 100); /* 1 second */
 	if (api_getkey(1) != 128) {
 	  break;
