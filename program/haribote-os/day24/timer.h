@@ -26,6 +26,7 @@ void timer_free (struct TIMER *timer);
 void timer_init (struct TIMER *timer, struct FIFO32 *fifo, int data);
 void timer_settime (struct TIMER *timer, unsigned int timeout);
 void inthandler20(int *esp);
-
+int timer_cancel (struct TIMER *timer);
+void timer_cancelall (struct FIFO32 *fifo);
 
 #endif // __TIMER_H__
