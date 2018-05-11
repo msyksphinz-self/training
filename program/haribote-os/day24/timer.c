@@ -135,7 +135,7 @@ int timer_cancel (struct TIMER *timer)
       timerctl.t0 = t;
       timerctl.next = t->timeout;
     } else {
-      t = timer->next;
+      t = timerctl.t0;
       for (;;) {
         if (t->next == timer) {
           break;
