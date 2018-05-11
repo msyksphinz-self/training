@@ -127,6 +127,7 @@ int timer_cancel (struct TIMER *timer)
 {
   int e;
   struct TIMER *t;
+  e = io_load_eflags ();
   io_cli ();
   if (timer->flags == TIMER_FLAGS_USING) {
     if (timer == timerctl.t0) {
