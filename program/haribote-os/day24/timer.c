@@ -81,9 +81,6 @@ void timer_settime (struct TIMER *timer, unsigned int timeout)
   for (;;) {
     s = t;
     t = t->next;
-    if (t == 0) {
-      break;
-    }
     if (timer->timeout <= t->timeout) {
       s->next = timer;
       timer->next = t;
