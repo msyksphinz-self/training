@@ -107,7 +107,7 @@ int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 
 #define MEMMAN_ADDR  0x003c0000
 
-int keywin_off (struct SHEET *key_win, struct SHEET *sht_win, int cur_c, int cur_x);
-int keywin_on (struct SHEET *key_win, struct SHEET *sht_win, int cur_c);
+void keywin_off (struct SHEET *key_win);
+void keywin_on (struct SHEET *key_win);
 
 #endif // __BOOTPACK_H__
