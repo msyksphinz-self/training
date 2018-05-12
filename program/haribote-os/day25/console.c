@@ -371,14 +371,14 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 	cons_putstr1 (cons, (char *) ebx + ds_base, ecx);
   } else if (edx == 4) {
 	return &(task->tss.esp0);
-  } else if (edx == 5) {
+  } else if (edx == 5) {  // Make window
     sht = sheet_alloc (shtctl);
 	sht->task = task;
 	sht->flags |= 0x10;
     sheet_setbuf (sht, (char *) ebx + ds_base, esi, edi, eax);
     make_window8 ((char *) ebx + ds_base, esi, edi, (char *)ecx + ds_base, 0);
-    sheet_slide (sht, 100, 50);
-    sheet_updown (sht, 3);
+    sheet_slide (sht, (shtctl->xsize -esi) / 2, (shtctl->ysize - edi) / 2);
+    sheet_updown (sht, shtctl->top);
     reg[7] = (int)sht;
   } else if (edx == 6) {  // api_putstrwin
     sht = (struct SHEET *) (ebx & 0xfffffffe);
