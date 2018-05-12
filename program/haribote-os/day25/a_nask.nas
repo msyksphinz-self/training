@@ -16,7 +16,7 @@ GLOBAL  api_linewin
 GLOBAL  api_closewin
 GLOBAL  api_getkey
 GLOBAL	api_alloctimer, api_inittimer, api_settimer, api_freetimer
-
+GLOBAL	api_beep
 
 [SECTION .text]
 
@@ -221,5 +221,11 @@ api_freetimer: ; void api_freetimer (int timer);
 	mov		ebx, [esp + 8]
 	int		0x40
 	pop		ebx
+	ret
+
+api_beep: ; void api_beep (int tone);
+	mov	  	edx, 20
+	mov		eax, [esp + 4]
+	int		0x40
 	ret
 

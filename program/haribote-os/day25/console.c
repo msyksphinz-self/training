@@ -459,6 +459,18 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 	timer_settime ((struct TIMER *)ebx, eax);
   } else if (edx == 19) {
 	timer_free ((struct TIMER *) ebx);
+  } else if (edx == 20) {   // Beep Sound
+	if (eax == 0) {
+	  int i = io_in8 (0x61);
+	  io_out8 (0x61, i & 0x0d);
+	} else {
+	  int i = 1193180000 / eax;
+	  io_out8 (0x43, 0xb6);
+	  io_out8 (0x42, i & 0xff);
+	  io_out8 (0x42, i >> 8);
+	  i = io_in8 (0x61);
+	  io_out8 (0x61, (i | 0x03) & 0x0f);
+	}
   }
 
   return 0;
