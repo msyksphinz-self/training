@@ -29,13 +29,13 @@ void HariMain(void)
   int key_shift = 0, key_leds = (binfo->leds >> 4) & 7, keycmd_wait = -1;
   
   struct SHTCTL *shtctl;
-  struct SHEET *sht_back, *sht_mouse, *sht_win, *sht_cons;
-  unsigned char *buf_back, buf_mouse[256], *buf_win, *buf_cons;
+  struct SHEET *sht_back, *sht_mouse, *sht_win, *sht_cons[2];
+  unsigned char *buf_back, buf_mouse[256], *buf_win, *buf_cons[2];
   struct TIMER *timer;
   struct FIFO32 fifo, keycmd;
   struct CONSOLE *cons;
   
-  struct TASK *task_a, *task_cons;
+  struct TASK *task_a, *task_cons[2];
   
   static char keytable0[0x80] = {
       0,   0,   '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '^', 0,  0,
@@ -112,24 +112,28 @@ void HariMain(void)
   task_run (task_a, 1, 0);
   
   /* console sheet */
-  sht_cons = sheet_alloc(shtctl);
-  buf_cons = (unsigned char *)memman_alloc_4k(memman, 256 * 165);
-  sheet_setbuf (sht_cons, buf_cons, 256, 165, -1);
-  make_window8 (buf_cons, 256, 165, "console", 0);
-  make_textbox8 (sht_cons, 8, 28, 240, 128, COL8_000000);
-  task_cons = task_alloc ();
-  task_cons->tss.esp = memman_alloc_4k (memman, 64 * 1024) + 64 * 1024 - 12;
-  task_cons->tss.eip = (int)&console_task;
-  task_cons->tss.es = 1 * 8;
-  task_cons->tss.cs = 2 * 8;
-  task_cons->tss.ss = 1 * 8;
-  task_cons->tss.ds = 1 * 8;
-  task_cons->tss.fs = 1 * 8;
-  task_cons->tss.gs = 1 * 8;
-  *((int *) (task_cons->tss.esp + 4)) = (int) sht_cons;
-  *((int *) (task_cons->tss.esp + 8)) = (int) memtotal;
-  task_run (task_cons, 1, 0);   /* level = 2, priority = 2 */
-
+  for (i = 0; i < 2; i++) {
+	sht_cons[i] = sheet_alloc(shtctl);
+	buf_cons[i] = (unsigned char *)memman_alloc_4k(memman, 256 * 165);
+	sheet_setbuf (sht_cons[i], buf_cons[i], 256, 165, -1);
+	make_window8 (buf_cons[i], 256, 165, "console", 0);
+	make_textbox8 (sht_cons[i], 8, 28, 240, 128, COL8_000000);
+	task_cons[i] = task_alloc ();
+	task_cons[i]->tss.esp = memman_alloc_4k (memman, 64 * 1024) + 64 * 1024 - 12;
+	task_cons[i]->tss.eip = (int)&console_task;
+	task_cons[i]->tss.es = 1 * 8;
+	task_cons[i]->tss.cs = 2 * 8;
+	task_cons[i]->tss.ss = 1 * 8;
+	task_cons[i]->tss.ds = 1 * 8;
+	task_cons[i]->tss.fs = 1 * 8;
+	task_cons[i]->tss.gs = 1 * 8;
+	*((int *) (task_cons[i]->tss.esp + 4)) = (int) sht_cons[i];
+	*((int *) (task_cons[i]->tss.esp + 8)) = (int) memtotal;
+	task_run (task_cons[i], 1, 0);   /* level = 2, priority = 2 */
+	sht_cons[i]->task = task_cons[i];
+	sht_cons[i]->flags |= 0x20;
+  }
+  
   //=======================
   // Sheet Setting
   //=======================
@@ -138,12 +142,14 @@ void HariMain(void)
   
   sheet_slide (sht_back,  0,   0);
   sheet_slide (sht_mouse, mx, my);
-  sheet_slide (sht_cons,  32,  4);
+  sheet_slide (sht_cons[1], 56, 6);
+  sheet_slide (sht_cons[0],  8, 2);
   sheet_slide (sht_win,   64, 56);
   sheet_updown (sht_back,  0);
-  sheet_updown (sht_cons,  1);
-  sheet_updown (sht_win,   2);
-  sheet_updown (sht_mouse, 3);
+  sheet_updown (sht_cons[1], 1);
+  sheet_updown (sht_cons[0], 2);
+  sheet_updown (sht_win,   	 3);
+  sheet_updown (sht_mouse, 	 4);
 
   sheet_refresh (sht_back, 0, 0, binfo->scrnx, 48);
 
@@ -151,8 +157,6 @@ void HariMain(void)
   fifo32_put (&keycmd, key_leds);
 
   key_win = sht_win;
-  sht_cons->task = task_cons;
-  sht_cons->flags |= 0x20;
   
   for (;;) {
 	if (fifo32_status(&keycmd) > 0 && keycmd_wait < 0) {
@@ -207,7 +211,7 @@ void HariMain(void)
 			  cursor_x -= 8;
 			}
 		  } else {
-		  	fifo32_put(&task_cons->fifo, 8 + 256);
+		  	fifo32_put(&key_win->task->fifo, 8 + 256);
 		  }
         }
 		if (i == 256 + 0x0f) { // Tab
@@ -221,7 +225,7 @@ void HariMain(void)
 		}
 		if (i == 256 + 0x1c) {  // Enter
 		  if (key_win != sht_win) {
-			fifo32_put (&task_cons->fifo, 10 + 256);
+			fifo32_put (&key_win->task->fifo, 10 + 256);
 		  }
 		}
 		if (i == 256 + 0x2a) {  // Left Shift ON
@@ -258,12 +262,12 @@ void HariMain(void)
 		  wait_KBC_sendready ();
 		  io_out8(PORT_KEYDAT, keycmd_wait);
 		}
-        if (i == 256 + 0x3b && key_shift != 0 && task_cons->tss.ss0 != 0) {   /* Shift+F1 */
+        if (i == 256 + 0x3b && key_shift != 0 && task_cons[0]->tss.ss0 != 0) {   /* Shift+F1 */
           cons = (struct CONSOLE *) *((int *) 0x0fec);
           cons_putstr0 (cons, "\nBreak(key) : \n");
           io_cli ();
-          task_cons->tss.eax = (int) &(task_cons->tss.esp0);
-          task_cons->tss.eip = (int) asm_end_app;
+          task_cons[0]->tss.eax = (int) &(task_cons[0]->tss.esp0);
+          task_cons[0]->tss.eip = (int) asm_end_app;
           io_sti ();
         }
 		if (i == 256 + 0x57 && shtctl->top > 2) {   /* F11 */
@@ -316,8 +320,8 @@ void HariMain(void)
 						cons = (struct CONSOLE *) *((int *) 0xfec);
 						cons_putstr0 (cons, "\nBreak(mouse) :\n");
 						io_cli ();
-						task_cons->tss.eax = (int) & (task_cons->tss.esp0);
-						task_cons->tss.eip = (int) asm_end_app;
+						task_cons[0]->tss.eax = (int) & (task_cons[0]->tss.esp0);
+						task_cons[0]->tss.eip = (int) asm_end_app;
 						io_sti ();
 					  }
 					}
