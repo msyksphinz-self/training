@@ -29,7 +29,7 @@ void HariMain(void)
   int key_shift = 0, key_leds = (binfo->leds >> 4) & 7, keycmd_wait = -1;
   
   struct SHTCTL *shtctl;
-  struct SHEET *sht_back, *sht_mouse, *sht_cons[2];
+  struct SHEET *sht_back, *sht_mouse;
   unsigned char *buf_back, buf_mouse[256], *buf_cons[2];
   struct TIMER *timer;
   struct FIFO32 fifo, keycmd;
@@ -97,8 +97,7 @@ void HariMain(void)
   task_run (task_a, 1, 0);
   
   /* console sheet */
-  sht_cons[0] = open_console (shtctl, memtotal);
-  sht_cons[1] = 0;
+  key_win = open_console (shtctl, memtotal);
   
   //=======================
   // Sheet Setting
@@ -106,16 +105,15 @@ void HariMain(void)
 
   *((int *) 0x0fe4) = (int) shtctl;
   
-  sheet_slide (sht_back,  0,   0);
-  sheet_slide (sht_cons[0],  32, 4);
+  sheet_slide (sht_back,   0,  0);
+  sheet_slide (key_win,   32,  4);
   sheet_slide (sht_mouse, mx, my);
   sheet_updown (sht_back,    0);
-  sheet_updown (sht_cons[0], 1);
+  sheet_updown (key_win,     1);
   sheet_updown (sht_mouse, 	 2);
 
   sheet_refresh (sht_back, 0, 0, binfo->scrnx, 48);
 
-  key_win = sht_cons[0];
   keywin_on (key_win);
 
   fifo32_put (&keycmd, KEYCMD_LED);
@@ -216,12 +214,11 @@ void HariMain(void)
 			io_sti ();
 		  }
         }
-		if (i == 256 + 0x3c && key_shift != 0 && sht_cons[1] == 0) {
-		  sht_cons[1] = open_console (shtctl, memtotal);
-		  sheet_slide (sht_cons[1], 32, 4);
-		  sheet_updown (sht_cons[1], shtctl->top);
+		if (i == 256 + 0x3c && key_shift != 0) { /* Shift+F2 */
 		  keywin_off (key_win);
-		  key_win = sht_cons[1];
+		  key_win = open_console (shtctl, memtotal);
+		  sheet_slide (key_win, 32, 4);
+		  sheet_updown (key_win, shtctl->top);
 		  keywin_on (key_win);
 		}
 		if (i == 256 + 0x57) {   /* F11 */
