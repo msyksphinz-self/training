@@ -25,3 +25,6 @@
 [submodule "program/deep-learning-from-scratch-msyksphinz"]
 	path = program/deep-learning-from-scratch-msyksphinz
 	url = https://github.com/msyksphinz/deep-learning-from-scratch.git
+[submodule "machine_learning/mojo-cnn"]
+	path = machine_learning/mojo-cnn
+	url = https://github.com/gnawice/mojo-cnn.git
