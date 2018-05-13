@@ -57,6 +57,9 @@ void console_task (struct SHEET *sheet, int memtotal)
         boxfill8 (sheet->buf, sheet->bxsize, COL8_000000, cons.cur_x, 28, cons.cur_x + 7, 43);
         cons.cur_c = -1;
       }
+	  if (i == 4) { // Console X button click
+		cmd_exit (&cons, fat);
+	  }
 	  if (256 <= i && i <= 511) {  /* Keyboard data from Task-A */
 		if (i == 8 + 256) {
 		  // Backspace
