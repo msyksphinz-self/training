@@ -110,4 +110,6 @@ int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 void keywin_off (struct SHEET *key_win);
 void keywin_on (struct SHEET *key_win);
 
+struct SHEET *open_console(struct SHTCTL *shtctl, unsigned int memtotal);
+
 #endif // __BOOTPACK_H__
