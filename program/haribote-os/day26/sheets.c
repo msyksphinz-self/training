@@ -204,10 +204,27 @@ void sheet_refreshmap (struct SHTCTL *ctl, int vx0, int vy0, int vx1, int vy1, i
 	if (sht->col_inv == -1) {
 	  // no skeleton
 	  for (by = by0; by < by1; by++) {
-		vy = sht->vy0 + by;
-		for (bx = bx0; bx < bx1; bx++) {
-		  vx = sht->vx0 + bx;
-		  map[vy * ctl->xsize + vx] = sid;
+		if ((sht->vx0 & 0x3) == 0 && (bx0 & 0x3) == 0 && (bx1 & 0x3) == 0) {
+		  // 4-Byte translation
+		  bx1 = (bx1 - bx0) / 4;
+		  int sid4 = sid | sid << 8 | sid << 16 | sid << 24;
+		  for (by = by0; by < by1; by++) {
+			vy = sht->vy0 + by;
+			vx = sht->vx0 + bx0;
+			int *p = (int *) &map[vy * ctl->xsize + vx];
+			for (bx = 0; bx < bx1; bx++) {
+			  p[bx] = sid4;
+			}
+		  }
+		} else {
+		  // Normal transaltion
+		  for (by = by0; by < by1; by++) {
+			vy = sht->vy0 + by;
+			for (bx = bx0; bx < bx1; bx++) {
+			  vx = sht->vx0 + bx;
+			  map[vy * ctl->xsize + vx] = sid;
+			}
+		  }
 		}
 	  }
 	} else {

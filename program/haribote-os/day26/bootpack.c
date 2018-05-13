@@ -13,7 +13,7 @@ extern void console_task (struct SHEET *sheet, unsigned int memtotal);
 void HariMain(void)
 {
   int i;
-  int mmx = -1, mmy = -1;
+  int mmx = -1, mmy = -1, mmx2 = 0;
   struct SHEET *sht = 0, *key_win;
   struct BOOTINFO *binfo = (struct BOOTINFO *)0x0ff0;
   int xsize = (*binfo).scrnx;
@@ -273,6 +273,7 @@ void HariMain(void)
 					if (3 <= x && x < sht->bxsize - 3 && 3 <= y && y < 21) {
 					  mmx = mx;
 					  mmy = my;
+					  mmx2 = sht->vx0;
 					}
 					if (sht->bxsize - 21 <= x && x < sht->bxsize - 5 && 5 <= y && y < 19) {
 					  if ((sht->flags & 0x10) != 0) {
@@ -289,10 +290,12 @@ void HariMain(void)
 				}
 			  }
 			} else {
+			  // Moving window mode
 			  int x = mx - mmx;
 			  int y = my - mmy;
-			  sheet_slide (sht, sht->vx0 + x, sht->vy0 + y);
-			  mmx = mx;
+			  // sheet_slide (sht, sht->vx0 + x, sht->vy0 + y);
+			  sheet_slide (sht, (mmx2 + x + 2) & ~3, sht->vy0 + y);
+			  // mmx = mx;
 			  mmy = my;
 			}
 		  } else {
