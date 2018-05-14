@@ -28,3 +28,6 @@
 [submodule "machine_learning/mojo-cnn"]
 	path = machine_learning/mojo-cnn
 	url = https://github.com/gnawice/mojo-cnn.git
+[submodule "machine_learning/mojo-cnn-msyksphinz"]
+	path = machine_learning/mojo-cnn-msyksphinz
+	url = https://github.com/msyksphinz/mojo-cnn.git
