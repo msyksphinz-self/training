@@ -51,6 +51,7 @@ HRB_FILES += noodle.hrb
 HRB_FILES += beepdown.hrb
 HRB_FILES += color.hrb
 HRB_FILES += color2.hrb
+HRB_FILES += crack7.hrb
 
 $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
 	mformat -f 1440 -C -B ipl10.bin -i $(TARGET).img ::
