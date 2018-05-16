@@ -108,7 +108,7 @@ diff: $(TARGET).diff haribote_reference.diff
 	hexdump -C $^ > $@
 
 run: $(TARGET).img
-	qemu-system-i386 -m 32M -fda $^
+	/usr/bin/qemu-system-i386 -m 32M -fda $^
 
 clean:
 	rm -rf *.sys $(TARGET).img *.o *.bin *.lst *.name *~ *.dmp *.hrb *.map
