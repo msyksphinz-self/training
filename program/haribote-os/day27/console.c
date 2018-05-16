@@ -23,8 +23,8 @@ void console_task (struct SHEET *sheet, int memtotal)
   
   int *fat = (int *)memman_alloc_4k (memman, 4 * 2880);
   file_readfat (fat, (unsigned char *)(ADR_DISKIMG + 0x000200));
-  
-  if (sheet != 0) {
+
+  if (cons.sht != 0) {
 	cons.timer = timer_alloc ();
 	timer_init (cons.timer, &task->fifo, 1);
 	timer_settime (cons.timer, 50);
@@ -58,7 +58,7 @@ void console_task (struct SHEET *sheet, int memtotal)
         cons.cur_c = COL8_FFFFFF;
       }
       if (i == 3) { // Cursor OFF
-        boxfill8 (sheet->buf, sheet->bxsize, COL8_000000, cons.cur_x, 28, cons.cur_x + 7, 43);
+        boxfill8 (cons.sht->buf, cons.sht->bxsize, COL8_000000, cons.cur_x, 28, cons.cur_x + 7, 43);
         cons.cur_c = -1;
       }
 	  if (i == 4) { // Console X button click
@@ -68,7 +68,7 @@ void console_task (struct SHEET *sheet, int memtotal)
 		if (i == 8 + 256) {
 		  // Backspace
 		  if (cons.cur_x > 16) {
-			putfonts8_asc_sht(sheet, cons.cur_x, cons.cur_y, COL8_FFFFFF, COL8_000000, " ", 1);
+			putfonts8_asc_sht(cons.sht, cons.cur_x, cons.cur_y, COL8_FFFFFF, COL8_000000, " ", 1);
 			cons.cur_x -= 8;
 		  }
 		} else if (i == 10 + 256) {
@@ -79,7 +79,7 @@ void console_task (struct SHEET *sheet, int memtotal)
           cons_newline (&cons);
           // Execute Command
           cons_runcmd (cmdline, &cons, fat, memtotal);
-		  if (sheet == 0) {
+		  if (cons.sht == 0) {
 			cmd_exit (&cons, fat);
 		  }
           cons_putchar (&cons, '>', 1);
@@ -94,11 +94,11 @@ void console_task (struct SHEET *sheet, int memtotal)
 		  }
 		}
 	  }
-	  if (sheet != 0) {
+	  if (cons.sht != 0) {
 		if (cons.cur_c >= 0) {
-		  boxfill8 (sheet->buf, sheet->bxsize, cons.cur_c, cons.cur_x, cons.cur_y, cons.cur_x + 7, cons.cur_y + 15);
+		  boxfill8 (cons.sht->buf, cons.sht->bxsize, cons.cur_c, cons.cur_x, cons.cur_y, cons.cur_x + 7, cons.cur_y + 15);
 		}
-		sheet_refresh (sheet, cons.cur_x, cons.cur_y, cons.cur_x + 8, cons.cur_y + 16);
+		sheet_refresh (cons.sht, cons.cur_x, cons.cur_y, cons.cur_x + 8, cons.cur_y + 16);
 	  }
 	}
   }
@@ -520,6 +520,14 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 	  }
 	  if (i == 3) {   // Cursor OFF
 		cons->cur_c = -1;
+	  }
+	  if (i == 4) {   // Close console only
+		timer_cancel (cons->timer);
+		io_cli();
+		struct FIFO32 *sys_fifo = (struct FIFO32 *)*((int *)0x0fec);
+		fifo32_put (sys_fifo, cons->sht - shtctl->sheets0 + 2024);
+		cons->sht = 0;
+		io_sti();
 	  }
 	  if (i >= 256) {
 		reg[7] = i - 256;
