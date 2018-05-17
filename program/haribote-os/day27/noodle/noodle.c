@@ -1,5 +1,5 @@
 #include "a_nask.h"
-#include "sprintf.h"
+#include "../haribote/sprintf.h"
 
 void HariMain(void)
 {

@@ -9,62 +9,76 @@ target_size = $(shell wc -c $(TARGET).sys | cut -f1 -d' ')
 target_byte_size = $(shell expr $(target_size) / 512 + 1)
 
 OBJ_FILES =
-OBJ_FILES += bootpack.o
-OBJ_FILES += graphic.o
-OBJ_FILES += dsctbl.o
-OBJ_FILES += int.o
-OBJ_FILES += naskfunc.o
-OBJ_FILES += hankaku.o
-OBJ_FILES += sprintf.o
-OBJ_FILES += fifo.o
-OBJ_FILES += keyboard.o
-OBJ_FILES += mouse.o
-OBJ_FILES += memory.o
-OBJ_FILES += memtest.o
-OBJ_FILES += sheets.o
-OBJ_FILES += timer.o
-OBJ_FILES += mtask.o
-OBJ_FILES += console.o
-OBJ_FILES += file.o
+OBJ_FILES += haribote/bootpack.o
+OBJ_FILES += haribote/graphic.o
+OBJ_FILES += haribote/dsctbl.o
+OBJ_FILES += haribote/int.o
+OBJ_FILES += haribote/naskfunc.o
+OBJ_FILES += haribote/hankaku.o
+OBJ_FILES += haribote/sprintf.o
+OBJ_FILES += haribote/fifo.o
+OBJ_FILES += haribote/keyboard.o
+OBJ_FILES += haribote/mouse.o
+OBJ_FILES += haribote/memory.o
+OBJ_FILES += haribote/memtest.o
+OBJ_FILES += haribote/sheets.o
+OBJ_FILES += haribote/timer.o
+OBJ_FILES += haribote/mtask.o
+OBJ_FILES += haribote/console.o
+OBJ_FILES += haribote/file.o
 
 HRB_FILES =
-HRB_FILES += hello.hrb
-HRB_FILES += hello2.hrb
-HRB_FILES += hello3.hrb
-HRB_FILES += hello4.hrb
-HRB_FILES += hello5.hrb
-HRB_FILES += a.hrb
-HRB_FILES += crack1.hrb
-HRB_FILES += crack2.hrb
-HRB_FILES += bug1.hrb
-HRB_FILES += bug2.hrb
-HRB_FILES += bug3.hrb
-HRB_FILES += winhelo.hrb
-HRB_FILES += winhelo2.hrb
-HRB_FILES += winhelo3.hrb
-HRB_FILES += star1.hrb
-HRB_FILES += stars.hrb
-HRB_FILES += stars2.hrb
-HRB_FILES += lines.hrb
-HRB_FILES += walk.hrb
-HRB_FILES += noodle.hrb
-HRB_FILES += beepdown.hrb
-HRB_FILES += color.hrb
-HRB_FILES += color2.hrb
-HRB_FILES += crack7.hrb
+HRB_FILES += hello/hello.hrb
+HRB_FILES += hello2/hello2.hrb
+HRB_FILES += hello3/hello3.hrb
+HRB_FILES += hello4/hello4.hrb
+HRB_FILES += hello5/hello5.hrb
+HRB_FILES += a/a.hrb
+HRB_FILES += winhelo/winhelo.hrb
+HRB_FILES += winhelo2/winhelo2.hrb
+HRB_FILES += winhelo3/winhelo3.hrb
+HRB_FILES += star1/star1.hrb
+HRB_FILES += stars/stars.hrb
+HRB_FILES += stars2/stars2.hrb
+HRB_FILES += lines/lines.hrb
+HRB_FILES += walk/walk.hrb
+HRB_FILES += noodle/noodle.hrb
+HRB_FILES += beepdown/beepdown.hrb
+HRB_FILES += color/color.hrb
+HRB_FILES += color2/color2.hrb
 
-OBJS_API = api001.o api002.o api003.o api004.o api005.o api006.o \
-			api007.o api008.o api009.o api010.o api011.o api012.o \
-			api013.o api014.o api015.o api016.o api017.o api018.o \
-			api019.o api020.o
+full:
+	$(MAKE) -C haribote
+	$(MAKE) -C apilib
+	$(MAKE) -C hello
+	$(MAKE) -C hello2
+	$(MAKE) -C hello3
+	$(MAKE) -C hello4
+	$(MAKE) -C hello5
+	$(MAKE) -C a
+	$(MAKE) -C winhelo
+	$(MAKE) -C winhelo2
+	$(MAKE) -C winhelo3
+	$(MAKE) -C star1
+	$(MAKE) -C stars
+	$(MAKE) -C stars2
+	$(MAKE) -C lines
+	$(MAKE) -C walk
+	$(MAKE) -C noodle
+	$(MAKE) -C beepdown
+	$(MAKE) -C color
+	$(MAKE) -C color2
+	$(MAKE) $(TARGET).img
 
 
-$(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
-	mformat -f 1440 -C -B ipl10.bin -i $(TARGET).img ::
-	mcopy $(TARGET).sys -i $(TARGET).img ::
-	mcopy ipl10.nas  -i $(TARGET).img ::
+$(TARGET).img: haribote/ipl10.bin $(TARGET).sys $(HRB_FILES)
+	mformat -f 1440 -C -B haribote/ipl10.bin -i $(TARGET).img ::
+	mcopy haribote/$(TARGET).sys -i $(TARGET).img ::
+	mcopy haribote/ipl10.nas  -i $(TARGET).img ::
 	mcopy $(HRB_FILES) -i $(TARGET).img ::
 	mcopy Makefile   -i $(TARGET).img ::
+
+
 
 apilib.lib : Makefile $(OBJS_API)
 	ar rcs $@ $(OBJS_API)
@@ -81,16 +95,11 @@ apilib.lib : Makefile $(OBJS_API)
 %.bin: %.o
 	objcopy -O binary $^ $@ 
 
-winhelo2.hrb: winhelo2.o sprintf.o apilib.lib
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
-noodle.hrb: noodle.o sprintf.o apilib.lib
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
-
-%.hrb: %.o apilib.lib Makefile
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $< apilib.lib
-%.hrb: %.nas
-	nasm -felf32 $^ -o tmp.o -l $@.lst
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
+# %.hrb: %.o apilib.lib Makefile
+# 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $< apilib.lib
+# %.hrb: %.nas
+# 	nasm -felf32 $^ -o tmp.o -l $@.lst
+# 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
 
 
 asmhead.o: asmhead.nas
@@ -100,13 +109,13 @@ naskfunc.o: naskfunc.nas
 	nasm -felf32 $^ -o $@ -l $^.lst
 
 $(TARGET).bin: $(OBJ_FILES)
-	ld -Map bootpack.map -m elf_i386 -e HariMain -n -Thrb.ld -static -o $(TARGET).bin $^
+	ld -Map bootpack.map -m elf_i386 -e HariMain -n -Tharibote/hrb.ld -static -o $(TARGET).bin $^
 	hexdump -C $(TARGET).bin > $(TARGET).bin.dmp
 
 hankaku.c : hankaku.txt Makefile
 	./hankaku.py
 
-$(TARGET).sys: asmhead.o $(TARGET).bin
+$(TARGET).sys: haribote/asmhead.o $(TARGET).bin
 	cat $^ > $@
 
 ipl10.bin: ipl10.nas
@@ -122,5 +131,5 @@ run: $(TARGET).img
 	/usr/bin/qemu-system-i386 -m 32M -fda $^
 
 clean:
-	rm -rf *.sys $(TARGET).img *.o *.bin *.lst *.name *~ *.dmp *.hrb *.map
+	rm -rf *.sys $(TARGET).img *.o */*.o */*.bin *.bin */*.lst *.lib *.name *~ */*.dmp */*.hrb */*.map
 
