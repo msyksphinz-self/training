@@ -53,6 +53,12 @@ HRB_FILES += color.hrb
 HRB_FILES += color2.hrb
 HRB_FILES += crack7.hrb
 
+OBJS_API = api001.o api002.o api003.o api004.o api005.o api006.o \
+			api007.o api008.o api009.o api010.o api011.o api012.o \
+			api013.o api014.o api015.o api016.o api017.o api018.o \
+			api019.o api020.o
+
+
 $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
 	mformat -f 1440 -C -B ipl10.bin -i $(TARGET).img ::
 	mcopy $(TARGET).sys -i $(TARGET).img ::
@@ -60,27 +66,31 @@ $(TARGET).img: ipl10.bin $(TARGET).sys $(HRB_FILES)
 	mcopy $(HRB_FILES) -i $(TARGET).img ::
 	mcopy Makefile   -i $(TARGET).img ::
 
+apilib.lib : Makefile $(OBJS_API)
+	ar rcs $@ $(OBJS_API)
+
+
 %.o:%.c Makefile
 	gcc -Wall -m32 -c -fno-pic -nostdlib -fno-builtin -o $@ $<
 	objdump -D $@ > $@.dmp
 
+%.o:%.nas Makefile
+	nasm -felf32 $< -o $@ -l $@.lst
+
+
 %.bin: %.o
 	objcopy -O binary $^ $@ 
 
-winhelo2.hrb: winhelo2.o a_nask.o sprintf.o
+winhelo2.hrb: winhelo2.o sprintf.o apilib.lib
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
-noodle.hrb: noodle.o a_nask.o sprintf.o
+noodle.hrb: noodle.o sprintf.o apilib.lib
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
 
-%.hrb: %.o a_nask.o
-	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $^
+%.hrb: %.o apilib.lib Makefile
+	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $< apilib.lib
 %.hrb: %.nas
 	nasm -felf32 $^ -o tmp.o -l $@.lst
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
-
-
-a_nask.o: a_nask.nas
-	nasm -felf32 $^ -o $@ -l $^.lst
 
 
 asmhead.o: asmhead.nas

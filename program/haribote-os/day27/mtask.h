@@ -11,6 +11,19 @@
 #define MAX_TASKLEVELS 10
 #define TASK_GDT0      3
 
+struct SEGMENT_DESCRIPTOR {
+  short limit_low, base_low;
+  char base_mid, access_right;
+  char limit_high, base_high;
+};
+
+
+struct GATE_DESCRIPTOR {
+  short offset_low, selector;
+  char dw_count, access_right;
+  short offset_high;
+};
+
 
 /* Task TSS */
 struct TSS32 {

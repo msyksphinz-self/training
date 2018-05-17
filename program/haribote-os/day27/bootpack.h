@@ -50,20 +50,6 @@ struct BOOTINFO {
   char *vram;
 };
 
-struct SEGMENT_DESCRIPTOR {
-  short limit_low, base_low;
-  char base_mid, access_right;
-  char limit_high, base_high;
-};
-
-
-struct GATE_DESCRIPTOR {
-  short offset_low, selector;
-  char dw_count, access_right;
-  short offset_high;
-};
-
-
 void io_hlt(void);
 void io_cli(void);
 void io_out8(int port, int data);
