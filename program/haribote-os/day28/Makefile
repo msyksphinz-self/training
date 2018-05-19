@@ -46,6 +46,7 @@ HRB_FILES += noodle/noodle.hrb
 HRB_FILES += beepdown/beepdown.hrb
 HRB_FILES += color/color.hrb
 HRB_FILES += color2/color2.hrb
+HRB_FILES += sosu/sosu.hrb
 
 full:
 	$(MAKE) -C haribote
@@ -68,6 +69,7 @@ full:
 	$(MAKE) -C beepdown
 	$(MAKE) -C color
 	$(MAKE) -C color2
+	$(MAKE) -C sosu
 	$(MAKE) $(TARGET).img
 
 
