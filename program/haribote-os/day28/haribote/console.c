@@ -146,8 +146,6 @@ void cons_runcmd (char *cmdline, struct CONSOLE *cons, int *fat, int memtotal)
     cmd_cls (cons);
   } else if (strcmp (cmdline, "dir") == 0 && cons->sht != 0) {
     cmd_dir (cons);
-  } else if (cmdline[0]=='t' && cmdline[1]=='y' && cmdline[2]=='p' && cmdline[3]=='e' && cmdline[4]==' ' && cons->sht != 0) {
-    cmd_type (cons, fat, cmdline);
   } else if (strcmp (cmdline, "exit") == 0) {
 	cmd_exit (cons, fat);
   } else if (strncmp (cmdline, "start ", 6) == 0) {
@@ -212,27 +210,6 @@ void cmd_dir (struct CONSOLE *cons)
 		cons_putstr0 (cons, s);
       }
     }
-  }
-  cons_newline (cons);
-  return;
-}
-
-
-void cmd_type (struct CONSOLE *cons, int *fat, char *cmdline)
-{
-  struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
-  struct FILEINFO *finfo = file_search (cmdline + 5, (struct FILEINFO *) (ADR_DISKIMG + 0x002600), 224);
-  if (finfo != 0) {
-    // Find file
-    char *p = (char *)memman_alloc_4k (memman, finfo->size);
-    file_loadfile (finfo->clustno, finfo->size, p, fat, (char *) (ADR_DISKIMG + 0x003e00));
-    cons->cur_x = 8;
-	// output char
-	cons_putstr1 (cons, p, finfo->size);
-    memman_free_4k (memman, (int) p, finfo->size);
-  } else {
-    // When no file found
-	cons_putstr0 (cons, "File not found.\n");
   }
   cons_newline (cons);
   return;
