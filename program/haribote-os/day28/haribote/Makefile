@@ -4,7 +4,7 @@ TOOLPATH=/home/msyksphinz/work/haribote_os/z_tools/
 MAKEFONT = $(TOOLPATH)makefont
 
 default:
-	$(MAKE) ipl10.bin
+	$(MAKE) ipl20.bin
 	$(MAKE) haribote.sys
 
 target_size = $(shell wc -c $(TARGET).sys | cut -f1 -d' ')
@@ -39,7 +39,7 @@ OBJ_FILES += file.o
 
 
 %.bin: %.o
-	objcopy -O binary $^ $@ 
+	objcopy -O binary $^ $@
 
 # %.hrb: %.o apilib.lib Makefile
 # 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $< apilib.lib
@@ -67,6 +67,9 @@ $(TARGET).sys: asmhead.o $(TARGET).bin
 ipl10.bin: ipl10.nas
 	nasm -fbin -o $@ $^ -l ipl10.lst
 
+ipl20.bin: ipl20.nas
+	nasm -fbin -o $@ $^ -l ipl20.lst
+
 diff: $(TARGET).diff haribote_reference.diff
 	diff -y -W200 $^
 
@@ -78,4 +81,3 @@ run: $(TARGET).img
 
 clean:
 	rm -rf *.sys $(TARGET).img *.o *.bin *.lst *.name *~ *.dmp *.hrb *.map
-

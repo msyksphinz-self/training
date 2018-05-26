@@ -77,10 +77,10 @@ full:
 	$(MAKE) $(TARGET).img
 
 
-$(TARGET).img: haribote/ipl10.bin $(TARGET).sys $(HRB_FILES)
-	mformat -f 1440 -C -B haribote/ipl10.bin -i $(TARGET).img ::
+$(TARGET).img: haribote/ipl20.bin $(TARGET).sys $(HRB_FILES)
+	mformat -f 1440 -C -B haribote/ipl20.bin -i $(TARGET).img ::
 	mcopy haribote/$(TARGET).sys -i $(TARGET).img ::
-	mcopy haribote/ipl10.nas  	 -i $(TARGET).img ::
+	mcopy haribote/ipl20.nas  	 -i $(TARGET).img ::
 	mcopy $(HRB_FILES)        	 -i $(TARGET).img ::
 	mcopy Makefile            	 -i $(TARGET).img ::
 	mcopy nihongo.fnt            -i $(TARGET).img ::
