@@ -84,6 +84,7 @@ $(TARGET).img: haribote/ipl20.bin $(TARGET).sys $(HRB_FILES)
 	mcopy $(HRB_FILES)        	 -i $(TARGET).img ::
 	mcopy Makefile            	 -i $(TARGET).img ::
 	mcopy nihongo.fnt            -i $(TARGET).img ::
+	mcopy euc1.txt              -i $(TARGET).img ::
 
 
 apilib.lib : Makefile $(OBJS_API)
@@ -123,9 +124,6 @@ hankaku.c : hankaku.txt Makefile
 
 $(TARGET).sys: haribote/asmhead.o $(TARGET).bin
 	cat $^ > $@
-
-ipl10.bin: ipl10.nas
-	nasm -fbin -o $@ $^ -l ipl10.lst
 
 diff: $(TARGET).diff haribote_reference.diff
 	diff -y -W200 $^

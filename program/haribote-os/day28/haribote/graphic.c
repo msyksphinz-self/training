@@ -54,6 +54,26 @@ void putfonts8_asc (unsigned char *vram, int xsize, int x, int y, char c, unsign
       x += 8;
     }
   }
+  if (task->langmode == 2) {
+    for (; *s != 0x00; s++) {
+      if (task->langbyte1 == 0) {
+        if (0x81 <= *s && *s <= 0xfe) {
+          task->langbyte1 = *s;
+        } else {
+          putfonts8 (vram, xsize, x, y, c, nihongo + *s * 16);
+        }
+      } else {
+        k = task->langbyte1 - 0xa1;
+        t = *s - 0xa1;
+        task->langbyte1 = 0;
+        font = nihongo + 256 * 16 + (k * 94 + t) * 32;
+        putfonts8 (vram, xsize, x - 8, y, c, font     );    // Left Half
+        putfonts8 (vram, xsize, x    , y, c, font + 16);    // Right Half
+      }
+      x += 8;
+    }
+  }
+
   return;
 }
 
