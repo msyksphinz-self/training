@@ -1,6 +1,6 @@
 #include "graphic.h"
 
-void putfonts8_asc_sht (struct SHEET *sht, int x, int y, int c, int b, char *s, int l)
+void putfonts8_asc_sht (struct SHEET *sht, int x, int y, int c, int b, unsigned char *s, int l)
 {
   boxfill8(sht->buf, sht->bxsize, b, x, y, x+l*8-1, y+15);
   putfonts8_asc(sht->buf, sht->bxsize, x, y, c, s);
@@ -9,7 +9,7 @@ void putfonts8_asc_sht (struct SHEET *sht, int x, int y, int c, int b, char *s, 
 }
 
 
-void putfonts8_asc (unsigned char *vram, int xsize, int x, int y, char c, char *s)
+void putfonts8_asc (unsigned char *vram, int xsize, int x, int y, char c, unsigned char *s)
 {
   extern char hankaku[4096];
   struct TASK *task = task_now ();
@@ -18,13 +18,12 @@ void putfonts8_asc (unsigned char *vram, int xsize, int x, int y, char c, char *
   if (task->langmode == 0) {
     for (; *s != 0x00; s++) {
       putfonts8 (vram, xsize, x, y, c, hankaku + *s * 16);
-      // putfonts8 (vram, xsize, x, y, c, nihongo + *s * 16);
       x += 8;
     }
   }
   if (task->langmode == 1) {
     for (; *s != 0x00; s++) {
-      putfonts8 (vram, xsize, x, y, c, nihongo + (s[0] & 0xff) * 16);
+      putfonts8 (vram, xsize, x, y, c, nihongo + *s * 16);
       x += 8;
     }
   }
