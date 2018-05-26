@@ -97,6 +97,7 @@ int mouse_decode(struct MOUSE_DEC *mdec, unsigned char dat);
 void keywin_off (struct SHEET *key_win);
 void keywin_on (struct SHEET *key_win);
 
+struct TASK *open_constask(struct SHEET *sht, unsigned int memtotal);
 struct SHEET *open_console(struct SHTCTL *shtctl, unsigned int memtotal);
 void close_constask(struct TASK *task);
 void close_console(struct SHEET *sht);

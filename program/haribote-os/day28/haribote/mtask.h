@@ -47,7 +47,17 @@ struct TASK {
   struct SEGMENT_DESCRIPTOR ldt[2];
   struct CONSOLE *cons;
   int ds_base, cons_stack;
+  struct FILEHANDLE *fhandle;
+  int *fat;
 };
+
+
+struct FILEHANDLE {
+  char *buf;
+  int size;
+  int pos;
+};
+
 
 struct TASKLEVEL {
   int running;

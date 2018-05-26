@@ -47,6 +47,7 @@ HRB_FILES += beepdown/beepdown.hrb
 HRB_FILES += color/color.hrb
 HRB_FILES += color2/color2.hrb
 HRB_FILES += sosu/sosu.hrb
+HRB_FILES += typeipl/typeipl.hrb
 
 full:
 	$(MAKE) -C haribote
@@ -70,6 +71,7 @@ full:
 	$(MAKE) -C color
 	$(MAKE) -C color2
 	$(MAKE) -C sosu
+	$(MAKE) -C typeipl
 	$(MAKE) $(TARGET).img
 
 

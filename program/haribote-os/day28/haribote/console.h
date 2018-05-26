@@ -12,6 +12,7 @@ struct CONSOLE {
 void console_task (struct SHEET *sheet, int memtotal);
 void cons_newline (struct CONSOLE *cons);
 
+void cmd_start(struct CONSOLE *cons, char *cmdline, int memtotal);
 void cons_runcmd (char *cmdline, struct CONSOLE *cons, int *fat, int memtotal);
 void cmd_mem (struct CONSOLE *cons, int memtotal);
 void cmd_cls (struct CONSOLE *cons);
@@ -22,6 +23,7 @@ void cmd_exit(struct CONSOLE *cons, int *fat);
 void cons_putchar (struct CONSOLE *cons, int chr, char move);
 void cons_putstr0 (struct CONSOLE *cons, char *s);
 void cons_putstr1 (struct CONSOLE *cons, char *s, int l);
+void cmd_ncst(struct CONSOLE *cons, char *cmdline, int memtotal);
 
 int cmd_app (struct CONSOLE *cons, int *fat, char *cmdline);
 
