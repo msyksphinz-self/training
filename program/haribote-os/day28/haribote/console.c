@@ -20,6 +20,7 @@ void console_task (struct SHEET *sheet, int memtotal)
   cons.cur_c = -1;
 
   task->cons = &cons;
+  task->cmdline = cmdline;
   
   int *fat = (int *)memman_alloc_4k (memman, 4 * 2880);
   file_readfat (fat, (unsigned char *)(ADR_DISKIMG + 0x000200));
@@ -543,7 +544,7 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 	  i = io_in8 (0x61);
 	  io_out8 (0x61, (i | 0x03) & 0x0f);
 	}
-  } else if (edx == 21) {
+  } else if (edx == 21) {   // api_fopen
     int i;
     for (i = 0; i < 8; i++) {
       if (task->fhandle[i].buf == 0) {
@@ -600,6 +601,19 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
       }
       *((char *)ebx + ds_base + i) = fh->buf[fh->pos];
       fh->pos++;
+    }
+    reg[7] = i;
+  } else if (edx == 26) {   // api_cmdline
+    int i = 0;
+    for (;;) {
+      *((char *)ebx + ds_base + i) = task->cmdline[i];
+      if (task->cmdline[i] == 0) {
+        break;
+      }
+      if (i >= ecx) {
+        break;
+      }
+      i++;
     }
     reg[7] = i;
   }
