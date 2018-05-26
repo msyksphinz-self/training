@@ -12,10 +12,21 @@ void putfonts8_asc_sht (struct SHEET *sht, int x, int y, int c, int b, char *s, 
 void putfonts8_asc (unsigned char *vram, int xsize, int x, int y, char c, char *s)
 {
   extern char hankaku[4096];
+  struct TASK *task = task_now ();
+  unsigned char *nihongo = (char *) *((int *) 0x0fe8);
 
-  for (; *s != 0x00;s++) {
-	putfonts8 (vram, xsize, x, y, c, hankaku + *s * 16);
-	x += 8;
+  if (task->langmode == 0) {
+    for (; *s != 0x00; s++) {
+      putfonts8 (vram, xsize, x, y, c, hankaku + *s * 16);
+      // putfonts8 (vram, xsize, x, y, c, nihongo + *s * 16);
+      x += 8;
+    }
+  }
+  if (task->langmode == 1) {
+    for (; *s != 0x00; s++) {
+      putfonts8 (vram, xsize, x, y, c, nihongo + (s[0] & 0xff) * 16);
+      x += 8;
+    }
   }
   return;
 }
@@ -289,4 +300,3 @@ void change_wtitle8(struct SHEET *sht, char act)
   sheet_refresh(sht, 3, 3, xsize, 21);
   return;
 }
-

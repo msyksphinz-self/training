@@ -3,7 +3,7 @@ TARGET = haribote
 TOOLPATH=/home/msyksphinz/work/haribote_os/z_tools/
 MAKEFONT = $(TOOLPATH)makefont
 
-.PHONY:	run 
+.PHONY:	run
 
 target_size = $(shell wc -c $(TARGET).sys | cut -f1 -d' ')
 target_byte_size = $(shell expr $(target_size) / 512 + 1)
@@ -47,8 +47,8 @@ HRB_FILES += beepdown/beepdown.hrb
 HRB_FILES += color/color.hrb
 HRB_FILES += color2/color2.hrb
 HRB_FILES += sosu/sosu.hrb
-HRB_FILES += typeipl/typeipl.hrb
 HRB_FILES += type/type.hrb
+HRB_FILES += iroha/iroha.hrb
 
 full:
 	$(MAKE) -C haribote
@@ -72,18 +72,18 @@ full:
 	$(MAKE) -C color
 	$(MAKE) -C color2
 	$(MAKE) -C sosu
-	$(MAKE) -C typeipl
 	$(MAKE) -C type
+	$(MAKE) -C iroha
 	$(MAKE) $(TARGET).img
 
 
 $(TARGET).img: haribote/ipl10.bin $(TARGET).sys $(HRB_FILES)
 	mformat -f 1440 -C -B haribote/ipl10.bin -i $(TARGET).img ::
 	mcopy haribote/$(TARGET).sys -i $(TARGET).img ::
-	mcopy haribote/ipl10.nas  -i $(TARGET).img ::
-	mcopy $(HRB_FILES) -i $(TARGET).img ::
-	mcopy Makefile   -i $(TARGET).img ::
-
+	mcopy haribote/ipl10.nas  	 -i $(TARGET).img ::
+	mcopy $(HRB_FILES)        	 -i $(TARGET).img ::
+	mcopy Makefile            	 -i $(TARGET).img ::
+	mcopy nihongo.fnt            -i $(TARGET).img ::
 
 
 apilib.lib : Makefile $(OBJS_API)
@@ -99,7 +99,7 @@ apilib.lib : Makefile $(OBJS_API)
 
 
 %.bin: %.o
-	objcopy -O binary $^ $@ 
+	objcopy -O binary $^ $@
 
 # %.hrb: %.o apilib.lib Makefile
 # 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $< apilib.lib
@@ -138,4 +138,3 @@ run: $(TARGET).img
 
 clean:
 	rm -rf *.sys $(TARGET).img *.o */*.o */*.bin *.bin */*.lst *.lib *.name *~ */*.dmp */*.hrb */*.map
-

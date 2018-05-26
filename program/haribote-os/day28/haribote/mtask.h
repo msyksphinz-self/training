@@ -50,6 +50,7 @@ struct TASK {
   struct FILEHANDLE *fhandle;
   int *fat;
   char *cmdline;
+  char langmode;
 };
 
 
@@ -86,4 +87,3 @@ void task_switchsub (void);
 void task_idle(void);
 
 #endif // __MTASK_H__
-

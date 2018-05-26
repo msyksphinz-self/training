@@ -14,6 +14,8 @@ void console_task (struct SHEET *sheet, int memtotal)
   struct CONSOLE cons;
   struct FILEHANDLE fhandle[8];
 
+  unsigned char *nihongo = (char *)*((int *)0x0fe8);
+
   cons.sht = sheet;
   cons.cur_x = 8;
   cons.cur_y = 28;
@@ -21,18 +23,23 @@ void console_task (struct SHEET *sheet, int memtotal)
 
   task->cons = &cons;
   task->cmdline = cmdline;
-  
+
   int *fat = (int *)memman_alloc_4k (memman, 4 * 2880);
   file_readfat (fat, (unsigned char *)(ADR_DISKIMG + 0x000200));
 
   for (i = 0; i < 8; i++) {
 	fhandle[i].buf = 0;  /* unused */
   }
+
   task->fhandle = fhandle;
   task->fat = fat;
-  
+  // if (nihongo[4096] != 0xff) {
+  task->langmode = 1;
+  // } else {
+  //   task->langmode = 0;
+  // }
   if (cons.sht != 0) {
-	cons.timer = timer_alloc ();
+    cons.timer = timer_alloc ();
 	timer_init (cons.timer, &task->fifo, 1);
 	timer_settime (cons.timer, 50);
   }
@@ -153,6 +160,17 @@ void cons_runcmd (char *cmdline, struct CONSOLE *cons, int *fat, int memtotal)
 	cmd_start (cons, cmdline, memtotal);
   } else if (strncmp (cmdline, "ncst ", 5) == 0) {
 	cmd_ncst (cons, cmdline, memtotal);
+  } else if (strncmp (cmdline, "langmode ", 9) == 0) {
+    cmd_langmode (cons, cmdline);
+  } else if (strcmp (cmdline, "printlang") == 0) {
+    char s[30];
+    unsigned char *nihongo = (char *)*((int *)0x0fe8);
+    struct TASK *task = task_now();
+    for (int i = 0; i < 16; i++) {
+      sprintf (s, "%x ", nihongo[0xc40+i]);
+      cons_putstr0 (cons, s);
+    }
+    cons_putstr0 (cons, "\n");
   } else if (cmdline[0] != 0) {
     if (cmd_app(cons, fat, cmdline) == 0) {
       // Not Command Line and Empty
@@ -173,7 +191,7 @@ void cmd_mem (struct CONSOLE *cons, int memtotal)
   cons_putstr0 (cons, s);
   return;
 }
- 
+
 
 void cmd_cls (struct CONSOLE *cons)
 {
@@ -327,7 +345,7 @@ int cmd_app (struct CONSOLE *cons, int *fat, char *cmdline)
   char name [18];
   int i;
   struct TASK *task = task_now ();
-  
+
   for (i = 0; i < 13; i++) {
     if (cmdline[i] <= ' ') {
       break;
@@ -363,7 +381,7 @@ int cmd_app (struct CONSOLE *cons, int *fat, char *cmdline)
 	  start_app (0x1b, 0 * 8 + 4, esp, 1 * 8 + 4, &(task->tss.esp0));
 	  shtctl  = (struct SHTCTL *) *((int *)0x0fe4);
 	  for (i = 0; i < MAX_SHEETS; i++) {
-		sht = &(shtctl->sheets0[i]); 
+		sht = &(shtctl->sheets0[i]);
 		if ((sht->flags & 0x11) == 0x11 && sht->task == task) {
 		  sheet_free (sht);
 		}
@@ -419,6 +437,20 @@ void cmd_ncst(struct CONSOLE *cons, char *cmdline, int memtotal)
 }
 
 
+void cmd_langmode (struct CONSOLE *cons, char *cmdline)
+{
+  struct TASK *task = task_now ();
+  unsigned char mode = cmdline[9] - '0';
+  if (mode <= 1) {
+    task->langmode = mode;
+  } else {
+    cons_putstr0 (cons, "mode number error.\n");
+  }
+  cons_newline (cons);
+  return;
+}
+
+
 int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax)
 {
   struct TASK *task = task_now();
@@ -428,10 +460,10 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
   struct SHEET *sht;
   int *reg = &eax + 1;
   struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
-  
+
   if (edx == 1) {
 	cons_putchar (cons, eax & 0xff, 1);
-  } else if (edx == 2) {
+  } else if (edx == 2) {  // api_putstr0
 	cons_putstr0 (cons, (char *) ebx + ds_base);
   } else if (edx == 3) {
 	cons_putstr1 (cons, (char *) ebx + ds_base, ecx);
@@ -501,7 +533,7 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 	  int i = fifo32_get (&task->fifo);
 	  io_sti ();
 	  if (i <= 1) {   // Timer for cursor
-		timer_init (cons->timer, &task->fifo, 1); 
+		timer_init (cons->timer, &task->fifo, 1);
 		timer_settime (cons->timer, 50);
 	  }
 	  if (i == 2) {   // Cursor ON
@@ -523,7 +555,7 @@ int *hrb_api (int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		return 0;
 	  }
 	}
-  } else if (edx == 16) { 
+  } else if (edx == 16) {
 	reg[7] = (int) timer_alloc ();
     ((struct TIMER *) reg[7])->flags2 = 1;
   } else if (edx == 17) {

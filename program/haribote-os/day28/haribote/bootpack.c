@@ -2,6 +2,7 @@
 #include "dsctbl.h"
 #include "int.h"
 #include "graphic.h"
+#include "file.h"
 
 extern struct TIMERCTL timerctl;
 extern struct TASKCTL *taskctl;
@@ -13,7 +14,6 @@ extern void console_task (struct SHEET *sheet, unsigned int memtotal);
 
 void HariMain(void)
 {
-  int i;
   int mmx = -1, mmy = -1, mmx2 = 0;
   struct SHEET *sht = 0, *key_win;
   struct BOOTINFO *binfo = (struct BOOTINFO *)0x0ff0;
@@ -28,15 +28,15 @@ void HariMain(void)
   unsigned int memtotal;
   struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
   int key_shift = 0, key_leds = (binfo->leds >> 4) & 7, keycmd_wait = -1;
-  
+
   struct SHTCTL *shtctl;
   struct SHEET *sht_back, *sht_mouse;
   unsigned char *buf_back, buf_mouse[256], *buf_cons[2];
   struct TIMER *timer;
   struct FIFO32 fifo, keycmd;
-  
+
   struct TASK *task_a, *task_cons[2];
-  
+
   static char keytable0[0x80] = {
       0,   0,   '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '^', 0x08,  0,
       'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '@', '[', 0x0a,   0, 'A', 'S',
@@ -57,6 +57,7 @@ void HariMain(void)
       0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
       0,   0,   0,   '_', 0,   0,   0,   0,   0,   0,   0,   0,   0,   '|', 0,   0
   };
+  extern char hankaku[4096];
 
   init_gdtidt ();
   init_pic ();
@@ -64,7 +65,7 @@ void HariMain(void)
 
   fifo32_init(&fifo, 32, fifobuf, 0);
   fifo32_init(&keycmd, 32, keycmd_buf, 0);
-  
+
   init_pit();
   io_out8(PIC0_IMR, 0xf8); /* Allow PIT and Keyboard (11111000) */
   io_out8(PIC1_IMR, 0xef); /* Allow Mouse (11101111) */
@@ -74,7 +75,7 @@ void HariMain(void)
   timer = timer_alloc();
   timer_init(timer, &fifo, 1);
   timer_settime(timer, 50);
-  
+
   memtotal = memtest(0x00400000, 0xbfffffff);
   memman_init (memman);
   memman_free (memman, 0x00001000, 0x009e000);   /* 0x00001000 - 0x0009efff */
@@ -89,7 +90,7 @@ void HariMain(void)
   sheet_setbuf (sht_mouse, buf_mouse, 16, 16, 99);
   init_screen (buf_back, xsize, ysize);
   init_mouse_cursor8 (buf_mouse, 99);
-  
+
   *((int *) 0x0fec) = (int) &fifo;
 
   //=====================
@@ -97,17 +98,18 @@ void HariMain(void)
   //=====================
   task_a = task_init(memman);
   fifo.task = task_a;
+  task_a->langmode = 0;
   task_run (task_a, 1, 0);
-  
+
   /* console sheet */
   key_win = open_console (shtctl, memtotal);
-  
+
   //=======================
   // Sheet Setting
   //=======================
 
   *((int *) 0x0fe4) = (int) shtctl;
-  
+
   sheet_slide (sht_back,   0,  0);
   sheet_slide (key_win,   32,  4);
   sheet_slide (sht_mouse, mx, my);
@@ -121,6 +123,24 @@ void HariMain(void)
 
   fifo32_put (&keycmd, KEYCMD_LED);
   fifo32_put (&keycmd, key_leds);
+
+  /* Reading nihongo.fnt */
+  unsigned char *nihongo = (unsigned char *)memman_alloc_4k (memman, 16 * 256 + 32 * 94 * 47);
+  int *fat = (int *)memman_alloc_4k (memman, 4 * 2880);
+  file_readfat (fat, (unsigned char *)(ADR_DISKIMG + 0x000200));
+  struct FILEINFO *finfo = file_search ("nihongo.fnt", (struct FILEINFO *)(ADR_DISKIMG + 0x002600), 224);
+  if (finfo != 0) {
+    file_loadfile (finfo->clustno, finfo->size, nihongo, fat, (char *)(ADR_DISKIMG + 0x003e00));
+  } else {
+    // for (int i = 0; i < 16 * 256; i++) {
+    //   nihongo[i] = hankaku[i];
+    // }
+    // for (int i = 16 * 256; i < 16 * 256 + 32 * 94 * 47; i++) {
+    //   nihongo[i] = 0xff;
+    // }
+  }
+  *((int *)0x0fe8) = (int) nihongo;
+  memman_free_4k (memman, (int) fat, 4 * 2880);
 
   for (;;) {
 	if (fifo32_status(&keycmd) > 0 && keycmd_wait < 0) {
@@ -144,7 +164,7 @@ void HariMain(void)
 		io_sti();
 	  }
 	} else {
-      i = fifo32_get(&fifo);
+      int i = fifo32_get(&fifo);
       io_sti();
 	  if (key_win != 0 && key_win->flags == 0) {   // input Window is closed
 		if (shtctl->top == 1) { // ony mouse and background

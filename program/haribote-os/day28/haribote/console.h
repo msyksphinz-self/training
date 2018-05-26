@@ -24,10 +24,10 @@ void cons_putchar (struct CONSOLE *cons, int chr, char move);
 void cons_putstr0 (struct CONSOLE *cons, char *s);
 void cons_putstr1 (struct CONSOLE *cons, char *s, int l);
 void cmd_ncst(struct CONSOLE *cons, char *cmdline, int memtotal);
+void cmd_langmode (struct CONSOLE *cons, char *cmdline);
 
 int cmd_app (struct CONSOLE *cons, int *fat, char *cmdline);
 
 void hrb_api_linewin (struct SHEET *sht, int x0, int y0, int x1, int y1, int col);
 
 #endif // __CONSOLE_H__
-
