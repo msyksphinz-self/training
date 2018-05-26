@@ -49,6 +49,7 @@ HRB_FILES += color2/color2.hrb
 HRB_FILES += sosu/sosu.hrb
 HRB_FILES += type/type.hrb
 HRB_FILES += iroha/iroha.hrb
+HRB_FILES += chklang/chklang.hrb
 
 full:
 	$(MAKE) -C haribote
@@ -74,6 +75,7 @@ full:
 	$(MAKE) -C sosu
 	$(MAKE) -C type
 	$(MAKE) -C iroha
+	$(MAKE) -C chklang
 	$(MAKE) $(TARGET).img
 
 
