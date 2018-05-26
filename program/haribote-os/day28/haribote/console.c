@@ -33,11 +33,13 @@ void console_task (struct SHEET *sheet, int memtotal)
 
   task->fhandle = fhandle;
   task->fat = fat;
-  // if (nihongo[4096] != 0xff) {
+  if (nihongo[4096] != 0xff) {
   task->langmode = 1;
-  // } else {
-  //   task->langmode = 0;
-  // }
+  } else {
+    task->langmode = 0;
+  }
+  task->langbyte1 = 0;
+
   if (cons.sht != 0) {
     cons.timer = timer_alloc ();
 	timer_init (cons.timer, &task->fifo, 1);
@@ -123,6 +125,7 @@ void cons_newline (struct CONSOLE *cons)
 {
   int x, y;
   struct SHEET *sheet = cons->sht;
+  struct TASK  *task = task_now();
   if (cons->cur_y < 28 + 112) {
     cons->cur_y += 16;
   } else {  // scroll
@@ -142,6 +145,9 @@ void cons_newline (struct CONSOLE *cons)
 	}
   }
   cons->cur_x = 8;
+  if (task->langmode == 1 && task->langbyte1 != 0) {
+    cons->cur_x += 8;
+  }
   return;
 }
 
@@ -162,15 +168,6 @@ void cons_runcmd (char *cmdline, struct CONSOLE *cons, int *fat, int memtotal)
 	cmd_ncst (cons, cmdline, memtotal);
   } else if (strncmp (cmdline, "langmode ", 9) == 0) {
     cmd_langmode (cons, cmdline);
-  } else if (strcmp (cmdline, "printlang") == 0) {
-    char s[30];
-    unsigned char *nihongo = (char *)*((int *)0x0fe8);
-    struct TASK *task = task_now();
-    for (int i = 0; i < 16; i++) {
-      sprintf (s, "%x ", nihongo[0xc40+i]);
-      cons_putstr0 (cons, s);
-    }
-    cons_putstr0 (cons, "\n");
   } else if (cmdline[0] != 0) {
     if (cmd_app(cons, fat, cmdline) == 0) {
       // Not Command Line and Empty
@@ -394,6 +391,7 @@ int cmd_app (struct CONSOLE *cons, int *fat, char *cmdline)
 	  }
       timer_cancelall (&task->fifo);
 	  memman_free_4k (memman, (int)q, segsiz);
+      task->langbyte1 = 0;
 	} else {
 	  cons_putstr0 (cons, ".hrb file format error.\n");
 	}
