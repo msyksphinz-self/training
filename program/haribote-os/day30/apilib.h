@@ -1,5 +1,5 @@
-#ifndef __A_NASK_H__
-#define __A_NASK_H__
+#ifndef __APILIB_H__
+#define __APILIB_H__
 
 void api_putchar (int c);
 void api_putstr0 (char *s);
@@ -31,4 +31,5 @@ int api_fread (char *buf, int maxsize, int fhandle);
 int api_cmdline (char *buf, int maxsize);
 int api_getlang ();
 
-#endif // __A_NASK_H__
+#endif // __APILIB_H__
+

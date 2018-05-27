@@ -1,7 +1,7 @@
 #include <stdio.h> /* sprintf */
 #include <string.h> /* strlen */
 
-#include "a_nask.h"
+#include "apilib.h"
 void putstr(int win, char *winbuf, int x, int y, int col, unsigned char *s);
 void wait(int i, int timer, char *keyflag);
 static unsigned char charset[16 * 8] = {
