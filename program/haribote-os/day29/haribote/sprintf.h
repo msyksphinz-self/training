@@ -4,6 +4,8 @@
 #include <stdarg.h>
 void sprintf (char *str, char *fmt, ...);
 
+int strlen (const char *a);
+
 int strcmp  (const char *a, const char *b);
 int strncmp (const char *a, const char *b, const int n);
 int memcmp  (const void *p1, const void *p2, const int n);
