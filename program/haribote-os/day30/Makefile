@@ -34,6 +34,8 @@ HRB_FILES += chklang/chklang.hrb
 HRB_FILES += notrec/notrec.hrb
 HRB_FILES += bball/bball.hrb
 HRB_FILES += invader/invader.hrb
+HRB_FILES += calc/calc.hrb
+HRB_FILES += tview/tview.hrb
 
 full:
 	$(MAKE) -C haribote
@@ -63,6 +65,8 @@ full:
 	$(MAKE) -C notrec
 	$(MAKE) -C bball
 	$(MAKE) -C invader
+	$(MAKE) -C calc
+	$(MAKE) -C tview
 	$(MAKE) $(TARGET).img
 
 
