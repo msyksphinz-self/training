@@ -4,6 +4,8 @@
 #include "apilib.h"
 void putstr(int win, char *winbuf, int x, int y, int col, unsigned char *s);
 void wait(int i, int timer, char *keyflag);
+
+
 static unsigned char charset[16 * 8] = {
   /* invader(0) */
   0x00, 0x00, 0x00, 0x43, 0x5f, 0x5f, 0x5f, 0x7f,
@@ -30,6 +32,8 @@ static unsigned char charset[16 * 8] = {
   0x00, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18,
   0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x00
 };
+
+
 /* invader:"abcd", fighter:"efg", laser:"h" */
 void HariMain(void)
 {
@@ -173,6 +177,8 @@ next_group:
   }
   goto restart;
 }
+
+
 void putstr(int win, char *winbuf, int x, int y, int col, unsigned char *s)
 {
   int c, x0, i;
@@ -216,6 +222,8 @@ void putstr(int win, char *winbuf, int x, int y, int col, unsigned char *s)
   api_refreshwin(win, x0, y, x, y + 16);
   return;
 }
+
+
 void wait(int i, int timer, char *keyflag)
 {
   int j;

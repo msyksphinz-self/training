@@ -62,7 +62,7 @@ void sprintf (char *str, char *fmt, ...) {
 int strlen (const char *a)
 {
   int len = 0;
-  while (*a != 0) {
+  while (*a != \0) {
     len++;
     a++;
   }
