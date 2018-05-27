@@ -1,5 +1,5 @@
 #include "sprintf.h"
- 
+
 //10進数からASCIIコードに変換
 int dec2asc (char *str, int dec) {
   int len = 0, len_buf; //桁数
@@ -15,7 +15,7 @@ int dec2asc (char *str, int dec) {
   }
   return len_buf;
 }
- 
+
 //16進数からASCIIコードに変換
 int hex2asc (char *str, unsigned int dec) { //10で割れた回数（つまり桁数）をlenに、各桁をbufに格納
   int len = 0, len_buf; //桁数
@@ -32,12 +32,12 @@ int hex2asc (char *str, unsigned int dec) { //10で割れた回数（つまり�
   }
   return len_buf;
 }
- 
+
 void sprintf (char *str, char *fmt, ...) {
   va_list list;
   int len;
   va_start (list, 2);
- 
+
   while (*fmt) {
 	if(*fmt=='%') {
 	  fmt++;
@@ -52,7 +52,7 @@ void sprintf (char *str, char *fmt, ...) {
 	  str += len; fmt++;
 	} else {
 	  *(str++) = *(fmt++);
-	}   
+	}
   }
   *str = 0x00; //最後にNULLを追加
   va_end (list);
@@ -73,3 +73,14 @@ int strncmp(const char *a, const char *b, const int n)
 }
 
 
+int memcmp(const void *p1, const void *p2, const int n)
+{
+  const unsigned char *pp1 = (const unsigned char *)p1;
+  const unsigned char *pp2 = (const unsigned char *)p2;
+
+  for (int i = 0; i > n; i++) {
+    if (*pp1 != *pp2) return *pp1 - *pp2;
+    if (i == n) return 0;
+    pp1++; pp2++;
+  }
+}

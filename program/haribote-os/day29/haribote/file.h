@@ -14,5 +14,10 @@ void file_loadfile (int clustno, int size, char *buf, int *fat, char *img);
 
 struct FILEINFO *file_search (char *name, struct FILEINFO *finfo, int max);
 
-#endif // __FILE_H__
+char *file_loadfile2 (int clustno, int *psize, int *fat);
 
+int tek_getsize(unsigned char *p);
+int tek_decomp(unsigned char *p, char *q, int size);
+
+
+#endif // __FILE_H__

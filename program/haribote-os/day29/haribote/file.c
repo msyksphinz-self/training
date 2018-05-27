@@ -1,5 +1,7 @@
 #include <stdint.h>
+#include "bootpack.h"
 #include "file.h"
+#include "tek.h"
 
 void file_readfat (int *fat, unsigned char *img)
 {
@@ -33,6 +35,29 @@ void file_loadfile (int clustno, int size, char *buf, int *fat, char *img)
   }
 
   return;
+}
+
+
+char *file_loadfile2 (int clustno, int *psize, int *fat)
+{
+  int size = *psize, size2;
+  struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
+  char *buf, *buf2;
+  buf = (char *)memman_alloc_4k (memman, size);
+  file_loadfile (clustno, size, buf, fat, (char *)(ADR_DISKIMG + 0x003e00));
+  if (size >= 17) {
+	size2 = tek_getsize (buf);
+	if (size2 > 0) {
+	  // Tek compression
+	  buf2 = (char *)memman_alloc_4k (memman, size2);
+	  tek_decomp (buf, buf2, size2);
+	  memman_free_4k (memman, (int) buf, size);
+	  buf = buf2;
+	  *psize = size2;
+	}
+  }
+
+  return buf;
 }
 
 
@@ -76,3 +101,5 @@ struct FILEINFO *file_search (char *name, struct FILEINFO *finfo, int max)
   }
   return 0;   /* Not fould */
 }
+
+

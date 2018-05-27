@@ -28,6 +28,7 @@ OBJ_FILES += timer.o
 OBJ_FILES += mtask.o
 OBJ_FILES += console.o
 OBJ_FILES += file.o
+OBJ_FILES += tek.o
 
 
 %.o:%.c Makefile

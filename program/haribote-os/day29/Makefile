@@ -8,25 +8,6 @@ MAKEFONT = $(TOOLPATH)makefont
 target_size = $(shell wc -c $(TARGET).sys | cut -f1 -d' ')
 target_byte_size = $(shell expr $(target_size) / 512 + 1)
 
-OBJ_FILES =
-OBJ_FILES += haribote/bootpack.o
-OBJ_FILES += haribote/graphic.o
-OBJ_FILES += haribote/dsctbl.o
-OBJ_FILES += haribote/int.o
-OBJ_FILES += haribote/naskfunc.o
-OBJ_FILES += haribote/hankaku.o
-OBJ_FILES += haribote/sprintf.o
-OBJ_FILES += haribote/fifo.o
-OBJ_FILES += haribote/keyboard.o
-OBJ_FILES += haribote/mouse.o
-OBJ_FILES += haribote/memory.o
-OBJ_FILES += haribote/memtest.o
-OBJ_FILES += haribote/sheets.o
-OBJ_FILES += haribote/timer.o
-OBJ_FILES += haribote/mtask.o
-OBJ_FILES += haribote/console.o
-OBJ_FILES += haribote/file.o
-
 HRB_FILES =
 HRB_FILES += hello/hello.hrb
 HRB_FILES += hello2/hello2.hrb
@@ -104,27 +85,16 @@ apilib.lib : Makefile $(OBJS_API)
 %.bin: %.o
 	objcopy -O binary $^ $@
 
-# %.hrb: %.o apilib.lib Makefile
-# 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ $< apilib.lib
-# %.hrb: %.nas
-# 	nasm -felf32 $^ -o tmp.o -l $@.lst
-# 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $@ tmp.o
-
-
 asmhead.o: asmhead.nas
 	nasm $^ -o $@ -l $^.lst
 
 naskfunc.o: naskfunc.nas
 	nasm -felf32 $^ -o $@ -l $^.lst
 
-$(TARGET).bin: $(OBJ_FILES)
-	ld -Map bootpack.map -m elf_i386 -e HariMain -n -Tharibote/hrb.ld -static -o $(TARGET).bin $^
-	hexdump -C $(TARGET).bin > $(TARGET).bin.dmp
-
 hankaku.c : hankaku.txt Makefile
 	./hankaku.py
 
-$(TARGET).sys: haribote/asmhead.o $(TARGET).bin
+$(TARGET).sys: haribote/asmhead.o haribote/$(TARGET).bin
 	cat $^ > $@
 
 diff: $(TARGET).diff haribote_reference.diff

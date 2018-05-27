@@ -130,14 +130,16 @@ void HariMain(void)
   file_readfat (fat, (unsigned char *)(ADR_DISKIMG + 0x000200));
   struct FILEINFO *finfo = file_search ("nihongo.fnt", (struct FILEINFO *)(ADR_DISKIMG + 0x002600), 224);
   if (finfo != 0) {
-    file_loadfile (finfo->clustno, finfo->size, nihongo, fat, (char *)(ADR_DISKIMG + 0x003e00));
+	int i = finfo->size;
+	nihongo = file_loadfile2 (finfo->clustno, &i, fat);
   } else {
-    // for (int i = 0; i < 16 * 256; i++) {
-    //   nihongo[i] = hankaku[i];
-    // }
-    // for (int i = 16 * 256; i < 16 * 256 + 32 * 94 * 47; i++) {
-    //   nihongo[i] = 0xff;
-    // }
+	nihongo = (unsigned char *)memman_alloc_4k (memman, 16 * 256 + 32 * 94 * 47);
+    for (int i = 0; i < 16 * 256; i++) {
+      nihongo[i] = hankaku[i];
+    }
+    for (int i = 16 * 256; i < 16 * 256 + 32 * 94 * 47; i++) {
+      nihongo[i] = 0xff;
+    }
   }
   *((int *)0x0fe8) = (int) nihongo;
   memman_free_4k (memman, (int) fat, 4 * 2880);
