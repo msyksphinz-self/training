@@ -31,6 +31,7 @@ HRB_FILES += sosu/sosu.hrb
 HRB_FILES += type/type.hrb
 HRB_FILES += iroha/iroha.hrb
 HRB_FILES += chklang/chklang.hrb
+HRB_FILES += notrec/notrec.hrb
 
 full:
 	$(MAKE) -C haribote
@@ -57,6 +58,7 @@ full:
 	$(MAKE) -C type
 	$(MAKE) -C iroha
 	$(MAKE) -C chklang
+	$(MAKE) -C notrec
 	$(MAKE) $(TARGET).img
 
 
