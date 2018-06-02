@@ -1,5 +1,6 @@
-#include <stdio.h> /* sprintf */
-#include <string.h> /* strlen */
+// #include <stdio.h> /* sprintf */
+#include "../haribote/sprintf.h"
+// #include <string.h> /* strlen */
 
 #include "apilib.h"
 void putstr(int win, char *winbuf, int x, int y, int col, unsigned char *s);

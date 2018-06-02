@@ -36,6 +36,7 @@ HRB_FILES += bball/bball.hrb
 HRB_FILES += invader/invader.hrb
 HRB_FILES += calc/calc.hrb
 HRB_FILES += tview/tview.hrb
+HRB_FILES += gview/gview.hrb
 
 full:
 	$(MAKE) -C haribote
@@ -67,6 +68,7 @@ full:
 	$(MAKE) -C invader
 	$(MAKE) -C calc
 	$(MAKE) -C tview
+	$(MAKE) -C gview
 	$(MAKE) $(TARGET).img
 
 
@@ -77,7 +79,11 @@ $(TARGET).img: haribote/ipl20.bin $(TARGET).sys $(HRB_FILES)
 	mcopy $(HRB_FILES)        	 -i $(TARGET).img ::
 	mcopy Makefile            	 -i $(TARGET).img ::
 	mcopy nihongo.fnt            -i $(TARGET).img ::
-	mcopy euc1.txt              -i $(TARGET).img ::
+	mcopy euc1.txt               -i $(TARGET).img ::
+	mcopy fujisan.jpg            -i $(TARGET).img ::
+	mcopy night.bmp              -i $(TARGET).img ::
+	mcopy fujisan_.jpg           -i $(TARGET).img ::
+	mcopy night_.bmp             -i $(TARGET).img ::
 
 
 apilib.lib : Makefile $(OBJS_API)
