@@ -1,0 +1,10 @@
+[package]
+
+name = "haribote"
+version = "0.0.1"
+authors = [ "msyksphinz@mail.com" ]
+
+[lib]
+path = "src/lib.rs"
+crate-type = ["staticlib"]
+
