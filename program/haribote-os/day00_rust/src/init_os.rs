@@ -20,9 +20,6 @@ pub extern fn init_os() {
     }
 }
 
-#[lang = "eh_personality"]
-extern fn eh_personality() {}
-
-#[lang = "panic_fmt"]
-extern fn panic_fmt() -> ! { loop {} }
+#[lang = "eh_personality"] extern fn eh_personality() {}
+#[lang = "panic_fmt"] fn panic_fmt() -> ! { loop {} }
 
