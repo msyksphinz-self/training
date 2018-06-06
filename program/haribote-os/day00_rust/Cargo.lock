@@ -1,4 +1,4 @@
-[root]
+[[package]]
 name = "haribote"
 version = "0.0.1"
 

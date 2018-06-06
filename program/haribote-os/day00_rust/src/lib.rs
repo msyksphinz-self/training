@@ -1,9 +1,10 @@
 #![feature(lang_items)]
 #![feature(start)]
-#![no_main]
-#![feature(no_std)]
+#![feature(panic_implementation)]
 #![no_std]
 #![feature(asm)]
+
+use core::panic::PanicInfo;
 
 #[no_mangle]
 fn hlt() {
@@ -20,6 +21,11 @@ pub extern fn init_os() {
     }
 }
 
-#[lang = "eh_personality"] extern fn eh_personality() {}
-#[lang = "panic_fmt"] fn panic_fmt() -> ! { loop {} }
+#[lang = "eh_personality"]
+extern fn eh_personality() {}
 
+#[panic_implementation]
+#[no_mangle]
+pub fn panic(_info: &PanicInfo) -> ! {
+    loop {}
+}
