@@ -3,5 +3,8 @@ name = "haribote"
 version = "0.0.1"
 authors = [ "msyksphinz@mail.com" ]
 
+[dependencies]
+rlibc = "1.0"
+
 [lib]
 crate-type = ["staticlib"]

@@ -3,6 +3,7 @@
 #![feature(panic_implementation)]
 #![no_std]
 #![feature(asm)]
+extern crate rlibc;
 
 use core::panic::PanicInfo;
 
@@ -16,6 +17,10 @@ fn hlt() {
 #[no_mangle]
 #[start]
 pub extern fn init_os() {
+	for addr in 0xa0000..(0xb0000-1) {
+		let vram: *mut u8 = addr as *mut u8;
+		unsafe { *vram = 0xf; }
+	}
     loop {
         hlt()
     }

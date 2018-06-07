@@ -16,14 +16,17 @@ SECTIONS
         LONG(0)               /* 32 : heap領域（malloc領域）開始アドレス */
     }
 
-    .text : { *(.text) }
+    .text : { *(.text*) }
 
     .data 0x310000 : AT ( ADDR(.text) + SIZEOF(.text) ) {
-        *(.data)
+        *(.data*)
         *(.rodata*)
         *(.bss)
     }
 
+	.debug : {
+	   *(.debug_gdb_scripts)
+	}
     /DISCARD/ : { *(.eh_frame) }
 
 }

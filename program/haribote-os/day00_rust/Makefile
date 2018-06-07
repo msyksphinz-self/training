@@ -17,11 +17,13 @@ asm/secondboot.bin:
 $(TARGET).sys: asm/secondboot.bin $(TARGET).bin
 	cat $^ > $@
 
-$(TARGET).bin: target/debug/libharibote.a
-	ld -v -nostdlib -Tdata=0x00310000 $^ -T kernel.ld -o $(TARGET).bin
+$(TARGET).bin: target/release/libharibote.a
+	ld -v -nostdlib $^ -T kernel.ld -o $(TARGET).bin
 
-target/debug/libharibote.a:
-	cargo build
+#	ld -v -nostdlib -Tdata=0x00310000 $^ -T kernel.ld -o $(TARGET).bin
+
+target/release/libharibote.a: Makefile
+	cargo build --release
 
 $(TARGET).img: asm/ipl.bin $(TARGET).sys 
 	mformat -f 1440 -C -B asm/ipl.bin -i $(TARGET).img ::
