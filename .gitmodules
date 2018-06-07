@@ -31,3 +31,6 @@
 [submodule "machine_learning/mojo-cnn-msyksphinz"]
 	path = machine_learning/mojo-cnn-msyksphinz
 	url = https://github.com/msyksphinz/mojo-cnn.git
+[submodule "rust/blog_os"]
+	path = rust/blog_os
+	url = https://github.com/phil-opp/blog_os.git
