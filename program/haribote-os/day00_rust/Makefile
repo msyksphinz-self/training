@@ -14,13 +14,14 @@ asm/ipl.bin:
 asm/secondboot.bin:
 	$(MAKE) -C asm $(notdir $@)
 
+asm/naskfunc.o:
+	$(MAKE) -C asm $(notdir $@)
+
 $(TARGET).sys: asm/secondboot.bin $(TARGET).bin
 	cat $^ > $@
 
-$(TARGET).bin: target/release/libharibote.a
+$(TARGET).bin: target/release/libharibote.a asm/naskfunc.o
 	ld -v -nostdlib $^ -T kernel.ld -o $(TARGET).bin
-
-#	ld -v -nostdlib -Tdata=0x00310000 $^ -T kernel.ld -o $(TARGET).bin
 
 target/release/libharibote.a: Makefile
 	cargo build --release
