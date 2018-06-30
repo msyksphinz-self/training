@@ -34,3 +34,6 @@
 [submodule "rust/blog_os"]
 	path = rust/blog_os
 	url = https://github.com/phil-opp/blog_os.git
+[submodule "machine_learning/tensorflow/keras/machine-learning"]
+	path = machine_learning/tensorflow/keras/machine-learning
+	url = https://github.com/yampy/machine-learning.git
