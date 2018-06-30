@@ -37,3 +37,9 @@
 [submodule "machine_learning/tensorflow/keras/machine-learning"]
 	path = machine_learning/tensorflow/keras/machine-learning
 	url = https://github.com/yampy/machine-learning.git
+[submodule "machine_learning/tensorflow/keras/keras2cpp"]
+	path = machine_learning/tensorflow/keras/keras2cpp
+	url = https://github.com/pplonski/keras2cpp.git
+[submodule "machine_learning/tensorflow/keras/keras"]
+	path = machine_learning/tensorflow/keras/keras
+	url = https://github.com/keras-team/keras.git
