@@ -19,7 +19,7 @@ int main() {
            << "Keras model will be used in C++ for prediction only." << endl;
 
   DataChunk *sample = new DataChunk2D();
-  sample->read_from_file("./cifar10_test_data.dat");
+  sample->read_from_file("./cifar10_test_data.txt");
   // sample->read_from_file("./sample_mnist.dat");
   std::cout << sample->get_3d().size() << std::endl;
   KerasModel m("./dumped.nnet", true);
