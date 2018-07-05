@@ -16,7 +16,7 @@ for y in range(x_test[0].shape[0]):
     for x in range(x_test[0].shape[1]):
         f.write("[ ")
         for ch in range(x_test[0].shape[2]):
-            f.write("%f. " % x_test[0][y,x,ch])
+            f.write("%f " % x_test[0][y,x,ch])
         f.write("]\n")
 
 f.close()
