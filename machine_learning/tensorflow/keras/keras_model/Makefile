@@ -4,13 +4,13 @@
 
 all: run_cifar10
 
-run_cifar10: keras_model.cc example_main.cc dumped.nnet
+run_cifar10: keras_model.cc example_main.cc
 	g++ -g -Wall -O0 -std=c++11 keras_model.cc example_main.cc -o $@
 
 dumped.nnet: ../keras2cpp/dump_to_simple_cpp.py cifar10_cnn_model.json cifar10_cnn_model.h5
 	python2.7 $< -a cifar10_cnn_model.json -w cifar10_cnn_model.h5 -o $@
 
-cifar10_cnn_model_keras1.json cifar10_cnn_model_keras1.h5: make_model
+cifar10_cnn_model.json -w cifar10_cnn_model.h5: make_model
 
 pre_compile:
 	ln -sf ../../keras_model/write_layer_output.py   ../keras/examples/

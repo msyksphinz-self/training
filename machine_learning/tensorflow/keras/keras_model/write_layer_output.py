@@ -22,7 +22,7 @@ x_test  = x_test.astype('float32')
 x_train /= 255
 x_test  /= 255
 
-model = load_model('saved_models/keras_cifar10_trained_model.h5')
+model = load_model('cifar10_cnn_model.h5')
 
 layer_output = [np.expand_dims(x_test[0], axis=0),]
 

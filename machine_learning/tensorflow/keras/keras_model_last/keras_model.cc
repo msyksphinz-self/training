@@ -396,6 +396,7 @@ keras::DataChunk* keras::LayerConv2D::compute_output(keras::DataChunk* dc) {
   keras::DataChunk *out = new keras::DataChunk2D();
   out->set_data(y_ret);
   // out->show_values();
+
   return out;
 }
 

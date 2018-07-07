@@ -1,1 +1,0 @@
-../keras/examples/cifar10_test_data.txt

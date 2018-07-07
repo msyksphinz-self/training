@@ -4,9 +4,9 @@ from keras.datasets import cifar10
 import numpy as np
 from keras import backend as K
 
-model = load_model('saved_models/keras_cifar10_trained_model.h5')
+model = load_model('cifar10_cnn_model.h5')
 
-with open('saved_models/cifar10_cnn_model_keras1.json', 'w') as fout:
+with open('cifar10_cnn_model.json', 'w') as fout:
     fout.write(model.to_json())
 
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
