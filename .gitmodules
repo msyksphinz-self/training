@@ -43,3 +43,6 @@
 [submodule "machine_learning/tensorflow/keras/keras"]
 	path = machine_learning/tensorflow/keras/keras
 	url = https://github.com/keras-team/keras.git
+[submodule "machine_learning/tensorflow/keras/draw_convnet"]
+	path = machine_learning/tensorflow/keras/draw_convnet
+	url = https://github.com/gwding/draw_convnet.git
