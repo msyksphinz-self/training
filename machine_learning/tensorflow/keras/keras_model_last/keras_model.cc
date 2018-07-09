@@ -1,5 +1,7 @@
 #include "keras_model.h"
 
+#include <assert.h>
+
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -353,8 +355,16 @@ std::vector< std::vector<float> > keras::conv_single_depth_same(
 
 keras::DataChunk* keras::LayerConv2D::compute_output(keras::DataChunk* dc) {
 
+  printf ("m_kernels[0][0].size()    = %d\n", m_kernels[0][0].size());
+  printf ("m_kernels[0][0][0].size() = %d\n", m_kernels[0][0][0].size());
+
+  assert(m_kernels[0][0].size() != 0);
+  assert(m_kernels[0][0][0].size() != 0);
+
   unsigned int st_x = (m_kernels[0][0].size()-1) >> 1;
   unsigned int st_y = (m_kernels[0][0][0].size()-1) >> 1;
+  printf ("st_x = %d, st_y = %d\n", st_x, st_y);
+
   vector< vector< vector<float> > > y_ret;
   auto const & im = dc->get_3d();
 
