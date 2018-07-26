@@ -21,9 +21,9 @@ int main ()
   fscanf (fp, "%s", cin);
   printf ("%s\n", cin);
 
-  char c[100];
-  scanf("%s", c);
-  printf("%s\n", c);
+  // char c[100];
+  // scanf("%s", c);
+  // printf("%s\n", c);
 
   return 0;
 }
