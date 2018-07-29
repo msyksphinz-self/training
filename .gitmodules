@@ -49,3 +49,6 @@
 [submodule "machine_learning/tensorflow/keras/keras2cpp-msyksphinz"]
 	path = machine_learning/tensorflow/keras/keras2cpp-msyksphinz
 	url = https://github.com/msyksphinz/keras2cpp.git
+[submodule "machine_learning/deep-learning-from-scratch-2"]
+	path = machine_learning/deep-learning-from-scratch-2
+	url = https://github.com/oreilly-japan/deep-learning-from-scratch-2.git
