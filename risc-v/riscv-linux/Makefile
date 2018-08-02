@@ -21,5 +21,8 @@ run-qemu-linux:
 run-qemu-fedora-linux:
 	qemu-system-riscv64 $(QEMU_OPT) -kernel fedora/bbl
 
+run-forest-riscv-linux:
+	riscvforest --binfile riscv-pk-riscv-linux-4.15/build/bbl --bit-mode 64 --max 5000000
+
 build-env:
-	./build_qemu_riscv.sh
+	bash ./build_qemu_riscv.sh

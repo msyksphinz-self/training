@@ -92,4 +92,4 @@ function download_fedora_image {
 # build_qemu            > /dev/null
 # build_linux           > /dev/null
 build_riscv_linux
-# download_fedora_image > /dev/null
+download_fedora_image > /dev/null
