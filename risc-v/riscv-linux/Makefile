@@ -22,7 +22,16 @@ run-qemu-fedora-linux:
 	qemu-system-riscv64 $(QEMU_OPT) -kernel fedora/bbl
 
 run-forest-riscv-linux:
-	riscvforest --binfile riscv-pk-riscv-linux-4.15/build/bbl --bit-mode 64 --max 5000000
+	riscvforest --binfile riscv-pk-riscv-linux-4.15/build/bbl --bit-mode 64 --max 500000000
+
+debug-forest-riscv-linux:
+	riscvforest --binfile riscv-pk-riscv-linux-4.15/build/bbl --bit-mode 64 --max 500000000 --debug --out forest.log --trace-hier --trace-out trace.out
+
+run-spike-riscv-linux:
+	spike riscv-pk-riscv-linux-4.15/build/bbl
+
+debug-spike-riscv-linux:
+	spike -l riscv-pk-riscv-linux-4.15/build/bbl 2> spike.log
 
 build-env:
 	bash ./build_qemu_riscv.sh
