@@ -86,7 +86,7 @@ mecab_wordlist = filter(lambda x: unicode(x, 'utf-8') != unicode('やっ', 'utf-
 mecab_wordlist = filter(lambda x: unicode(x, 'utf-8') != unicode('する', 'utf-8'), mecab_wordlist)
 
 for word in mecab_wordlist:
-    print word
+    print("%s" % word)
     # print word.encode('utf-8')
 
 wordcloud(" ".join(mecab_wordlist).decode('utf-8'))
