@@ -52,3 +52,6 @@
 [submodule "machine_learning/deep-learning-from-scratch-2"]
 	path = machine_learning/deep-learning-from-scratch-2
 	url = https://github.com/oreilly-japan/deep-learning-from-scratch-2.git
+[submodule "risc-v/chisel/chisel-bootcamp"]
+	path = risc-v/chisel/chisel-bootcamp
+	url = https://github.com/freechipsproject/chisel-bootcamp.git
