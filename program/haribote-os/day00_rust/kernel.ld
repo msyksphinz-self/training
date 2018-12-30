@@ -28,6 +28,6 @@ SECTIONS
 	   *(.debug_gdb_scripts)
 	}
     /DISCARD/ : { *(.eh_frame) }
+   .gcc_except_table   : ONLY_IF_RO { *(.gcc_except_table .gcc_except_table.*) }
 
 }
-

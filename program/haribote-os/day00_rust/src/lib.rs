@@ -1,6 +1,5 @@
 #![feature(lang_items)]
 #![feature(start)]
-#![feature(panic_implementation)]
 #![no_std]
 #![feature(asm)]
 extern crate rlibc;
@@ -84,7 +83,6 @@ fn init_palette() {
 extern fn eh_personality() {}
 
 #[panic_implementation]
-#[no_mangle]
-pub fn panic(_info: &PanicInfo) -> ! {
+pub fn panic_handler(_info: &PanicInfo) -> ! {
     loop {}
 }
