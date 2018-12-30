@@ -82,7 +82,7 @@ fn init_palette() {
 #[lang = "eh_personality"]
 extern fn eh_personality() {}
 
-#[panic_implementation]
+#[panic_handler]
 pub fn panic_handler(_info: &PanicInfo) -> ! {
     loop {}
 }
