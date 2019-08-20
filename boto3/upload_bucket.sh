@@ -1,6 +1,6 @@
 #!/bin/bash
 
-target_dirs=('/home/msyksphinz/work/llvm/llvm-myriscvx/' '/home/msyksphinz/work/llvm/myriscvx-tests/' '/home/msyksphinz/work/llvm/build-myriscvx')
+target_dirs=('/home/msyksphinz/work/llvm/llvm-myriscvx/' '/home/msyksphinz/work/llvm/myriscvx-tests')
 
 for target_dir in ${target_dirs[*]}
 do
