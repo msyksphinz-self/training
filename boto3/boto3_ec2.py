@@ -13,7 +13,7 @@ blockDeviceMappings = [{
     }]
 
 def create_instance(instance_type):
-    print("Launching EC2..")
+    print("Launching EC2 ...")
     ec2_resource = boto3.resource('ec2')
     # tag_specification = [{'ResourceType': 'spot-instances-request'}, ]
     instance_market_options={
@@ -37,6 +37,18 @@ def create_instance(instance_type):
     instance = instances[0]
     return instance
 
+
+def execute_command_list(instance_id, command_list):
+    for command in command_list:
+        print("Executing {} ...".format(command))
+        cmd_output = execute_command(instance.instance_id, command)
+        print("Output = \n{}".format(cmd_output['StandardOutputContent']))
+        print("Error  = \n{}".format(cmd_output['StandardErrorContent']))
+        # print("Status = \n{}".format(cmd_output['Status']))
+        # print("StatusDetails = \n{}".format(cmd_output['StatusDetails']))
+        # print("ResponseCode = \n{}".format(cmd_output['ResponseCode']))
+
+
 def execute_command(instance_id, command):
     ssm_client = boto3.client('ssm')
     try:
@@ -59,6 +71,13 @@ def execute_command(instance_id, command):
         CommandId=command_id,
         InstanceId=instance_id,
     )
+    while(output['Status'] == 'InProgress'):
+        time.sleep(5.0)
+        output = ssm_client.get_command_invocation(
+            CommandId=command_id,
+            InstanceId=instance_id,
+        )
+        print("Status = \n{}".format(output['Status']))
 
     return output
 
@@ -72,12 +91,13 @@ print("EC2 Launch Finished ...")
 
 ec2_client = boto3.client('ec2')
 instance_statuses = ec2_client.describe_instance_status(InstanceIds=[instance.instance_id])['InstanceStatuses']
-print(instance_statuses)
+
+print("Instance Status = {}".format(instance_statuses[0]['InstanceStatus']['Details'][0]['Status']))
 
 while instance_statuses[0]['InstanceStatus']['Details'][0]['Status'] == 'initializing':
     time.sleep(5.0)
     instance_statuses = ec2_client.describe_instance_status(InstanceIds=[instance.instance_id])['InstanceStatuses']
-    print(instance_statuses)
+    print("Instance Status = {}".format(instance_statuses[0]['InstanceStatus']['Details'][0]['Status']))
 
 
 # command_list = ['sudo yum install -y gcc',
@@ -95,22 +115,29 @@ while instance_statuses[0]['InstanceStatus']['Details'][0]['Status'] == 'initial
 #                 'df -h',
 #                 ]
 
-command_list = ['aws s3 help',
-                'pwd',
-                'df -h',
-                'ls -lt /home/',
-                'aws s3 sync s3://llvm-bucket/llvm-myriscvx/ /home/ec2-user/ ',
-                'aws s3 sync s3://llvm-bucket/myriscvx-tests/ /home/ec2-user/ ',
+cmake_install_command_list = ['yum install -y gcc gcc-c++',
+                              'wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz -O /tmp/cmake-3.10.0.tar.gz',
+                              'cd /tmp/ && tar xfz cmake-3.10.0.tar.gz',
+                              'file /tmp/cmake-3.10.0/bootstrap',
+                              'sh /tmp/cmake-3.10.0/bootstrap',
+                              'make -C /tmp/cmake-3.10.0/',
+                              'make install -C /tmp/cmake-3.10.0/',
+                              'whereis cmake',
 ]
+execute_command_list(instance.instance_id, cmake_install_command_list)
 
-for command in command_list:
-    cmd_output = execute_command(instance.instance_id, command)
-    print("Output = \n{}\n".format(cmd_output['StandardOutputContent']))
-    print("Error  = \n{}\n".format(cmd_output['StandardErrorContent']))
+command_list = ['yum install update',
+                'yum install -y clang',
+                'aws s3 sync s3://llvm-bucket/llvm-myriscvx /home/ec2-user/llvm-myriscvx ',
+                'aws s3 sync s3://llvm-bucket/myriscvx-tests /home/ec2-user/myriscvx-tests ',
+                'ls -lt /home/ec2-user',
+                'cd /home/ec2-user && mkdir -p build-myriscvx && cd build-myriscvx && cmake -G "Unix Makefiles" -DLLVM_ENABLE_ZLIB=0 -DLLVM_ENABLE_TERMINFO=0 -DCMAKE_BUILD_TYPE="Debug" -DLLVM_TARGETS_TO_BUILD="X86;Mips;AArch64;ARM;MYRISCVX" -DLLVM_CCACHE_BUILD=ON -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="RISCV" ../llvm-myriscvx',
+                'cd /home/ec2-user/build-myriscvx && make',
+]
+# execute_command_list(instance.instance_id, command_list)
 
 
 instance.terminate()
-
 print("Waiting EC2 Terminate ...")
 # instance.wait_until_terminated()
 print("EC2 Terminate Finished ...")
