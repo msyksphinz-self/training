@@ -6,6 +6,7 @@ import boto3
 blockDeviceMappings = [{
     "DeviceName": "/dev/xvda",
     "Ebs": {
+        "SnapshotId": "snap-08a7cb489033af8c7",
         "DeleteOnTermination": True,
         "VolumeType": "gp2",
         'VolumeSize': 100
@@ -44,9 +45,9 @@ def execute_command_list(instance_id, command_list):
         cmd_output = execute_command(instance.instance_id, command)
         print("Output = \n{}".format(cmd_output['StandardOutputContent']))
         print("Error  = \n{}".format(cmd_output['StandardErrorContent']))
-        # print("Status = \n{}".format(cmd_output['Status']))
-        # print("StatusDetails = \n{}".format(cmd_output['StatusDetails']))
-        # print("ResponseCode = \n{}".format(cmd_output['ResponseCode']))
+        # print("Status = {}".format(cmd_output['Status']))
+        # print("StatusDetails = {}".format(cmd_output['StatusDetails']))
+        # print("ResponseCode = {}".format(cmd_output['ResponseCode']))
 
 
 def execute_command(instance_id, command):
@@ -56,6 +57,7 @@ def execute_command(instance_id, command):
         DocumentName="AWS-RunShellScript",
             Parameters={'commands': [command]},
             InstanceIds=[instance_id],
+            TimeoutSeconds=3600,
         )
     except Exception as e:
         print("Error: During Executing EC2 Instance")
@@ -65,6 +67,7 @@ def execute_command(instance_id, command):
         exit()
 
     time.sleep(5.0)
+    time_cnt = 0
 
     command_id = response['Command']['CommandId']
     output = ssm_client.get_command_invocation(
@@ -72,16 +75,21 @@ def execute_command(instance_id, command):
         InstanceId=instance_id,
     )
     while(output['Status'] == 'InProgress'):
+        print("Time = {} : Status = {}".format(time_cnt * 5.0, output['Status']))
+
         time.sleep(5.0)
         output = ssm_client.get_command_invocation(
             CommandId=command_id,
             InstanceId=instance_id,
         )
-        print("Status = \n{}".format(output['Status']))
+        console_output = boto3.client('ec2').get_console_output(InstanceId=instance_id)
+        # print(console_output['Output'])
+        time_cnt += 1
 
     return output
 
 instance = create_instance('t2.micro')
+# instance = create_instance('c5.4xlarge')
 print("Instance ID = {}".format(instance.instance_id))
 
 
@@ -115,24 +123,24 @@ while instance_statuses[0]['InstanceStatus']['Details'][0]['Status'] == 'initial
 #                 'df -h',
 #                 ]
 
-cmake_install_command_list = ['yum install -y gcc gcc-c++',
+cmake_install_command_list = ['yum install -y gcc gcc-c++ ncurses-devel',
                               'wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz -O /tmp/cmake-3.10.0.tar.gz',
                               'cd /tmp/ && tar xfz cmake-3.10.0.tar.gz',
-                              'file /tmp/cmake-3.10.0/bootstrap',
-                              'sh /tmp/cmake-3.10.0/bootstrap',
-                              'make -C /tmp/cmake-3.10.0/',
-                              'make install -C /tmp/cmake-3.10.0/',
+                              'cd /tmp/cmake-3.10.0 && ./bootstrap &> log',
+                              'make -j16 -C /tmp/cmake-3.10.0/',
+                              'make -j16 install -C /tmp/cmake-3.10.0/',
                               'whereis cmake',
 ]
 execute_command_list(instance.instance_id, cmake_install_command_list)
 
 command_list = ['yum install update',
                 'yum install -y clang',
-                'aws s3 sync s3://llvm-bucket/llvm-myriscvx /home/ec2-user/llvm-myriscvx ',
-                'aws s3 sync s3://llvm-bucket/myriscvx-tests /home/ec2-user/myriscvx-tests ',
+                'aws s3 sync s3://llvm-bucket/build-myriscvx /home/ec2-user/build-myriscvx',
+                'aws s3 sync s3://llvm-bucket/llvm-myriscvx /home/ec2-user/llvm-myriscvx',
+                'aws s3 sync s3://llvm-bucket/myriscvx-tests /home/ec2-user/myriscvx-tests',
                 'ls -lt /home/ec2-user',
-                'cd /home/ec2-user && mkdir -p build-myriscvx && cd build-myriscvx && cmake -G "Unix Makefiles" -DLLVM_ENABLE_ZLIB=0 -DLLVM_ENABLE_TERMINFO=0 -DCMAKE_BUILD_TYPE="Debug" -DLLVM_TARGETS_TO_BUILD="X86;Mips;AArch64;ARM;MYRISCVX" -DLLVM_CCACHE_BUILD=ON -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="RISCV" ../llvm-myriscvx',
-                'cd /home/ec2-user/build-myriscvx && make',
+                'cd /home/ec2-user/build-myriscvx && make -j16',
+                'aws s3 sync /home/ec2-user/build-myriscvx s3://llvm-bucket/build-myriscvx',
 ]
 # execute_command_list(instance.instance_id, command_list)
 
