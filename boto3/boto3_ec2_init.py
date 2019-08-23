@@ -6,7 +6,6 @@ import boto3
 blockDeviceMappings = [{
     "DeviceName": "/dev/xvda",
     "Ebs": {
-        "SnapshotId": "snap-08a7cb489033af8c7",
         "DeleteOnTermination": True,
         "VolumeType": "gp2",
         'VolumeSize': 100
@@ -82,14 +81,12 @@ def execute_command(instance_id, command):
             CommandId=command_id,
             InstanceId=instance_id,
         )
-        console_output = boto3.client('ec2').get_console_output(InstanceId=instance_id)
-        # print(console_output['Output'])
         time_cnt += 1
 
     return output
 
-instance = create_instance('t2.micro')
-# instance = create_instance('c5.4xlarge')
+# instance = create_instance('t2.micro')
+instance = create_instance('c5.4xlarge')
 print("Instance ID = {}".format(instance.instance_id))
 
 
@@ -108,22 +105,37 @@ while instance_statuses[0]['InstanceStatus']['Details'][0]['Status'] == 'initial
     print("Instance Status = {}".format(instance_statuses[0]['InstanceStatus']['Details'][0]['Status']))
 
 
+# command_list = ['sudo yum install -y gcc',
+#                 'ls -lt /',
+#                 'echo #include <stdio.h>\n \
+# int main() { \
+#   printf(\"Hello World\"); \
+#   return 0; \
+# } > main.c',
+#                 'cat main.c',
+#                 'gcc main.c -o main',
+#                 './main']
+
+# command_list = ['ls -lt /',
+#                 'df -h',
+#                 ]
+
 cmake_install_command_list = ['yum install -y gcc gcc-c++ ncurses-devel',
                               'wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz -O /tmp/cmake-3.10.0.tar.gz',
                               'cd /tmp/ && tar xfz cmake-3.10.0.tar.gz',
                               'cd /tmp/cmake-3.10.0 && ./bootstrap &> log',
-                              'make -j16 -C /tmp/cmake-3.10.0/',
-                              'make -j16 install -C /tmp/cmake-3.10.0/',
+                              'make -C /tmp/cmake-3.10.0/',
+                              'make install -C /tmp/cmake-3.10.0/',
                               'whereis cmake',
 ]
 execute_command_list(instance.instance_id, cmake_install_command_list)
 
 command_list = ['yum install update',
                 'yum install -y clang',
-                'aws s3 sync s3://llvm-bucket/build-myriscvx /home/ec2-user/build-myriscvx',
-                'aws s3 sync s3://llvm-bucket/llvm-myriscvx /home/ec2-user/llvm-myriscvx',
-                'aws s3 sync s3://llvm-bucket/myriscvx-tests /home/ec2-user/myriscvx-tests',
+                'aws s3 sync s3://llvm-bucket/llvm-myriscvx /home/ec2-user/llvm-myriscvx ',
+                'aws s3 sync s3://llvm-bucket/myriscvx-tests /home/ec2-user/myriscvx-tests ',
                 'ls -lt /home/ec2-user',
+                'cd /home/ec2-user && mkdir -p build-myriscvx && cd build-myriscvx && cmake -G "Unix Makefiles" -DLLVM_ENABLE_ZLIB=0 -DLLVM_ENABLE_TERMINFO=0 -DCMAKE_BUILD_TYPE="Debug" -DLLVM_TARGETS_TO_BUILD="X86;Mips;AArch64;ARM;MYRISCVX" -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="RISCV" ../llvm-myriscvx',
                 'cd /home/ec2-user/build-myriscvx && make -j16',
                 'aws s3 sync /home/ec2-user/build-myriscvx s3://llvm-bucket/build-myriscvx',
 ]
