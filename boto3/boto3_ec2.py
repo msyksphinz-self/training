@@ -6,7 +6,6 @@ import boto3
 blockDeviceMappings = [{
     "DeviceName": "/dev/xvda",
     "Ebs": {
-        "SnapshotId": "snap-08a7cb489033af8c7",
         "DeleteOnTermination": True,
         "VolumeType": "gp2",
         'VolumeSize': 100
@@ -16,7 +15,6 @@ blockDeviceMappings = [{
 def create_instance(instance_type):
     print("Launching EC2 ...")
     ec2_resource = boto3.resource('ec2')
-    # tag_specification = [{'ResourceType': 'spot-instances-request'}, ]
     instance_market_options={
 	'MarketType': 'spot',
 	'SpotOptions': {
@@ -40,28 +38,23 @@ def create_instance(instance_type):
 
 
 def execute_command_list(instance_id, command_list):
-    for command in command_list:
-        print("Executing {} ...".format(command))
-        cmd_output = execute_command(instance.instance_id, command)
-        print("Output = \n{}".format(cmd_output['StandardOutputContent']))
-        print("Error  = \n{}".format(cmd_output['StandardErrorContent']))
-        # print("Status = {}".format(cmd_output['Status']))
-        # print("StatusDetails = {}".format(cmd_output['StatusDetails']))
-        # print("ResponseCode = {}".format(cmd_output['ResponseCode']))
+    print("Executing {} ...".format(command_list))
+    cmd_output = execute_command(instance.instance_id, command_list)
+    print("Output = \n{}".format(cmd_output['StandardOutputContent']))
+    print("Error  = \n{}".format(cmd_output['StandardErrorContent']))
 
 
-def execute_command(instance_id, command):
+def execute_command(instance_id, command_list):
     ssm_client = boto3.client('ssm')
     try:
         response = ssm_client.send_command(
         DocumentName="AWS-RunShellScript",
-            Parameters={'commands': [command]},
+            Parameters={'commands': command_list},
             InstanceIds=[instance_id],
             TimeoutSeconds=3600,
         )
     except Exception as e:
         print("Error: During Executing EC2 Instance")
-        # print(dir(e))
         print("message:{0}".format(e.message))
         instance.terminate()
         exit()
@@ -82,8 +75,6 @@ def execute_command(instance_id, command):
             CommandId=command_id,
             InstanceId=instance_id,
         )
-        console_output = boto3.client('ec2').get_console_output(InstanceId=instance_id)
-        # print(console_output['Output'])
         time_cnt += 1
 
     return output
@@ -108,27 +99,20 @@ while instance_statuses[0]['InstanceStatus']['Details'][0]['Status'] == 'initial
     print("Instance Status = {}".format(instance_statuses[0]['InstanceStatus']['Details'][0]['Status']))
 
 
-cmake_install_command_list = ['yum install -y gcc gcc-c++ ncurses-devel',
-                              'wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz -O /tmp/cmake-3.10.0.tar.gz',
-                              'cd /tmp/ && tar xfz cmake-3.10.0.tar.gz',
-                              'cd /tmp/cmake-3.10.0 && ./bootstrap &> log',
-                              'make -j16 -C /tmp/cmake-3.10.0/',
-                              'make -j16 install -C /tmp/cmake-3.10.0/',
-                              'whereis cmake',
-]
-execute_command_list(instance.instance_id, cmake_install_command_list)
+# cmake_install_command_list = ['yum install -y gcc gcc-c++ ncurses-devel',
+#                               'wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz -O /tmp/cmake-3.10.0.tar.gz',
+#                               'cd /tmp/ && tar xfz cmake-3.10.0.tar.gz',
+#                               'cd /tmp/cmake-3.10.0 && ./bootstrap &> log',
+#                               'make -j16 -C /tmp/cmake-3.10.0/',
+#                               'make -j16 install -C /tmp/cmake-3.10.0/',
+#                               'whereis cmake',
+# ]
+# execute_command_list(instance.instance_id, cmake_install_command_list)
 
-command_list = ['yum install update',
-                'yum install -y clang',
-                'aws s3 sync s3://llvm-bucket/build-myriscvx /home/ec2-user/build-myriscvx',
-                'aws s3 sync s3://llvm-bucket/llvm-myriscvx /home/ec2-user/llvm-myriscvx',
-                'aws s3 sync s3://llvm-bucket/myriscvx-tests /home/ec2-user/myriscvx-tests',
-                'ls -lt /home/ec2-user',
-                'cd /home/ec2-user/build-myriscvx && make -j16',
-                'aws s3 sync /home/ec2-user/build-myriscvx s3://llvm-bucket/build-myriscvx',
+command_list = ['ls -lt /',
+                'df -h',
 ]
 execute_command_list(instance.instance_id, command_list)
-
 
 instance.terminate()
 print("Waiting EC2 Terminate ...")

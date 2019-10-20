@@ -7,7 +7,7 @@ POST_URI = "https://blog.hatena.ne.jp/msyksphinz/msyksphinz.hatenablog.com/atom/
 
 auth = Atompub::Auth::Wsse.new(
   username: 'msyksphinz',
-  password: ''
+  password: 'l5l3j1mx7h'
 )
 client = Atompub::Client.new(auth: auth)
 
