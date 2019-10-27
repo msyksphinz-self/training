@@ -2,6 +2,7 @@
 
 import time
 import boto3
+import argparse
 
 blockDeviceMappings = [{
     "DeviceName": "/dev/xvda",
@@ -31,7 +32,7 @@ def create_instance(instance_type):
 	                                      InstanceType=instance_type,
 	                                      IamInstanceProfile={'Name': 'SSM_Access'},
 	                                      InstanceMarketOptions=instance_market_options,
-                                              BlockDeviceMappings=blockDeviceMappings,
+                                              # BlockDeviceMappings=blockDeviceMappings,
     )
     time.sleep(5.0)
 
@@ -104,28 +105,45 @@ def join_command_id(instance_id, cmd_id_list):
 
 
 if __name__ == '__main__':
-    # instance = create_instance('t2.micro')
-    ec2 = boto3.client('ec2')
-    instance_response = ec2.describe_instances()
+    parser = argparse.ArgumentParser(description='EC2 LLVM Build Launcher.')
+    parser.add_argument('instance_type', type=str,
+                        help='Instance Type for Launch')
+    parser.add_argument('--keep', dest='keep_instance', action='store_true',
+                        help='Keep instance without shutdown')
+
+    args = parser.parse_args()
+    instance_type = args.instance_type
+    keep_instance = args.keep_instance
+
+    if instance_type == 't2.micro':
+        job_num = '-j1'
+    elif instance_type == 'c5.4xlarge':
+        job_num = '-j16'
+    else:
+        print("Instance Type neither t2.micronor c5.4xlarge is not accepted.")
+        exit()
+
+    print("----------------------")
+    print("Instance Type = {}".format(instance_type))
+    print("Keep Instance = {}".format(keep_instance))
+    print("----------------------")
 
     instance_id = ''
     instance = 0
 
-    if len(instance_response['Reservations']) != 0:
-        for inst in instance_response['Reservations'][0]['Instances']:
-            if inst['State']['Name'] == 'running':
-                instance_id = inst['InstanceId']
-                instance = ec2 = boto3.resource('ec2').Instance(instance_id)
-                break
+    instance = create_instance(instance_type)
 
-    if instance_id == '':
-        instance = create_instance('c5.4xlarge')
-        print("Waiting EC2 Launch ...")
-        instance.wait_until_running()
-        print("EC2 Launch Finished ...")
-        instance_id = instance.instance_id
+    print("Instance ID = {}".format(instance.instance_id))
 
-    print("Instance ID = {}".format(instance_id))
+    print("Waiting EC2 Launch ...")
+    instance.wait_until_running()
+    print("EC2 Launch Finished ...")
+
+    instance.attach_volume(
+        Device = '/dev/xvdb',
+        InstanceId = instance.instance_id,
+        VolumeId = 'vol-02c1e681a565eb322',
+        )
 
     ec2_client = boto3.client('ec2')
     instance_statuses = ec2_client.describe_instance_status(InstanceIds=[instance_id])['InstanceStatuses']
@@ -139,11 +157,11 @@ if __name__ == '__main__':
 
 
     cmake_install_command_list = ['yum install -y gcc gcc-c++ ncurses-devel',
-                                  'wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz -O /tmp/cmake-3.10.0.tar.gz',
-                                  'cd /tmp/ && tar xfz cmake-3.10.0.tar.gz',
-                                  'cd /tmp/cmake-3.10.0 && ./bootstrap &> log',
-                                  'make -j16 -C /tmp/cmake-3.10.0/',
-                                  'make -j16 install -C /tmp/cmake-3.10.0/',
+                                  'wget https://cmake.org/files/v3.10/cmake-3.10.0.tar.gz -O /tmp/cmake-3.10.0.tar.gz &&'
+                                  'cd /tmp/ && tar xfz cmake-3.10.0.tar.gz &&'
+                                  'cd /tmp/cmake-3.10.0 && ./bootstrap &> log &&'
+                                  'make ' + job_num + ' -C /tmp/cmake-3.10.0/ &&'
+                                  'make ' + job_num + ' install -C /tmp/cmake-3.10.0/'
     ]
     execute_command_list(instance_id, cmake_install_command_list)
 
@@ -155,14 +173,16 @@ if __name__ == '__main__':
     ]
     execute_command_list(instance_id, command_list)
 
-    command_list = ['cd /home/ec2-user && mkdir -p build-myriscvx && cd build-myriscvx && cmake -G "Unix Makefiles" -DLLVM_ENABLE_ZLIB=0 -DLLVM_ENABLE_TERMINFO=0 -DCMAKE_BUILD_TYPE="Debug" -DLLVM_TARGETS_TO_BUILD="X86;Mips;AArch64;ARM;MYRISCVX" -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="RISCV" ../llvm-myriscvx',
-                    'make -C /home/ec2-user/build-myriscvx -j16']
-    execute_command_list(instance_id, command_list)
+    command_list = ['cd /home/ec2-user/build-myriscvx && make ' + job_num]
+    execute_command_list(instance.instance_id, command_list)
 
     command_list = ['aws s3 sync /home/ec2-user/build-myriscvx s3://llvm-bucket/build-myriscvx']
     execute_command_list(instance_id, command_list)
 
-    instance.terminate()
-    print("Waiting EC2 Terminate ...")
-    # instance.wait_until_terminated()
-    print("EC2 Terminate Finished ...")
+    if instance_keep == False:
+        instance.terminate()
+        print("Waiting EC2 Terminate ...")
+        # instance.wait_until_terminated()
+        print("EC2 Terminate Finished ...")
+    else:
+        print("Instance Type {} is keeped. Don't forget shutting down.".format(instance_id))
