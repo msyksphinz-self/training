@@ -1,0 +1,8 @@
+[package]
+name = "nom_test"
+version = "0.1.0"
+authors = ["msyksphinz-self <msyksphinz.dev@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+nom = "5"

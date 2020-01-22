@@ -1,0 +1,9 @@
+[package]
+name = "nom_test2"
+version = "0.1.0"
+authors = ["msyksphinz-self <msyksphinz.dev@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+nom = "5"
+str-concat = "0.1.4"
