@@ -1,0 +1,8 @@
+[package]
+name = "struct_xlen"
+version = "0.1.0"
+authors = ["msyksphinz-self <msyksphinz.dev@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+num = { version = "0.2.0", default-features = false }
