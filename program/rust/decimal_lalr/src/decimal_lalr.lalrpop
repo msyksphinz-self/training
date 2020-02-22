@@ -1,0 +1,11 @@
+grammar;
+
+pub PosInt: String = <p:r"[1-9]"><d:r"[0-9]*"> => p.to_string() + &d.to_string();
+pub Digit: String = <p:r"[0-9]*"> => p.to_string();
+
+match {
+  r"[1-9]",
+} else {
+  r"[0-9]*",
+  _
+}
