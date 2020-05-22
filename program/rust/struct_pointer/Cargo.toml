@@ -1,5 +1,7 @@
 [package]
-name = "peg_grammar"
+name = "struct_pointer"
 version = "0.1.0"
 authors = ["msyksphinz <msyksphinz.dev@gmail.com>"]
 edition = "2018"
+
+[dependencies]

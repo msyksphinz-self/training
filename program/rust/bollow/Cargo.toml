@@ -1,0 +1,7 @@
+[package]
+name = "bollow"
+version = "0.1.0"
+authors = ["Masayuki Kimura <kimura@sifive-china.com>"]
+edition = "2018"
+
+[dependencies]

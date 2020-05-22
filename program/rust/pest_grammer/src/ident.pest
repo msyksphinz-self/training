@@ -1,0 +1,118 @@
+alpha = { 'a'..'z' | 'A'..'Z' }
+digit = { '0'..'9' }
+digit_head = { '1'..'9' }
+hex_digit = { 'a'..'f' | 'A'..'F' | '0'..'9' }
+
+
+id = { id_lit | keyword_as_id }
+field_id = { id | relaxed_id | unsigned_int | keyword_as_id }
+int_lit = { unsigned_int | signed_int | hex_lit }
+
+pos_int = { digit_head ~ (digit)* }
+unsigned_int = { "0" | pos_int }
+signed_int = { ("+" | "-") ~ pos_int }
+hex_lit = { "\"" ~ "h" ~ ( "+" | "-" )? ~ ( hex_digit )+ ~ "\"" }
+double_lit = { ( "+" | "-" )? ~ (digit)+ ~ "." ~ (digit)+ ~ ( "E" ~ ( "+" | "-" )? ~ (digit)+ )? }
+
+exp = {
+    "UInt" ~ ( "<" ~ int_lit ~ ">")? ~ "(" ~ int_lit ~ ")"
+  | "SInt" ~ ( "<" ~ int_lit ~ ">")? ~ "(" ~ int_lit ~ ")"
+  | id
+  | exp ~ "." ~ field_id
+  | exp ~ "." ~ double_lit
+  | exp ~ "[" ~ int_lit ~ "]"
+  | exp ~ "[" ~ exp ~ "]"
+  | "mux(" ~ exp ~ exp ~ exp ~ ")"
+  | "validif(" ~ exp ~ exp ~ ")"
+  | primop ~ (exp)* ~ (int_lit)* ~ ")" }
+
+
+id_lit = { legal_start_char ~ (legal_id_char)* }
+relaxed_id = { (legal_id_char)+ }
+legal_id_char = { legal_start_char | digit | "$" }
+legal_start_char = { 'a'..'z' | 'A'..'Z' | "_" }
+
+// Keywords that are also legal ids
+keyword_as_id = {
+  "circuit"
+  | "module"
+  | "extmodule"
+  | "parameter"
+  | "input"
+  | "output"
+  | "UInt"
+  | "SInt"
+  | "Clock"
+  | "Analog"
+  | "Fixed"
+  | "flip"
+  | "wire"
+  | "reg"
+  | "with"
+  | "reset"
+  | "mem"
+  | "depth"
+  | "reader"
+  | "writer"
+  | "readwriter"
+  | "inst"
+  | "of"
+  | "node"
+  | "is"
+  | "invalid"
+  | "when"
+  | "else"
+  | "stop"
+  | "printf"
+  | "skip"
+  | "old"
+  | "new"
+  | "undefined"
+  | "mux"
+  | "validif"
+  | "cmem"
+  | "smem"
+  | "mport"
+  | "infer"
+  | "read"
+  | "write"
+  | "rdwr" }
+
+primop = {
+    "add("
+  | "sub("
+  | "mul("
+  | "div("
+  | "rem("
+  | "lt("
+  | "leq("
+  | "gt("
+  | "geq("
+  | "eq("
+  | "neq("
+  | "pad("
+  | "asUInt("
+  | "asAsyncReset("
+  | "asSInt("
+  | "asClock("
+  | "shl("
+  | "shr("
+  | "dshl("
+  | "dshr("
+  | "cvt("
+  | "neg("
+  | "not("
+  | "and("
+  | "or("
+  | "xor("
+  | "andr("
+  | "orr("
+  | "xorr("
+  | "cat("
+  | "bits("
+  | "head("
+  | "tail("
+  | "asFixedPoint("
+  | "bpshl("
+  | "bpshr("
+  | "bpset(" }
