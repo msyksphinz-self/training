@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'test/unit'
+require 'set'
 
 class Variable
   def initialize(data)
@@ -14,16 +15,30 @@ class Variable
     end
     @grad = nil
     @creator = nil
+    @generation = 0
   end
   def set_creator(func)
     @creator = func
+    @generation = func.generation + 1
   end
 
   def backward()
     if @grad == nil then
       @grad = @data.clone.fill(1.0)
     end
-    funcs = [@creator]
+    funcs = []
+    seen_set = Set.new
+
+    def add_func(f, funcs, seen_set)
+      if not seen_set.include?(f) then
+        funcs.push(f)
+        seen_set.add(f)
+        funcs.sort!{|a| a.generation}
+      end
+    end
+
+    add_func(@creator, funcs, seen_set)
+
     while funcs != [] do
       f = funcs.pop
       gys = f.outputs.map{|x| x.grad}
@@ -35,11 +50,11 @@ class Variable
         if x.grad === nil then
           x.grad = gx
         else
-          puts (x.grad + gx).to_s
-          x.grad = [(x.grad + gx).sum]
+          tmp = (x.grad + gx)
+          x.grad = [tmp.is_a?(Array) ? tmp.sum : tmp]
         end
         if x.creator != nil then
-          funcs.push(x.creator)
+          add_func(x.creator, funcs, seen_set)
         end
       }
     end
@@ -49,7 +64,7 @@ class Variable
     @grad = nil
   end
 
-  attr_accessor :data, :grad, :creator
+  attr_accessor :data, :grad, :creator, :generation
 end
 
 class Function
@@ -60,6 +75,7 @@ class Function
       ys = [ys]
     end
     outputs = ys.map{|y| Variable.new(y) }
+    @generation = (inputs.map{|x| x.generation}).max
 
     outputs.each {|output|
       output.set_creator(self)
@@ -76,7 +92,7 @@ class Function
     raise NotImplementedError
   end
 
-  attr_accessor :inputs, :outputs
+  attr_accessor :inputs, :outputs, :generation
 end
 
 class Square < Function
@@ -93,7 +109,7 @@ class Square < Function
   def backward(gy)
     x = @inputs[0].data
     gx = x.zip(gy).map{|i0, i1| i0 * i1 * 2.0}
-    return gx
+    return [gx]
   end
 end
 
@@ -148,28 +164,11 @@ def add(x0, x1)
   return Add.new().call(x0, x1)
 end
 
-begin
-  x = Variable.new([3.0])
-  y = add(x, x)
-  y.backward()
-  puts(x.grad)
-end
 
-begin
-  x = Variable.new([3.0])
-  y = add(add(x, x),x)
-  y.backward()
-  puts(x.grad)
-end
+x = Variable.new([2.0])
+a = square(x)
+y = add(square(a), square(a))
+y.backward()
 
-begin
-  x = Variable.new([3.0])
-  y = add(x, x)
-  y.backward()
-  puts(x.grad)
-
-  x = Variable.new([3.0])
-  y = add(add(x, x),x)
-  y.backward()
-  puts(x.grad)
-end
+puts(y.data)
+puts(x.grad)
