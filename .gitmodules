@@ -58,3 +58,6 @@
 [submodule "machine_learning/deep-learning-from-scratch-3"]
 	path = machine_learning/deep-learning-from-scratch-3
 	url = https://github.com/oreilly-japan/deep-learning-from-scratch-3.git
+[submodule "program/rust/r9cc"]
+	path = program/rust/r9cc
+	url = https://github.com/utam0k/r9cc.git

@@ -2,6 +2,18 @@
 
 require 'test/unit'
 require 'set'
+require 'weakref'
+
+$enable_backprop = true
+
+def fill_one(a)
+  if a.is_a?(Array)
+    a.map{|i| fill_one(i) }
+  else
+    a = 1.0
+  end
+end
+
 
 class Variable
   def initialize(data)
@@ -22,15 +34,15 @@ class Variable
     @generation = func.generation + 1
   end
 
-  def backward()
+  def backward(retain_grad=false)
     if @grad == nil then
-      @grad = @data.clone.fill(1.0)
+      @grad = fill_one(@data.clone)
     end
-    funcs = []
+    funcs = Array.new()
     seen_set = Set.new
 
     def add_func(f, funcs, seen_set)
-      if not seen_set.include?(f) then
+      if f != nil and (not seen_set.include?(f)) then
         funcs.push(f)
         seen_set.add(f)
         funcs.sort!{|a| a.generation}
@@ -39,9 +51,11 @@ class Variable
 
     add_func(@creator, funcs, seen_set)
 
-    while funcs != [] do
+    while not funcs.empty? do
       f = funcs.pop
       gys = f.outputs.map{|x| x.grad}
+      # puts "gys = " + gys.to_s
+      # puts "f.outputs = " + f.outputs.to_s
       gxs = f.backward(*gys)
       if not gxs.is_a?(Array) then
         gxs = [gxs]
@@ -57,6 +71,9 @@ class Variable
           add_func(x.creator, funcs, seen_set)
         end
       }
+      if not retain_grad then
+        f.outputs.map{|y| y.grad = nil }
+      end
     end
   end
 
@@ -75,13 +92,14 @@ class Function
       ys = [ys]
     end
     outputs = ys.map{|y| Variable.new(y) }
-    @generation = (inputs.map{|x| x.generation}).max
 
-    outputs.each {|output|
-      output.set_creator(self)
-    }
+    if $enable_backprop then
+      @generation = (inputs.map{|x| x.generation}).max
+      outputs.each {|output| output.set_creator(self) }
+    end
+
     @inputs = inputs
-    @outputs = outputs
+    @outputs = outputs.map{|output| WeakRef.new(output)}
     return outputs.size > 1 ? outputs : outputs[0]
   end
 
@@ -104,11 +122,28 @@ class Square < Function
     end
   end
   def forward(x)
-    return x.map{|i| _calc(i)}
+    tmp = x.map{|i| _calc(i)}
+    return tmp
   end
+
+  def _backward_calc(x)
+    if not x.is_a?(Array) then
+      return x
+    elsif x.is_a?(Array) and
+      x.length == 2 and
+      not x[0].is_a?(Array) then
+      return x[0] * x[1] * 2.0
+    else
+      return x.map{|i| _backward_calc(i) }
+    end
+  end
+
   def backward(gy)
     x = @inputs[0].data
-    gx = x.zip(gy).map{|i0, i1| i0 * i1 * 2.0}
+    gx = x.zip(gy).map{|i, j|
+      # puts "i = " + i.to_s
+      # puts "j = " + j.to_s
+      _backward_calc(i) }
     return [gx]
   end
 end
@@ -165,18 +200,25 @@ def add(x0, x1)
 end
 
 
-x = Variable.new([2.0])
-a = square(x)
-y = add(square(a), square(a))
+x0 = Variable.new([1.0])
+x1 = Variable.new([1.0])
+t = add(x0, x1)
+y = add(x0, t)
 y.backward()
 
-puts(y.data)
-puts(x.grad)
+puts(y.grad, t.grad)
+puts(x0.grad, x1.grad)
 
-for i in 0..9 do
-  x = Variable.new(100000.times.map{rand(10000)})
+begin
+  $enable_backprop = false
+  x = Variable.new(100.times.map{100.times.map{100.times.map{1.0}}})
   y = square(square(square(x)))
-  rss = `ps -o rss= -p #{Process.pid}`.to_i * 0.001
-  vsz = `ps -o vsz= -p #{Process.pid}`.to_i * 0.001
-  puts "Process: #{Process.pid}: RSS = #{rss} MB, VSZ = #{vsz} MB"
+  y.backward()
+end
+
+begin
+  $enable_backprop = true
+  x = Variable.new(100.times.map{100.times.map{100.times.map{1.0}}})
+  y = square(square(square(x)))
+  y.backward()
 end

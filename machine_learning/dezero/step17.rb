@@ -2,6 +2,7 @@
 
 require 'test/unit'
 require 'set'
+require 'weakref'
 
 class Variable
   def initialize(data)
@@ -81,7 +82,8 @@ class Function
       output.set_creator(self)
     }
     @inputs = inputs
-    @outputs = outputs
+    @outputs = outputs.map{|output| WeakRef.new(output)}
+    # @outputs = outputs
     return outputs.size > 1 ? outputs : outputs[0]
   end
 
@@ -164,17 +166,8 @@ def add(x0, x1)
   return Add.new().call(x0, x1)
 end
 
-
-x = Variable.new([2.0])
-a = square(x)
-y = add(square(a), square(a))
-y.backward()
-
-puts(y.data)
-puts(x.grad)
-
 for i in 0..9 do
-  x = Variable.new(100000.times.map{rand(10000)})
+  x = Variable.new(10000.times.map{rand()})
   y = square(square(square(x)))
   rss = `ps -o rss= -p #{Process.pid}`.to_i * 0.001
   vsz = `ps -o vsz= -p #{Process.pid}`.to_i * 0.001
