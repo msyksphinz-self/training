@@ -8,10 +8,9 @@ $enable_backprop = true
 
 def fill_one(a)
   if a.is_a?(Array)
-    tmp = a.map{|i| fill_one(i) }
-    return tmp
+    a.map{|i| fill_one(i) }
   else
-    return 1.0
+    a = 1.0
   end
 end
 
@@ -63,24 +62,19 @@ class Variable
 
     while not funcs.empty? do
       f = funcs.pop
-      puts "f.outputs = " + f.outputs.to_s
       gys = f.outputs.map{|x| x.grad}
-      puts "gys = " + gys.to_s
+      # puts "gys = " + gys.to_s
+      # puts "f.outputs = " + f.outputs.to_s
       gxs = f.backward(*gys)
-      puts "gxs = " + gxs.to_s
-      # if not gxs.is_a?(Array) then
-      gxs = [gxs]
-      # end
-      puts "gxs = " + gxs.to_s
+      if not gxs.is_a?(Array) then
+        gxs = [gxs]
+      end
       f.inputs.zip(gxs).each{|x, gx|
-        if x.grad == nil then
-          puts "x.grad0 = " + gx.to_s
+        if x.grad === nil then
           x.grad = gx
         else
-          puts x.grad.to_s + ", " + gx.to_s
           tmp = (x.grad + gx)
-          x.grad = tmp.is_a?(Array) ? [tmp.sum] : [tmp]
-          puts "x.grad1 = " + x.grad.to_s
+          x.grad = [tmp.is_a?(Array) ? tmp.sum : tmp]
         end
         if x.creator != nil then
           add_func(x.creator, funcs, seen_set)
@@ -147,7 +141,7 @@ class Function
     inputs = inputs.map{|x| as_variable(x) }
     xs = inputs.map{|x| x.data}
     ys = forward(*xs)
-    if not ys.is_a?(Array) then
+    if ys.is_a?(Array) then
       ys = [ys]
     end
     outputs = ys.map{|y| Variable.new(y) }
@@ -182,7 +176,6 @@ class Square < Function
   end
   def forward(x)
     tmp = x.map{|i| _calc(i)}
-    puts "Square.Forward = " + tmp.to_s
     return tmp
   end
 
@@ -204,7 +197,7 @@ class Square < Function
       # puts "i = " + i.to_s
       # puts "j = " + j.to_s
       _backward_calc(i) }
-    return gx
+    return [gx]
   end
 end
 
@@ -218,9 +211,7 @@ class Exp < Function
     end
   end
   def forward(x)
-    tmp = x.map{|i| _calc(i)}
-    puts "Exp.Forward = " + tmp.to_s
-    return tmp
+    return x.map{|i| _calc(i)}
   end
   def backward(gy)
     x = @inputs.data
@@ -249,9 +240,8 @@ end
 
 class Add < Function
   def forward(x0, x1)
-    tmp = x0.zip(x1).map{|x0, x1| x0 + x1}
-    puts "Add.Forward = " + tmp.to_s
-    return tmp
+    y = x0[0] + x1[0]
+    return [y]
   end
   def backward(gy)
     return [gy, gy]
@@ -265,13 +255,11 @@ end
 
 class Sub < Function
   def forward(x0, x1)
-    tmp = x0.zip(x1).map{|x0, x1| x0 - x1}
-    puts "Sub.Forward = " + tmp.to_s
-    return tmp
+    y = x0[0] - x1[0]
+    return [y]
   end
   def backward(gy)
-    minus_gy = gy.map{|y| -y}
-    return [gy, minus_gy]
+    return [gy, -gy]
   end
 end
 
@@ -282,15 +270,13 @@ end
 
 class Mul < Function
   def forward(x0, x1)
-    tmp = x0[0] * x1[0]
-    puts "Mul.Forward = " + tmp.to_s
-    return [tmp]
+    y = x0[0] * x1[0]
+    return [y]
   end
   def backward(gy)
     x0 = @inputs[0].data
     y0 = @inputs[1].data
-    return [gy.zip(y0).map{|gy,y0| gy * y0},
-            gy.zip(x0).map{|gy,x0| gy * x0}]
+    return [gy * x1, gy * x0]
   end
 end
 
@@ -301,9 +287,8 @@ end
 
 class Div < Function
   def forward(x0, x1)
-    tmp = x0[0] / x1[0]
-    puts "Div.Forward = " + tmp.to_s
-    return [tmp]
+    y = x0[0] / x1[0]
+    return [y]
   end
   def backward(gy)
     x0 = @inputs[0].data
@@ -319,9 +304,7 @@ end
 
 class Neg < Function
   def forward(x)
-    tmp = x.map{|x| -x}
-    puts "Div.Forward = " + tmp.to_s
-    return tmp
+    return x.map{|x| -x}
   end
   def backward(gy)
     return gx.map{|x| -x}
@@ -338,20 +321,12 @@ class Pow < Function
     @c = c
   end
   def forward(x)
-    tmp = x.map{|x| x ** @c}
-    puts "Pow.Forward = " + tmp.to_s
-    return tmp
+    return x.map{|x| x ** @c}
   end
   def backward(gy)
     x = @inputs[0].data
     c = @c
-    if x.is_a?(Array) and not gy.is_a?(Array) then
-      gx = x.map{|x| x ** (c - 1) * gy * c}
-    elsif not x.is_a?(Array) and gy.is_a?(Array) then
-      gx = gy.map{|gy| x ** (c - 1) * gy * c}
-    else
-      gx = x.zip(gy).map{|x, gy| x ** (c - 1) * gy * c}
-    end
+    gx = c * x ** (c - 1) ** gy
     return gx
   end
 end
