@@ -33,8 +33,15 @@ class write_seq extends sample_master_base_seq;
   virtual task body();
     $display("Hello SEQ");
     `uvm_create(req)
+    req.write <= 1'b1;
+    req.addr  <= 8'h10;
+    req.wdata <= 8'h55;
+    `uvm_send(req)
+    $display("Hello SEQ2");
+    `uvm_create(req)
     req.write <= 1'b0;
     req.addr  <= 8'h10;
+    `uvm_send(req)
     uvm_report_info("SEQ", $sformatf("read data is %02xf", req.rdata));
     #1000;
   endtask

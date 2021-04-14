@@ -10,4 +10,4 @@ all:
 	DUMP_TYPE=wdb xsim tb_top -R -t sim_vivado.tcl --testplusarg "UVM_TESTNAME=sample_test" -wdb out.wdb
 
 clean:
-	rm -rf *.log *.jou *.dir *.pb
+	rm -rf *.log *.jou *.dir *.pb *.wdb
