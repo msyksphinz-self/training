@@ -1,0 +1,2 @@
+all:
+	sbt compile
