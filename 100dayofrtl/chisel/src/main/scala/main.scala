@@ -14,8 +14,20 @@ import chisel3.stage.{ChiselStage, ChiselGeneratorAnnotation}
 //     Seq(ChiselGeneratorAnnotation(() => new Mux())))
 // }
 
+// object Main extends App{
+//   (new chisel3.stage.ChiselStage).execute(
+//     Array("-X", "verilog"),
+//     Seq(ChiselGeneratorAnnotation(() => new EdgeDetector())))
+// }
+
+// object Main extends App{
+//   (new chisel3.stage.ChiselStage).execute(
+//     Array("-X", "verilog"),
+//     Seq(ChiselGeneratorAnnotation(() => new PriArbiter())))
+// }
+
 object Main extends App{
   (new chisel3.stage.ChiselStage).execute(
     Array("-X", "verilog"),
-    Seq(ChiselGeneratorAnnotation(() => new EdgeDetector())))
+    Seq(ChiselGeneratorAnnotation(() => new RoundRobin(4))))
 }

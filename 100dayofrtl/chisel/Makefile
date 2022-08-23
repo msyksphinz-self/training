@@ -1,2 +1,2 @@
 all:
-	sbt compile
+	sbt run
