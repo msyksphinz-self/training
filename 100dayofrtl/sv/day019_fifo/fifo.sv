@@ -18,13 +18,6 @@ module fifo
  );
 
 
-typedef enum logic [ 1: 0]
-{
- ST_PUSH = 2'b01,
- ST_POP  = 2'b10,
- ST_BOTH = 2'b11
- } fifo_state_t;
-
 localparam PTR_W = $clog2(DEPTH);
 
 

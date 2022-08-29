@@ -28,31 +28,40 @@ module rdmemory
    input logic         i_slave_ready,
    output [31: 0]      o_slave_data,
 
-   output              mem_req_req_t mem_req,
-   input               mem_req_ack_t mem_req_ack,
-   input               mem_data_resp_t mem_resp,
-   output              mem_data_ack_t mem_data_ack
+   output mem_req_req_t   mem_req,
+   input  mem_req_ack_t   mem_req_ack,
+   input  mem_data_resp_t mem_resp,
+   output mem_data_ack_t  mem_data_ack
    );
 
-sig v_req_fifo
+fifo v_req_fifo
   (
    .i_clk     (i_clk),
    .i_reset_n (i_reset),
-   .o_stall (),
 
+   .i_master_valid (i_master_valid & mem_gnt),
+   .o_master_ready (),
+   .i_master_data  (),
+
+   .o_slave_valid (),
+   .i_slave_ready (),
+   .o_slave_data  ()
    );
 
 fifo u_data_fifo
 (
- .i_clk (i_clk),
+ .i_clk     (i_clk    ),
  .i_reset_n (i_reset_n),
 
- .i_master_valid (),
- .i_master_data  (),
- .o_master_ready (),
- .o_slave_valid  (),
- .o_slave_data   (),
- .i_slave_ready  ()
+ .i_master_valid (mem_data_resp.valid),
+ .i_master_data  (mem_resp_resp.data),
+ .o_master_ready (mem_data_ack.ready),
+ .o_slave_valid  (o_slave_valid),
+ .o_slave_data   (o_slave_data ),
+ .i_slave_ready  (i_slave_ready)
  );
+
+assign
+
 
 endmodule // rdmemory
